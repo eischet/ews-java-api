@@ -1,8 +1,10 @@
+# UNOFFICAL FORK
+
+I'm still using this API, but the original code is showing its age. This is an attempt to remove some outdated depdendencies
+and to upgrade this to Java 11 (LTS) level. Thanks to Microsoft, who've release their original code under the MIT license!
+  S.E.
+
 # Getting Started with the EWS Java API
-
-[![Gitter](https://badges.gitter.im/JoinChat.svg)](https://gitter.im/OfficeDev/ews-java-api?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
-
-[![Build Status](https://travis-ci.org/OfficeDev/ews-java-api.svg)](https://travis-ci.org/OfficeDev/ews-java-api) [![codecov.io](https://codecov.io/github/OfficeDev/ews-java-api/coverage.svg?branch=master)](https://codecov.io/github/OfficeDev/ews-java-api?branch=master)
 
 The Exchange Web Services (EWS) Java API provides a managed interface for developing Java applications that use EWS.
 By using the EWS Java API, you can access almost all the information stored in an Office 365, Exchange Online, or Exchange Server mailbox. However, this API is in sustaining mode, the recommended access pattern for Office 365 and Exchange online data is [Microsoft Graph](https://graph.microsoft.com)
