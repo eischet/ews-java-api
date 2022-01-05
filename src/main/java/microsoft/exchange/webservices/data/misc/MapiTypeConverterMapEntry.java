@@ -30,8 +30,6 @@ import microsoft.exchange.webservices.data.core.exception.misc.ArgumentException
 import microsoft.exchange.webservices.data.core.exception.misc.ArgumentNullException;
 import microsoft.exchange.webservices.data.core.exception.misc.FormatException;
 import microsoft.exchange.webservices.data.core.exception.service.local.ServiceXmlDeserializationException;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -41,13 +39,15 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Represents an entry in the MapiTypeConverter map.
  */
 public class MapiTypeConverterMapEntry {
 
-  private static final Log LOG = LogFactory.getLog(MapiTypeConverterMapEntry.class);
+  private static final Logger LOG = Logger.getLogger(MapiTypeConverterMapEntry.class.getCanonicalName());
 
   /**
    * Map CLR types used for MAPI property to matching default values.
@@ -60,16 +60,16 @@ public class MapiTypeConverterMapEntry {
 
           map.put(Boolean.class, false);
           map.put(Byte[].class, null);
-          map.put(Short.class, new Short((short) 0));
+          map.put(Short.class, (short) 0);
           map.put(Integer.class, 0);
-          map.put(Long.class, new Long(0L));
-          map.put(Float.class, new Float(0.0));
-          map.put(Double.class, new Double(0.0D));
+          map.put(Long.class, 0L);
+          map.put(Float.class, 0.0f);
+          map.put(Double.class, 0.0d);
           SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
           try {
             map.put(Date.class, formatter.parse("0001-01-01 12:00:00"));
           } catch (ParseException e) {
-            LOG.error(e);
+            LOG.log(Level.SEVERE, "error parsing the default date", e);
           }
           map.put(UUID.class, UUID.fromString("00000000-0000-0000-0000-000000000000"));
           map.put(String.class, null);
@@ -177,13 +177,10 @@ public class MapiTypeConverterMapEntry {
       throws ServiceXmlDeserializationException, FormatException {
     try {
       return this.getParse().func(stringValue);
-    } catch (ClassCastException ex) {
+    } catch (ClassCastException | NumberFormatException ex) {
       throw new ServiceXmlDeserializationException(String
           .format("The value '%s' couldn't be converted to type %s.", stringValue, this
               .getType()), ex);
-    } catch (NumberFormatException ex) {
-      throw new ServiceXmlDeserializationException(String
-          .format("The value '%s' couldn't be converted to type %s.", stringValue, this.getType()), ex);
     }
 
   }

@@ -28,8 +28,6 @@ import microsoft.exchange.webservices.data.core.exception.service.local.ServiceX
 import microsoft.exchange.webservices.data.misc.OutParam;
 import microsoft.exchange.webservices.data.security.XmlNodeType;
 import org.apache.commons.codec.binary.Base64;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLEventReader;
@@ -49,14 +47,17 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 import java.util.Objects;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Defines the EwsXmlReader class.
  */
 public class EwsXmlReader {
 
-  private static final Log LOG = LogFactory.getLog(EwsXmlReader.class);
+  private static final Logger LOG = Logger.getLogger(EwsXmlReader.class.getCanonicalName());
 
   /**
    * The Read write buffer size.
@@ -963,15 +964,11 @@ public class EwsXmlReader {
 
       XMLInputFactory inputFactory = XMLInputFactory.newInstance();
 
-      try {
-        in = new ByteArrayInputStream(str.toString().getBytes("UTF-8"));
-      } catch (UnsupportedEncodingException e) {
-        LOG.error(e);
-      }
+      in = new ByteArrayInputStream(str.toString().getBytes(StandardCharsets.UTF_8));
       eventReader = inputFactory.createXMLEventReader(in);
 
     } catch (Exception e) {
-      LOG.error(e);
+      LOG.log(Level.SEVERE, "error reading subtree", e);
     }
     return eventReader;
   }

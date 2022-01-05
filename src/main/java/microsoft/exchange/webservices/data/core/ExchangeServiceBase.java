@@ -40,6 +40,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.TimeZone;
+import java.util.logging.Logger;
 
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
@@ -57,8 +58,6 @@ import microsoft.exchange.webservices.data.misc.EwsTraceListener;
 import microsoft.exchange.webservices.data.misc.ITraceListener;
 
 import microsoft.exchange.webservices.data.util.IOUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.apache.http.client.AuthenticationStrategy;
 import org.apache.http.client.CookieStore;
 import org.apache.http.client.protocol.HttpClientContext;
@@ -78,7 +77,7 @@ import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
  */
 public abstract class ExchangeServiceBase implements Closeable {
   
-  private static final Log LOG = LogFactory.getLog(ExchangeService.class);
+  private static final Logger LOG = Logger.getLogger(ExchangeService.class.getCanonicalName());
 
   /**
    * The credential.
@@ -140,7 +139,7 @@ public abstract class ExchangeServiceBase implements Closeable {
    */
   private ExchangeServerInfo serverInfo;
 
-  private Map<String, String> httpHeaders = new HashMap<String, String>();
+  private Map<String, String> httpHeaders = new HashMap<>();
 
   private Map<String, String> httpResponseHeaders = new HashMap<String, String>();
 

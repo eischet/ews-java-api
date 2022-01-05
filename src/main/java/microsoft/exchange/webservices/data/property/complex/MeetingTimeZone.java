@@ -23,24 +23,21 @@
 
 package microsoft.exchange.webservices.data.property.complex;
 
-import microsoft.exchange.webservices.data.core.EwsServiceXmlReader;
-import microsoft.exchange.webservices.data.core.EwsServiceXmlWriter;
-import microsoft.exchange.webservices.data.core.EwsUtilities;
-import microsoft.exchange.webservices.data.core.XmlAttributeNames;
-import microsoft.exchange.webservices.data.core.XmlElementNames;
+import microsoft.exchange.webservices.data.core.*;
 import microsoft.exchange.webservices.data.core.enumeration.misc.XmlNamespace;
 import microsoft.exchange.webservices.data.core.exception.service.local.ServiceXmlSerializationException;
 import microsoft.exchange.webservices.data.misc.TimeSpan;
 import microsoft.exchange.webservices.data.property.complex.time.TimeZoneDefinition;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Represents a time zone in which a meeting is defined.
  */
 public final class MeetingTimeZone extends ComplexProperty {
 
-  private static final Log LOG = LogFactory.getLog(MeetingTimeZone.class);
+  private static final Logger LOG = Logger.getLogger(MeetingTimeZone.class.getCanonicalName());
 
   /**
    * The name.
@@ -185,7 +182,7 @@ public final class MeetingTimeZone extends ComplexProperty {
       result.setId(this.getName());
     } catch (Exception e) {
       // Could not find a time zone with that Id on the local system.
-      LOG.error(e);
+      LOG.log(Level.SEVERE, "Could not find a time zone with that Id on the local system: " + this.getName(), e);
     }
 
     // Again, we cannot accurately convert MeetingTimeZone into TimeZoneInfo

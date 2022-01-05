@@ -47,8 +47,6 @@ import microsoft.exchange.webservices.data.core.exception.xml.XmlException;
 import microsoft.exchange.webservices.data.misc.SoapFaultDetails;
 import microsoft.exchange.webservices.data.security.XmlNodeType;
 import microsoft.exchange.webservices.data.util.IOUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 import javax.xml.stream.XMLStreamException;
 import javax.xml.ws.http.HTTPException;
@@ -57,6 +55,8 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.InflaterInputStream;
 
@@ -65,7 +65,7 @@ import java.util.zip.InflaterInputStream;
  */
 public abstract class ServiceRequestBase<T> {
 
-  private static final Log LOG = LogFactory.getLog(ServiceRequestBase.class);
+  private static final Logger LOG = Logger.getLogger(ServiceRequestBase.class.getCanonicalName());
 
   /**
    * The service.
@@ -618,7 +618,7 @@ public abstract class ServiceRequestBase<T> {
       // If response doesn't contain a valid SOAP fault, just ignore
       // exception and
       // return null for SOAP fault details.
-      LOG.error(e);
+      LOG.log(Level.SEVERE, "error reading SOAP fault", e);
     }
 
     return soapFaultDetails;
@@ -752,10 +752,7 @@ public abstract class ServiceRequestBase<T> {
   private void readXmlDeclaration(EwsServiceXmlReader reader) throws Exception {
     try {
       reader.read(new XmlNodeType(XmlNodeType.START_DOCUMENT));
-    } catch (XmlException ex) {
-      throw new ServiceRequestException("The response received from the service didn't contain valid XML.",
-                                        ex);
-    } catch (ServiceXmlDeserializationException ex) {
+    } catch (XmlException | ServiceXmlDeserializationException ex) {
       throw new ServiceRequestException("The response received from the service didn't contain valid XML.",
                                         ex);
     }

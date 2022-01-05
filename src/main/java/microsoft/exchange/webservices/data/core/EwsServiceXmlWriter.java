@@ -28,8 +28,6 @@ import microsoft.exchange.webservices.data.core.exception.service.local.ServiceX
 import microsoft.exchange.webservices.data.misc.OutParam;
 import microsoft.exchange.webservices.data.property.complex.ISearchStringProvider;
 import org.apache.commons.codec.binary.Base64;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.w3c.dom.CDATASection;
 import org.w3c.dom.Comment;
 import org.w3c.dom.Document;
@@ -50,13 +48,15 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Stax based XML Writer implementation.
  */
 public class EwsServiceXmlWriter implements IDisposable {
 
-  private static final Log LOG = LogFactory.getLog(EwsServiceXmlWriter.class);
+  private static final Logger LOG = Logger.getLogger(EwsServiceXmlWriter.class.getCanonicalName());
 
   /**
    * The is disposed.
@@ -152,7 +152,7 @@ public class EwsServiceXmlWriter implements IDisposable {
       try {
         this.xmlWriter.close();
       } catch (XMLStreamException e) {
-        LOG.error(e);
+        LOG.log(Level.WARNING, "error closing xmlWriter", e);
       }
       this.isDisposed = true;
     }
@@ -518,7 +518,7 @@ public class EwsServiceXmlWriter implements IDisposable {
         bos.write(buf, 0, readNum);
       }
     } catch (IOException ex) {
-      LOG.error(ex);
+      LOG.log(Level.SEVERE, "error writing binary data", ex);
     } finally {
       bos.close();
     }

@@ -23,33 +23,25 @@
 
 package microsoft.exchange.webservices.data.core.request;
 
-/**
- * Represents a DeleteAttachment request.
- */
-import microsoft.exchange.webservices.data.core.EwsServiceXmlWriter;
-import microsoft.exchange.webservices.data.core.EwsUtilities;
-import microsoft.exchange.webservices.data.core.ExchangeService;
-import microsoft.exchange.webservices.data.core.XmlAttributeNames;
-import microsoft.exchange.webservices.data.core.XmlElementNames;
-import microsoft.exchange.webservices.data.core.enumeration.service.error.ServiceErrorHandling;
-import microsoft.exchange.webservices.data.core.response.DeleteAttachmentResponse;
+import microsoft.exchange.webservices.data.core.*;
 import microsoft.exchange.webservices.data.core.enumeration.misc.ExchangeVersion;
 import microsoft.exchange.webservices.data.core.enumeration.misc.XmlNamespace;
-import microsoft.exchange.webservices.data.core.exception.service.local.ServiceLocalException;
+import microsoft.exchange.webservices.data.core.enumeration.service.error.ServiceErrorHandling;
+import microsoft.exchange.webservices.data.core.response.DeleteAttachmentResponse;
 import microsoft.exchange.webservices.data.property.complex.Attachment;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
- * The Class DeleteAttachmentRequest.
+ * Represents a DeleteAttachment request.
  */
 public final class DeleteAttachmentRequest extends
     MultiResponseServiceRequest<DeleteAttachmentResponse> {
 
-  private static final Log LOG = LogFactory.getLog(DeleteAttachmentRequest.class);
+  private static final Logger LOG = Logger.getLogger(DeleteAttachmentRequest.class.getCanonicalName());
 
   /**
    * The attachments.
@@ -80,10 +72,8 @@ public final class DeleteAttachmentRequest extends
         EwsUtilities.validateParam(this.attachments.get(i).getId(),
             String.format("Attachment[%d].Id ", i));
       }
-    } catch (ServiceLocalException e) {
-      LOG.error(e);
     } catch (Exception e) {
-      LOG.error(e);
+      LOG.log(Level.SEVERE, "validation error", e);
     }
   }
 

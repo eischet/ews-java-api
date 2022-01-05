@@ -30,8 +30,9 @@ import microsoft.exchange.webservices.data.core.enumeration.service.error.Servic
 import microsoft.exchange.webservices.data.core.response.ServiceResponse;
 import microsoft.exchange.webservices.data.core.enumeration.service.DeleteMode;
 import microsoft.exchange.webservices.data.core.exception.service.local.ServiceXmlSerializationException;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Represents an abstract Delete request.
@@ -41,7 +42,7 @@ import org.apache.commons.logging.LogFactory;
 abstract class DeleteRequest<TResponse extends ServiceResponse> extends
     MultiResponseServiceRequest<TResponse> {
 
-  private static final Log LOG = LogFactory.getLog(DeleteRequest.class);
+  private static final Logger LOG = Logger.getLogger(DeleteRequest.class.getCanonicalName());
 
   /**
    * Delete mode. Default is SoftDelete.
@@ -76,7 +77,7 @@ abstract class DeleteRequest<TResponse extends ServiceResponse> extends
       writer.writeAttributeValue(XmlAttributeNames.DeleteType, this
           .getDeleteMode());
     } catch (ServiceXmlSerializationException e) {
-      LOG.error(e);
+      LOG.log(Level.SEVERE, "error writing attributes to XML", e);
     }
   }
 

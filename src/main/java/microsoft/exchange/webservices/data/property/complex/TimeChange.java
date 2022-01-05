@@ -23,31 +23,25 @@
 
 package microsoft.exchange.webservices.data.property.complex;
 
-import microsoft.exchange.webservices.data.core.EwsServiceXmlReader;
-import microsoft.exchange.webservices.data.core.EwsServiceXmlWriter;
-import microsoft.exchange.webservices.data.core.EwsUtilities;
-import microsoft.exchange.webservices.data.core.XmlAttributeNames;
-import microsoft.exchange.webservices.data.core.XmlElementNames;
+import microsoft.exchange.webservices.data.core.*;
 import microsoft.exchange.webservices.data.core.enumeration.misc.XmlNamespace;
 import microsoft.exchange.webservices.data.core.exception.service.local.ServiceXmlSerializationException;
 import microsoft.exchange.webservices.data.misc.Time;
 import microsoft.exchange.webservices.data.misc.TimeSpan;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
+import javax.xml.bind.DatatypeConverter;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.TimeZone;
-
-import javax.xml.bind.DatatypeConverter;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Represents a change of time for a time zone.
  */
 public final class TimeChange extends ComplexProperty {
 
-  private static final Log LOG = LogFactory.getLog(TimeChange.class);
+  private static final Logger LOG = Logger.getLogger(TimeChange.class.getCanonicalName());
 
   /**
    * The time zone name.
@@ -258,7 +252,7 @@ public final class TimeChange extends ComplexProperty {
       writer.writeAttributeValue(XmlAttributeNames.TimeZoneName,
           this.timeZoneName);
     } catch (ServiceXmlSerializationException e) {
-      LOG.error(e);
+      LOG.log(Level.SEVERE, "error writing XML", e);
     }
   }
 

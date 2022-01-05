@@ -38,8 +38,6 @@ import microsoft.exchange.webservices.data.property.definition.ComplexPropertyDe
 import microsoft.exchange.webservices.data.property.definition.IndexedPropertyDefinition;
 import microsoft.exchange.webservices.data.property.definition.PropertyDefinition;
 import microsoft.exchange.webservices.data.property.definition.PropertyDefinitionBase;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
@@ -49,6 +47,8 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Represents the base class for all item and folder schema.
@@ -57,7 +57,7 @@ import java.util.Map;
 public abstract class ServiceObjectSchema implements
     Iterable<PropertyDefinition> {
 
-  private static final Log LOG = LogFactory.getLog(ServiceObjectSchema.class);
+  private static final Logger LOG = Logger.getLogger(ServiceObjectSchema.class.getCanonicalName());
 
   /**
    * The lock object.
@@ -185,11 +185,11 @@ public abstract class ServiceObjectSchema implements
             }
           }
         } catch (IllegalArgumentException e) {
-          LOG.error(e);
+          LOG.log(Level.SEVERE, "error adding schema properties", e);
 
           // Skip the field
         } catch (IllegalAccessException e) {
-          LOG.error(e);
+          LOG.log(Level.SEVERE, "error adding schema properties", e);
 
           // Skip the field
         }
@@ -221,11 +221,11 @@ public abstract class ServiceObjectSchema implements
                 .getName());
           }
         } catch (IllegalArgumentException e) {
-          LOG.error(e);
+          LOG.log(Level.SEVERE, "error adding schema properties", e);
 
           // Skip the field
         } catch (IllegalAccessException e) {
-          LOG.error(e);
+          LOG.log(Level.SEVERE, "error adding schema properties", e);
 
           // Skip the field
         }
@@ -269,12 +269,8 @@ public abstract class ServiceObjectSchema implements
                     (PropertyDefinition) o;
                 propertyDefinition.setName(field.getName());
               }
-            } catch (IllegalArgumentException e) {
-              LOG.error(e);
-
-              // Skip the field
-            } catch (IllegalAccessException e) {
-              LOG.error(e);
+            } catch (IllegalArgumentException | IllegalAccessException e) {
+              LOG.log(Level.SEVERE, "error initializing schema properties", e);
 
               // Skip the field
             }

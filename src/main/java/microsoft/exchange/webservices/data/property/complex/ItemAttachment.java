@@ -27,23 +27,23 @@ import microsoft.exchange.webservices.data.core.EwsServiceXmlReader;
 import microsoft.exchange.webservices.data.core.EwsServiceXmlWriter;
 import microsoft.exchange.webservices.data.core.EwsUtilities;
 import microsoft.exchange.webservices.data.core.XmlElementNames;
-import microsoft.exchange.webservices.data.core.service.ServiceObject;
-import microsoft.exchange.webservices.data.core.service.item.Item;
 import microsoft.exchange.webservices.data.core.enumeration.property.BodyType;
 import microsoft.exchange.webservices.data.core.exception.service.local.ServiceLocalException;
 import microsoft.exchange.webservices.data.core.exception.service.local.ServiceValidationException;
+import microsoft.exchange.webservices.data.core.service.ServiceObject;
+import microsoft.exchange.webservices.data.core.service.item.Item;
 import microsoft.exchange.webservices.data.property.definition.PropertyDefinitionBase;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 import java.util.Arrays;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Represents an item attachment.
  */
 public class ItemAttachment extends Attachment implements IServiceObjectChangedDelegate {
 
-  private static final Log LOG = LogFactory.getLog(ItemAttachment.class);
+  private static final Logger LOG = Logger.getLogger(ItemAttachment.class.getCanonicalName());
 
   /**
    * The item.
@@ -124,8 +124,7 @@ public class ItemAttachment extends Attachment implements IServiceObjectChangedD
         try {
           this.item.loadFromXml(reader, true /* clearPropertyBag */);
         } catch (Exception e) {
-          LOG.error(e);
-
+          LOG.log(Level.SEVERE, "error reading XML", e);
         }
       }
     }
@@ -176,7 +175,7 @@ public class ItemAttachment extends Attachment implements IServiceObjectChangedD
     try {
       this.item.writeToXml(writer);
     } catch (Exception e) {
-      LOG.error(e);
+      LOG.log(Level.SEVERE, "error writing XML", e);
 
     }
   }

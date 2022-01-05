@@ -23,34 +23,29 @@
 
 package microsoft.exchange.webservices.data.property.complex;
 
-import microsoft.exchange.webservices.data.core.EwsServiceXmlReader;
-import microsoft.exchange.webservices.data.core.EwsServiceXmlWriter;
-import microsoft.exchange.webservices.data.core.EwsUtilities;
-import microsoft.exchange.webservices.data.core.ILazyMember;
-import microsoft.exchange.webservices.data.core.LazyMember;
-import microsoft.exchange.webservices.data.core.XmlElementNames;
+import microsoft.exchange.webservices.data.core.*;
+import microsoft.exchange.webservices.data.core.enumeration.misc.XmlNamespace;
+import microsoft.exchange.webservices.data.core.enumeration.permission.PermissionScope;
 import microsoft.exchange.webservices.data.core.enumeration.permission.folder.FolderPermissionLevel;
 import microsoft.exchange.webservices.data.core.enumeration.permission.folder.FolderPermissionReadAccess;
-import microsoft.exchange.webservices.data.core.enumeration.permission.PermissionScope;
 import microsoft.exchange.webservices.data.core.enumeration.property.StandardUser;
-import microsoft.exchange.webservices.data.core.enumeration.misc.XmlNamespace;
 import microsoft.exchange.webservices.data.core.exception.service.local.ServiceLocalException;
 import microsoft.exchange.webservices.data.core.exception.service.local.ServiceValidationException;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Represents a permission on a folder.
  */
 public final class FolderPermission extends ComplexProperty implements IComplexPropertyChangedDelegate {
 
-  private static final Log LOG = LogFactory.getLog(FolderPermission.class);
+  private static final Logger LOG = Logger.getLogger(FolderPermission.class.getCanonicalName());
 
   private static LazyMember<Map<FolderPermissionLevel, FolderPermission>>
       defaultPermissions =
@@ -257,7 +252,7 @@ public final class FolderPermission extends ComplexProperty implements IComplexP
                 results.add(permission);
 
               } catch (CloneNotSupportedException e) {
-                LOG.error(e);
+                LOG.log(Level.SEVERE, "error cloning record", e);
               }
               return results;
             }

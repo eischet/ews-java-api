@@ -28,15 +28,16 @@ import microsoft.exchange.webservices.data.core.EwsUtilities;
 import microsoft.exchange.webservices.data.core.ExchangeService;
 import microsoft.exchange.webservices.data.core.service.item.Item;
 import microsoft.exchange.webservices.data.core.enumeration.attribute.EditorBrowsableState;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Represents response to generic Create request.
  */
 @EditorBrowsable(state = EditorBrowsableState.Never) public final class CreateResponseObjectResponse extends CreateItemResponseBase {
 
-  private static final Log LOG = LogFactory.getLog(CreateResponseObjectResponse.class);
+  private static final Logger LOG = Logger.getLogger(CreateResponseObjectResponse.class.getCanonicalName());
 
   /**
    * Gets Item instance.
@@ -51,11 +52,8 @@ import org.apache.commons.logging.LogFactory;
       String xmlElementName) throws Exception {
     try {
       return EwsUtilities.createEwsObjectFromXmlElementName(Item.class, service, xmlElementName);
-    } catch (InstantiationException e) {
-      LOG.error(e);
-      return null;
-    } catch (IllegalAccessException e) {
-      LOG.error(e);
+    } catch (InstantiationException | IllegalAccessException e) {
+      LOG.log(Level.SEVERE, "error getting object instance for xml element name: " + xmlElementName, e);
       return null;
     }
   }

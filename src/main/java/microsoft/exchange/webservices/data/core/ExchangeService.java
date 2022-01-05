@@ -37,6 +37,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.TimeZone;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import microsoft.exchange.webservices.data.autodiscover.AutodiscoverService;
 import microsoft.exchange.webservices.data.autodiscover.IAutodiscoverRedirectionUrl;
@@ -196,8 +198,6 @@ import microsoft.exchange.webservices.data.sync.ChangeCollection;
 import microsoft.exchange.webservices.data.sync.FolderChange;
 import microsoft.exchange.webservices.data.sync.ItemChange;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 
@@ -206,7 +206,7 @@ import org.w3c.dom.Node;
  */
 public class ExchangeService extends ExchangeServiceBase implements IAutodiscoverRedirectionUrl {
 
-  private static final Log LOG = LogFactory.getLog(ExchangeService.class);
+  private static final Logger LOG = Logger.getLogger(ExchangeService.class.getCanonicalName());
 
   /**
    * The url.
@@ -3744,7 +3744,7 @@ public class ExchangeService extends ExchangeServiceBase implements IAutodiscove
     try {
       this.url = this.adjustServiceUriFromCredentials(this.getUrl());
     } catch (Exception e) {
-      LOG.error(e);
+      LOG.log(Level.SEVERE, "error preparing HTTP request", e);
     }
     return this.prepareHttpWebRequestForUrl(url, this
         .getAcceptGzipEncoding(), true);
@@ -3762,7 +3762,7 @@ public class ExchangeService extends ExchangeServiceBase implements IAutodiscove
 	    try {
 	      this.url = this.adjustServiceUriFromCredentials(this.getUrl());
 	    } catch (Exception e) {
-	      LOG.error(e);
+          LOG.log(Level.SEVERE, "error preparing pooling HTTP request", e);
 	    }
 	    return this.prepareHttpPoolingWebRequestForUrl(url, this
 	        .getAcceptGzipEncoding(), true);

@@ -45,8 +45,6 @@ import microsoft.exchange.webservices.data.core.exception.service.local.ServiceX
 import microsoft.exchange.webservices.data.core.exception.service.local.ServiceXmlSerializationException;
 import microsoft.exchange.webservices.data.misc.SoapFaultDetails;
 import microsoft.exchange.webservices.data.security.XmlNodeType;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 import javax.xml.stream.XMLStreamException;
 
@@ -57,6 +55,8 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.InflaterInputStream;
 
@@ -65,7 +65,7 @@ import java.util.zip.InflaterInputStream;
  */
 public abstract class AutodiscoverRequest {
 
-  private static final Log LOG = LogFactory.getLog(AutodiscoverRequest.class);
+  private static final Logger LOG = Logger.getLogger(AutodiscoverRequest.class.getCanonicalName());
 
   /**
    * The service.
@@ -312,7 +312,7 @@ public abstract class AutodiscoverRequest {
           this.service.processHttpErrorResponse(req, exception);
         }
       } catch (Exception e) {
-        LOG.error(e);
+        LOG.log(Level.SEVERE, "error processing web exception", e);
       }
     }
   }
@@ -443,7 +443,7 @@ public abstract class AutodiscoverRequest {
       // If response doesn't contain a valid SOAP fault, just ignore
       // exception and
       // return null for SOAP fault details.
-      LOG.error(e);
+      LOG.log(Level.SEVERE, "error reading SOAP fault", e);
     }
 
     return soapFaultDetails;

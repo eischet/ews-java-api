@@ -57,11 +57,11 @@ import microsoft.exchange.webservices.data.search.Grouping;
 import microsoft.exchange.webservices.data.search.ItemView;
 import microsoft.exchange.webservices.data.search.ViewBase;
 import microsoft.exchange.webservices.data.search.filter.SearchFilter;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 import java.util.ArrayList;
 import java.util.EnumSet;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Represents a generic folder.
@@ -69,7 +69,7 @@ import java.util.EnumSet;
 @ServiceObjectDefinition(xmlElementName = XmlElementNames.Folder)
 public class Folder extends ServiceObject {
 
-  private static final Log LOG = LogFactory.getLog(Folder.class);
+  private static final Logger LOG = Logger.getLogger(Folder.class.getCanonicalName());
 
   /**
    * Initializes an unsaved local instance of {@link Folder}.
@@ -162,7 +162,7 @@ public class Folder extends ServiceObject {
         this.getPermissions().validate();
       }
     } catch (ServiceLocalException e) {
-      LOG.error(e);
+      LOG.log(Level.SEVERE, "validation error", e);
     }
   }
 
@@ -242,7 +242,7 @@ public class Folder extends ServiceObject {
     try {
       this.throwIfThisIsNew();
     } catch (InvalidOperationException e) {
-      LOG.error(e);
+      LOG.log(Level.SEVERE, "internalDelete error", e);
     }
 
     this.getService().deleteFolder(this.getId(), deleteMode);
@@ -627,7 +627,7 @@ public class Folder extends ServiceObject {
       return getPropertyBag().getObjectFromPropertyDefinition(
           getIdPropertyDefinition());
     } catch (ServiceLocalException e) {
-      LOG.error(e);
+      LOG.log(Level.SEVERE, "error getting the folder ID", e);
       return null;
     }
   }

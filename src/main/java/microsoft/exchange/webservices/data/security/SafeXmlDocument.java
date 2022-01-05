@@ -23,8 +23,6 @@
 
 package microsoft.exchange.webservices.data.security;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.w3c.dom.DOMImplementation;
 import org.w3c.dom.Document;
 import org.xml.sax.EntityResolver;
@@ -37,20 +35,16 @@ import javax.xml.stream.XMLEventReader;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
-
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.Reader;
-import java.io.StringReader;
+import java.io.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * XmlDocument that does not allow DTD parsing.
  */
 public class SafeXmlDocument extends DocumentBuilder {
 
-  private static final Log LOG = LogFactory.getLog(SafeXmlDocument.class);
+  private static final Logger LOG = Logger.getLogger(SafeXmlDocument.class.getCanonicalName());
 
   /**
    * Initializes a new instance of the SafeXmlDocument class.
@@ -95,12 +89,8 @@ public class SafeXmlDocument extends DocumentBuilder {
         inp = new FileInputStream(filename);
         reader = inputFactory.createXMLEventReader(inp);
         this.load((InputStream) reader);
-      } catch (XMLStreamException e) {
-        // TODO Auto-generated catch block
-        LOG.error(e);
-      } catch (FileNotFoundException e) {
-        // TODO Auto-generated catch block
-        LOG.error(e);
+      } catch (XMLStreamException | FileNotFoundException e) {
+        LOG.log(Level.SEVERE, "error loading file " + filename, e);
       }
     }
   }
@@ -120,8 +110,7 @@ public class SafeXmlDocument extends DocumentBuilder {
 
         this.load((InputStream) reader);
       } catch (XMLStreamException e) {
-        // TODO Auto-generated catch block
-        LOG.error(e);
+        LOG.log(Level.SEVERE, "error loading text from reader", e);
       }
     }
   }
@@ -152,7 +141,7 @@ public class SafeXmlDocument extends DocumentBuilder {
         this.load((InputStream) reader);
       } catch (XMLStreamException e) {
         // TODO Auto-generated catch block
-        LOG.error(e);
+        LOG.log(Level.SEVERE, "error reading xml", e);
       }
     }
 

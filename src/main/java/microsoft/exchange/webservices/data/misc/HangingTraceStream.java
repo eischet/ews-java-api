@@ -26,14 +26,14 @@ package microsoft.exchange.webservices.data.misc;
 import microsoft.exchange.webservices.data.core.ExchangeService;
 import microsoft.exchange.webservices.data.core.request.HangingServiceRequestBase;
 import microsoft.exchange.webservices.data.core.enumeration.misc.TraceFlags;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 import javax.xml.stream.XMLStreamException;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * A stream that traces everything it returns from its Read() call.
@@ -41,7 +41,7 @@ import java.io.InputStream;
  */
 public class HangingTraceStream extends InputStream {
 
-  private static final Log LOG = LogFactory.getLog(HangingTraceStream.class);
+  private static final Logger LOG = Logger.getLogger(HangingTraceStream.class.getCanonicalName());
 
   private final InputStream underlyingStream;
   private final ExchangeService service;
@@ -125,7 +125,7 @@ public class HangingTraceStream extends InputStream {
       try {
         service.traceMessage(TraceFlags.DebugMessage, logMessage);
       } catch (final XMLStreamException e) {
-        LOG.error(e);
+        LOG.log(Level.SEVERE, "error reading XML", e);
       }
     }
 

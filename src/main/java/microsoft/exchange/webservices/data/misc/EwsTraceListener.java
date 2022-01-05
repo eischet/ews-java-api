@@ -23,16 +23,15 @@
 
 package microsoft.exchange.webservices.data.misc;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+
+import java.util.logging.Logger;
 
 /**
  * EwsTraceListener logs request/response.
  */
 public class EwsTraceListener implements ITraceListener {
 
-  private final Log log = LogFactory.getLog(EwsTraceListener.class);
-
+  private final Logger log = Logger.getLogger(EwsTraceListener.class.getCanonicalName());
 
   public EwsTraceListener() {
   }
@@ -45,8 +44,7 @@ public class EwsTraceListener implements ITraceListener {
    */
   @Override
   public void trace(String traceType, String traceMessage) {
-    if(log.isTraceEnabled()) {
-      log.trace(traceType + " - " + traceMessage);
-    }
+    log.finest(() -> traceType + " - " + traceMessage);
   }
+
 }

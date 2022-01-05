@@ -37,11 +37,8 @@ import microsoft.exchange.webservices.data.core.exception.xml.XmlException;
 import microsoft.exchange.webservices.data.misc.HangingTraceStream;
 import microsoft.exchange.webservices.data.security.XmlNodeType;
 import microsoft.exchange.webservices.data.util.IOUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 import javax.xml.stream.XMLStreamException;
-
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -53,6 +50,8 @@ import java.util.List;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 
 /**
@@ -60,7 +59,7 @@ import java.util.concurrent.TimeUnit;
  */
 public abstract class HangingServiceRequestBase<T> extends ServiceRequestBase<T> {
 
-  private static final Log LOG = LogFactory.getLog(HangingServiceRequestBase.class);
+  private static final Logger LOG = Logger.getLogger(HangingServiceRequestBase.class.getCanonicalName());
 
 
   public interface IHandleResponseObject {
@@ -232,7 +231,7 @@ public abstract class HangingServiceRequestBase<T> extends ServiceRequestBase<T>
       // Stream is closed, so disconnect.
       this.disconnect(HangingRequestDisconnectReason.Exception, ex);
     } catch (UnsupportedOperationException ex) {
-      LOG.error(ex);
+      LOG.log(Level.SEVERE, "unsuppored operation", ex);
       // This is thrown if we close the stream during a
       //read operation due to a user method call.
       // Trying to delay closing until the read finishes

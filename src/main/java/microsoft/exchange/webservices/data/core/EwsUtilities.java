@@ -51,11 +51,6 @@ import microsoft.exchange.webservices.data.core.exception.service.local.ServiceV
 import microsoft.exchange.webservices.data.misc.TimeSpan;
 import microsoft.exchange.webservices.data.property.complex.ItemAttachment;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-// replaced with java.time: import org.joda.time.Period;
-// replaced with java.time: import org.joda.time.format.ISOPeriodFormat;
-
 import javax.xml.stream.XMLOutputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
@@ -77,6 +72,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.TimeZone;
+import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -84,8 +80,6 @@ import java.util.regex.Pattern;
  * EWS utilities.
  */
 public final class EwsUtilities {
-
-  private static final Log LOG = LogFactory.getLog(EwsUtilities.class);
 
   /**
    * The Constant XSFalse.

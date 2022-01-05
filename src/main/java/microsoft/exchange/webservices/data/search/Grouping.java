@@ -28,22 +28,22 @@ import microsoft.exchange.webservices.data.core.EwsServiceXmlWriter;
 import microsoft.exchange.webservices.data.core.EwsUtilities;
 import microsoft.exchange.webservices.data.core.XmlAttributeNames;
 import microsoft.exchange.webservices.data.core.XmlElementNames;
+import microsoft.exchange.webservices.data.core.enumeration.misc.XmlNamespace;
 import microsoft.exchange.webservices.data.core.enumeration.search.AggregateType;
 import microsoft.exchange.webservices.data.core.enumeration.search.SortDirection;
-import microsoft.exchange.webservices.data.core.enumeration.misc.XmlNamespace;
 import microsoft.exchange.webservices.data.core.exception.service.local.ServiceXmlSerializationException;
 import microsoft.exchange.webservices.data.property.definition.PropertyDefinitionBase;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 import javax.xml.stream.XMLStreamException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Represents grouping options in item search operations.
  */
 public final class Grouping implements ISelfValidate {
 
-  private static final Log LOG = LogFactory.getLog(Grouping.class);
+  private static final Logger LOG = Logger.getLogger(Grouping.class.getCanonicalName());
 
   /**
    * The sort direction.
@@ -212,7 +212,7 @@ public final class Grouping implements ISelfValidate {
     try {
       this.internalValidate();
     } catch (Exception e) {
-      LOG.error(e);
+      LOG.log(Level.SEVERE, "validation error", e);
     }
 
   }

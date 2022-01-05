@@ -30,15 +30,16 @@ import microsoft.exchange.webservices.data.core.enumeration.search.FolderTravers
 import microsoft.exchange.webservices.data.core.enumeration.search.OffsetBasePoint;
 import microsoft.exchange.webservices.data.core.enumeration.service.ServiceObjectType;
 import microsoft.exchange.webservices.data.core.exception.service.local.ServiceXmlSerializationException;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Represents the view settings in a folder search operation.
  */
 public final class FolderView extends PagedView {
 
-  private static final Log LOG = LogFactory.getLog(FolderView.class);
+  private static final Logger LOG = Logger.getLogger(FolderView.class.getCanonicalName());
 
   /**
    * The traversal.
@@ -75,7 +76,7 @@ public final class FolderView extends PagedView {
       writer.writeAttributeValue(XmlAttributeNames.Traversal, this
           .getTraversal());
     } catch (ServiceXmlSerializationException e) {
-      LOG.error(e);
+      LOG.log(Level.SEVERE, "error writing XML", e);
     }
   }
 

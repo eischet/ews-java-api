@@ -42,12 +42,12 @@ import microsoft.exchange.webservices.data.property.complex.ItemId;
 import microsoft.exchange.webservices.data.property.complex.UserConfigurationDictionary;
 import microsoft.exchange.webservices.data.security.XmlNodeType;
 import org.apache.commons.codec.binary.Base64;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 import javax.xml.stream.XMLStreamException;
 
 import java.util.EnumSet;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Represents an object that can be used to store user-defined configuration
@@ -55,7 +55,7 @@ import java.util.EnumSet;
  */
 public class UserConfiguration {
 
-  private static final Log LOG = LogFactory.getLog(UserConfiguration.class);
+  private static final Logger LOG = Logger.getLogger(UserConfiguration.class.getCanonicalName());
 
   /**
    * The object version.
@@ -650,7 +650,7 @@ public class UserConfiguration {
     try {
       this.updatedProperties = EnumSet.of(NoProperties);
     } catch (Exception e) {
-      LOG.error(e);
+      LOG.log(Level.SEVERE, "error reseting dirty flag", e);
     }
     this.dictionary.setIsDirty(false);
   }

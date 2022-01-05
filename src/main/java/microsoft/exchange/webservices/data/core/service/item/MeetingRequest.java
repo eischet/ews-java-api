@@ -50,10 +50,10 @@ import microsoft.exchange.webservices.data.property.complex.OccurrenceInfo;
 import microsoft.exchange.webservices.data.property.complex.OccurrenceInfoCollection;
 import microsoft.exchange.webservices.data.property.complex.recurrence.pattern.Recurrence;
 import microsoft.exchange.webservices.data.property.complex.time.TimeZoneDefinition;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Represents a meeting request that an attendee can accept
@@ -63,7 +63,7 @@ import java.util.Date;
 @ServiceObjectDefinition(xmlElementName = XmlElementNames.MeetingRequest)
 public class MeetingRequest extends MeetingMessage implements ICalendarActionProvider {
 
-  private static final Log LOG = LogFactory.getLog(MeetingRequest.class);
+  private static final Logger LOG = Logger.getLogger(MeetingRequest.class.getCanonicalName());
 
   /**
    * Initializes a new instance of the class.
@@ -100,7 +100,7 @@ public class MeetingRequest extends MeetingMessage implements ICalendarActionPro
     try {
       return service.bindToItem(MeetingRequest.class, id, propertySet);
     } catch (Exception e) {
-      LOG.error(e);
+      LOG.log(Level.SEVERE, "error binding meeting request", e);
       return null;
     }
   }
@@ -151,7 +151,7 @@ public class MeetingRequest extends MeetingMessage implements ICalendarActionPro
     try {
       return new AcceptMeetingInvitationMessage(this, tentative);
     } catch (Exception e) {
-      LOG.error(e);
+      LOG.log(Level.SEVERE, "error creating accept message", e);
       return null;
     }
   }
@@ -167,7 +167,7 @@ public class MeetingRequest extends MeetingMessage implements ICalendarActionPro
     try {
       return new DeclineMeetingInvitationMessage(this);
     } catch (Exception e) {
-      LOG.error(e);
+      LOG.log(Level.SEVERE, "error creating decline message", e);
       return null;
     }
   }

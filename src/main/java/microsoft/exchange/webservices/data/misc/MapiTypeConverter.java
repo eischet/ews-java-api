@@ -29,25 +29,16 @@ import microsoft.exchange.webservices.data.core.LazyMember;
 import microsoft.exchange.webservices.data.core.enumeration.property.MapiPropertyType;
 import microsoft.exchange.webservices.data.core.exception.misc.FormatException;
 import microsoft.exchange.webservices.data.core.exception.service.local.ServiceXmlDeserializationException;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * Utility class to convert between MAPI Property type values and strings.
  */
 public class MapiTypeConverter {
-
-  private static final Log LOG = LogFactory.getLog(MapiTypeConverter.class);
 
   private static final IFunction<String, Object> DATE_TIME_PARSER = new IFunction<String, Object>() {
     public Object func(final String s) {
@@ -299,9 +290,7 @@ public class MapiTypeConverter {
         try {
           dt = utcFormatter.parse(s);
         } catch (ParseException e1) {
-          LOG.error(e);
-          throw new IllegalArgumentException(
-              errMsg, e);
+          throw new IllegalArgumentException(errMsg, e);
         }
       }
     } else if (s.endsWith("z")) {

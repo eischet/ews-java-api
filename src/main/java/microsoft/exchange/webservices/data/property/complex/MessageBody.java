@@ -23,25 +23,20 @@
 
 package microsoft.exchange.webservices.data.property.complex;
 
-import microsoft.exchange.webservices.data.core.EwsServiceXmlReader;
-import microsoft.exchange.webservices.data.core.EwsServiceXmlWriter;
-import microsoft.exchange.webservices.data.core.EwsUtilities;
-import microsoft.exchange.webservices.data.core.XmlAttributeNames;
-import microsoft.exchange.webservices.data.core.XmlElementNames;
+import microsoft.exchange.webservices.data.core.*;
 import microsoft.exchange.webservices.data.core.enumeration.property.BodyType;
 import microsoft.exchange.webservices.data.core.exception.service.local.ServiceXmlDeserializationException;
 import microsoft.exchange.webservices.data.core.exception.service.local.ServiceXmlSerializationException;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 import javax.xml.stream.XMLStreamException;
+import java.util.logging.Logger;
 
 /**
  * Represents the body of a message.
  */
 public final class MessageBody extends ComplexProperty {
 
-  private static final Log log = LogFactory.getLog(MessageBody.class);
+  private static final Logger log = Logger.getLogger(MessageBody.class.getCanonicalName());
 
   /**
    * The body type.
@@ -126,15 +121,11 @@ public final class MessageBody extends ComplexProperty {
   @Override
   public void readTextValueFromXml(EwsServiceXmlReader reader)
       throws XMLStreamException, ServiceXmlDeserializationException {
-    if (log.isDebugEnabled()) {
-       log.debug("Reading text value from XML. BodyType = " + this.getBodyType() +
-          ", keepWhiteSpace = " +
-          ((this.getBodyType() == BodyType.Text) ? "true." : "false."));
-    }
+     log.fine(() -> "Reading text value from XML. BodyType = " + this.getBodyType() +
+        ", keepWhiteSpace = " +
+        ((this.getBodyType() == BodyType.Text) ? "true." : "false."));
     this.text = reader.readValue(this.getBodyType() == BodyType.Text);
-    if (log.isDebugEnabled()) {
-       log.debug("Text value read:\n---\n" + this.text + "\n---");
-    }
+     log.fine(() -> "Text value read:\n---\n" + this.text + "\n---");
   }
 
   /**

@@ -30,8 +30,6 @@ import static org.hamcrest.text.IsEmptyString.isEmptyOrNullString;
 import static org.junit.Assert.assertThat;
 
 import microsoft.exchange.webservices.data.core.EwsUtilities;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -45,10 +43,12 @@ import javax.xml.stream.XMLStreamWriter;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 @RunWith(JUnit4.class) public class WSSecurityBasedCredentialsTest {
 
-  private static final Log LOG = LogFactory.getLog(WSSecurityBasedCredentialsTest.class);
+  private static final Logger LOG = Logger.getLogger(WSSecurityBasedCredentialsTest.class.getCanonicalName());
 
   private WSSecurityBasedCredentials wsSecurityBasedCredentials;
   private XMLStreamWriter xmlStreamWriter = null;
@@ -70,19 +70,19 @@ import java.io.Writer;
       try {
         stringWriter.close();
       } catch (IOException e) {
-        LOG.warn(e.getMessage(), e);
+        LOG.log(Level.WARNING, e.getMessage(), e);
       }
     }
     if (xmlStreamWriter != null) {
       try {
         xmlStreamWriter.close();
       } catch (XMLStreamException e) {
-        LOG.warn(e.getMessage(), e);
+        LOG.log(Level.WARNING, e.getMessage(), e);
       }
     }
   }
 
-  @Test public void testEmitExtraSoapHeaderNamespaceAliases() throws XMLStreamException, IOException {
+  @Test public void testEmitExtraSoapHeaderNamespaceAliases() throws XMLStreamException {
     xmlStreamWriter.writeStartDocument();
     xmlStreamWriter.writeStartElement("test");
 

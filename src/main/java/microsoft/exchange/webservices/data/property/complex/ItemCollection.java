@@ -32,12 +32,12 @@ import microsoft.exchange.webservices.data.core.enumeration.misc.XmlNamespace;
 import microsoft.exchange.webservices.data.core.exception.service.local.ServiceObjectPropertyException;
 import microsoft.exchange.webservices.data.core.exception.service.local.ServiceVersionException;
 import microsoft.exchange.webservices.data.security.XmlNodeType;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Represents a collection of item.
@@ -48,7 +48,7 @@ import java.util.List;
 public final class ItemCollection<TItem extends Item> extends ComplexProperty
     implements Iterable<TItem> {
 
-  private static final Log LOG = LogFactory.getLog(ItemCollection.class);
+  private static final Logger LOG = Logger.getLogger(ItemCollection.class.getCanonicalName());
 
   /**
    * The item.
@@ -86,10 +86,8 @@ public final class ItemCollection<TItem extends Item> extends ComplexProperty
             try {
               item.loadFromXml(reader,
                   true /* clearPropertyBag */);
-            } catch (ServiceObjectPropertyException e) {
-              LOG.error(e);
-            } catch (ServiceVersionException e) {
-              LOG.error(e);
+            } catch (ServiceObjectPropertyException | ServiceVersionException e) {
+              LOG.log(Level.SEVERE, "error loading XML", e);
             }
 
             this.items.add(item);

@@ -26,12 +26,12 @@ package microsoft.exchange.webservices.data.property.complex;
 import microsoft.exchange.webservices.data.core.EwsServiceXmlReader;
 import microsoft.exchange.webservices.data.core.XmlElementNames;
 import microsoft.exchange.webservices.data.core.exception.service.local.ServiceXmlDeserializationException;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 import javax.xml.stream.XMLStreamException;
 
 import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Encapsulates information on the deleted occurrence of a recurring
@@ -39,7 +39,7 @@ import java.util.Date;
  */
 public class DeletedOccurrenceInfo extends ComplexProperty {
 
-  private static final Log LOG = LogFactory.getLog(DeletedOccurrenceInfo.class);
+  private static final Logger LOG = Logger.getLogger(DeletedOccurrenceInfo.class.getCanonicalName());
 
   /**
    * The original start date and time of the deleted occurrence. The EWS
@@ -67,10 +67,8 @@ public class DeletedOccurrenceInfo extends ComplexProperty {
     if (reader.getLocalName().equalsIgnoreCase(XmlElementNames.Start)) {
       try {
         this.originalStart = reader.readElementValueAsDateTime();
-      } catch (ServiceXmlDeserializationException e) {
-        LOG.error(e);
-      } catch (XMLStreamException e) {
-        LOG.error(e);
+      } catch (ServiceXmlDeserializationException | XMLStreamException e) {
+        LOG.log(Level.SEVERE, "error reading XML", e);
       }
       return true;
     } else {

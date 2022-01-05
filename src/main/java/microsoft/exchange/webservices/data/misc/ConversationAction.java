@@ -32,10 +32,10 @@ import microsoft.exchange.webservices.data.core.enumeration.misc.XmlNamespace;
 import microsoft.exchange.webservices.data.core.exception.misc.ArgumentException;
 import microsoft.exchange.webservices.data.property.complex.ConversationId;
 import microsoft.exchange.webservices.data.property.complex.StringList;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * ConversationAction class that represents
@@ -46,7 +46,7 @@ import java.util.Date;
  */
 public class ConversationAction {
 
-  private static final Log LOG = LogFactory.getLog(ConversationAction.class);
+  private static final Logger LOG = Logger.getLogger(ConversationAction.class.getCanonicalName());
 
   private ConversationActionType action;
   private ConversationId conversationId;
@@ -378,7 +378,7 @@ public class ConversationAction {
         }
       }
     } catch (Exception e) {
-      LOG.error(e);
+      LOG.log(Level.SEVERE, "error writing XML", e);
     } finally {
       writer.writeEndElement();
     }
