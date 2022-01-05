@@ -116,18 +116,19 @@ public final class ExecuteDiagnosticMethodResponse extends ServiceResponse {
         element = document.createElementNS(ele.getName()
             .getNamespaceURI(), ele.getName().getLocalPart());
 
+
         Iterator<Attribute> ite = ele.getAttributes();
 
         while (ite.hasNext()) {
           Attribute attr = ite.next();
           element.setAttribute(attr.getName().getLocalPart(),
-              attr.getValue());
+                  attr.getValue());
         }
 
         String xmlns = EwsUtilities.WSTrustFebruary2005Namespace;//"http://schemas.xmlsoap.org/wsdl/";
-        ite = ele.getNamespaces();
-        while (ite.hasNext()) {
-          Namespace ns = (Namespace) ite.next();
+        final Iterator<Namespace> iteNS = ele.getNamespaces();
+        while (iteNS.hasNext()) {
+          Namespace ns = iteNS.next();
           String name = ns.getPrefix();
           if (!name.isEmpty()) {
             element.setAttributeNS(xmlns, name,
