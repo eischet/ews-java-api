@@ -23,13 +23,19 @@
 
 package microsoft.exchange.webservices.data.util;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public final class DateTimeUtils {
 
+    private static final Logger log = Logger.getLogger(DateTimeUtils.class.getCanonicalName());
     private static final DateTimeFormatter[] DATE_TIME_FORMATS = createDateTimeFormats();
     private static final DateTimeFormatter[] DATE_FORMATS = createDateFormats();
 
@@ -73,19 +79,32 @@ public final class DateTimeUtils {
         if (value == null || value.isEmpty()) {
             return null;
         } else {
-            if (value.endsWith("z")) {
-                // This seems to be an edge case. Let's uppercase the Z to be sure.
-                value = value.substring(0, value.length() - 1) + "Z";
+            if (value.endsWith("z") || value.endsWith("Z")) {
+                // This seems to be an edge case. Let's remove the Z to be sure.
+                value = value.substring(0, value.length() - 1); // + "Z";
             }
 
-            final DateTimeFormatter[] formats = dateOnly ? DATE_FORMATS : DATE_TIME_FORMATS;
-            for (final DateTimeFormatter format : formats) {
-                try {
-                    final LocalDateTime retval = format.parse(value, LocalDateTime::from);
-                    return Date.from(retval.toInstant(ZoneOffset.UTC));
-                    // joda: return format.parseDateTime(value).toDate();
-                } catch (IllegalArgumentException e) {
-                    // Ignore and try the next pattern.
+            if (dateOnly) {
+                for (final DateTimeFormatter dateFormat : DATE_FORMATS) {
+                    try {
+                        final LocalDate retval = dateFormat.parse(value, LocalDate::from);
+                        return Date.from(retval.atStartOfDay().toInstant(ZoneOffset.UTC));
+                        // joda: return format.parseDateTime(value).toDate();
+                    } catch (IllegalArgumentException | DateTimeParseException e) {
+                        log.log(Level.WARNING, String.format("cannot parse '%s' (as '%s') via format %s", originalValue, value, dateFormat), e);
+                        // Ignore and try the next pattern.
+                    }
+                }
+            } else {
+                for (final DateTimeFormatter format : DATE_TIME_FORMATS) {
+                    try {
+                        final ZonedDateTime retval = format.parse(value, ZonedDateTime::from);
+                        return Date.from(retval.toInstant());
+                        // joda: return format.parseDateTime(value).toDate();
+                    } catch (IllegalArgumentException | DateTimeParseException e) {
+                        log.log(Level.WARNING, String.format("cannot parse '%s' (as '%s') via format %s", originalValue, value, format), e);
+                        // Ignore and try the next pattern.
+                    }
                 }
             }
         }
