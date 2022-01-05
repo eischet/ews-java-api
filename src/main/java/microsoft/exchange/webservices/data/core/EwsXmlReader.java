@@ -28,7 +28,6 @@ import microsoft.exchange.webservices.data.core.exception.service.local.ServiceX
 import microsoft.exchange.webservices.data.misc.OutParam;
 import microsoft.exchange.webservices.data.security.XmlNodeType;
 import org.apache.commons.codec.binary.Base64;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -50,6 +49,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
+import java.util.Objects;
 
 /**
  * Defines the EwsXmlReader class.
@@ -697,10 +697,10 @@ public class EwsXmlReader {
    */
   public boolean isStartElement(XmlNamespace xmlNamespace, String localName) {
     return this.isStartElement()
-      && StringUtils.equals(getLocalName(), localName)
+      && Objects.equals(getLocalName(), localName)
       && (
-         StringUtils.equals(getNamespacePrefix(), EwsUtilities.getNamespacePrefix(xmlNamespace)) ||
-         StringUtils.equals(getNamespaceUri(), EwsUtilities.getNamespaceUri(xmlNamespace)));
+         Objects.equals(getNamespacePrefix(), EwsUtilities.getNamespacePrefix(xmlNamespace)) ||
+         Objects.equals(getNamespaceUri(), EwsUtilities.getNamespaceUri(xmlNamespace)));
   }
 
   /**

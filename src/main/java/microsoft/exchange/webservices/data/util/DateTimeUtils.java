@@ -23,14 +23,9 @@
 
 package microsoft.exchange.webservices.data.util;
 
-import org.apache.commons.lang3.StringUtils;
-// replaced with java.time: import org.joda.time.format.DateTimeFormat;
-// replaced with java.time: import org.joda.time.format.DateTimeFormatter;
-
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
-import java.time.temporal.TemporalAccessor;
 import java.util.Date;
 
 public final class DateTimeUtils {
@@ -77,7 +72,7 @@ public final class DateTimeUtils {
   private static Date parseInternal(String value, boolean dateOnly) {
     String originalValue = value;
 
-    if (StringUtils.isEmpty(value)) {
+    if (value == null || value.isEmpty()) {
       return null;
     } else {
       if (value.endsWith("z")) {
@@ -103,7 +98,6 @@ public final class DateTimeUtils {
 
   private static DateTimeFormatter[] createDateTimeFormats() {
     return new DateTimeFormatter[] {
-
         DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ssZ").withZone(ZoneOffset.UTC),
         DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSZ").withZone(ZoneOffset.UTC),
         DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSSSSSZ").withZone(ZoneOffset.UTC),

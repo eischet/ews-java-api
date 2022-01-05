@@ -2,7 +2,8 @@
 
 I'm still using this API, but the original code is showing its age. This is an attempt to remove some outdated depdendencies
 and to upgrade this to Java 11 (LTS) level. Thanks to Microsoft, who've release their original code under the MIT license!
-  S.E.
+  
+S.E.
 
 # Getting Started with the EWS Java API
 

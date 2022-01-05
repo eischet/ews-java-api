@@ -32,7 +32,6 @@ import microsoft.exchange.webservices.data.core.enumeration.misc.XmlNamespace;
 import microsoft.exchange.webservices.data.core.exception.misc.ArgumentOutOfRangeException;
 import microsoft.exchange.webservices.data.core.exception.service.local.ServiceXmlSerializationException;
 import microsoft.exchange.webservices.data.property.complex.ComplexProperty;
-import org.apache.commons.lang3.StringUtils;
 
 import javax.xml.stream.XMLStreamException;
 
@@ -110,7 +109,7 @@ public final class DayOfTheWeekCollection extends ComplexProperty implements
       throws XMLStreamException, ServiceXmlSerializationException {
     String daysOfWeekAsString = this.toString(" ");
 
-    if (!StringUtils.isEmpty(daysOfWeekAsString)) {
+    if (!daysOfWeekAsString.isEmpty()) {
       writer.writeElementValue(XmlNamespace.Types,
           XmlElementNames.DaysOfWeek, daysOfWeekAsString);
     }
