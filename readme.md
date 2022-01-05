@@ -1,7 +1,7 @@
 # UNOFFICAL FORK
 
 I'm still using this API, but the original code is showing its age. This is an attempt to remove some outdated or 
-unnecessary depdendencies and to upgrade this to Java 11 (LTS) level. 
+unnecessary dependencies and to upgrade this to Java 11 (LTS) level. 
 
 Thanks to Microsoft for releasing this code under the MIT license!
   
