@@ -32,8 +32,7 @@ import microsoft.exchange.webservices.data.core.enumeration.misc.ExchangeVersion
 import microsoft.exchange.webservices.data.core.enumeration.misc.XmlNamespace;
 import microsoft.exchange.webservices.data.core.exception.service.local.ServiceValidationException;
 import microsoft.exchange.webservices.data.core.exception.service.local.ServiceVersionException;
-
-import org.apache.commons.io.IOUtils;
+import microsoft.exchange.webservices.data.util.IOUtils;
 
 import java.io.File;
 import java.io.FileInputStream;

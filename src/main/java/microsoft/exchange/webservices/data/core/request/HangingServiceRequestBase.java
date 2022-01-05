@@ -36,7 +36,7 @@ import microsoft.exchange.webservices.data.core.exception.service.remote.Service
 import microsoft.exchange.webservices.data.core.exception.xml.XmlException;
 import microsoft.exchange.webservices.data.misc.HangingTraceStream;
 import microsoft.exchange.webservices.data.security.XmlNodeType;
-import org.apache.commons.io.IOUtils;
+import microsoft.exchange.webservices.data.util.IOUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 

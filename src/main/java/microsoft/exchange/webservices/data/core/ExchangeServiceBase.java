@@ -56,7 +56,7 @@ import microsoft.exchange.webservices.data.credential.ExchangeCredentials;
 import microsoft.exchange.webservices.data.misc.EwsTraceListener;
 import microsoft.exchange.webservices.data.misc.ITraceListener;
 
-import org.apache.commons.io.IOUtils;
+import microsoft.exchange.webservices.data.util.IOUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.http.client.AuthenticationStrategy;
