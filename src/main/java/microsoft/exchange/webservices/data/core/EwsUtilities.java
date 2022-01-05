@@ -65,6 +65,7 @@ import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.Duration;
+import java.time.format.DateTimeParseException;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -858,28 +859,31 @@ public final class EwsUtilities {
      * @return System.TimeSpan structure
      */
     public static TimeSpan getXSDurationToTimeSpan(String xsDuration) {
-        // TODO: Need to check whether this should be the equivalent or not
-        Matcher m = PATTERN_TIME_SPAN.matcher(xsDuration);
-        boolean negative = m.find();
+        try {
+            // TODO: Need to check whether this should be the equivalent or not
+            Matcher m = PATTERN_TIME_SPAN.matcher(xsDuration);
+            boolean negative = m.find();
 
-      // Removing leading '-'
-        if (negative) {
-            xsDuration = xsDuration.replace("-P", "P");
+            // Removing leading '-'
+            if (negative) {
+                xsDuration = xsDuration.replace("-P", "P");
+            }
+
+            Duration duration = Duration.parse(xsDuration);
+            long retval = duration.toMillis();
+
+            // Joda Time:
+            // Period period = Period.parse(xsDuration, ISOPeriodFormat.standard());
+            // long retval = period.toStandardDuration().getMillis();
+
+            if (negative) {
+                retval = -retval;
+            }
+
+            return new TimeSpan(retval);
+        } catch (DateTimeParseException e) {
+            throw new IllegalArgumentException("illegal duration: " + xsDuration, e);
         }
-
-        Duration duration = Duration.parse(xsDuration);
-        long retval = duration.toMillis();
-
-        // Joda Time:
-        // Period period = Period.parse(xsDuration, ISOPeriodFormat.standard());
-        // long retval = period.toStandardDuration().getMillis();
-
-        if (negative) {
-            retval = -retval;
-        }
-
-        return new TimeSpan(retval);
-
     }
 
     /**

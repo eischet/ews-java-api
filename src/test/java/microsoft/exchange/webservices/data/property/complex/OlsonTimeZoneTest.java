@@ -30,33 +30,42 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 import java.util.TimeZone;
 
 @RunWith(JUnit4.class)
 public class OlsonTimeZoneTest {
 
-  @Test
-  public void testOlsonTimeZoneConversion() {
-    final Map<String, String> olsonTimeZoneToMsMap = TimeZoneUtils.createOlsonTimeZoneToMsMap();
-    final String[] timeZoneIds = TimeZone.getAvailableIDs();
+    @Test
+    public void testOlsonTimeZoneConversion() {
+        final Map<String, String> olsonTimeZoneToMsMap = TimeZoneUtils.createOlsonTimeZoneToMsMap();
+        final String[] timeZoneIds = TimeZone.getAvailableIDs();
 
-    for (final String timeZoneId : timeZoneIds) {
-      final boolean america = timeZoneId.startsWith("America");
-      final boolean europe = timeZoneId.startsWith("Europe");
-      final boolean africa = timeZoneId.startsWith("Africa");
+        final Set<String> missing = new HashSet<>();
 
-      if (america || europe || africa) {
-        // There are a few timezones that are out of date or don't have direct microsoft mappings
-        // according to the Unicode source we use so we will only test Americas, Europe and Africa.
-        final TimeZone timeZone = TimeZone.getTimeZone(timeZoneId);
-        final OlsonTimeZoneDefinition olsonTimeZone = new OlsonTimeZoneDefinition(timeZone);
-        final String olsonTimeZoneId = olsonTimeZone.getId();
+        for (final String timeZoneId : timeZoneIds) {
+            final boolean america = timeZoneId.startsWith("America");
+            final boolean europe = timeZoneId.startsWith("Europe");
+            final boolean africa = timeZoneId.startsWith("Africa");
 
-        Assert.assertFalse("olsonTimeZoneId for " + timeZoneId + " is blank", olsonTimeZoneId.isBlank());
-        Assert.assertEquals(olsonTimeZoneToMsMap.get(timeZoneId), olsonTimeZoneId);
-      }
+            if (america || europe || africa) {
+                // There are a few timezones that are out of date or don't have direct microsoft mappings
+                // according to the Unicode source we use so we will only test Americas, Europe and Africa.
+                final TimeZone timeZone = TimeZone.getTimeZone(timeZoneId);
+                final OlsonTimeZoneDefinition olsonTimeZone = new OlsonTimeZoneDefinition(timeZone);
+                final String olsonTimeZoneId = olsonTimeZone.getId();
+
+                // Assert.assertFalse("olsonTimeZoneId for " + timeZoneId + " is blank", olsonTimeZoneId == null || olsonTimeZoneId.isBlank());
+                if (olsonTimeZoneId == null || olsonTimeZoneId.isBlank()) {
+                    missing.add(timeZoneId);
+                }
+                Assert.assertEquals(olsonTimeZoneToMsMap.get(timeZoneId), olsonTimeZoneId);
+            }
+        }
+
+        Assert.assertTrue("Missing timezone mappings: " + missing, missing.isEmpty());
     }
-  }
 
 }

@@ -39,43 +39,39 @@ import java.util.Date;
 
 public class TimeWindowTest extends BaseTest {
 
-  @Test
-  public void testWriteToXmlUnscopedDatesOnlyUsesUTC() {
-    // Thu, 01 Jan 2015 0:0:00 UTC
-    final Date midnight = new Date(1420070400000l);
-    // Thu, 01 Jan 2015 23:59:59 GMT
-    final Date just_before_midnight = new Date(1420156799000l);
+    @Test
+    public void testWriteToXmlUnscopedDatesOnlyUsesUTC() throws Exception {
+        // Thu, 01 Jan 2015 0:0:00 UTC
+        final Date midnight = new Date(1420070400000l);
+        // Thu, 01 Jan 2015 23:59:59 GMT
+        final Date just_before_midnight = new Date(1420156799000l);
 
-    ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-    EwsServiceXmlWriter writer;
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        EwsServiceXmlWriter writer;
 
-    try {
-      // build the test xml markup
-      writer = new EwsServiceXmlWriter(exchangeServiceMock, outputStream);
-      writer.writeStartDocument();
-      writer.writeStartElement(XmlNamespace.NotSpecified, "test");
-      writer.writeAttributeValue("xmlns:" + XmlNamespace.Types.getNameSpacePrefix(), XmlNamespace.Types.getNameSpaceUri());
-      TimeWindow tw = new TimeWindow();
-      tw.setStartTime(midnight);
-      tw.setEndTime(just_before_midnight);
-      tw.writeToXmlUnscopedDatesOnly(writer, XmlElementNames.Duration);
-      writer.writeEndElement();
+        // build the test xml markup
+        writer = new EwsServiceXmlWriter(exchangeServiceMock, outputStream);
+        writer.writeStartDocument();
+        writer.writeStartElement(XmlNamespace.NotSpecified, "test");
+        writer.writeAttributeValue("xmlns:" + XmlNamespace.Types.getNameSpacePrefix(), XmlNamespace.Types.getNameSpaceUri());
+        TimeWindow tw = new TimeWindow();
+        tw.setStartTime(midnight);
+        tw.setEndTime(just_before_midnight);
+        tw.writeToXmlUnscopedDatesOnly(writer, XmlElementNames.Duration);
+        writer.writeEndElement();
 
-      // read the test markup
-      InputStream inputStream = new ByteArrayInputStream(outputStream.toByteArray());
-      EwsServiceXmlReader reader = new EwsServiceXmlReader(inputStream, exchangeServiceMock);
-      reader.read(new XmlNodeType(XmlNodeType.START_DOCUMENT));
-      reader.readStartElement(XmlNamespace.NotSpecified, "test");
-      reader.readStartElement(XmlNamespace.Types, XmlElementNames.Duration);
-      TimeWindow checkTw = new TimeWindow();
+        // read the test markup
+        InputStream inputStream = new ByteArrayInputStream(outputStream.toByteArray());
+        EwsServiceXmlReader reader = new EwsServiceXmlReader(inputStream, exchangeServiceMock);
+        reader.read(new XmlNodeType(XmlNodeType.START_DOCUMENT));
+        reader.readStartElement(XmlNamespace.NotSpecified, "test");
+        reader.readStartElement(XmlNamespace.Types, XmlElementNames.Duration);
+        TimeWindow checkTw = new TimeWindow();
 
-      checkTw.loadFromXml(reader);
+        checkTw.loadFromXml(reader);
 
-      // Test that the dates have not shifted.
-      Assert.assertEquals(midnight, checkTw.getStartTime());
-      Assert.assertEquals(midnight, checkTw.getEndTime());
-    } catch (Exception e) {
-      Assert.fail(e.getMessage());
+        // Test that the dates have not shifted.
+        Assert.assertEquals(midnight, checkTw.getStartTime());
+        Assert.assertEquals(midnight, checkTw.getEndTime());
     }
-  }
 }
