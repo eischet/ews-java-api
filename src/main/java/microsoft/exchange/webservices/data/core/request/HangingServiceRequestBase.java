@@ -59,299 +59,299 @@ import java.util.logging.Logger;
  */
 public abstract class HangingServiceRequestBase<T> extends ServiceRequestBase<T> {
 
-  private static final Logger LOG = Logger.getLogger(HangingServiceRequestBase.class.getCanonicalName());
+    private static final Logger LOG = Logger.getLogger(HangingServiceRequestBase.class.getCanonicalName());
 
 
-  public interface IHandleResponseObject {
+    public interface IHandleResponseObject {
+
+        /**
+         * Callback delegate to handle asynchronous response.
+         *
+         * @param response Response received from the server
+         * @throws ArgumentException
+         */
+        void handleResponseObject(Object response) throws ArgumentException;
+    }
+
+
+    public static final int BUFFER_SIZE = 4096;
 
     /**
-     * Callback delegate to handle asynchronous response.
-     *
-     * @param response Response received from the server
-     * @throws ArgumentException
+     * Test switch to log all bytes that come across the wire.
+     * Helpful when parsing fails before certain bytes hit the trace logs.
      */
-    void handleResponseObject(Object response) throws ArgumentException;
-  }
-
-
-  public static final int BUFFER_SIZE = 4096;
-
-  /**
-   * Test switch to log all bytes that come across the wire.
-   * Helpful when parsing fails before certain bytes hit the trace logs.
-   */
-  private static volatile boolean logAllWireBytes = false;
-
-  /**
-   * Callback delegate to handle response objects
-   */
-  private IHandleResponseObject responseHandler;
-
-  /**
-   * Response from the server.
-   */
-  private HttpWebRequest response;
-
-  /**
-   * Expected minimum frequency in response, in milliseconds.
-   */
-  protected int heartbeatFrequencyMilliseconds;
-
-
-  public interface IHangingRequestDisconnectHandler {
+    private static volatile boolean logAllWireBytes = false;
 
     /**
-     * Delegate method to handle a hanging request disconnection.
-     *
-     * @param sender the object invoking the delegate
-     * @param args event data
+     * Callback delegate to handle response objects
      */
-    void hangingRequestDisconnectHandler(Object sender,
-        HangingRequestDisconnectEventArgs args);
+    private final IHandleResponseObject responseHandler;
 
-  }
+    /**
+     * Response from the server.
+     */
+    private HttpWebRequest response;
+
+    /**
+     * Expected minimum frequency in response, in milliseconds.
+     */
+    protected int heartbeatFrequencyMilliseconds;
 
 
-  public static boolean isLogAllWireBytes() {
-    return logAllWireBytes;
-  }
+    public interface IHangingRequestDisconnectHandler {
 
-  public static void setLogAllWireBytes(final boolean logAllWireBytes) {
-    HangingServiceRequestBase.logAllWireBytes = logAllWireBytes;
-  }
+        /**
+         * Delegate method to handle a hanging request disconnection.
+         *
+         * @param sender the object invoking the delegate
+         * @param args   event data
+         */
+        void hangingRequestDisconnectHandler(Object sender,
+                                             HangingRequestDisconnectEventArgs args);
 
-  /**
-   * Disconnect events Occur when the hanging request is disconnected.
-   */
-  private List<IHangingRequestDisconnectHandler> onDisconnectList =
-      new ArrayList<IHangingRequestDisconnectHandler>();
-
-  /**
-   * Set event to happen when property disconnect.
-   *
-   * @param disconnect disconnect event
-   */
-  public void addOnDisconnectEvent(IHangingRequestDisconnectHandler disconnect) {
-    onDisconnectList.add(disconnect);
-  }
-
-  /**
-   * Remove the event from happening when property disconnect.
-   *
-   * @param disconnect disconnect event
-   */
-  protected void removeDisconnectEvent(
-      IHangingRequestDisconnectHandler disconnect) {
-    onDisconnectList.remove(disconnect);
-  }
-
-  /**
-   * Clears disconnect events list.
-   */
-  protected void clearDisconnectEvents() {
-    onDisconnectList.clear();
-  }
-
-  /**
-   * Initializes a new instance of the HangingServiceRequestBase class.
-   *
-   * @param service            The service.
-   * @param handler            Callback delegate to handle response objects
-   * @param heartbeatFrequency Frequency at which we expect heartbeats, in milliseconds.
-   */
-  protected HangingServiceRequestBase(ExchangeService service,
-      IHandleResponseObject handler, int heartbeatFrequency)
-      throws ServiceVersionException {
-    super(service);
-    this.responseHandler = handler;
-    this.heartbeatFrequencyMilliseconds = heartbeatFrequency;
-  }
-
-  /**
-   * Exectures the request.
-   */
-  public void internalExecute() throws Exception {
-    synchronized (this) {
-      this.response = this.validateAndEmitRequest();
-      this.internalOnConnect();
     }
-  }
-
-  /**
-   * Parses the response.
-   *
-   */
-  private void parseResponses() {
-    HangingTraceStream tracingStream = null;
-    ByteArrayOutputStream responseCopy = null;
 
 
-    try {
-      boolean traceEWSResponse = this.getService().isTraceEnabledFor(TraceFlags.EwsResponse);
-      InputStream responseStream = this.response.getInputStream();
-      tracingStream = new HangingTraceStream(responseStream,
-          this.getService());
-      //EWSServiceMultiResponseXmlReader. Create causes a read.
+    public static boolean isLogAllWireBytes() {
+        return logAllWireBytes;
+    }
 
-      if (traceEWSResponse) {
-        responseCopy = new ByteArrayOutputStream();
-        tracingStream.setResponseCopy(responseCopy);
-      }
+    public static void setLogAllWireBytes(final boolean logAllWireBytes) {
+        HangingServiceRequestBase.logAllWireBytes = logAllWireBytes;
+    }
 
-      while (this.isConnected()) {
-        T responseObject;
-        if (traceEWSResponse) {
-          EwsServiceMultiResponseXmlReader ewsXmlReader =
-              EwsServiceMultiResponseXmlReader.create(tracingStream, getService());
-          responseObject = this.readResponse(ewsXmlReader);
-          this.responseHandler.handleResponseObject(responseObject);
+    /**
+     * Disconnect events Occur when the hanging request is disconnected.
+     */
+    private final List<IHangingRequestDisconnectHandler> onDisconnectList =
+            new ArrayList<IHangingRequestDisconnectHandler>();
 
-          // reset the stream collector.
-          responseCopy.close();
-          responseCopy = new ByteArrayOutputStream();
-          tracingStream.setResponseCopy(responseCopy);
+    /**
+     * Set event to happen when property disconnect.
+     *
+     * @param disconnect disconnect event
+     */
+    public void addOnDisconnectEvent(IHangingRequestDisconnectHandler disconnect) {
+        onDisconnectList.add(disconnect);
+    }
 
-        } else {
-          EwsServiceMultiResponseXmlReader ewsXmlReader =
-              EwsServiceMultiResponseXmlReader.create(tracingStream, getService());
-          responseObject = this.readResponse(ewsXmlReader);
-          this.responseHandler.handleResponseObject(responseObject);
+    /**
+     * Remove the event from happening when property disconnect.
+     *
+     * @param disconnect disconnect event
+     */
+    protected void removeDisconnectEvent(
+            IHangingRequestDisconnectHandler disconnect) {
+        onDisconnectList.remove(disconnect);
+    }
+
+    /**
+     * Clears disconnect events list.
+     */
+    protected void clearDisconnectEvents() {
+        onDisconnectList.clear();
+    }
+
+    /**
+     * Initializes a new instance of the HangingServiceRequestBase class.
+     *
+     * @param service            The service.
+     * @param handler            Callback delegate to handle response objects
+     * @param heartbeatFrequency Frequency at which we expect heartbeats, in milliseconds.
+     */
+    protected HangingServiceRequestBase(ExchangeService service,
+                                        IHandleResponseObject handler, int heartbeatFrequency)
+            throws ServiceVersionException {
+        super(service);
+        this.responseHandler = handler;
+        this.heartbeatFrequencyMilliseconds = heartbeatFrequency;
+    }
+
+    /**
+     * Exectures the request.
+     */
+    public void internalExecute() throws Exception {
+        synchronized (this) {
+            this.response = this.validateAndEmitRequest();
+            this.internalOnConnect();
         }
-      }
-    } catch (SocketTimeoutException ex) {
-      // The connection timed out.
-      this.disconnect(HangingRequestDisconnectReason.Timeout, ex);
-    } catch (UnknownServiceException ex) {
-      // Stream is closed, so disconnect.
-      this.disconnect(HangingRequestDisconnectReason.Exception, ex);
-    } catch (ObjectStreamException ex) {
-      // Stream is closed, so disconnect.
-      this.disconnect(HangingRequestDisconnectReason.Exception, ex);
-    } catch (IOException ex) {
-      // Stream is closed, so disconnect.
-      this.disconnect(HangingRequestDisconnectReason.Exception, ex);
-    } catch (UnsupportedOperationException ex) {
-      LOG.log(Level.SEVERE, "unsuppored operation", ex);
-      // This is thrown if we close the stream during a
-      //read operation due to a user method call.
-      // Trying to delay closing until the read finishes
-      //simply results in a long-running connection.
-      this.disconnect(HangingRequestDisconnectReason.UserInitiated, null);
-    } catch (Exception ex) {
-      // Stream is closed, so disconnect.
-      this.disconnect(HangingRequestDisconnectReason.Exception, ex);
-    } finally {
-      IOUtils.closeQuietly(responseCopy);
     }
-  }
 
-  private boolean isConnected;
+    /**
+     * Parses the response.
+     */
+    private void parseResponses() {
+        HangingTraceStream tracingStream = null;
+        ByteArrayOutputStream responseCopy = null;
 
-  /**
-   * Gets a value indicating whether this instance is connected.
-   *
-   * @return true, if this instance is connected; otherwise, false
-   */
-  public boolean isConnected() {
-    return this.isConnected;
-  }
 
-  private void setIsConnected(boolean value) {
-    this.isConnected = value;
-  }
+        try {
+            boolean traceEWSResponse = this.getService().isTraceEnabledFor(TraceFlags.EwsResponse);
+            InputStream responseStream = this.response.getInputStream();
+            tracingStream = new HangingTraceStream(responseStream,
+                    this.getService());
+            //EWSServiceMultiResponseXmlReader. Create causes a read.
 
-  /**
-   * Disconnects the request.
-   */
-  public void disconnect() {
-    synchronized (this) {
-      IOUtils.closeQuietly(this.response);
-      this.disconnect(HangingRequestDisconnectReason.UserInitiated, null);
-    }
-  }
+            if (traceEWSResponse) {
+                responseCopy = new ByteArrayOutputStream();
+                tracingStream.setResponseCopy(responseCopy);
+            }
 
-  /**
-   * Disconnects the request with the specified reason and exception.
-   *
-   * @param reason    The reason.
-   * @param exception The exception.
-   */
-  public void disconnect(HangingRequestDisconnectReason reason, Exception exception) {
-    if (this.isConnected()) {
-      IOUtils.closeQuietly(this.response);
-      this.internalOnDisconnect(reason, exception);
-    }
-  }
+            while (this.isConnected()) {
+                T responseObject;
+                if (traceEWSResponse) {
+                    EwsServiceMultiResponseXmlReader ewsXmlReader =
+                            EwsServiceMultiResponseXmlReader.create(tracingStream, getService());
+                    responseObject = this.readResponse(ewsXmlReader);
+                    this.responseHandler.handleResponseObject(responseObject);
 
-  /**
-   * Perform any bookkeeping needed when we connect
-   * @throws XMLStreamException the XML stream exception
-   */
-  private void internalOnConnect() throws XMLStreamException,
-      IOException, EWSHttpException {
-    if (!this.isConnected()) {
-      this.isConnected = true;
+                    // reset the stream collector.
+                    responseCopy.close();
+                    responseCopy = new ByteArrayOutputStream();
+                    tracingStream.setResponseCopy(responseCopy);
 
-      if (this.getService().isTraceEnabledFor(TraceFlags.EwsResponseHttpHeaders)) {
-        // Trace Http headers
-        this.getService().processHttpResponseHeaders(
-            TraceFlags.EwsResponseHttpHeaders,
-            this.response);
-      }
-      int poolSize = 1;
-
-      int maxPoolSize = 1;
-
-      long keepAliveTime = 10;
-
-      final ArrayBlockingQueue<Runnable> queue =
-          new ArrayBlockingQueue<Runnable>(
-              1);
-      ThreadPoolExecutor threadPool = new ThreadPoolExecutor(poolSize,
-          maxPoolSize,
-          keepAliveTime, TimeUnit.SECONDS, queue);
-      threadPool.execute(new Runnable() {
-        public void run() {
-          parseResponses();
+                } else {
+                    EwsServiceMultiResponseXmlReader ewsXmlReader =
+                            EwsServiceMultiResponseXmlReader.create(tracingStream, getService());
+                    responseObject = this.readResponse(ewsXmlReader);
+                    this.responseHandler.handleResponseObject(responseObject);
+                }
+            }
+        } catch (SocketTimeoutException ex) {
+            // The connection timed out.
+            this.disconnect(HangingRequestDisconnectReason.Timeout, ex);
+        } catch (UnknownServiceException ex) {
+            // Stream is closed, so disconnect.
+            this.disconnect(HangingRequestDisconnectReason.Exception, ex);
+        } catch (ObjectStreamException ex) {
+            // Stream is closed, so disconnect.
+            this.disconnect(HangingRequestDisconnectReason.Exception, ex);
+        } catch (IOException ex) {
+            // Stream is closed, so disconnect.
+            this.disconnect(HangingRequestDisconnectReason.Exception, ex);
+        } catch (UnsupportedOperationException ex) {
+            LOG.log(Level.SEVERE, "unsuppored operation", ex);
+            // This is thrown if we close the stream during a
+            //read operation due to a user method call.
+            // Trying to delay closing until the read finishes
+            //simply results in a long-running connection.
+            this.disconnect(HangingRequestDisconnectReason.UserInitiated, null);
+        } catch (Exception ex) {
+            // Stream is closed, so disconnect.
+            this.disconnect(HangingRequestDisconnectReason.Exception, ex);
+        } finally {
+            IOUtils.closeQuietly(responseCopy);
         }
-      });
-      threadPool.shutdown();
     }
-  }
 
-  /**
-   * Perform any bookkeeping needed when we disconnect (cleanly or forcefully)
-   *
-   * @param reason    The reason.
-   * @param exception The exception.
-   */
-  private void internalOnDisconnect(HangingRequestDisconnectReason reason,
-      Exception exception) {
-    if (this.isConnected()) {
-      this.isConnected = false;
-      for (IHangingRequestDisconnectHandler disconnect : onDisconnectList) {
-        disconnect.hangingRequestDisconnectHandler(this,
-            new HangingRequestDisconnectEventArgs(reason, exception));
-      }
-    }
-  }
+    private boolean isConnected;
 
-  /**
-   * Reads any preamble data not part of the core response.
-   *
-   * @param ewsXmlReader The EwsServiceXmlReader.
-   * @throws Exception
-   */
-  @Override
-  protected void readPreamble(EwsServiceXmlReader ewsXmlReader)
-      throws Exception {
-    // Do nothing.
-    try {
-      ewsXmlReader.read(new XmlNodeType(XmlNodeType.START_DOCUMENT));
-    } catch (XmlException ex) {
-      throw new ServiceRequestException("The response received from the service didn't contain valid XML.", ex);
-    } catch (ServiceXmlDeserializationException ex) {
-      throw new ServiceRequestException("The response received from the service didn't contain valid XML.", ex);
+    /**
+     * Gets a value indicating whether this instance is connected.
+     *
+     * @return true, if this instance is connected; otherwise, false
+     */
+    public boolean isConnected() {
+        return this.isConnected;
     }
-  }
+
+    private void setIsConnected(boolean value) {
+        this.isConnected = value;
+    }
+
+    /**
+     * Disconnects the request.
+     */
+    public void disconnect() {
+        synchronized (this) {
+            IOUtils.closeQuietly(this.response);
+            this.disconnect(HangingRequestDisconnectReason.UserInitiated, null);
+        }
+    }
+
+    /**
+     * Disconnects the request with the specified reason and exception.
+     *
+     * @param reason    The reason.
+     * @param exception The exception.
+     */
+    public void disconnect(HangingRequestDisconnectReason reason, Exception exception) {
+        if (this.isConnected()) {
+            IOUtils.closeQuietly(this.response);
+            this.internalOnDisconnect(reason, exception);
+        }
+    }
+
+    /**
+     * Perform any bookkeeping needed when we connect
+     *
+     * @throws XMLStreamException the XML stream exception
+     */
+    private void internalOnConnect() throws XMLStreamException,
+            IOException, EWSHttpException {
+        if (!this.isConnected()) {
+            this.isConnected = true;
+
+            if (this.getService().isTraceEnabledFor(TraceFlags.EwsResponseHttpHeaders)) {
+                // Trace Http headers
+                this.getService().processHttpResponseHeaders(
+                        TraceFlags.EwsResponseHttpHeaders,
+                        this.response);
+            }
+            int poolSize = 1;
+
+            int maxPoolSize = 1;
+
+            long keepAliveTime = 10;
+
+            final ArrayBlockingQueue<Runnable> queue =
+                    new ArrayBlockingQueue<Runnable>(
+                            1);
+            ThreadPoolExecutor threadPool = new ThreadPoolExecutor(poolSize,
+                    maxPoolSize,
+                    keepAliveTime, TimeUnit.SECONDS, queue);
+            threadPool.execute(new Runnable() {
+                public void run() {
+                    parseResponses();
+                }
+            });
+            threadPool.shutdown();
+        }
+    }
+
+    /**
+     * Perform any bookkeeping needed when we disconnect (cleanly or forcefully)
+     *
+     * @param reason    The reason.
+     * @param exception The exception.
+     */
+    private void internalOnDisconnect(HangingRequestDisconnectReason reason,
+                                      Exception exception) {
+        if (this.isConnected()) {
+            this.isConnected = false;
+            for (IHangingRequestDisconnectHandler disconnect : onDisconnectList) {
+                disconnect.hangingRequestDisconnectHandler(this,
+                        new HangingRequestDisconnectEventArgs(reason, exception));
+            }
+        }
+    }
+
+    /**
+     * Reads any preamble data not part of the core response.
+     *
+     * @param ewsXmlReader The EwsServiceXmlReader.
+     * @throws Exception
+     */
+    @Override
+    protected void readPreamble(EwsServiceXmlReader ewsXmlReader)
+            throws Exception {
+        // Do nothing.
+        try {
+            ewsXmlReader.read(new XmlNodeType(XmlNodeType.START_DOCUMENT));
+        } catch (XmlException ex) {
+            throw new ServiceRequestException("The response received from the service didn't contain valid XML.", ex);
+        } catch (ServiceXmlDeserializationException ex) {
+            throw new ServiceRequestException("The response received from the service didn't contain valid XML.", ex);
+        }
+    }
 }

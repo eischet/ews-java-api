@@ -28,25 +28,25 @@ package microsoft.exchange.webservices.data.core.enumeration.attribute;
  */
 public enum EditorBrowsableState {
 
-  // Summary:
-  // The property or method is always browsable from within an editor.
-  /**
-   * The Always.
-   */
-  Always,
-  //
-  // Summary:
-  // The property or method is never browsable from within an editor.
-  /**
-   * The Never.
-   */
-  Never,
-  //
-  // Summary:
-  // The property or method is a feature that only advanced users should see.
-  // An editor can either show or hide such property.
-  /**
-   * The Advanced.
-   */
-  Advanced,
+    // Summary:
+    // The property or method is always browsable from within an editor.
+    /**
+     * The Always.
+     */
+    Always,
+    //
+    // Summary:
+    // The property or method is never browsable from within an editor.
+    /**
+     * The Never.
+     */
+    Never,
+    //
+    // Summary:
+    // The property or method is a feature that only advanced users should see.
+    // An editor can either show or hide such property.
+    /**
+     * The Advanced.
+     */
+    Advanced,
 }

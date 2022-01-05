@@ -24,14 +24,10 @@
 package microsoft.exchange.webservices.data.property.complex;
 
 import microsoft.exchange.webservices.data.attribute.EditorBrowsable;
-import microsoft.exchange.webservices.data.core.EwsServiceXmlReader;
-import microsoft.exchange.webservices.data.core.EwsServiceXmlWriter;
-import microsoft.exchange.webservices.data.core.EwsUtilities;
-import microsoft.exchange.webservices.data.core.XmlAttributeNames;
-import microsoft.exchange.webservices.data.core.XmlElementNames;
+import microsoft.exchange.webservices.data.core.*;
 import microsoft.exchange.webservices.data.core.enumeration.attribute.EditorBrowsableState;
-import microsoft.exchange.webservices.data.core.enumeration.property.EmailAddressKey;
 import microsoft.exchange.webservices.data.core.enumeration.misc.ExchangeVersion;
+import microsoft.exchange.webservices.data.core.enumeration.property.EmailAddressKey;
 import microsoft.exchange.webservices.data.core.enumeration.property.MailboxType;
 import microsoft.exchange.webservices.data.core.exception.service.local.ServiceXmlSerializationException;
 
@@ -40,154 +36,154 @@ import microsoft.exchange.webservices.data.core.exception.service.local.ServiceX
  */
 @EditorBrowsable(state = EditorBrowsableState.Never)
 public final class EmailAddressEntry extends DictionaryEntryProperty<EmailAddressKey> implements
-                                                                                      IComplexPropertyChangedDelegate {
-  // / The email address.
-  /**
-   * The email address.
-   */
-  private EmailAddress emailAddress;
+        IComplexPropertyChangedDelegate {
+    // / The email address.
+    /**
+     * The email address.
+     */
+    private EmailAddress emailAddress;
 
-  /**
-   * Initializes a new instance of the <see cref="EmailAddressEntry"/> class.
-   */
-  protected EmailAddressEntry() {
-    super(EmailAddressKey.class);
-    this.emailAddress = new EmailAddress();
-    this.emailAddress.addOnChangeEvent(this);
-  }
-
-  /**
-   * Initializes a new instance of the "EmailAddressEntry" class.
-   *
-   * @param key          The key.
-   * @param emailAddress The email address.
-   */
-  protected EmailAddressEntry(EmailAddressKey key,
-      EmailAddress emailAddress) {
-    super(EmailAddressKey.class, key);
-    this.emailAddress = emailAddress;
-  }
-
-  /**
-   * Reads the attribute from XML.
-   *
-   * @param reader accepts EwsServiceXmlReader
-   * @throws Exception throws Exception
-   */
-  @Override
-  public void readAttributesFromXml(EwsServiceXmlReader reader)
-      throws Exception {
-    super.readAttributesFromXml(reader);
-    this.getEmailAddress().setName(
-        reader.readAttributeValue(XmlAttributeNames.Name));
-    this
-        .getEmailAddress()
-        .setRoutingType(
-            reader
-                .readAttributeValue(XmlAttributeNames.
-                    RoutingType));
-    String mailboxTypeString = reader
-        .readAttributeValue(XmlAttributeNames.MailboxType);
-    if ((mailboxTypeString != null) && (!mailboxTypeString.isEmpty())) {
-      this.getEmailAddress().setMailboxType(
-          EwsUtilities.parse(MailboxType.class, mailboxTypeString));
-    } else {
-      this.getEmailAddress().setMailboxType(null);
+    /**
+     * Initializes a new instance of the <see cref="EmailAddressEntry"/> class.
+     */
+    protected EmailAddressEntry() {
+        super(EmailAddressKey.class);
+        this.emailAddress = new EmailAddress();
+        this.emailAddress.addOnChangeEvent(this);
     }
-  }
 
-  /**
-   * Reads the text value from XML.
-   *
-   * @param reader accepts EwsServiceXmlReader
-   * @throws Exception the exception
-   */
-  @Override
-  public void readTextValueFromXml(EwsServiceXmlReader reader)
-      throws Exception {
-    this.getEmailAddress().setAddress(reader.readValue());
-  }
-
-  /**
-   * Writes the attribute to XML.
-   *
-   * @param writer accepts EwsServiceXmlWriter
-   * @throws ServiceXmlSerializationException throws ServiceXmlSerializationException
-   */
-  @Override
-  public void writeAttributesToXml(EwsServiceXmlWriter writer)
-      throws ServiceXmlSerializationException {
-    super.writeAttributesToXml(writer);
-    if (writer.getService().getRequestedServerVersion().ordinal() >
-        ExchangeVersion.Exchange2007_SP1
-            .ordinal()) {
-      writer.writeAttributeValue(XmlAttributeNames.Name, this
-          .getEmailAddress().getName());
-      writer.writeAttributeValue(XmlAttributeNames.RoutingType, this
-          .getEmailAddress().getRoutingType());
-      if (this.getEmailAddress().getMailboxType() != MailboxType.Unknown) {
-        writer.writeAttributeValue(XmlAttributeNames.MailboxType, this
-            .getEmailAddress().getMailboxType());
-      }
+    /**
+     * Initializes a new instance of the "EmailAddressEntry" class.
+     *
+     * @param key          The key.
+     * @param emailAddress The email address.
+     */
+    protected EmailAddressEntry(EmailAddressKey key,
+                                EmailAddress emailAddress) {
+        super(EmailAddressKey.class, key);
+        this.emailAddress = emailAddress;
     }
-  }
 
-  /**
-   * Writes elements to XML.
-   *
-   * @param writer accepts EwsServiceXmlWriter
-   * @throws ServiceXmlSerializationException throws ServiceXmlSerializationException
-   */
-  @Override
-  public void writeElementsToXml(EwsServiceXmlWriter writer)
-      throws ServiceXmlSerializationException {
-    writer.writeValue(this.getEmailAddress().getAddress(),
-        XmlElementNames.EmailAddress);
-  }
-
-  /**
-   * Gets the e-mail address of the entry.
-   *
-   * @return the email address
-   */
-  public EmailAddress getEmailAddress() {
-    return this.emailAddress;
-    // set { this.SetFieldValue<EmailAddress>(ref this.emailAddress, value);
-    // }
-  }
-
-  /**
-   * Sets the e-mail address of the entry.
-   *
-   * @param value the new email address
-   */
-  public void setEmailAddress(Object value) {
-    //this.canSetFieldValue((EmailAddress) this.emailAddress, value);
-    if (this.canSetFieldValue(this.emailAddress, value)) {
-      this.emailAddress = (EmailAddress) value;
+    /**
+     * Reads the attribute from XML.
+     *
+     * @param reader accepts EwsServiceXmlReader
+     * @throws Exception throws Exception
+     */
+    @Override
+    public void readAttributesFromXml(EwsServiceXmlReader reader)
+            throws Exception {
+        super.readAttributesFromXml(reader);
+        this.getEmailAddress().setName(
+                reader.readAttributeValue(XmlAttributeNames.Name));
+        this
+                .getEmailAddress()
+                .setRoutingType(
+                        reader
+                                .readAttributeValue(XmlAttributeNames.
+                                        RoutingType));
+        String mailboxTypeString = reader
+                .readAttributeValue(XmlAttributeNames.MailboxType);
+        if ((mailboxTypeString != null) && (!mailboxTypeString.isEmpty())) {
+            this.getEmailAddress().setMailboxType(
+                    EwsUtilities.parse(MailboxType.class, mailboxTypeString));
+        } else {
+            this.getEmailAddress().setMailboxType(null);
+        }
     }
-  }
 
-  /**
-   * E-mail address was changed.
-   *
-   * @param complexProperty the complex property
-   */
-  private void emailAddressChanged(ComplexProperty complexProperty) {
-    this.changed();
-  }
+    /**
+     * Reads the text value from XML.
+     *
+     * @param reader accepts EwsServiceXmlReader
+     * @throws Exception the exception
+     */
+    @Override
+    public void readTextValueFromXml(EwsServiceXmlReader reader)
+            throws Exception {
+        this.getEmailAddress().setAddress(reader.readValue());
+    }
 
-  /*
-   * (non-Javadoc)
-   *
-   * @see
-   * microsoft.exchange.webservices.ComplexPropertyChangedDelegateInterface
-   * #complexPropertyChanged(microsoft.exchange.webservices.ComplexProperty)
-   */
-  @Override
-  public void complexPropertyChanged(ComplexProperty complexProperty) {
-    this.emailAddressChanged(complexProperty);
+    /**
+     * Writes the attribute to XML.
+     *
+     * @param writer accepts EwsServiceXmlWriter
+     * @throws ServiceXmlSerializationException throws ServiceXmlSerializationException
+     */
+    @Override
+    public void writeAttributesToXml(EwsServiceXmlWriter writer)
+            throws ServiceXmlSerializationException {
+        super.writeAttributesToXml(writer);
+        if (writer.getService().getRequestedServerVersion().ordinal() >
+                ExchangeVersion.Exchange2007_SP1
+                        .ordinal()) {
+            writer.writeAttributeValue(XmlAttributeNames.Name, this
+                    .getEmailAddress().getName());
+            writer.writeAttributeValue(XmlAttributeNames.RoutingType, this
+                    .getEmailAddress().getRoutingType());
+            if (this.getEmailAddress().getMailboxType() != MailboxType.Unknown) {
+                writer.writeAttributeValue(XmlAttributeNames.MailboxType, this
+                        .getEmailAddress().getMailboxType());
+            }
+        }
+    }
 
-  }
+    /**
+     * Writes elements to XML.
+     *
+     * @param writer accepts EwsServiceXmlWriter
+     * @throws ServiceXmlSerializationException throws ServiceXmlSerializationException
+     */
+    @Override
+    public void writeElementsToXml(EwsServiceXmlWriter writer)
+            throws ServiceXmlSerializationException {
+        writer.writeValue(this.getEmailAddress().getAddress(),
+                XmlElementNames.EmailAddress);
+    }
+
+    /**
+     * Gets the e-mail address of the entry.
+     *
+     * @return the email address
+     */
+    public EmailAddress getEmailAddress() {
+        return this.emailAddress;
+        // set { this.SetFieldValue<EmailAddress>(ref this.emailAddress, value);
+        // }
+    }
+
+    /**
+     * Sets the e-mail address of the entry.
+     *
+     * @param value the new email address
+     */
+    public void setEmailAddress(Object value) {
+        //this.canSetFieldValue((EmailAddress) this.emailAddress, value);
+        if (this.canSetFieldValue(this.emailAddress, value)) {
+            this.emailAddress = (EmailAddress) value;
+        }
+    }
+
+    /**
+     * E-mail address was changed.
+     *
+     * @param complexProperty the complex property
+     */
+    private void emailAddressChanged(ComplexProperty complexProperty) {
+        this.changed();
+    }
+
+    /*
+     * (non-Javadoc)
+     *
+     * @see
+     * microsoft.exchange.webservices.ComplexPropertyChangedDelegateInterface
+     * #complexPropertyChanged(microsoft.exchange.webservices.ComplexProperty)
+     */
+    @Override
+    public void complexPropertyChanged(ComplexProperty complexProperty) {
+        this.emailAddressChanged(complexProperty);
+
+    }
 
 }

@@ -28,21 +28,21 @@ package microsoft.exchange.webservices.data.core.enumeration.property;
  */
 public enum Importance {
 
-  // Low importance.
-  /**
-   * The Low.
-   */
-  Low,
+    // Low importance.
+    /**
+     * The Low.
+     */
+    Low,
 
-  // Normal importance.
-  /**
-   * The Normal.
-   */
-  Normal,
+    // Normal importance.
+    /**
+     * The Normal.
+     */
+    Normal,
 
-  // High importance.
-  /**
-   * The High.
-   */
-  High
+    // High importance.
+    /**
+     * The High.
+     */
+    High
 }

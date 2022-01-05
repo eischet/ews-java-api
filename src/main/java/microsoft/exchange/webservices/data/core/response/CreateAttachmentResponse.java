@@ -35,53 +35,53 @@ import microsoft.exchange.webservices.data.security.XmlNodeType;
  */
 public final class CreateAttachmentResponse extends ServiceResponse {
 
-  /**
-   * The attachment.
-   */
-  private Attachment attachment;
+    /**
+     * The attachment.
+     */
+    private final Attachment attachment;
 
-  /**
-   * Initializes a new instance of the CreateAttachmentResponse class.
-   *
-   * @param attachment the attachment
-   */
-  public CreateAttachmentResponse(Attachment attachment) {
-    super();
-    EwsUtilities.ewsAssert(attachment != null, "CreateAttachmentResponse.ctor", "attachment is null");
+    /**
+     * Initializes a new instance of the CreateAttachmentResponse class.
+     *
+     * @param attachment the attachment
+     */
+    public CreateAttachmentResponse(Attachment attachment) {
+        super();
+        EwsUtilities.ewsAssert(attachment != null, "CreateAttachmentResponse.ctor", "attachment is null");
 
-    this.attachment = attachment;
-  }
+        this.attachment = attachment;
+    }
 
-  /**
-   * Reads response elements from XML.
-   *
-   * @param reader the reader
-   * @throws Exception the exception
-   */
-  @Override
-  protected void readElementsFromXml(EwsServiceXmlReader reader)
-      throws Exception {
-    super.readElementsFromXml(reader);
+    /**
+     * Reads response elements from XML.
+     *
+     * @param reader the reader
+     * @throws Exception the exception
+     */
+    @Override
+    protected void readElementsFromXml(EwsServiceXmlReader reader)
+            throws Exception {
+        super.readElementsFromXml(reader);
 
-    reader.readStartElement(XmlNamespace.Messages,
-        XmlElementNames.Attachments);
+        reader.readStartElement(XmlNamespace.Messages,
+                XmlElementNames.Attachments);
 
-    // reader.read(XmlNodeType.START_ELEMENT);
-    XmlNodeType x = new XmlNodeType(XmlNodeType.START_ELEMENT);
-    reader.read(x);
-    this.attachment.loadFromXml(reader, reader.getLocalName());
+        // reader.read(XmlNodeType.START_ELEMENT);
+        XmlNodeType x = new XmlNodeType(XmlNodeType.START_ELEMENT);
+        reader.read(x);
+        this.attachment.loadFromXml(reader, reader.getLocalName());
 
-    reader.readEndElement(XmlNamespace.Messages,
-        XmlElementNames.Attachments);
-  }
+        reader.readEndElement(XmlNamespace.Messages,
+                XmlElementNames.Attachments);
+    }
 
-  /**
-   * Gets the attachment that was created.
-   *
-   * @return the attachment
-   */
-  public Attachment getAttachment() {
-    return this.attachment;
-  }
+    /**
+     * Gets the attachment that was created.
+     *
+     * @return the attachment
+     */
+    public Attachment getAttachment() {
+        return this.attachment;
+    }
 
 }

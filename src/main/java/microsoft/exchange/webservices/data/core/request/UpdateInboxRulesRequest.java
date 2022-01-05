@@ -23,197 +23,194 @@
 
 package microsoft.exchange.webservices.data.core.request;
 
-import microsoft.exchange.webservices.data.core.EwsServiceXmlReader;
-import microsoft.exchange.webservices.data.core.EwsServiceXmlWriter;
-import microsoft.exchange.webservices.data.core.EwsUtilities;
-import microsoft.exchange.webservices.data.core.ExchangeService;
-import microsoft.exchange.webservices.data.core.XmlElementNames;
-import microsoft.exchange.webservices.data.core.response.UpdateInboxRulesResponse;
+import microsoft.exchange.webservices.data.core.*;
 import microsoft.exchange.webservices.data.core.enumeration.misc.ExchangeVersion;
-import microsoft.exchange.webservices.data.core.enumeration.service.ServiceResult;
 import microsoft.exchange.webservices.data.core.enumeration.misc.XmlNamespace;
+import microsoft.exchange.webservices.data.core.enumeration.service.ServiceResult;
 import microsoft.exchange.webservices.data.core.exception.service.remote.UpdateInboxRulesException;
+import microsoft.exchange.webservices.data.core.response.UpdateInboxRulesResponse;
 import microsoft.exchange.webservices.data.property.complex.RuleOperation;
 
 /**
  * Represents a UpdateInboxRulesRequest request.
  */
 public final class UpdateInboxRulesRequest extends SimpleServiceRequestBase<UpdateInboxRulesResponse> {
-  /**
-   * The smtp address of the mailbox from which to get the inbox rules.
-   */
-  private String mailboxSmtpAddress;
+    /**
+     * The smtp address of the mailbox from which to get the inbox rules.
+     */
+    private String mailboxSmtpAddress;
 
-  /**
-   * Remove OutlookRuleBlob or not.
-   */
-  private boolean removeOutlookRuleBlob;
+    /**
+     * Remove OutlookRuleBlob or not.
+     */
+    private boolean removeOutlookRuleBlob;
 
-  /**
-   * InboxRule operation collection.
-   */
-  private Iterable<RuleOperation> inboxRuleOperations;
+    /**
+     * InboxRule operation collection.
+     */
+    private Iterable<RuleOperation> inboxRuleOperations;
 
-  /**
-   * Initializes a new instance of the
-   * <see cref="UpdateInboxRulesRequest"/> class.
-   *
-   * @param service The service.
-   */
-  public UpdateInboxRulesRequest(ExchangeService service)
-      throws Exception {
-    super(service);
-  }
-
-  /**
-   * Gets the name of the XML element.
-   *
-   * @return XML element name.
-   */
-  @Override public String getXmlElementName() {
-    return XmlElementNames.UpdateInboxRules;
-  }
-
-  /**
-   * Writes XML elements.
-   *
-   * @param writer The writer.
-   */
-  @Override
-  protected void writeElementsToXml(EwsServiceXmlWriter writer)
-      throws Exception {
-    if (!(mailboxSmtpAddress == null || mailboxSmtpAddress.isEmpty())) {
-      writer.writeElementValue(
-          XmlNamespace.Messages,
-          XmlElementNames.MailboxSmtpAddress,
-          this.mailboxSmtpAddress);
+    /**
+     * Initializes a new instance of the
+     * <see cref="UpdateInboxRulesRequest"/> class.
+     *
+     * @param service The service.
+     */
+    public UpdateInboxRulesRequest(ExchangeService service)
+            throws Exception {
+        super(service);
     }
 
-    writer.writeElementValue(
-        XmlNamespace.Messages,
-        XmlElementNames.RemoveOutlookRuleBlob,
-        this.removeOutlookRuleBlob);
-    writer.writeStartElement(XmlNamespace.Messages,
-        XmlElementNames.Operations);
-    for (RuleOperation operation : this.inboxRuleOperations) {
-      operation.writeToXml(writer, operation.getXmlElementName());
-    }
-    writer.writeEndElement();
-  }
-
-  /**
-   * Gets the name of the response XML element.
-   *
-   * @return XML element name.
-   */
-  @Override
-  protected String getResponseXmlElementName() {
-    return XmlElementNames.UpdateInboxRulesResponse;
-  }
-
-  /**
-   * {@inheritDoc}
-   */
-  @Override
-  protected UpdateInboxRulesResponse parseResponse(EwsServiceXmlReader reader)
-      throws Exception {
-    UpdateInboxRulesResponse response = new UpdateInboxRulesResponse();
-    response.loadFromXml(reader, XmlElementNames.UpdateInboxRulesResponse);
-    return response;
-  }
-
-  /**
-   * Gets the request version.
-   *
-   * @return Earliest Exchange version in which this request is supported.
-   */
-  @Override
-  protected ExchangeVersion getMinimumRequiredServerVersion() {
-    return ExchangeVersion.Exchange2010_SP1;
-  }
-
-  /**
-   * Validate request.
-   */
-  @Override
-  protected void validate() throws Exception {
-    if (this.inboxRuleOperations == null) {
-      throw new IllegalArgumentException(
-          "RuleOperations cannot be null." + "Operations");
+    /**
+     * Gets the name of the XML element.
+     *
+     * @return XML element name.
+     */
+    @Override
+    public String getXmlElementName() {
+        return XmlElementNames.UpdateInboxRules;
     }
 
-    int operationCount = 0;
-    for (RuleOperation operation : this.inboxRuleOperations) {
-      EwsUtilities.validateParam(operation, "RuleOperation");
-      operationCount++;
+    /**
+     * Writes XML elements.
+     *
+     * @param writer The writer.
+     */
+    @Override
+    protected void writeElementsToXml(EwsServiceXmlWriter writer)
+            throws Exception {
+        if (!(mailboxSmtpAddress == null || mailboxSmtpAddress.isEmpty())) {
+            writer.writeElementValue(
+                    XmlNamespace.Messages,
+                    XmlElementNames.MailboxSmtpAddress,
+                    this.mailboxSmtpAddress);
+        }
+
+        writer.writeElementValue(
+                XmlNamespace.Messages,
+                XmlElementNames.RemoveOutlookRuleBlob,
+                this.removeOutlookRuleBlob);
+        writer.writeStartElement(XmlNamespace.Messages,
+                XmlElementNames.Operations);
+        for (RuleOperation operation : this.inboxRuleOperations) {
+            operation.writeToXml(writer, operation.getXmlElementName());
+        }
+        writer.writeEndElement();
     }
 
-    if (operationCount == 0) {
-      throw new IllegalArgumentException(
-          "RuleOperations cannot be empty." + "Operations");
+    /**
+     * Gets the name of the response XML element.
+     *
+     * @return XML element name.
+     */
+    @Override
+    protected String getResponseXmlElementName() {
+        return XmlElementNames.UpdateInboxRulesResponse;
     }
 
-    this.getService().validate();
-  }
-
-  /**
-   * Executes this request.
-   *
-   * @return Service response.
-   * @throws Exception on error
-   */
-  public UpdateInboxRulesResponse execute() throws Exception {
-    UpdateInboxRulesResponse serviceResponse = internalExecute();
-    if (serviceResponse.getResult() == ServiceResult.Error) {
-      throw new UpdateInboxRulesException(serviceResponse,
-          this.inboxRuleOperations);
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected UpdateInboxRulesResponse parseResponse(EwsServiceXmlReader reader)
+            throws Exception {
+        UpdateInboxRulesResponse response = new UpdateInboxRulesResponse();
+        response.loadFromXml(reader, XmlElementNames.UpdateInboxRulesResponse);
+        return response;
     }
-    return serviceResponse;
-  }
 
-  /**
-   * Gets the address of the mailbox in which to update the inbox rules.
-   */
-  protected String getMailboxSmtpAddress() {
-    return this.mailboxSmtpAddress;
-  }
+    /**
+     * Gets the request version.
+     *
+     * @return Earliest Exchange version in which this request is supported.
+     */
+    @Override
+    protected ExchangeVersion getMinimumRequiredServerVersion() {
+        return ExchangeVersion.Exchange2010_SP1;
+    }
 
-  /**
-   * Sets the address of the mailbox in which to update the inbox rules.
-   */
-  public void setMailboxSmtpAddress(String value) {
-    this.mailboxSmtpAddress = value;
-  }
+    /**
+     * Validate request.
+     */
+    @Override
+    protected void validate() throws Exception {
+        if (this.inboxRuleOperations == null) {
+            throw new IllegalArgumentException(
+                    "RuleOperations cannot be null." + "Operations");
+        }
 
-  /**
-   * Gets a value indicating whether or not to
-   * remove OutlookRuleBlob from the rule collection.
-   */
-  protected boolean getRemoveOutlookRuleBlob() {
-    return this.removeOutlookRuleBlob;
-  }
+        int operationCount = 0;
+        for (RuleOperation operation : this.inboxRuleOperations) {
+            EwsUtilities.validateParam(operation, "RuleOperation");
+            operationCount++;
+        }
 
-  /**
-   * Sets a value indicating whether or not to
-   * remove OutlookRuleBlob from the rule collection.
-   */
-  public void setRemoveOutlookRuleBlob(boolean value) {
-    this.removeOutlookRuleBlob = value;
-  }
+        if (operationCount == 0) {
+            throw new IllegalArgumentException(
+                    "RuleOperations cannot be empty." + "Operations");
+        }
+
+        this.getService().validate();
+    }
+
+    /**
+     * Executes this request.
+     *
+     * @return Service response.
+     * @throws Exception on error
+     */
+    public UpdateInboxRulesResponse execute() throws Exception {
+        UpdateInboxRulesResponse serviceResponse = internalExecute();
+        if (serviceResponse.getResult() == ServiceResult.Error) {
+            throw new UpdateInboxRulesException(serviceResponse,
+                    this.inboxRuleOperations);
+        }
+        return serviceResponse;
+    }
+
+    /**
+     * Gets the address of the mailbox in which to update the inbox rules.
+     */
+    protected String getMailboxSmtpAddress() {
+        return this.mailboxSmtpAddress;
+    }
+
+    /**
+     * Sets the address of the mailbox in which to update the inbox rules.
+     */
+    public void setMailboxSmtpAddress(String value) {
+        this.mailboxSmtpAddress = value;
+    }
+
+    /**
+     * Gets a value indicating whether or not to
+     * remove OutlookRuleBlob from the rule collection.
+     */
+    protected boolean getRemoveOutlookRuleBlob() {
+        return this.removeOutlookRuleBlob;
+    }
+
+    /**
+     * Sets a value indicating whether or not to
+     * remove OutlookRuleBlob from the rule collection.
+     */
+    public void setRemoveOutlookRuleBlob(boolean value) {
+        this.removeOutlookRuleBlob = value;
+    }
 
 
-  /**
-   * Gets the RuleOperation collection.
-   */
-  protected Iterable<RuleOperation> getInboxRuleOperations() {
-    return this.inboxRuleOperations;
-  }
+    /**
+     * Gets the RuleOperation collection.
+     */
+    protected Iterable<RuleOperation> getInboxRuleOperations() {
+        return this.inboxRuleOperations;
+    }
 
-  /**
-   * Sets the RuleOperation collection.
-   */
-  public void setInboxRuleOperations(Iterable<RuleOperation> value) {
-    this.inboxRuleOperations = value;
-  }
+    /**
+     * Sets the RuleOperation collection.
+     */
+    public void setInboxRuleOperations(Iterable<RuleOperation> value) {
+        this.inboxRuleOperations = value;
+    }
 
 }

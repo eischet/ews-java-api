@@ -40,69 +40,69 @@ import javax.xml.stream.XMLStreamException;
 @EditorBrowsable(state = EditorBrowsableState.Never)
 public final class ImAddressEntry extends DictionaryEntryProperty<ImAddressKey> {
 
-  /**
-   * The im address.
-   */
-  private String imAddress;
+    /**
+     * The im address.
+     */
+    private String imAddress;
 
-  /**
-   * Initializes a new instance of the "ImAddressEntry" class.
-   */
-  protected ImAddressEntry() {
-    super(ImAddressKey.class);
-  }
+    /**
+     * Initializes a new instance of the "ImAddressEntry" class.
+     */
+    protected ImAddressEntry() {
+        super(ImAddressKey.class);
+    }
 
-  /**
-   * Initializes a new instance of the ="ImAddressEntry" class.
-   *
-   * @param key       The key.
-   * @param imAddress The im address.
-   */
-  protected ImAddressEntry(ImAddressKey key, String imAddress) {
-    super(ImAddressKey.class, key);
-    this.imAddress = imAddress;
-  }
+    /**
+     * Initializes a new instance of the ="ImAddressEntry" class.
+     *
+     * @param key       The key.
+     * @param imAddress The im address.
+     */
+    protected ImAddressEntry(ImAddressKey key, String imAddress) {
+        super(ImAddressKey.class, key);
+        this.imAddress = imAddress;
+    }
 
-  /**
-   * Gets the Instant Messaging address of the entry.
-   *
-   * @return imAddress
-   */
-  public String getImAddress() {
-    return this.imAddress;
-  }
+    /**
+     * Gets the Instant Messaging address of the entry.
+     *
+     * @return imAddress
+     */
+    public String getImAddress() {
+        return this.imAddress;
+    }
 
-  /**
-   * Sets the Instant Messaging address of the entry.
-   *
-   * @param value the new im address
-   */
-  public void setImAddress(Object value) {
+    /**
+     * Sets the Instant Messaging address of the entry.
+     *
+     * @param value the new im address
+     */
+    public void setImAddress(Object value) {
 
-    this.canSetFieldValue(this.imAddress, value);
-  }
+        this.canSetFieldValue(this.imAddress, value);
+    }
 
-  /**
-   * Reads the text value from XML.
-   *
-   * @param reader accepts EwsServiceXmlReader
-   * @throws XMLStreamException the XML stream exception
-   * @throws ServiceXmlDeserializationException the service xml deserialization exception
-   */
-  @Override
-  public void readTextValueFromXml(EwsServiceXmlReader reader)
-      throws XMLStreamException, ServiceXmlDeserializationException {
-    this.imAddress = reader.readValue();
-  }
+    /**
+     * Reads the text value from XML.
+     *
+     * @param reader accepts EwsServiceXmlReader
+     * @throws XMLStreamException                 the XML stream exception
+     * @throws ServiceXmlDeserializationException the service xml deserialization exception
+     */
+    @Override
+    public void readTextValueFromXml(EwsServiceXmlReader reader)
+            throws XMLStreamException, ServiceXmlDeserializationException {
+        this.imAddress = reader.readValue();
+    }
 
-  /**
-   * Writes elements to XML.
-   *
-   * @param writer The writer.
-   * @throws ServiceXmlSerializationException the service xml serialization exception
-   */
-  public void writeElementsToXml(EwsServiceXmlWriter writer)
-      throws ServiceXmlSerializationException {
-    writer.writeValue(this.imAddress, XmlElementNames.ImAddress);
-  }
+    /**
+     * Writes elements to XML.
+     *
+     * @param writer The writer.
+     * @throws ServiceXmlSerializationException the service xml serialization exception
+     */
+    public void writeElementsToXml(EwsServiceXmlWriter writer)
+            throws ServiceXmlSerializationException {
+        writer.writeValue(this.imAddress, XmlElementNames.ImAddress);
+    }
 }

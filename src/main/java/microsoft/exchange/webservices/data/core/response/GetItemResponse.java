@@ -23,11 +23,7 @@
 
 package microsoft.exchange.webservices.data.core.response;
 
-import microsoft.exchange.webservices.data.core.EwsServiceXmlReader;
-import microsoft.exchange.webservices.data.core.EwsUtilities;
-import microsoft.exchange.webservices.data.core.ExchangeService;
-import microsoft.exchange.webservices.data.core.PropertySet;
-import microsoft.exchange.webservices.data.core.XmlElementNames;
+import microsoft.exchange.webservices.data.core.*;
 import microsoft.exchange.webservices.data.core.service.ServiceObject;
 import microsoft.exchange.webservices.data.core.service.item.Item;
 
@@ -37,91 +33,91 @@ import java.util.List;
  * Represents a response to an individual item retrieval operation.
  */
 public final class GetItemResponse extends ServiceResponse implements
-                                                           IGetObjectInstanceDelegate<ServiceObject> {
+        IGetObjectInstanceDelegate<ServiceObject> {
 
-  /**
-   * The item.
-   */
-  private Item item;
+    /**
+     * The item.
+     */
+    private Item item;
 
-  /**
-   * The property set.
-   */
-  private PropertySet propertySet;
+    /**
+     * The property set.
+     */
+    private final PropertySet propertySet;
 
-  /**
-   * Initializes a new instance of the class.
-   *
-   * @param item        the item
-   * @param propertySet the property set
-   */
-  public GetItemResponse(Item item, PropertySet propertySet) {
-    super();
-    this.item = item;
-    this.propertySet = propertySet;
-    EwsUtilities.ewsAssert(this.propertySet != null, "GetItemResponse.ctor", "PropertySet should not be null");
-  }
-
-  /**
-   * Reads response elements from XML.
-   *
-   * @param reader the reader
-   * @throws InstantiationException the instantiation exception
-   * @throws IllegalAccessException the illegal access exception
-   * @throws Exception              the exception
-   */
-  protected void readElementsFromXml(EwsServiceXmlReader reader)
-      throws InstantiationException, IllegalAccessException, Exception {
-    super.readElementsFromXml(reader);
-
-    List<Item> items = reader.readServiceObjectsCollectionFromXml(
-        XmlElementNames.Items, this,
-        true, /* clearPropertyBag */
-        this.propertySet, /* requestedPropertySet */
-        false); /* summaryPropertiesOnly */
-
-    this.item = items.get(0);
-  }
-
-  /**
-   * Gets Item instance.
-   *
-   * @param service        the service
-   * @param xmlElementName the xml element name
-   * @return Item
-   * @throws Exception the exception
-   */
-  private Item getObjectInstance(ExchangeService service,
-      String xmlElementName) throws Exception {
-    if (this.getItem() != null) {
-      return this.getItem();
-    } else {
-      return EwsUtilities.createEwsObjectFromXmlElementName(Item.class,
-          service, xmlElementName);
-
+    /**
+     * Initializes a new instance of the class.
+     *
+     * @param item        the item
+     * @param propertySet the property set
+     */
+    public GetItemResponse(Item item, PropertySet propertySet) {
+        super();
+        this.item = item;
+        this.propertySet = propertySet;
+        EwsUtilities.ewsAssert(this.propertySet != null, "GetItemResponse.ctor", "PropertySet should not be null");
     }
-  }
 
-  /**
-   * Gets the item that was retrieved.
-   *
-   * @return the item
-   */
-  public Item getItem() {
-    return this.item;
-  }
+    /**
+     * Reads response elements from XML.
+     *
+     * @param reader the reader
+     * @throws InstantiationException the instantiation exception
+     * @throws IllegalAccessException the illegal access exception
+     * @throws Exception              the exception
+     */
+    protected void readElementsFromXml(EwsServiceXmlReader reader)
+            throws InstantiationException, IllegalAccessException, Exception {
+        super.readElementsFromXml(reader);
 
-  /**
-   * Gets the object instance delegate.
-   *
-   * @param service        accepts ExchangeService
-   * @param xmlElementName accepts String
-   * @return Name
-   * @throws Exception throws exception
-   */
-  @Override
-  public ServiceObject getObjectInstanceDelegate(ExchangeService service,
-      String xmlElementName) throws Exception {
-    return getObjectInstance(service, xmlElementName);
-  }
+        List<Item> items = reader.readServiceObjectsCollectionFromXml(
+                XmlElementNames.Items, this,
+                true, /* clearPropertyBag */
+                this.propertySet, /* requestedPropertySet */
+                false); /* summaryPropertiesOnly */
+
+        this.item = items.get(0);
+    }
+
+    /**
+     * Gets Item instance.
+     *
+     * @param service        the service
+     * @param xmlElementName the xml element name
+     * @return Item
+     * @throws Exception the exception
+     */
+    private Item getObjectInstance(ExchangeService service,
+                                   String xmlElementName) throws Exception {
+        if (this.getItem() != null) {
+            return this.getItem();
+        } else {
+            return EwsUtilities.createEwsObjectFromXmlElementName(Item.class,
+                    service, xmlElementName);
+
+        }
+    }
+
+    /**
+     * Gets the item that was retrieved.
+     *
+     * @return the item
+     */
+    public Item getItem() {
+        return this.item;
+    }
+
+    /**
+     * Gets the object instance delegate.
+     *
+     * @param service        accepts ExchangeService
+     * @param xmlElementName accepts String
+     * @return Name
+     * @throws Exception throws exception
+     */
+    @Override
+    public ServiceObject getObjectInstanceDelegate(ExchangeService service,
+                                                   String xmlElementName) throws Exception {
+        return getObjectInstance(service, xmlElementName);
+    }
 }

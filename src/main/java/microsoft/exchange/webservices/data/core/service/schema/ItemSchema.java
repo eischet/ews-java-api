@@ -29,26 +29,8 @@ import microsoft.exchange.webservices.data.core.enumeration.misc.ExchangeVersion
 import microsoft.exchange.webservices.data.core.enumeration.property.Importance;
 import microsoft.exchange.webservices.data.core.enumeration.property.PropertyDefinitionFlags;
 import microsoft.exchange.webservices.data.core.enumeration.property.Sensitivity;
-import microsoft.exchange.webservices.data.property.complex.ConversationId;
-import microsoft.exchange.webservices.data.property.complex.FolderId;
-import microsoft.exchange.webservices.data.property.complex.ICreateComplexPropertyDelegate;
-import microsoft.exchange.webservices.data.property.complex.InternetMessageHeaderCollection;
-import microsoft.exchange.webservices.data.property.complex.ItemId;
-import microsoft.exchange.webservices.data.property.complex.MessageBody;
-import microsoft.exchange.webservices.data.property.complex.MimeContent;
-import microsoft.exchange.webservices.data.property.complex.StringList;
-import microsoft.exchange.webservices.data.property.complex.UniqueBody;
-import microsoft.exchange.webservices.data.property.definition.AttachmentsPropertyDefinition;
-import microsoft.exchange.webservices.data.property.definition.BoolPropertyDefinition;
-import microsoft.exchange.webservices.data.property.definition.ByteArrayPropertyDefinition;
-import microsoft.exchange.webservices.data.property.definition.ComplexPropertyDefinition;
-import microsoft.exchange.webservices.data.property.definition.DateTimePropertyDefinition;
-import microsoft.exchange.webservices.data.property.definition.EffectiveRightsPropertyDefinition;
-import microsoft.exchange.webservices.data.property.definition.GenericPropertyDefinition;
-import microsoft.exchange.webservices.data.property.definition.IntPropertyDefinition;
-import microsoft.exchange.webservices.data.property.definition.PropertyDefinition;
-import microsoft.exchange.webservices.data.property.definition.ResponseObjectsPropertyDefinition;
-import microsoft.exchange.webservices.data.property.definition.StringPropertyDefinition;
+import microsoft.exchange.webservices.data.property.complex.*;
+import microsoft.exchange.webservices.data.property.definition.*;
 
 import java.util.EnumSet;
 
@@ -58,696 +40,695 @@ import java.util.EnumSet;
 @Schema
 public class ItemSchema extends ServiceObjectSchema {
 
-  /**
-   * The Interface FieldUris.
-   */
-  private static interface FieldUris {
+    /**
+     * The Interface FieldUris.
+     */
+    private interface FieldUris {
+
+        /**
+         * The Item id.
+         */
+        String ItemId = "item:ItemId";
+
+        /**
+         * The Parent folder id.
+         */
+        String ParentFolderId = "item:ParentFolderId";
+
+        /**
+         * The Item class.
+         */
+        String ItemClass = "item:ItemClass";
+
+        /**
+         * The Mime content.
+         */
+        String MimeContent = "item:MimeContent";
+
+        /**
+         * The Attachments.
+         */
+        String Attachments = "item:Attachments";
+
+        /**
+         * The Subject.
+         */
+        String Subject = "item:Subject";
+
+        /**
+         * The Date time received.
+         */
+        String DateTimeReceived = "item:DateTimeReceived";
+
+        /**
+         * The Size.
+         */
+        String Size = "item:Size";
+
+        /**
+         * The Categories.
+         */
+        String Categories = "item:Categories";
+
+        /**
+         * The Has attachments.
+         */
+        String HasAttachments = "item:HasAttachments";
+
+        /**
+         * The Importance.
+         */
+        String Importance = "item:Importance";
+
+        /**
+         * The In reply to.
+         */
+        String InReplyTo = "item:InReplyTo";
+
+        /**
+         * The Internet message headers.
+         */
+        String InternetMessageHeaders = "item:InternetMessageHeaders";
+
+        /**
+         * The Is associated.
+         */
+        String IsAssociated = "item:IsAssociated";
+
+        /**
+         * The Is draft.
+         */
+        String IsDraft = "item:IsDraft";
+
+        /**
+         * The Is from me.
+         */
+        String IsFromMe = "item:IsFromMe";
+
+        /**
+         * The Is resend.
+         */
+        String IsResend = "item:IsResend";
+
+        /**
+         * The Is submitted.
+         */
+        String IsSubmitted = "item:IsSubmitted";
+
+        /**
+         * The Is unmodified.
+         */
+        String IsUnmodified = "item:IsUnmodified";
+
+        /**
+         * The Date time sent.
+         */
+        String DateTimeSent = "item:DateTimeSent";
+
+        /**
+         * The Date time created.
+         */
+        String DateTimeCreated = "item:DateTimeCreated";
+
+        /**
+         * The Body.
+         */
+        String Body = "item:Body";
+
+        /**
+         * The Response objects.
+         */
+        String ResponseObjects = "item:ResponseObjects";
+
+        /**
+         * The Sensitivity.
+         */
+        String Sensitivity = "item:Sensitivity";
+
+        /**
+         * The Reminder due by.
+         */
+        String ReminderDueBy = "item:ReminderDueBy";
+
+        /**
+         * The Reminder is set.
+         */
+        String ReminderIsSet = "item:ReminderIsSet";
+
+        /**
+         * The Reminder minutes before start.
+         */
+        String ReminderMinutesBeforeStart = "item:ReminderMinutesBeforeStart";
+
+        /**
+         * The Display to.
+         */
+        String DisplayTo = "item:DisplayTo";
+
+        /**
+         * The Display cc.
+         */
+        String DisplayCc = "item:DisplayCc";
+
+        /**
+         * The Culture.
+         */
+        String Culture = "item:Culture";
+
+        /**
+         * The Effective rights.
+         */
+        String EffectiveRights = "item:EffectiveRights";
+
+        /**
+         * The Last modified name.
+         */
+        String LastModifiedName = "item:LastModifiedName";
+
+        /**
+         * The Last modified time.
+         */
+        String LastModifiedTime = "item:LastModifiedTime";
+
+        /**
+         * The Web client read form query string.
+         */
+        String WebClientReadFormQueryString =
+                "item:WebClientReadFormQueryString";
+
+        /**
+         * The Web client edit form query string.
+         */
+        String WebClientEditFormQueryString =
+                "item:WebClientEditFormQueryString";
+
+        /**
+         * The Conversation id.
+         */
+        String ConversationId = "item:ConversationId";
+
+        /**
+         * The Unique body.
+         */
+        String UniqueBody = "item:UniqueBody";
+
+        String StoreEntryId = "item:StoreEntryId";
+    }
+
 
     /**
-     * The Item id.
+     * Defines the Id property.
      */
-    String ItemId = "item:ItemId";
+    public static final PropertyDefinition Id = new ComplexPropertyDefinition<ItemId>(
+            ItemId.class,
+            XmlElementNames.ItemId, FieldUris.ItemId, EnumSet
+            .of(PropertyDefinitionFlags.CanFind),
+            ExchangeVersion.Exchange2007_SP1,
+            new ICreateComplexPropertyDelegate<ItemId>() {
+                public ItemId createComplexProperty() {
+                    return new ItemId();
+                }
+            });
 
     /**
-     * The Parent folder id.
+     * Defines the Body property.
      */
-    String ParentFolderId = "item:ParentFolderId";
+    public static final PropertyDefinition Body = new
+            ComplexPropertyDefinition<MessageBody>(
+            MessageBody.class,
+            XmlElementNames.Body, FieldUris.Body, EnumSet.of(
+            PropertyDefinitionFlags.CanSet,
+            PropertyDefinitionFlags.CanUpdate,
+            PropertyDefinitionFlags.CanDelete),
+            ExchangeVersion.Exchange2007_SP1,
+            new ICreateComplexPropertyDelegate<MessageBody>() {
+                public MessageBody createComplexProperty() {
+                    return new MessageBody();
+                }
+            });
 
     /**
-     * The Item class.
+     * Defines the ItemClass property.
      */
-    String ItemClass = "item:ItemClass";
+    public static final PropertyDefinition ItemClass = new StringPropertyDefinition(
+            XmlElementNames.ItemClass, FieldUris.ItemClass, EnumSet.of(
+            PropertyDefinitionFlags.CanSet,
+            PropertyDefinitionFlags.CanUpdate,
+            PropertyDefinitionFlags.CanFind),
+            ExchangeVersion.Exchange2007_SP1);
 
     /**
-     * The Mime content.
+     * Defines the Subject property.
      */
-    String MimeContent = "item:MimeContent";
+    public static final PropertyDefinition Subject = new
+            StringPropertyDefinition(
+            XmlElementNames.Subject, FieldUris.Subject, EnumSet.of(
+            PropertyDefinitionFlags.CanSet,
+            PropertyDefinitionFlags.CanUpdate,
+            PropertyDefinitionFlags.CanDelete,
+            PropertyDefinitionFlags.CanFind),
+            ExchangeVersion.Exchange2007_SP1);
 
     /**
-     * The Attachments.
+     * Defines the MimeContent property.
      */
-    String Attachments = "item:Attachments";
+    public static final PropertyDefinition MimeContent =
+            new ComplexPropertyDefinition<microsoft.exchange.webservices.data.property.complex.MimeContent>(
+                    MimeContent.class,
+                    XmlElementNames.MimeContent, FieldUris.MimeContent, EnumSet.of(
+                    PropertyDefinitionFlags.CanSet,
+                    PropertyDefinitionFlags.CanUpdate,
+                    PropertyDefinitionFlags.MustBeExplicitlyLoaded),
+                    ExchangeVersion.Exchange2007_SP1,
+                    new ICreateComplexPropertyDelegate<MimeContent>() {
+                        public MimeContent createComplexProperty() {
+                            return new MimeContent();
+                        }
+                    });
 
     /**
-     * The Subject.
+     * Defines the ParentFolderId property.
      */
-    String Subject = "item:Subject";
+    public static final PropertyDefinition ParentFolderId =
+            new ComplexPropertyDefinition<FolderId>(
+                    FolderId.class,
+                    XmlElementNames.ParentFolderId, FieldUris.ParentFolderId,
+                    ExchangeVersion.Exchange2007_SP1,
+                    new ICreateComplexPropertyDelegate<FolderId>() {
+                        public FolderId createComplexProperty() {
+                            return new FolderId();
+                        }
+                    });
 
     /**
-     * The Date time received.
+     * Defines the Sensitivity property.
      */
-    String DateTimeReceived = "item:DateTimeReceived";
+    public static final PropertyDefinition Sensitivity =
+            new GenericPropertyDefinition<microsoft.exchange.webservices.data.core.enumeration.property.Sensitivity>(
+                    Sensitivity.class,
+                    XmlElementNames.Sensitivity, FieldUris.Sensitivity, EnumSet.of(
+                    PropertyDefinitionFlags.CanSet,
+                    PropertyDefinitionFlags.CanUpdate,
+                    PropertyDefinitionFlags.CanFind),
+                    ExchangeVersion.Exchange2007_SP1);
 
     /**
-     * The Size.
+     * Defines the Attachments property.
      */
-    String Size = "item:Size";
+    public static final PropertyDefinition Attachments = new AttachmentsPropertyDefinition();
 
     /**
-     * The Categories.
+     * Defines the DateTimeReceived property.
      */
-    String Categories = "item:Categories";
+    public static final PropertyDefinition DateTimeReceived =
+            new DateTimePropertyDefinition(
+                    XmlElementNames.DateTimeReceived, FieldUris.DateTimeReceived,
+                    EnumSet.of(PropertyDefinitionFlags.CanFind),
+                    ExchangeVersion.Exchange2007_SP1);
 
     /**
-     * The Has attachments.
+     * Defines the Size property.
      */
-    String HasAttachments = "item:HasAttachments";
+    public static final PropertyDefinition Size = new IntPropertyDefinition(
+            XmlElementNames.Size, FieldUris.Size, EnumSet
+            .of(PropertyDefinitionFlags.CanFind),
+            ExchangeVersion.Exchange2007_SP1);
 
     /**
-     * The Importance.
+     * Defines the Categories property.
      */
-    String Importance = "item:Importance";
+    public static final PropertyDefinition Categories =
+            new ComplexPropertyDefinition<StringList>(
+                    StringList.class,
+                    XmlElementNames.Categories, FieldUris.Categories, EnumSet.of(
+                    PropertyDefinitionFlags.AutoInstantiateOnRead,
+                    PropertyDefinitionFlags.CanSet,
+                    PropertyDefinitionFlags.CanUpdate,
+                    PropertyDefinitionFlags.CanDelete,
+                    PropertyDefinitionFlags.CanFind),
+                    ExchangeVersion.Exchange2007_SP1,
+                    new ICreateComplexPropertyDelegate<StringList>() {
+                        public StringList createComplexProperty() {
+                            return new StringList();
+                        }
+                    });
 
     /**
-     * The In reply to.
+     * Defines the Importance property.
      */
-    String InReplyTo = "item:InReplyTo";
+    public static final PropertyDefinition Importance =
+            new GenericPropertyDefinition<microsoft.exchange.webservices.data.core.enumeration.property.Importance>(
+                    Importance.class,
+                    XmlElementNames.Importance, FieldUris.Importance, EnumSet.of(
+                    PropertyDefinitionFlags.CanSet,
+                    PropertyDefinitionFlags.CanUpdate,
+                    PropertyDefinitionFlags.CanFind),
+                    ExchangeVersion.Exchange2007_SP1);
 
     /**
-     * The Internet message headers.
+     * Defines the InReplyTo property.
      */
-    String InternetMessageHeaders = "item:InternetMessageHeaders";
+    public static final PropertyDefinition InReplyTo =
+            new StringPropertyDefinition(
+                    XmlElementNames.InReplyTo, FieldUris.InReplyTo, EnumSet.of(
+                    PropertyDefinitionFlags.CanSet,
+                    PropertyDefinitionFlags.CanUpdate,
+                    PropertyDefinitionFlags.CanDelete,
+                    PropertyDefinitionFlags.CanFind),
+                    ExchangeVersion.Exchange2007_SP1);
 
     /**
-     * The Is associated.
+     * Defines the IsSubmitted property.
      */
-    String IsAssociated = "item:IsAssociated";
+    public static final PropertyDefinition IsSubmitted =
+            new BoolPropertyDefinition(
+                    XmlElementNames.IsSubmitted, FieldUris.IsSubmitted, EnumSet
+                    .of(PropertyDefinitionFlags.CanFind),
+                    ExchangeVersion.Exchange2007_SP1);
 
     /**
-     * The Is draft.
+     * Defines the IsAssociated property.
      */
-    String IsDraft = "item:IsDraft";
+    public static final PropertyDefinition IsAssociated =
+            new BoolPropertyDefinition(
+                    XmlElementNames.IsAssociated, FieldUris.IsAssociated, EnumSet.of(
+                    PropertyDefinitionFlags.CanSet,
+                    PropertyDefinitionFlags.CanFind),
+                    ExchangeVersion.Exchange2010);
 
     /**
-     * The Is from me.
+     * Defines the IsDraft property.
      */
-    String IsFromMe = "item:IsFromMe";
+    public static final PropertyDefinition IsDraft = new BoolPropertyDefinition(
+            XmlElementNames.IsDraft, FieldUris.IsDraft, EnumSet
+            .of(PropertyDefinitionFlags.CanFind),
+            ExchangeVersion.Exchange2007_SP1);
 
     /**
-     * The Is resend.
+     * Defines the IsFromMe property.
      */
-    String IsResend = "item:IsResend";
+    public static final PropertyDefinition IsFromMe =
+            new BoolPropertyDefinition(
+                    XmlElementNames.IsFromMe, FieldUris.IsFromMe, EnumSet
+                    .of(PropertyDefinitionFlags.CanFind),
+                    ExchangeVersion.Exchange2007_SP1);
 
     /**
-     * The Is submitted.
+     * Defines the IsResend property.
      */
-    String IsSubmitted = "item:IsSubmitted";
+    public static final PropertyDefinition IsResend =
+            new BoolPropertyDefinition(
+                    XmlElementNames.IsResend, FieldUris.IsResend, EnumSet
+                    .of(PropertyDefinitionFlags.CanFind),
+                    ExchangeVersion.Exchange2007_SP1);
 
     /**
-     * The Is unmodified.
+     * Defines the IsUnmodified property.
      */
-    String IsUnmodified = "item:IsUnmodified";
+    public static final PropertyDefinition IsUnmodified =
+            new BoolPropertyDefinition(
+                    XmlElementNames.IsUnmodified, FieldUris.IsUnmodified, EnumSet
+                    .of(PropertyDefinitionFlags.CanFind),
+                    ExchangeVersion.Exchange2007_SP1);
 
     /**
-     * The Date time sent.
+     * Defines the InternetMessageHeaders property.
      */
-    String DateTimeSent = "item:DateTimeSent";
+    public static final PropertyDefinition InternetMessageHeaders =
+            new ComplexPropertyDefinition<InternetMessageHeaderCollection>(
+                    InternetMessageHeaderCollection.class,
+                    XmlElementNames.InternetMessageHeaders,
+                    FieldUris.InternetMessageHeaders,
+                    EnumSet.of(PropertyDefinitionFlags.CanFind),
+                    ExchangeVersion.Exchange2007_SP1,
+                    new ICreateComplexPropertyDelegate
+                            <InternetMessageHeaderCollection>() {
+                        public InternetMessageHeaderCollection createComplexProperty() {
+                            return new InternetMessageHeaderCollection();
+                        }
+                    });
 
     /**
-     * The Date time created.
+     * Defines the DateTimeSent property.
      */
-    String DateTimeCreated = "item:DateTimeCreated";
+    public static final PropertyDefinition DateTimeSent =
+            new DateTimePropertyDefinition(
+                    XmlElementNames.DateTimeSent, FieldUris.DateTimeSent, EnumSet
+                    .of(PropertyDefinitionFlags.CanFind),
+                    ExchangeVersion.Exchange2007_SP1);
 
     /**
-     * The Body.
+     * Defines the DateTimeCreated property.
      */
-    String Body = "item:Body";
+    public static final PropertyDefinition DateTimeCreated =
+            new DateTimePropertyDefinition(
+                    XmlElementNames.DateTimeCreated, FieldUris.DateTimeCreated, EnumSet
+                    .of(PropertyDefinitionFlags.CanFind),
+                    ExchangeVersion.Exchange2007_SP1);
 
     /**
-     * The Response objects.
+     * Defines the AllowedResponseActions property.
      */
-    String ResponseObjects = "item:ResponseObjects";
+    public static final PropertyDefinition AllowedResponseActions =
+            new ResponseObjectsPropertyDefinition(
+                    XmlElementNames.ResponseObjects, FieldUris.ResponseObjects,
+                    ExchangeVersion.Exchange2007_SP1);
 
     /**
-     * The Sensitivity.
+     * Defines the ReminderDueBy property.
      */
-    String Sensitivity = "item:Sensitivity";
+
+    public static final PropertyDefinition ReminderDueBy =
+            new DateTimePropertyDefinition(
+                    XmlElementNames.ReminderDueBy, FieldUris.ReminderDueBy, EnumSet.of(
+                    PropertyDefinitionFlags.CanSet,
+                    PropertyDefinitionFlags.CanUpdate,
+                    PropertyDefinitionFlags.CanFind),
+                    ExchangeVersion.Exchange2007_SP1);
 
     /**
-     * The Reminder due by.
+     * Defines the IsReminderSet property.
      */
-    String ReminderDueBy = "item:ReminderDueBy";
+    public static final PropertyDefinition IsReminderSet =
+            new BoolPropertyDefinition(
+                    XmlElementNames.ReminderIsSet, // Note: server-side the name is
+                    // ReminderIsSet
+                    FieldUris.ReminderIsSet, EnumSet.of(PropertyDefinitionFlags.CanSet,
+                    PropertyDefinitionFlags.CanUpdate,
+                    PropertyDefinitionFlags.CanFind),
+                    ExchangeVersion.Exchange2007_SP1);
 
     /**
-     * The Reminder is set.
+     * Defines the ReminderMinutesBeforeStart property.
      */
-    String ReminderIsSet = "item:ReminderIsSet";
+    public static final PropertyDefinition ReminderMinutesBeforeStart =
+            new IntPropertyDefinition(
+                    XmlElementNames.ReminderMinutesBeforeStart,
+                    FieldUris.ReminderMinutesBeforeStart, EnumSet.of(
+                    PropertyDefinitionFlags.CanSet,
+                    PropertyDefinitionFlags.CanUpdate,
+                    PropertyDefinitionFlags.CanFind),
+                    ExchangeVersion.Exchange2007_SP1);
 
     /**
-     * The Reminder minutes before start.
+     * Defines the DisplayCc property.
      */
-    String ReminderMinutesBeforeStart = "item:ReminderMinutesBeforeStart";
+    public static final PropertyDefinition DisplayCc =
+            new StringPropertyDefinition(
+                    XmlElementNames.DisplayCc, FieldUris.DisplayCc, EnumSet
+                    .of(PropertyDefinitionFlags.CanFind),
+                    ExchangeVersion.Exchange2007_SP1);
 
     /**
-     * The Display to.
+     * Defines the DisplayTo property.
      */
-    String DisplayTo = "item:DisplayTo";
+    public static final PropertyDefinition DisplayTo =
+            new StringPropertyDefinition(
+                    XmlElementNames.DisplayTo, FieldUris.DisplayTo, EnumSet
+                    .of(PropertyDefinitionFlags.CanFind),
+                    ExchangeVersion.Exchange2007_SP1);
 
     /**
-     * The Display cc.
+     * Defines the HasAttachments property.
      */
-    String DisplayCc = "item:DisplayCc";
+    public static final PropertyDefinition HasAttachments =
+            new BoolPropertyDefinition(
+                    XmlElementNames.HasAttachments, FieldUris.HasAttachments, EnumSet
+                    .of(PropertyDefinitionFlags.CanFind),
+                    ExchangeVersion.Exchange2007_SP1);
 
     /**
-     * The Culture.
+     * Defines the Culture property.
      */
-    String Culture = "item:Culture";
+    public static final PropertyDefinition Culture =
+            new StringPropertyDefinition(
+                    XmlElementNames.Culture, FieldUris.Culture, EnumSet.of(
+                    PropertyDefinitionFlags.CanSet,
+                    PropertyDefinitionFlags.CanUpdate,
+                    PropertyDefinitionFlags.CanDelete,
+                    PropertyDefinitionFlags.CanFind),
+                    ExchangeVersion.Exchange2007_SP1);
 
     /**
-     * The Effective rights.
+     * Defines the EffectiveRights property.
      */
-    String EffectiveRights = "item:EffectiveRights";
+    public static final PropertyDefinition EffectiveRights =
+            new EffectiveRightsPropertyDefinition(
+                    XmlElementNames.EffectiveRights, FieldUris.EffectiveRights, EnumSet
+                    .of(PropertyDefinitionFlags.CanFind),
+                    ExchangeVersion.Exchange2007_SP1);
 
     /**
-     * The Last modified name.
+     * Defines the LastModifiedName property.
      */
-    String LastModifiedName = "item:LastModifiedName";
+    public static final PropertyDefinition LastModifiedName =
+            new StringPropertyDefinition(
+                    XmlElementNames.LastModifiedName, FieldUris.LastModifiedName,
+                    EnumSet.of(PropertyDefinitionFlags.CanFind),
+                    ExchangeVersion.Exchange2007_SP1);
 
     /**
-     * The Last modified time.
+     * Defines the LastModifiedTime property.
      */
-    String LastModifiedTime = "item:LastModifiedTime";
+    public static final PropertyDefinition LastModifiedTime =
+            new DateTimePropertyDefinition(
+                    XmlElementNames.LastModifiedTime, FieldUris.LastModifiedTime,
+                    EnumSet.of(PropertyDefinitionFlags.CanFind),
+                    ExchangeVersion.Exchange2007_SP1);
 
     /**
-     * The Web client read form query string.
+     * Defines the WebClientReadFormQueryString property.
      */
-    String WebClientReadFormQueryString =
-        "item:WebClientReadFormQueryString";
+    public static final PropertyDefinition WebClientReadFormQueryString =
+            new StringPropertyDefinition(
+                    XmlElementNames.WebClientReadFormQueryString,
+                    FieldUris.WebClientReadFormQueryString, EnumSet
+                    .of(PropertyDefinitionFlags.CanFind),
+                    ExchangeVersion.Exchange2010);
 
     /**
-     * The Web client edit form query string.
+     * Defines the WebClientEditFormQueryString property.
      */
-    String WebClientEditFormQueryString =
-        "item:WebClientEditFormQueryString";
+    public static final PropertyDefinition WebClientEditFormQueryString =
+            new StringPropertyDefinition(
+                    XmlElementNames.WebClientEditFormQueryString,
+                    FieldUris.WebClientEditFormQueryString, EnumSet
+                    .of(PropertyDefinitionFlags.CanFind),
+                    ExchangeVersion.Exchange2010);
 
     /**
-     * The Conversation id.
+     * Defines the ConversationId property.
      */
-    String ConversationId = "item:ConversationId";
+    public static final PropertyDefinition ConversationId =
+            new ComplexPropertyDefinition<microsoft.exchange.webservices.data.property.complex.ConversationId>(
+                    ConversationId.class,
+                    XmlElementNames.ConversationId, FieldUris.ConversationId, EnumSet
+                    .of(PropertyDefinitionFlags.CanFind),
+                    ExchangeVersion.Exchange2010,
+                    new ICreateComplexPropertyDelegate<ConversationId>() {
+                        public ConversationId createComplexProperty() {
+                            return new ConversationId();
+                        }
+                    });
 
     /**
-     * The Unique body.
+     * Defines the UniqueBody property.
      */
-    String UniqueBody = "item:UniqueBody";
+    public static final PropertyDefinition UniqueBody =
+            new ComplexPropertyDefinition<microsoft.exchange.webservices.data.property.complex.UniqueBody>(
+                    UniqueBody.class,
+                    XmlElementNames.UniqueBody, FieldUris.UniqueBody, EnumSet
+                    .of(PropertyDefinitionFlags.MustBeExplicitlyLoaded),
+                    ExchangeVersion.Exchange2010,
+                    new ICreateComplexPropertyDelegate<UniqueBody>() {
+                        public UniqueBody createComplexProperty() {
+                            return new UniqueBody();
+                        }
+                    });
 
-    String StoreEntryId = "item:StoreEntryId";
-  }
+    /**
+     * Defines the StoreEntryId property.
+     */
 
-
-  /**
-   * Defines the Id property.
-   */
-  public static final PropertyDefinition Id = new ComplexPropertyDefinition<ItemId>(
-      ItemId.class,
-      XmlElementNames.ItemId, FieldUris.ItemId, EnumSet
-      .of(PropertyDefinitionFlags.CanFind),
-      ExchangeVersion.Exchange2007_SP1,
-      new ICreateComplexPropertyDelegate<ItemId>() {
-        public ItemId createComplexProperty() {
-          return new ItemId();
-        }
-      });
-
-  /**
-   * Defines the Body property.
-   */
-  public static final PropertyDefinition Body = new
-      ComplexPropertyDefinition<MessageBody>(
-      MessageBody.class,
-      XmlElementNames.Body, FieldUris.Body, EnumSet.of(
-      PropertyDefinitionFlags.CanSet,
-      PropertyDefinitionFlags.CanUpdate,
-      PropertyDefinitionFlags.CanDelete),
-      ExchangeVersion.Exchange2007_SP1,
-      new ICreateComplexPropertyDelegate<MessageBody>() {
-        public MessageBody createComplexProperty() {
-          return new MessageBody();
-        }
-      });
-
-  /**
-   * Defines the ItemClass property.
-   */
-  public static final PropertyDefinition ItemClass = new StringPropertyDefinition(
-      XmlElementNames.ItemClass, FieldUris.ItemClass, EnumSet.of(
-      PropertyDefinitionFlags.CanSet,
-      PropertyDefinitionFlags.CanUpdate,
-      PropertyDefinitionFlags.CanFind),
-      ExchangeVersion.Exchange2007_SP1);
-
-  /**
-   * Defines the Subject property.
-   */
-  public static final PropertyDefinition Subject = new
-      StringPropertyDefinition(
-      XmlElementNames.Subject, FieldUris.Subject, EnumSet.of(
-      PropertyDefinitionFlags.CanSet,
-      PropertyDefinitionFlags.CanUpdate,
-      PropertyDefinitionFlags.CanDelete,
-      PropertyDefinitionFlags.CanFind),
-      ExchangeVersion.Exchange2007_SP1);
-
-  /**
-   * Defines the MimeContent property.
-   */
-  public static final PropertyDefinition MimeContent =
-      new ComplexPropertyDefinition<microsoft.exchange.webservices.data.property.complex.MimeContent>(
-          MimeContent.class,
-          XmlElementNames.MimeContent, FieldUris.MimeContent, EnumSet.of(
-          PropertyDefinitionFlags.CanSet,
-          PropertyDefinitionFlags.CanUpdate,
-          PropertyDefinitionFlags.MustBeExplicitlyLoaded),
-          ExchangeVersion.Exchange2007_SP1,
-          new ICreateComplexPropertyDelegate<MimeContent>() {
-            public MimeContent createComplexProperty() {
-              return new MimeContent();
-            }
-          });
-
-  /**
-   * Defines the ParentFolderId property.
-   */
-  public static final PropertyDefinition ParentFolderId =
-      new ComplexPropertyDefinition<FolderId>(
-          FolderId.class,
-          XmlElementNames.ParentFolderId, FieldUris.ParentFolderId,
-          ExchangeVersion.Exchange2007_SP1,
-          new ICreateComplexPropertyDelegate<FolderId>() {
-            public FolderId createComplexProperty() {
-              return new FolderId();
-            }
-          });
-
-  /**
-   * Defines the Sensitivity property.
-   */
-  public static final PropertyDefinition Sensitivity =
-      new GenericPropertyDefinition<microsoft.exchange.webservices.data.core.enumeration.property.Sensitivity>(
-          Sensitivity.class,
-          XmlElementNames.Sensitivity, FieldUris.Sensitivity, EnumSet.of(
-          PropertyDefinitionFlags.CanSet,
-          PropertyDefinitionFlags.CanUpdate,
-          PropertyDefinitionFlags.CanFind),
-          ExchangeVersion.Exchange2007_SP1);
-
-  /**
-   * Defines the Attachments property.
-   */
-  public static final PropertyDefinition Attachments = new AttachmentsPropertyDefinition();
-
-  /**
-   * Defines the DateTimeReceived property.
-   */
-  public static final PropertyDefinition DateTimeReceived =
-      new DateTimePropertyDefinition(
-          XmlElementNames.DateTimeReceived, FieldUris.DateTimeReceived,
-          EnumSet.of(PropertyDefinitionFlags.CanFind),
-          ExchangeVersion.Exchange2007_SP1);
-
-  /**
-   * Defines the Size property.
-   */
-  public static final PropertyDefinition Size = new IntPropertyDefinition(
-      XmlElementNames.Size, FieldUris.Size, EnumSet
-      .of(PropertyDefinitionFlags.CanFind),
-      ExchangeVersion.Exchange2007_SP1);
-
-  /**
-   * Defines the Categories property.
-   */
-  public static final PropertyDefinition Categories =
-      new ComplexPropertyDefinition<StringList>(
-          StringList.class,
-          XmlElementNames.Categories, FieldUris.Categories, EnumSet.of(
-          PropertyDefinitionFlags.AutoInstantiateOnRead,
-          PropertyDefinitionFlags.CanSet,
-          PropertyDefinitionFlags.CanUpdate,
-          PropertyDefinitionFlags.CanDelete,
-          PropertyDefinitionFlags.CanFind),
-          ExchangeVersion.Exchange2007_SP1,
-          new ICreateComplexPropertyDelegate<StringList>() {
-            public StringList createComplexProperty() {
-              return new StringList();
-            }
-          });
-
-  /**
-   * Defines the Importance property.
-   */
-  public static final PropertyDefinition Importance =
-      new GenericPropertyDefinition<microsoft.exchange.webservices.data.core.enumeration.property.Importance>(
-          Importance.class,
-          XmlElementNames.Importance, FieldUris.Importance, EnumSet.of(
-          PropertyDefinitionFlags.CanSet,
-          PropertyDefinitionFlags.CanUpdate,
-          PropertyDefinitionFlags.CanFind),
-          ExchangeVersion.Exchange2007_SP1);
-
-  /**
-   * Defines the InReplyTo property.
-   */
-  public static final PropertyDefinition InReplyTo =
-      new StringPropertyDefinition(
-          XmlElementNames.InReplyTo, FieldUris.InReplyTo, EnumSet.of(
-          PropertyDefinitionFlags.CanSet,
-          PropertyDefinitionFlags.CanUpdate,
-          PropertyDefinitionFlags.CanDelete,
-          PropertyDefinitionFlags.CanFind),
-          ExchangeVersion.Exchange2007_SP1);
-
-  /**
-   * Defines the IsSubmitted property.
-   */
-  public static final PropertyDefinition IsSubmitted =
-      new BoolPropertyDefinition(
-          XmlElementNames.IsSubmitted, FieldUris.IsSubmitted, EnumSet
-          .of(PropertyDefinitionFlags.CanFind),
-          ExchangeVersion.Exchange2007_SP1);
-
-  /**
-   * Defines the IsAssociated property.
-   */
-  public static final PropertyDefinition IsAssociated =
-      new BoolPropertyDefinition(
-          XmlElementNames.IsAssociated, FieldUris.IsAssociated, EnumSet.of(
-          PropertyDefinitionFlags.CanSet,
-          PropertyDefinitionFlags.CanFind),
-          ExchangeVersion.Exchange2010);
-
-  /**
-   * Defines the IsDraft property.
-   */
-  public static final PropertyDefinition IsDraft = new BoolPropertyDefinition(
-      XmlElementNames.IsDraft, FieldUris.IsDraft, EnumSet
-      .of(PropertyDefinitionFlags.CanFind),
-      ExchangeVersion.Exchange2007_SP1);
-
-  /**
-   * Defines the IsFromMe property.
-   */
-  public static final PropertyDefinition IsFromMe =
-      new BoolPropertyDefinition(
-          XmlElementNames.IsFromMe, FieldUris.IsFromMe, EnumSet
-          .of(PropertyDefinitionFlags.CanFind),
-          ExchangeVersion.Exchange2007_SP1);
-
-  /**
-   * Defines the IsResend property.
-   */
-  public static final PropertyDefinition IsResend =
-      new BoolPropertyDefinition(
-          XmlElementNames.IsResend, FieldUris.IsResend, EnumSet
-          .of(PropertyDefinitionFlags.CanFind),
-          ExchangeVersion.Exchange2007_SP1);
-
-  /**
-   * Defines the IsUnmodified property.
-   */
-  public static final PropertyDefinition IsUnmodified =
-      new BoolPropertyDefinition(
-          XmlElementNames.IsUnmodified, FieldUris.IsUnmodified, EnumSet
-          .of(PropertyDefinitionFlags.CanFind),
-          ExchangeVersion.Exchange2007_SP1);
-
-  /**
-   * Defines the InternetMessageHeaders property.
-   */
-  public static final PropertyDefinition InternetMessageHeaders =
-      new ComplexPropertyDefinition<InternetMessageHeaderCollection>(
-          InternetMessageHeaderCollection.class,
-          XmlElementNames.InternetMessageHeaders,
-          FieldUris.InternetMessageHeaders,
-          EnumSet.of(PropertyDefinitionFlags.CanFind),
-          ExchangeVersion.Exchange2007_SP1,
-          new ICreateComplexPropertyDelegate
-              <InternetMessageHeaderCollection>() {
-            public InternetMessageHeaderCollection createComplexProperty() {
-              return new InternetMessageHeaderCollection();
-            }
-          });
-
-  /**
-   * Defines the DateTimeSent property.
-   */
-  public static final PropertyDefinition DateTimeSent =
-      new DateTimePropertyDefinition(
-          XmlElementNames.DateTimeSent, FieldUris.DateTimeSent, EnumSet
-          .of(PropertyDefinitionFlags.CanFind),
-          ExchangeVersion.Exchange2007_SP1);
-
-  /**
-   * Defines the DateTimeCreated property.
-   */
-  public static final PropertyDefinition DateTimeCreated =
-      new DateTimePropertyDefinition(
-          XmlElementNames.DateTimeCreated, FieldUris.DateTimeCreated, EnumSet
-          .of(PropertyDefinitionFlags.CanFind),
-          ExchangeVersion.Exchange2007_SP1);
-
-  /**
-   * Defines the AllowedResponseActions property.
-   */
-  public static final PropertyDefinition AllowedResponseActions =
-      new ResponseObjectsPropertyDefinition(
-          XmlElementNames.ResponseObjects, FieldUris.ResponseObjects,
-          ExchangeVersion.Exchange2007_SP1);
-
-  /**
-   * Defines the ReminderDueBy property.
-   */
-
-  public static final PropertyDefinition ReminderDueBy =
-      new DateTimePropertyDefinition(
-          XmlElementNames.ReminderDueBy, FieldUris.ReminderDueBy, EnumSet.of(
-          PropertyDefinitionFlags.CanSet,
-          PropertyDefinitionFlags.CanUpdate,
-          PropertyDefinitionFlags.CanFind),
-          ExchangeVersion.Exchange2007_SP1);
-
-  /**
-   * Defines the IsReminderSet property.
-   */
-  public static final PropertyDefinition IsReminderSet =
-      new BoolPropertyDefinition(
-          XmlElementNames.ReminderIsSet, // Note: server-side the name is
-          // ReminderIsSet
-          FieldUris.ReminderIsSet, EnumSet.of(PropertyDefinitionFlags.CanSet,
-          PropertyDefinitionFlags.CanUpdate,
-          PropertyDefinitionFlags.CanFind),
-          ExchangeVersion.Exchange2007_SP1);
-
-  /**
-   * Defines the ReminderMinutesBeforeStart property.
-   */
-  public static final PropertyDefinition ReminderMinutesBeforeStart =
-      new IntPropertyDefinition(
-          XmlElementNames.ReminderMinutesBeforeStart,
-          FieldUris.ReminderMinutesBeforeStart, EnumSet.of(
-          PropertyDefinitionFlags.CanSet,
-          PropertyDefinitionFlags.CanUpdate,
-          PropertyDefinitionFlags.CanFind),
-          ExchangeVersion.Exchange2007_SP1);
-
-  /**
-   * Defines the DisplayCc property.
-   */
-  public static final PropertyDefinition DisplayCc =
-      new StringPropertyDefinition(
-          XmlElementNames.DisplayCc, FieldUris.DisplayCc, EnumSet
-          .of(PropertyDefinitionFlags.CanFind),
-          ExchangeVersion.Exchange2007_SP1);
-
-  /**
-   * Defines the DisplayTo property.
-   */
-  public static final PropertyDefinition DisplayTo =
-      new StringPropertyDefinition(
-          XmlElementNames.DisplayTo, FieldUris.DisplayTo, EnumSet
-          .of(PropertyDefinitionFlags.CanFind),
-          ExchangeVersion.Exchange2007_SP1);
-
-  /**
-   * Defines the HasAttachments property.
-   */
-  public static final PropertyDefinition HasAttachments =
-      new BoolPropertyDefinition(
-          XmlElementNames.HasAttachments, FieldUris.HasAttachments, EnumSet
-          .of(PropertyDefinitionFlags.CanFind),
-          ExchangeVersion.Exchange2007_SP1);
-
-  /**
-   * Defines the Culture property.
-   */
-  public static final PropertyDefinition Culture =
-      new StringPropertyDefinition(
-          XmlElementNames.Culture, FieldUris.Culture, EnumSet.of(
-          PropertyDefinitionFlags.CanSet,
-          PropertyDefinitionFlags.CanUpdate,
-          PropertyDefinitionFlags.CanDelete,
-          PropertyDefinitionFlags.CanFind),
-          ExchangeVersion.Exchange2007_SP1);
-
-  /**
-   * Defines the EffectiveRights property.
-   */
-  public static final PropertyDefinition EffectiveRights =
-      new EffectiveRightsPropertyDefinition(
-          XmlElementNames.EffectiveRights, FieldUris.EffectiveRights, EnumSet
-          .of(PropertyDefinitionFlags.CanFind),
-          ExchangeVersion.Exchange2007_SP1);
-
-  /**
-   * Defines the LastModifiedName property.
-   */
-  public static final PropertyDefinition LastModifiedName =
-      new StringPropertyDefinition(
-          XmlElementNames.LastModifiedName, FieldUris.LastModifiedName,
-          EnumSet.of(PropertyDefinitionFlags.CanFind),
-          ExchangeVersion.Exchange2007_SP1);
-
-  /**
-   * Defines the LastModifiedTime property.
-   */
-  public static final PropertyDefinition LastModifiedTime =
-      new DateTimePropertyDefinition(
-          XmlElementNames.LastModifiedTime, FieldUris.LastModifiedTime,
-          EnumSet.of(PropertyDefinitionFlags.CanFind),
-          ExchangeVersion.Exchange2007_SP1);
-
-  /**
-   * Defines the WebClientReadFormQueryString property.
-   */
-  public static final PropertyDefinition WebClientReadFormQueryString =
-      new StringPropertyDefinition(
-          XmlElementNames.WebClientReadFormQueryString,
-          FieldUris.WebClientReadFormQueryString, EnumSet
-          .of(PropertyDefinitionFlags.CanFind),
-          ExchangeVersion.Exchange2010);
-
-  /**
-   * Defines the WebClientEditFormQueryString property.
-   */
-  public static final PropertyDefinition WebClientEditFormQueryString =
-      new StringPropertyDefinition(
-          XmlElementNames.WebClientEditFormQueryString,
-          FieldUris.WebClientEditFormQueryString, EnumSet
-          .of(PropertyDefinitionFlags.CanFind),
-          ExchangeVersion.Exchange2010);
-
-  /**
-   * Defines the ConversationId property.
-   */
-  public static final PropertyDefinition ConversationId =
-      new ComplexPropertyDefinition<microsoft.exchange.webservices.data.property.complex.ConversationId>(
-          ConversationId.class,
-          XmlElementNames.ConversationId, FieldUris.ConversationId, EnumSet
-          .of(PropertyDefinitionFlags.CanFind),
-          ExchangeVersion.Exchange2010,
-          new ICreateComplexPropertyDelegate<ConversationId>() {
-            public ConversationId createComplexProperty() {
-              return new ConversationId();
-            }
-          });
-
-  /**
-   * Defines the UniqueBody property.
-   */
-  public static final PropertyDefinition UniqueBody =
-      new ComplexPropertyDefinition<microsoft.exchange.webservices.data.property.complex.UniqueBody>(
-          UniqueBody.class,
-          XmlElementNames.UniqueBody, FieldUris.UniqueBody, EnumSet
-          .of(PropertyDefinitionFlags.MustBeExplicitlyLoaded),
-          ExchangeVersion.Exchange2010,
-          new ICreateComplexPropertyDelegate<UniqueBody>() {
-            public UniqueBody createComplexProperty() {
-              return new UniqueBody();
-            }
-          });
-
-  /**
-   * Defines the StoreEntryId property.
-   */
-
-  public static final PropertyDefinition StoreEntryId =
-      new ByteArrayPropertyDefinition(
-          XmlElementNames.StoreEntryId,
-          FieldUris.StoreEntryId,
-          EnumSet
-              .of(PropertyDefinitionFlags.CanFind),
-          ExchangeVersion.Exchange2010_SP2);
+    public static final PropertyDefinition StoreEntryId =
+            new ByteArrayPropertyDefinition(
+                    XmlElementNames.StoreEntryId,
+                    FieldUris.StoreEntryId,
+                    EnumSet
+                            .of(PropertyDefinitionFlags.CanFind),
+                    ExchangeVersion.Exchange2010_SP2);
 
 
+    /**
+     * The Constant Instance.
+     */
+    protected static final ItemSchema Instance = new ItemSchema();
 
-  /**
-   * The Constant Instance.
-   */
-  protected static final ItemSchema Instance = new ItemSchema();
+    /**
+     * Gets the single instance of ItemSchema.
+     *
+     * @return single instance of ItemSchema
+     */
+    public static ItemSchema getInstance() {
+        return Instance;
+    }
 
-  /**
-   * Gets the single instance of ItemSchema.
-   *
-   * @return single instance of ItemSchema
-   */
-  public static ItemSchema getInstance() {
-    return Instance;
-  }
+    /**
+     * Registers property.
+     * <p>
+     * IMPORTANT NOTE: PROPERTIES MUST BE REGISTERED IN SCHEMA ORDER (i.e. the
+     * same order as they are defined in types.xsd)
+     * </p>
+     */
+    @Override
+    protected void registerProperties() {
+        super.registerProperties();
+        this.registerProperty(MimeContent);
+        this.registerProperty(Id);
+        this.registerProperty(ParentFolderId);
+        this.registerProperty(ItemClass);
+        this.registerProperty(Subject);
+        this.registerProperty(Sensitivity);
+        this.registerProperty(Body);
+        this.registerProperty(Attachments);
+        this.registerProperty(DateTimeReceived);
+        this.registerProperty(Size);
+        this.registerProperty(Categories);
+        this.registerProperty(Importance);
+        this.registerProperty(InReplyTo);
+        this.registerProperty(IsSubmitted);
+        this.registerProperty(IsDraft);
+        this.registerProperty(IsFromMe);
+        this.registerProperty(IsResend);
+        this.registerProperty(IsUnmodified);
+        this.registerProperty(InternetMessageHeaders);
+        this.registerProperty(DateTimeSent);
+        this.registerProperty(DateTimeCreated);
+        this.registerProperty(AllowedResponseActions);
+        this.registerProperty(ReminderDueBy);
+        this.registerProperty(IsReminderSet);
+        this.registerProperty(ReminderMinutesBeforeStart);
+        this.registerProperty(DisplayCc);
+        this.registerProperty(DisplayTo);
+        this.registerProperty(HasAttachments);
+        this.registerProperty(ServiceObjectSchema.extendedProperties);
+        this.registerProperty(Culture);
+        this.registerProperty(EffectiveRights);
+        this.registerProperty(LastModifiedName);
+        this.registerProperty(LastModifiedTime);
+        this.registerProperty(IsAssociated);
+        this.registerProperty(WebClientReadFormQueryString);
+        this.registerProperty(WebClientEditFormQueryString);
+        this.registerProperty(ConversationId);
+        this.registerProperty(UniqueBody);
+        this.registerProperty(StoreEntryId);
 
-  /**
-   * Registers property.
-   * <p>
-   * IMPORTANT NOTE: PROPERTIES MUST BE REGISTERED IN SCHEMA ORDER (i.e. the
-   * same order as they are defined in types.xsd)
-   * </p>
-   */
-  @Override
-  protected void registerProperties() {
-    super.registerProperties();
-    this.registerProperty(MimeContent);
-    this.registerProperty(Id);
-    this.registerProperty(ParentFolderId);
-    this.registerProperty(ItemClass);
-    this.registerProperty(Subject);
-    this.registerProperty(Sensitivity);
-    this.registerProperty(Body);
-    this.registerProperty(Attachments);
-    this.registerProperty(DateTimeReceived);
-    this.registerProperty(Size);
-    this.registerProperty(Categories);
-    this.registerProperty(Importance);
-    this.registerProperty(InReplyTo);
-    this.registerProperty(IsSubmitted);
-    this.registerProperty(IsDraft);
-    this.registerProperty(IsFromMe);
-    this.registerProperty(IsResend);
-    this.registerProperty(IsUnmodified);
-    this.registerProperty(InternetMessageHeaders);
-    this.registerProperty(DateTimeSent);
-    this.registerProperty(DateTimeCreated);
-    this.registerProperty(AllowedResponseActions);
-    this.registerProperty(ReminderDueBy);
-    this.registerProperty(IsReminderSet);
-    this.registerProperty(ReminderMinutesBeforeStart);
-    this.registerProperty(DisplayCc);
-    this.registerProperty(DisplayTo);
-    this.registerProperty(HasAttachments);
-    this.registerProperty(ServiceObjectSchema.extendedProperties);
-    this.registerProperty(Culture);
-    this.registerProperty(EffectiveRights);
-    this.registerProperty(LastModifiedName);
-    this.registerProperty(LastModifiedTime);
-    this.registerProperty(IsAssociated);
-    this.registerProperty(WebClientReadFormQueryString);
-    this.registerProperty(WebClientEditFormQueryString);
-    this.registerProperty(ConversationId);
-    this.registerProperty(UniqueBody);
-    this.registerProperty(StoreEntryId);
+    }
 
-  }
-
-  /**
-   * Initializes a new instance.
-   */
-  protected ItemSchema() {
-    super();
-  }
+    /**
+     * Initializes a new instance.
+     */
+    protected ItemSchema() {
+        super();
+    }
 }

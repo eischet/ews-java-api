@@ -28,27 +28,27 @@ package microsoft.exchange.webservices.data.core.enumeration.property;
  */
 public enum PhysicalAddressIndex {
 
-  // None.
-  /**
-   * The None.
-   */
-  None,
+    // None.
+    /**
+     * The None.
+     */
+    None,
 
-  // The business address.
-  /**
-   * The Business.
-   */
-  Business,
+    // The business address.
+    /**
+     * The Business.
+     */
+    Business,
 
-  // The home address.
-  /**
-   * The Home.
-   */
-  Home,
+    // The home address.
+    /**
+     * The Home.
+     */
+    Home,
 
-  // The alternate address.
-  /**
-   * The Other.
-   */
-  Other
+    // The alternate address.
+    /**
+     * The Other.
+     */
+    Other
 }

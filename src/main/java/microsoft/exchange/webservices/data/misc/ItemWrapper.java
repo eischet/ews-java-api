@@ -25,49 +25,49 @@ package microsoft.exchange.webservices.data.misc;
 
 import microsoft.exchange.webservices.data.core.EwsServiceXmlWriter;
 import microsoft.exchange.webservices.data.core.EwsUtilities;
-import microsoft.exchange.webservices.data.core.service.item.Item;
 import microsoft.exchange.webservices.data.core.exception.service.local.ServiceLocalException;
+import microsoft.exchange.webservices.data.core.service.item.Item;
 
 /**
  * Represents an item Id provided by a ItemBase object.
  */
 class ItemWrapper extends AbstractItemIdWrapper {
 
-  /**
-   * The ItemBase object providing the Id.
-   */
-  private Item item;
+    /**
+     * The ItemBase object providing the Id.
+     */
+    private final Item item;
 
-  /**
-   * Initializes a new instance of ItemWrapper.
-   *
-   * @param item the item
-   * @throws ServiceLocalException the service local exception
-   */
-  protected ItemWrapper(final Item item) throws ServiceLocalException {
-    EwsUtilities.ewsAssert(item != null, "ItemWrapper.ctor", "item is null");
-    EwsUtilities.ewsAssert(!item.isNew(), "ItemWrapper.ctor", "item does not have an Id");
-    this.item = item;
-  }
+    /**
+     * Initializes a new instance of ItemWrapper.
+     *
+     * @param item the item
+     * @throws ServiceLocalException the service local exception
+     */
+    protected ItemWrapper(final Item item) throws ServiceLocalException {
+        EwsUtilities.ewsAssert(item != null, "ItemWrapper.ctor", "item is null");
+        EwsUtilities.ewsAssert(!item.isNew(), "ItemWrapper.ctor", "item does not have an Id");
+        this.item = item;
+    }
 
-  /**
-   * Obtains the ItemBase object associated with the wrapper.
-   *
-   * @return The ItemBase object associated with the wrapper
-   */
-  public Item getItem() {
-    return this.item;
-  }
+    /**
+     * Obtains the ItemBase object associated with the wrapper.
+     *
+     * @return The ItemBase object associated with the wrapper
+     */
+    public Item getItem() {
+        return this.item;
+    }
 
-  /**
-   * Writes the Id encapsulated in the wrapper to XML.
-   *
-   * @param writer the writer
-   * @throws Exception the exception
-   */
-  @Override
-  protected void writeToXml(EwsServiceXmlWriter writer) throws Exception {
-    this.item.getId().writeToXml(writer);
+    /**
+     * Writes the Id encapsulated in the wrapper to XML.
+     *
+     * @param writer the writer
+     * @throws Exception the exception
+     */
+    @Override
+    protected void writeToXml(EwsServiceXmlWriter writer) throws Exception {
+        this.item.getId().writeToXml(writer);
 
-  }
+    }
 }

@@ -24,10 +24,10 @@
 package microsoft.exchange.webservices.data.property.definition;
 
 import microsoft.exchange.webservices.data.core.EwsUtilities;
-import microsoft.exchange.webservices.data.core.service.ServiceObject;
-import microsoft.exchange.webservices.data.core.service.folder.Folder;
 import microsoft.exchange.webservices.data.core.enumeration.misc.ExchangeVersion;
 import microsoft.exchange.webservices.data.core.enumeration.property.PropertyDefinitionFlags;
+import microsoft.exchange.webservices.data.core.service.ServiceObject;
+import microsoft.exchange.webservices.data.core.service.folder.Folder;
 import microsoft.exchange.webservices.data.property.complex.ComplexProperty;
 import microsoft.exchange.webservices.data.property.complex.FolderPermissionCollection;
 
@@ -38,40 +38,41 @@ import java.util.EnumSet;
  */
 public class PermissionSetPropertyDefinition extends ComplexPropertyDefinitionBase {
 
-  /**
-   * Initializes a new instance of the PermissionSetPropertyDefinition class.
-   *
-   * @param xmlElementName Name of the XML element.
-   * @param uri            The URI.
-   * @param flags          The flags.
-   * @param version        The version.
-   */
-  public PermissionSetPropertyDefinition(String xmlElementName, String uri,
-      EnumSet<PropertyDefinitionFlags> flags, ExchangeVersion version) {
-    super(xmlElementName, uri, flags, version);
-  }
+    /**
+     * Initializes a new instance of the PermissionSetPropertyDefinition class.
+     *
+     * @param xmlElementName Name of the XML element.
+     * @param uri            The URI.
+     * @param flags          The flags.
+     * @param version        The version.
+     */
+    public PermissionSetPropertyDefinition(String xmlElementName, String uri,
+                                           EnumSet<PropertyDefinitionFlags> flags, ExchangeVersion version) {
+        super(xmlElementName, uri, flags, version);
+    }
 
-  /**
-   * Creates the property instance.
-   *
-   * @param owner The owner.
-   * @return ComplexProperty.
-   */
-  @Override public ComplexProperty createPropertyInstance(ServiceObject owner) {
-    Folder folder = (Folder) owner;
+    /**
+     * Creates the property instance.
+     *
+     * @param owner The owner.
+     * @return ComplexProperty.
+     */
+    @Override
+    public ComplexProperty createPropertyInstance(ServiceObject owner) {
+        Folder folder = (Folder) owner;
 
-    EwsUtilities.ewsAssert(folder != null, "PermissionCollectionPropertyDefinition.CreatePropertyInstance",
-                           "The owner parameter is not of type Folder or a derived class.");
+        EwsUtilities.ewsAssert(folder != null, "PermissionCollectionPropertyDefinition.CreatePropertyInstance",
+                "The owner parameter is not of type Folder or a derived class.");
 
-    return new FolderPermissionCollection(folder);
-  }
+        return new FolderPermissionCollection(folder);
+    }
 
-  /**
-   * Gets the property type.
-   */
-  @Override
-  public Class<FolderPermissionCollection> getType() {
-    return FolderPermissionCollection.class;
-  }
+    /**
+     * Gets the property type.
+     */
+    @Override
+    public Class<FolderPermissionCollection> getType() {
+        return FolderPermissionCollection.class;
+    }
 }
 

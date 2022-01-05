@@ -31,7 +31,6 @@ import microsoft.exchange.webservices.data.core.enumeration.misc.XmlNamespace;
 import microsoft.exchange.webservices.data.core.exception.service.local.ServiceXmlSerializationException;
 
 import javax.xml.stream.XMLStreamException;
-
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -42,157 +41,157 @@ import java.util.TimeZone;
  */
 public class TimeWindow implements ISelfValidate {
 
-  /**
-   * The start time.
-   */
-  private Date startTime;
+    /**
+     * The start time.
+     */
+    private Date startTime;
 
-  /**
-   * The end time.
-   */
-  private Date endTime;
+    /**
+     * The end time.
+     */
+    private Date endTime;
 
-  /**
-   * Initializes a new instance of the "TimeWindow" class.
-   */
-  public TimeWindow() {
-  }
+    /**
+     * Initializes a new instance of the "TimeWindow" class.
+     */
+    public TimeWindow() {
+    }
 
-  /**
-   * Initializes a new instance of the "TimeWindow" class.
-   *
-   * @param startTime the start time
-   * @param endTime   the end time
-   */
-  public TimeWindow(Date startTime, Date endTime) {
-    this();
-    this.startTime = startTime;
-    this.endTime = endTime;
-  }
+    /**
+     * Initializes a new instance of the "TimeWindow" class.
+     *
+     * @param startTime the start time
+     * @param endTime   the end time
+     */
+    public TimeWindow(Date startTime, Date endTime) {
+        this();
+        this.startTime = startTime;
+        this.endTime = endTime;
+    }
 
-  /**
-   * Gets the start time.
-   *
-   * @return the start time
-   */
-  public Date getStartTime() {
-    return startTime;
-  }
+    /**
+     * Gets the start time.
+     *
+     * @return the start time
+     */
+    public Date getStartTime() {
+        return startTime;
+    }
 
-  /**
-   * Sets the start time.
-   *
-   * @param startTime the new start time
-   */
-  public void setStartTime(Date startTime) {
-    this.startTime = startTime;
-  }
+    /**
+     * Sets the start time.
+     *
+     * @param startTime the new start time
+     */
+    public void setStartTime(Date startTime) {
+        this.startTime = startTime;
+    }
 
-  /**
-   * Gets the end time.
-   *
-   * @return the end time
-   */
-  public Date getEndTime() {
-    return endTime;
-  }
+    /**
+     * Gets the end time.
+     *
+     * @return the end time
+     */
+    public Date getEndTime() {
+        return endTime;
+    }
 
-  /**
-   * Sets the end time.
-   *
-   * @param endTime the new end time
-   */
-  public void setEndTime(Date endTime) {
-    this.endTime = endTime;
-  }
+    /**
+     * Sets the end time.
+     *
+     * @param endTime the new end time
+     */
+    public void setEndTime(Date endTime) {
+        this.endTime = endTime;
+    }
 
-  /**
-   * Loads from XML.
-   *
-   * @param reader the reader
-   * @throws Exception the exception
-   */
-  public void loadFromXml(EwsServiceXmlReader reader) throws Exception {
-    reader.ensureCurrentNodeIsStartElement(XmlNamespace.Types,
-        XmlElementNames.Duration);
+    /**
+     * Loads from XML.
+     *
+     * @param reader the reader
+     * @throws Exception the exception
+     */
+    public void loadFromXml(EwsServiceXmlReader reader) throws Exception {
+        reader.ensureCurrentNodeIsStartElement(XmlNamespace.Types,
+                XmlElementNames.Duration);
 
-    this.startTime = reader.readElementValueAsDateTime(XmlNamespace.Types,
-        XmlElementNames.StartTime);
-    this.endTime = reader.readElementValueAsDateTime(XmlNamespace.Types,
-        XmlElementNames.EndTime);
+        this.startTime = reader.readElementValueAsDateTime(XmlNamespace.Types,
+                XmlElementNames.StartTime);
+        this.endTime = reader.readElementValueAsDateTime(XmlNamespace.Types,
+                XmlElementNames.EndTime);
 
-    reader.readEndElement(XmlNamespace.Types, XmlElementNames.Duration);
-  }
+        reader.readEndElement(XmlNamespace.Types, XmlElementNames.Duration);
+    }
 
-  /**
-   * Writes to XML.
-   *
-   * @param writer         the writer
-   * @param xmlElementName the xml element name
-   * @param startTime      the start time
-   * @param endTime        the end time
-   * @throws XMLStreamException the XML stream exception
-   * @throws ServiceXmlSerializationException the service xml serialization exception
-   */
-  private static void writeToXml(EwsServiceXmlWriter writer,
-      String xmlElementName, Object startTime, Object endTime)
-      throws XMLStreamException, ServiceXmlSerializationException {
-    writer.writeStartElement(XmlNamespace.Types, xmlElementName);
+    /**
+     * Writes to XML.
+     *
+     * @param writer         the writer
+     * @param xmlElementName the xml element name
+     * @param startTime      the start time
+     * @param endTime        the end time
+     * @throws XMLStreamException               the XML stream exception
+     * @throws ServiceXmlSerializationException the service xml serialization exception
+     */
+    private static void writeToXml(EwsServiceXmlWriter writer,
+                                   String xmlElementName, Object startTime, Object endTime)
+            throws XMLStreamException, ServiceXmlSerializationException {
+        writer.writeStartElement(XmlNamespace.Types, xmlElementName);
 
-    writer.writeElementValue(XmlNamespace.Types, XmlElementNames.StartTime,
-        startTime);
+        writer.writeElementValue(XmlNamespace.Types, XmlElementNames.StartTime,
+                startTime);
 
-    writer.writeElementValue(XmlNamespace.Types, XmlElementNames.EndTime,
-        endTime);
+        writer.writeElementValue(XmlNamespace.Types, XmlElementNames.EndTime,
+                endTime);
 
-    writer.writeEndElement(); // xmlElementName
-  }
+        writer.writeEndElement(); // xmlElementName
+    }
 
-  /**
-   * Writes to XML without scoping the dates and without emitting times.
-   *
-   * @param writer         the writer
-   * @param xmlElementName the xml element name
-   * @throws XMLStreamException the XML stream exception
-   * @throws ServiceXmlSerializationException the service xml serialization exception
-   */
-  protected void writeToXmlUnscopedDatesOnly(EwsServiceXmlWriter writer,
-      String xmlElementName) throws XMLStreamException, ServiceXmlSerializationException {
-    final String DateOnlyFormat = "yyyy-MM-dd'T'00:00:00";
+    /**
+     * Writes to XML without scoping the dates and without emitting times.
+     *
+     * @param writer         the writer
+     * @param xmlElementName the xml element name
+     * @throws XMLStreamException               the XML stream exception
+     * @throws ServiceXmlSerializationException the service xml serialization exception
+     */
+    protected void writeToXmlUnscopedDatesOnly(EwsServiceXmlWriter writer,
+                                               String xmlElementName) throws XMLStreamException, ServiceXmlSerializationException {
+        final String DateOnlyFormat = "yyyy-MM-dd'T'00:00:00";
 
-    DateFormat formatter = new SimpleDateFormat(DateOnlyFormat);
-    formatter.setTimeZone(TimeZone.getTimeZone("UTC"));
+        DateFormat formatter = new SimpleDateFormat(DateOnlyFormat);
+        formatter.setTimeZone(TimeZone.getTimeZone("UTC"));
 
-    String start = formatter.format(this.startTime);
-    String end = formatter.format(this.endTime);
-    TimeWindow.writeToXml(writer, xmlElementName, start, end);
-  }
+        String start = formatter.format(this.startTime);
+        String end = formatter.format(this.endTime);
+        TimeWindow.writeToXml(writer, xmlElementName, start, end);
+    }
 
-  /**
-   * Writes to XML.
-   *
-   * @param writer         the writer
-   * @param xmlElementName the xml element name
-   * @throws XMLStreamException the XML stream exception
-   * @throws ServiceXmlSerializationException the service xml serialization exception
-   */
-  public void writeToXml(EwsServiceXmlWriter writer, String xmlElementName)
-      throws XMLStreamException, ServiceXmlSerializationException {
-    TimeWindow.writeToXml(writer, xmlElementName, startTime, endTime);
-  }
+    /**
+     * Writes to XML.
+     *
+     * @param writer         the writer
+     * @param xmlElementName the xml element name
+     * @throws XMLStreamException               the XML stream exception
+     * @throws ServiceXmlSerializationException the service xml serialization exception
+     */
+    public void writeToXml(EwsServiceXmlWriter writer, String xmlElementName)
+            throws XMLStreamException, ServiceXmlSerializationException {
+        TimeWindow.writeToXml(writer, xmlElementName, startTime, endTime);
+    }
 
-  /**
-   * Gets the duration.
-   *
-   * @return the duration
-   */
-  public long getDuration() {
-    return this.endTime.getTime() - this.startTime.getTime();
-  }
+    /**
+     * Gets the duration.
+     *
+     * @return the duration
+     */
+    public long getDuration() {
+        return this.endTime.getTime() - this.startTime.getTime();
+    }
 
-  /**
-   * Validates this instance.
-   */
-  public void validate() {
-  }
+    /**
+     * Validates this instance.
+     */
+    public void validate() {
+    }
 }

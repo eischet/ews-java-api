@@ -28,15 +28,15 @@ package microsoft.exchange.webservices.data.core.enumeration.search;
  */
 public enum SortDirection {
 
-  // The sort is performed in ascending order.
-  /**
-   * The Ascending.
-   */
-  Ascending,
+    // The sort is performed in ascending order.
+    /**
+     * The Ascending.
+     */
+    Ascending,
 
-  // The sort is performed in descending order.
-  /**
-   * The Descending.
-   */
-  Descending
+    // The sort is performed in descending order.
+    /**
+     * The Descending.
+     */
+    Descending
 }

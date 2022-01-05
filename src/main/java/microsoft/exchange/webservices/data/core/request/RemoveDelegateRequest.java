@@ -27,9 +27,9 @@ import microsoft.exchange.webservices.data.core.EwsServiceXmlWriter;
 import microsoft.exchange.webservices.data.core.EwsUtilities;
 import microsoft.exchange.webservices.data.core.ExchangeService;
 import microsoft.exchange.webservices.data.core.XmlElementNames;
-import microsoft.exchange.webservices.data.core.response.DelegateManagementResponse;
 import microsoft.exchange.webservices.data.core.enumeration.misc.ExchangeVersion;
 import microsoft.exchange.webservices.data.core.enumeration.misc.XmlNamespace;
+import microsoft.exchange.webservices.data.core.response.DelegateManagementResponse;
 import microsoft.exchange.webservices.data.property.complex.UserId;
 
 import java.util.ArrayList;
@@ -39,101 +39,102 @@ import java.util.List;
  * Represents a RemoveDelete request.
  */
 public class RemoveDelegateRequest extends
-    DelegateManagementRequestBase<DelegateManagementResponse> {
+        DelegateManagementRequestBase<DelegateManagementResponse> {
 
-  /**
-   * The user ids.
-   */
-  private List<UserId> userIds = new ArrayList<UserId>();
+    /**
+     * The user ids.
+     */
+    private final List<UserId> userIds = new ArrayList<UserId>();
 
-  /**
-   * Initializes a new instance of the class.
-   *
-   * @param service the service
-   * @throws Exception
-   */
-  public RemoveDelegateRequest(ExchangeService service)
-      throws Exception {
-    super(service);
-  }
-
-  /**
-   * Asserts the valid.
-   *
-   * @throws Exception the exception
-   */
-  @Override
-  protected void validate() throws Exception {
-    super.validate();
-    EwsUtilities.validateParamCollection(this.getUserIds().iterator(), "UserIds");
-  }
-
-  /**
-   * Asserts the valid.
-   *
-   * @param writer the writer
-   * @throws Exception the exception
-   */
-  @Override
-  protected void writeElementsToXml(EwsServiceXmlWriter writer)
-      throws Exception {
-    super.writeElementsToXml(writer);
-    writer
-        .writeStartElement(XmlNamespace.Messages,
-            XmlElementNames.UserIds);
-
-    for (UserId userId : this.getUserIds()) {
-      userId.writeToXml(writer, XmlElementNames.UserId);
+    /**
+     * Initializes a new instance of the class.
+     *
+     * @param service the service
+     * @throws Exception
+     */
+    public RemoveDelegateRequest(ExchangeService service)
+            throws Exception {
+        super(service);
     }
 
-    writer.writeEndElement(); // UserIds
-  }
+    /**
+     * Asserts the valid.
+     *
+     * @throws Exception the exception
+     */
+    @Override
+    protected void validate() throws Exception {
+        super.validate();
+        EwsUtilities.validateParamCollection(this.getUserIds().iterator(), "UserIds");
+    }
 
-  /**
-   * Gets the name of the response XML element.
-   *
-   * @return XML element name
-   */
-  @Override
-  protected String getResponseXmlElementName() {
-    return XmlElementNames.RemoveDelegateResponse;
-  }
+    /**
+     * Asserts the valid.
+     *
+     * @param writer the writer
+     * @throws Exception the exception
+     */
+    @Override
+    protected void writeElementsToXml(EwsServiceXmlWriter writer)
+            throws Exception {
+        super.writeElementsToXml(writer);
+        writer
+                .writeStartElement(XmlNamespace.Messages,
+                        XmlElementNames.UserIds);
 
-  /**
-   * Gets the name of the XML element.
-   *
-   * @return XML element name
-   */
-  @Override public String getXmlElementName() {
-    return XmlElementNames.RemoveDelegate;
-  }
+        for (UserId userId : this.getUserIds()) {
+            userId.writeToXml(writer, XmlElementNames.UserId);
+        }
 
-  /**
-   * Creates the response.
-   *
-   * @return Service response
-   */
-  @Override
-  protected DelegateManagementResponse createResponse() {
-    return new DelegateManagementResponse(false, null);
-  }
+        writer.writeEndElement(); // UserIds
+    }
 
-  /**
-   * Gets the request version.
-   *
-   * @return Earliest Exchange version in which this request is supported.
-   */
-  @Override
-  protected ExchangeVersion getMinimumRequiredServerVersion() {
-    return ExchangeVersion.Exchange2007_SP1;
-  }
+    /**
+     * Gets the name of the response XML element.
+     *
+     * @return XML element name
+     */
+    @Override
+    protected String getResponseXmlElementName() {
+        return XmlElementNames.RemoveDelegateResponse;
+    }
 
-  /**
-   * Gets the user ids.
-   *
-   * @return the user ids
-   */
-  public List<UserId> getUserIds() {
-    return this.userIds;
-  }
+    /**
+     * Gets the name of the XML element.
+     *
+     * @return XML element name
+     */
+    @Override
+    public String getXmlElementName() {
+        return XmlElementNames.RemoveDelegate;
+    }
+
+    /**
+     * Creates the response.
+     *
+     * @return Service response
+     */
+    @Override
+    protected DelegateManagementResponse createResponse() {
+        return new DelegateManagementResponse(false, null);
+    }
+
+    /**
+     * Gets the request version.
+     *
+     * @return Earliest Exchange version in which this request is supported.
+     */
+    @Override
+    protected ExchangeVersion getMinimumRequiredServerVersion() {
+        return ExchangeVersion.Exchange2007_SP1;
+    }
+
+    /**
+     * Gets the user ids.
+     *
+     * @return the user ids
+     */
+    public List<UserId> getUserIds() {
+        return this.userIds;
+    }
 }

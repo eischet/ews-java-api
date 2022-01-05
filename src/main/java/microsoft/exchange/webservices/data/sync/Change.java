@@ -24,10 +24,10 @@
 package microsoft.exchange.webservices.data.sync;
 
 import microsoft.exchange.webservices.data.attribute.EditorBrowsable;
-import microsoft.exchange.webservices.data.core.service.ServiceObject;
-import microsoft.exchange.webservices.data.core.enumeration.sync.ChangeType;
 import microsoft.exchange.webservices.data.core.enumeration.attribute.EditorBrowsableState;
+import microsoft.exchange.webservices.data.core.enumeration.sync.ChangeType;
 import microsoft.exchange.webservices.data.core.exception.service.local.ServiceLocalException;
+import microsoft.exchange.webservices.data.core.service.ServiceObject;
 import microsoft.exchange.webservices.data.property.complex.ServiceId;
 
 /**
@@ -36,87 +36,87 @@ import microsoft.exchange.webservices.data.property.complex.ServiceId;
 @EditorBrowsable(state = EditorBrowsableState.Never)
 public abstract class Change {
 
-  /**
-   * The type of change.
-   */
-  private ChangeType changeType;
+    /**
+     * The type of change.
+     */
+    private ChangeType changeType;
 
-  /**
-   * The service object the change applies to.
-   */
-  private ServiceObject serviceObject;
+    /**
+     * The service object the change applies to.
+     */
+    private ServiceObject serviceObject;
 
-  /**
-   * The Id of the service object the change applies to.
-   */
-  private ServiceId id;
+    /**
+     * The Id of the service object the change applies to.
+     */
+    private ServiceId id;
 
-  /**
-   * Initializes a new instance of Change.
-   */
-  protected Change() {
-  }
+    /**
+     * Initializes a new instance of Change.
+     */
+    protected Change() {
+    }
 
-  /**
-   * Initializes a new instance of Change.
-   *
-   * @return the service id
-   */
-  public abstract ServiceId createId();
+    /**
+     * Initializes a new instance of Change.
+     *
+     * @return the service id
+     */
+    public abstract ServiceId createId();
 
-  /**
-   * Gets the type of the change.
-   *
-   * @return the change type
-   */
-  public ChangeType getChangeType() {
-    return this.changeType;
-  }
+    /**
+     * Gets the type of the change.
+     *
+     * @return the change type
+     */
+    public ChangeType getChangeType() {
+        return this.changeType;
+    }
 
-  /**
-   * sets the type of the change.
-   *
-   * @param changeType the new change type
-   */
-  public void setChangeType(ChangeType changeType) {
-    this.changeType = changeType;
-  }
+    /**
+     * sets the type of the change.
+     *
+     * @param changeType the new change type
+     */
+    public void setChangeType(ChangeType changeType) {
+        this.changeType = changeType;
+    }
 
-  /**
-   * Gets  the service object the change applies to.
-   *
-   * @return the service object
-   */
-  public ServiceObject getServiceObject() {
-    return this.serviceObject;
-  }
+    /**
+     * Gets  the service object the change applies to.
+     *
+     * @return the service object
+     */
+    public ServiceObject getServiceObject() {
+        return this.serviceObject;
+    }
 
-  /**
-   * Sets the service object.
-   *
-   * @param serviceObject the new service object
-   */
-  public void setServiceObject(ServiceObject serviceObject) {
-    this.serviceObject = serviceObject;
-  }
+    /**
+     * Sets the service object.
+     *
+     * @param serviceObject the new service object
+     */
+    public void setServiceObject(ServiceObject serviceObject) {
+        this.serviceObject = serviceObject;
+    }
 
-  /**
-   * Gets the Id of the service object the change applies to.
-   *
-   * @return the id
-   * @throws ServiceLocalException the service local exception
-   */
-  public ServiceId getId() throws ServiceLocalException {
-    return this.getServiceObject() != null ? this.getServiceObject()
-        .getId() : this.id;
-  }
+    /**
+     * Gets the Id of the service object the change applies to.
+     *
+     * @return the id
+     * @throws ServiceLocalException the service local exception
+     */
+    public ServiceId getId() throws ServiceLocalException {
+        return this.getServiceObject() != null ? this.getServiceObject()
+                .getId() : this.id;
+    }
 
-  /**
-   * Sets the id.
-   *
-   * @param id the new id
-   */
-  public void setId(ServiceId id) {
-    this.id = id;
-  }
+    /**
+     * Sets the id.
+     *
+     * @param id the new id
+     */
+    public void setId(ServiceId id) {
+        this.id = id;
+    }
 }

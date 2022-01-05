@@ -28,40 +28,40 @@ package microsoft.exchange.webservices.data.core.enumeration.misc;
  */
 public enum ConversationActionType {
 
-  /**
-   * Categorizes every current and future message in the conversation
-   */
-  AlwaysCategorize,
+    /**
+     * Categorizes every current and future message in the conversation
+     */
+    AlwaysCategorize,
 
-  /**
-   * Deletes every current and future message in the conversation
-   */
-  AlwaysDelete,
+    /**
+     * Deletes every current and future message in the conversation
+     */
+    AlwaysDelete,
 
-  /**
-   * Moves every current and future message in the conversation
-   */
-  AlwaysMove,
+    /**
+     * Moves every current and future message in the conversation
+     */
+    AlwaysMove,
 
-  /**
-   * Deletes current item in context folder in the conversation
-   */
-  Delete,
+    /**
+     * Deletes current item in context folder in the conversation
+     */
+    Delete,
 
-  /**
-   * Moves current item in context folder in the conversation
-   */
-  Move,
+    /**
+     * Moves current item in context folder in the conversation
+     */
+    Move,
 
-  /**
-   * Copies current item in context folder in the conversation
-   */
-  Copy,
+    /**
+     * Copies current item in context folder in the conversation
+     */
+    Copy,
 
-  /**
-   * Marks current item in context folder in the conversation with
-   * provided read state
-   */
-  SetReadState,
+    /**
+     * Marks current item in context folder in the conversation with
+     * provided read state
+     */
+    SetReadState,
 
 }

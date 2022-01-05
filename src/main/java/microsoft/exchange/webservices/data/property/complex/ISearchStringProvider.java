@@ -28,10 +28,10 @@ package microsoft.exchange.webservices.data.property.complex;
  * in search filter.
  */
 public interface ISearchStringProvider {
-  /**
-   * Get a string representation for using this instance in a search filter.
-   *
-   * @return String representation of instance.
-   */
-  String getSearchString();
+    /**
+     * Get a string representation for using this instance in a search filter.
+     *
+     * @return String representation of instance.
+     */
+    String getSearchString();
 }

@@ -30,34 +30,34 @@ import microsoft.exchange.webservices.data.property.complex.availability.OofSett
  */
 public class GetUserOofSettingsResponse extends ServiceResponse {
 
-  /**
-   * The oof settings.
-   */
-  private OofSettings oofSettings;
+    /**
+     * The oof settings.
+     */
+    private OofSettings oofSettings;
 
-  /**
-   * Initializes a new instance of the class.
-   */
-  public GetUserOofSettingsResponse() {
-    super();
-  }
+    /**
+     * Initializes a new instance of the class.
+     */
+    public GetUserOofSettingsResponse() {
+        super();
+    }
 
-  /**
-   * Gets  the OOF settings.
-   *
-   * @return the oof settings
-   */
-  public OofSettings getOofSettings() {
-    return this.oofSettings;
-  }
+    /**
+     * Gets  the OOF settings.
+     *
+     * @return the oof settings
+     */
+    public OofSettings getOofSettings() {
+        return this.oofSettings;
+    }
 
-  /**
-   * Sets the oof settings.
-   *
-   * @param value the new oof settings
-   */
-  public void setOofSettings(OofSettings value) {
-    this.oofSettings = value;
-  }
+    /**
+     * Sets the oof settings.
+     *
+     * @param value the new oof settings
+     */
+    public void setOofSettings(OofSettings value) {
+        this.oofSettings = value;
+    }
 
 }

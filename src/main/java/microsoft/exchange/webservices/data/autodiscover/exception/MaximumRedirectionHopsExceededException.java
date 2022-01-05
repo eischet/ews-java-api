@@ -23,44 +23,41 @@
 
 package microsoft.exchange.webservices.data.autodiscover.exception;
 
-import microsoft.exchange.webservices.data.autodiscover.exception.AutodiscoverLocalException;
-
 /**
- *
  * The Class MaximumRedirectionHopsExceededException.
  *
  * @see microsoft.exchange.webservices.data.autodiscover.AutodiscoverService
  */
 public class MaximumRedirectionHopsExceededException extends AutodiscoverLocalException {
 
-  /**
-   * Constant serialized ID used for compatibility.
-   */
-  private static final long serialVersionUID = 1L;
+    /**
+     * Constant serialized ID used for compatibility.
+     */
+    private static final long serialVersionUID = 1L;
 
-  /**
-   * Initializes a new instance of the class.
-   */
-  public MaximumRedirectionHopsExceededException() {
-  }
+    /**
+     * Initializes a new instance of the class.
+     */
+    public MaximumRedirectionHopsExceededException() {
+    }
 
-  /**
-   * Initializes a new instance of the class.
-   *
-   * @param message the message
-   */
-  public MaximumRedirectionHopsExceededException(String message) {
-    super(message);
-  }
+    /**
+     * Initializes a new instance of the class.
+     *
+     * @param message the message
+     */
+    public MaximumRedirectionHopsExceededException(String message) {
+        super(message);
+    }
 
-  /**
-   * Initializes a new instance of the class.
-   *
-   * @param message        the message
-   * @param innerException the inner exception
-   */
-  public MaximumRedirectionHopsExceededException(String message, Exception innerException) {
-    super(message, innerException);
-  }
+    /**
+     * Initializes a new instance of the class.
+     *
+     * @param message        the message
+     * @param innerException the inner exception
+     */
+    public MaximumRedirectionHopsExceededException(String message, Exception innerException) {
+        super(message, innerException);
+    }
 
 }

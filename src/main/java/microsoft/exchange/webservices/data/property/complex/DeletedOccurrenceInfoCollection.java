@@ -33,37 +33,37 @@ import microsoft.exchange.webservices.data.core.enumeration.attribute.EditorBrow
 @EditorBrowsable(state = EditorBrowsableState.Never)
 public final class DeletedOccurrenceInfoCollection extends ComplexPropertyCollection<DeletedOccurrenceInfo> {
 
-  /**
-   * Initializes a new instance of the OccurrenceInfoCollection class.
-   */
-  public DeletedOccurrenceInfoCollection() {
-  }
-
-  /**
-   * Creates the complex property.
-   *
-   * @param xmlElementName the xml element name
-   * @return OccurenceInfo instance.
-   */
-  @Override
-  protected DeletedOccurrenceInfo createComplexProperty(
-      String xmlElementName) {
-    if (xmlElementName.equalsIgnoreCase(XmlElementNames.DeletedOccurrence)) {
-      return new DeletedOccurrenceInfo();
-    } else {
-      return null;
+    /**
+     * Initializes a new instance of the OccurrenceInfoCollection class.
+     */
+    public DeletedOccurrenceInfoCollection() {
     }
-  }
 
-  /**
-   * Gets the name of the collection item XML element.
-   *
-   * @param complexProperty the complex property
-   * @return XML element name.
-   */
-  @Override
-  protected String getCollectionItemXmlElementName(
-      DeletedOccurrenceInfo complexProperty) {
-    return XmlElementNames.Occurrence;
-  }
+    /**
+     * Creates the complex property.
+     *
+     * @param xmlElementName the xml element name
+     * @return OccurenceInfo instance.
+     */
+    @Override
+    protected DeletedOccurrenceInfo createComplexProperty(
+            String xmlElementName) {
+        if (xmlElementName.equalsIgnoreCase(XmlElementNames.DeletedOccurrence)) {
+            return new DeletedOccurrenceInfo();
+        } else {
+            return null;
+        }
+    }
+
+    /**
+     * Gets the name of the collection item XML element.
+     *
+     * @param complexProperty the complex property
+     * @return XML element name.
+     */
+    @Override
+    protected String getCollectionItemXmlElementName(
+            DeletedOccurrenceInfo complexProperty) {
+        return XmlElementNames.Occurrence;
+    }
 }

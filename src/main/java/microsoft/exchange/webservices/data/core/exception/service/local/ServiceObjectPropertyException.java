@@ -30,63 +30,63 @@ import microsoft.exchange.webservices.data.property.definition.PropertyDefinitio
  */
 public class ServiceObjectPropertyException extends PropertyException {
 
-  /**
-   * Constant serialized ID used for compatibility.
-   */
-  private static final long serialVersionUID = 1L;
+    /**
+     * Constant serialized ID used for compatibility.
+     */
+    private static final long serialVersionUID = 1L;
 
-  /**
-   * The property definition.
-   */
-  private PropertyDefinitionBase propertyDefinition;
+    /**
+     * The property definition.
+     */
+    private final PropertyDefinitionBase propertyDefinition;
 
-  /**
-   * ServiceObjectPropertyException constructor.
-   *
-   * @param propertyDefinition The definition of the property that is at the origin of the
-   *                           exception.
-   */
-  public ServiceObjectPropertyException(
-      PropertyDefinitionBase propertyDefinition) {
-    super(propertyDefinition.getPrintableName());
-    this.propertyDefinition = propertyDefinition;
-  }
+    /**
+     * ServiceObjectPropertyException constructor.
+     *
+     * @param propertyDefinition The definition of the property that is at the origin of the
+     *                           exception.
+     */
+    public ServiceObjectPropertyException(
+            PropertyDefinitionBase propertyDefinition) {
+        super(propertyDefinition.getPrintableName());
+        this.propertyDefinition = propertyDefinition;
+    }
 
-  /**
-   * ServiceObjectPropertyException constructor.
-   *
-   * @param message            Error message text.
-   * @param propertyDefinition The definition of the property that is at the origin of the
-   *                           exception.
-   */
-  public ServiceObjectPropertyException(String message,
-      PropertyDefinitionBase propertyDefinition) {
-    super(message, propertyDefinition.getPrintableName());
-    this.propertyDefinition = propertyDefinition;
-  }
+    /**
+     * ServiceObjectPropertyException constructor.
+     *
+     * @param message            Error message text.
+     * @param propertyDefinition The definition of the property that is at the origin of the
+     *                           exception.
+     */
+    public ServiceObjectPropertyException(String message,
+                                          PropertyDefinitionBase propertyDefinition) {
+        super(message, propertyDefinition.getPrintableName());
+        this.propertyDefinition = propertyDefinition;
+    }
 
-  /**
-   * ServiceObjectPropertyException constructor.
-   *
-   * @param message            Error message text.
-   * @param propertyDefinition The definition of the property that is at the origin of the
-   *                           exception.
-   * @param innerException     the inner exception
-   */
-  public ServiceObjectPropertyException(String message,
-      PropertyDefinitionBase propertyDefinition,
-      Exception innerException) {
-    super(message, propertyDefinition.getPrintableName(), innerException);
-    this.propertyDefinition = propertyDefinition;
-  }
+    /**
+     * ServiceObjectPropertyException constructor.
+     *
+     * @param message            Error message text.
+     * @param propertyDefinition The definition of the property that is at the origin of the
+     *                           exception.
+     * @param innerException     the inner exception
+     */
+    public ServiceObjectPropertyException(String message,
+                                          PropertyDefinitionBase propertyDefinition,
+                                          Exception innerException) {
+        super(message, propertyDefinition.getPrintableName(), innerException);
+        this.propertyDefinition = propertyDefinition;
+    }
 
-  /**
-   * The definition of the property that is at the origin of the exception.
-   *
-   * @return The definition of the property.
-   */
-  public PropertyDefinitionBase getPropertyDefinition() {
-    return propertyDefinition;
-  }
+    /**
+     * The definition of the property that is at the origin of the exception.
+     *
+     * @return The definition of the property.
+     */
+    public PropertyDefinitionBase getPropertyDefinition() {
+        return propertyDefinition;
+    }
 
 }

@@ -27,8 +27,8 @@ import microsoft.exchange.webservices.data.core.EwsServiceXmlReader;
 import microsoft.exchange.webservices.data.core.EwsUtilities;
 import microsoft.exchange.webservices.data.core.PropertySet;
 import microsoft.exchange.webservices.data.core.XmlElementNames;
-import microsoft.exchange.webservices.data.core.service.item.Contact;
 import microsoft.exchange.webservices.data.core.enumeration.misc.XmlNamespace;
+import microsoft.exchange.webservices.data.core.service.item.Contact;
 import microsoft.exchange.webservices.data.property.complex.EmailAddress;
 
 /**
@@ -36,75 +36,75 @@ import microsoft.exchange.webservices.data.property.complex.EmailAddress;
  */
 public final class NameResolution {
 
-  /**
-   * The owner.
-   */
-  private NameResolutionCollection owner;
+    /**
+     * The owner.
+     */
+    private final NameResolutionCollection owner;
 
-  /**
-   * The mailbox.
-   */
-  private EmailAddress mailbox = new EmailAddress();
+    /**
+     * The mailbox.
+     */
+    private final EmailAddress mailbox = new EmailAddress();
 
-  /**
-   * The contact.
-   */
-  private Contact contact;
+    /**
+     * The contact.
+     */
+    private Contact contact;
 
-  /**
-   * Initializes a new instance of the class.
-   *
-   * @param owner the owner
-   */
-  protected NameResolution(NameResolutionCollection owner) {
-    EwsUtilities.ewsAssert(owner != null, "NameResolution.ctor", "owner is null.");
+    /**
+     * Initializes a new instance of the class.
+     *
+     * @param owner the owner
+     */
+    protected NameResolution(NameResolutionCollection owner) {
+        EwsUtilities.ewsAssert(owner != null, "NameResolution.ctor", "owner is null.");
 
-    this.owner = owner;
-  }
-
-  /**
-   * Loads from XML.
-   *
-   * @param reader the reader
-   * @throws Exception the exception
-   */
-  protected void loadFromXml(EwsServiceXmlReader reader) throws Exception {
-    reader.readStartElement(XmlNamespace.Types, XmlElementNames.Resolution);
-    reader.readStartElement(XmlNamespace.Types, XmlElementNames.Mailbox);
-    this.mailbox.loadFromXml(reader, XmlElementNames.Mailbox);
-
-    reader.read();
-    if (reader.isStartElement(XmlNamespace.Types, XmlElementNames.Contact)) {
-      this.contact = new Contact(this.owner.getSession());
-      this.contact.loadFromXml(reader, true /* clearPropertyBag */,
-          PropertySet.FirstClassProperties,
-          false /* summaryPropertiesOnly */);
-
-      reader.readEndElement(XmlNamespace.Types,
-          XmlElementNames.Resolution);
-    } else {
-      reader.ensureCurrentNodeIsEndElement(XmlNamespace.Types,
-          XmlElementNames.Resolution);
+        this.owner = owner;
     }
-  }
 
-  /**
-   * Gets the mailbox of the suggested resolved name.
-   *
-   * @return the mailbox
-   */
-  public EmailAddress getMailbox() {
-    return this.mailbox;
-  }
+    /**
+     * Loads from XML.
+     *
+     * @param reader the reader
+     * @throws Exception the exception
+     */
+    protected void loadFromXml(EwsServiceXmlReader reader) throws Exception {
+        reader.readStartElement(XmlNamespace.Types, XmlElementNames.Resolution);
+        reader.readStartElement(XmlNamespace.Types, XmlElementNames.Mailbox);
+        this.mailbox.loadFromXml(reader, XmlElementNames.Mailbox);
 
-  /**
-   * Gets the contact information of the suggested resolved name. This
-   * property is only available when ResolveName is called with
-   * returnContactDetails = true.
-   *
-   * @return the contact
-   */
-  public Contact getContact() {
-    return this.contact;
-  }
+        reader.read();
+        if (reader.isStartElement(XmlNamespace.Types, XmlElementNames.Contact)) {
+            this.contact = new Contact(this.owner.getSession());
+            this.contact.loadFromXml(reader, true /* clearPropertyBag */,
+                    PropertySet.FirstClassProperties,
+                    false /* summaryPropertiesOnly */);
+
+            reader.readEndElement(XmlNamespace.Types,
+                    XmlElementNames.Resolution);
+        } else {
+            reader.ensureCurrentNodeIsEndElement(XmlNamespace.Types,
+                    XmlElementNames.Resolution);
+        }
+    }
+
+    /**
+     * Gets the mailbox of the suggested resolved name.
+     *
+     * @return the mailbox
+     */
+    public EmailAddress getMailbox() {
+        return this.mailbox;
+    }
+
+    /**
+     * Gets the contact information of the suggested resolved name. This
+     * property is only available when ResolveName is called with
+     * returnContactDetails = true.
+     *
+     * @return the contact
+     */
+    public Contact getContact() {
+        return this.contact;
+    }
 }

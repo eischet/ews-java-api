@@ -31,20 +31,20 @@ import java.util.logging.Logger;
  */
 public class EwsTraceListener implements ITraceListener {
 
-  private final Logger log = Logger.getLogger(EwsTraceListener.class.getCanonicalName());
+    private final Logger log = Logger.getLogger(EwsTraceListener.class.getCanonicalName());
 
-  public EwsTraceListener() {
-  }
+    public EwsTraceListener() {
+    }
 
-  /**
-   * Handles a trace message.
-   *
-   * @param traceType    The trace type
-   * @param traceMessage The trace message
-   */
-  @Override
-  public void trace(String traceType, String traceMessage) {
-    log.finest(() -> traceType + " - " + traceMessage);
-  }
+    /**
+     * Handles a trace message.
+     *
+     * @param traceType    The trace type
+     * @param traceMessage The trace message
+     */
+    @Override
+    public void trace(String traceType, String traceMessage) {
+        log.finest(() -> traceType + " - " + traceMessage);
+    }
 
 }

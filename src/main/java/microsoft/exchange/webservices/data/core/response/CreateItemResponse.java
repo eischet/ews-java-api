@@ -24,49 +24,49 @@
 package microsoft.exchange.webservices.data.core.response;
 
 import microsoft.exchange.webservices.data.core.ExchangeService;
-import microsoft.exchange.webservices.data.core.service.item.Item;
 import microsoft.exchange.webservices.data.core.enumeration.service.ServiceResult;
+import microsoft.exchange.webservices.data.core.service.item.Item;
 
 /**
  * Represents the response to an individual item creation operation.
  */
 public final class CreateItemResponse extends CreateItemResponseBase {
 
-  /**
-   * The item.
-   */
-  private Item item;
+    /**
+     * The item.
+     */
+    private final Item item;
 
-  /**
-   * Gets Item instance.
-   *
-   * @param service        The service.
-   * @param xmlElementName Name of the XML element.
-   * @return the object instance
-   */
-  @Override
-  protected Item getObjectInstance(ExchangeService service,
-      String xmlElementName) {
-    return this.item;
-  }
-
-  /**
-   * Initializes a new instance.
-   *
-   * @param item The item.
-   */
-  public CreateItemResponse(Item item) {
-    super();
-    this.item = item;
-  }
-
-  /**
-   * Clears the change log of the created folder if the creation succeeded.
-   */
-  @Override
-  protected void loaded() {
-    if (this.getResult() == ServiceResult.Success) {
-      this.item.clearChangeLog();
+    /**
+     * Gets Item instance.
+     *
+     * @param service        The service.
+     * @param xmlElementName Name of the XML element.
+     * @return the object instance
+     */
+    @Override
+    protected Item getObjectInstance(ExchangeService service,
+                                     String xmlElementName) {
+        return this.item;
     }
-  }
+
+    /**
+     * Initializes a new instance.
+     *
+     * @param item The item.
+     */
+    public CreateItemResponse(Item item) {
+        super();
+        this.item = item;
+    }
+
+    /**
+     * Clears the change log of the created folder if the creation succeeded.
+     */
+    @Override
+    protected void loaded() {
+        if (this.getResult() == ServiceResult.Success) {
+            this.item.clearChangeLog();
+        }
+    }
 }

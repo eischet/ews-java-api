@@ -32,20 +32,21 @@ import java.lang.annotation.Target;
  * The Interface ServiceObjectDefinition.
  */
 @Target(ElementType.TYPE)
-@Retention(RetentionPolicy.RUNTIME) public @interface ServiceObjectDefinition {
+@Retention(RetentionPolicy.RUNTIME)
+public @interface ServiceObjectDefinition {
 
-  /**
-   * The name of the XML element.
-   *
-   * @return the string
-   */
-  String xmlElementName();
+    /**
+     * The name of the XML element.
+     *
+     * @return the string
+     */
+    String xmlElementName();
 
-  /**
-   * True if this ServiceObject can be returned by the server as an object,
-   * false otherwise.
-   *
-   * @return true, if successful
-   */
-  boolean returnedByServer() default true;
+    /**
+     * True if this ServiceObject can be returned by the server as an object,
+     * false otherwise.
+     *
+     * @return true, if successful
+     */
+    boolean returnedByServer() default true;
 }

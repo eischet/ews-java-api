@@ -23,8 +23,8 @@
 
 package microsoft.exchange.webservices.data.sync;
 
-import microsoft.exchange.webservices.data.core.service.item.Item;
 import microsoft.exchange.webservices.data.core.exception.service.local.ServiceLocalException;
+import microsoft.exchange.webservices.data.core.service.item.Item;
 import microsoft.exchange.webservices.data.property.complex.ItemId;
 import microsoft.exchange.webservices.data.property.complex.ServiceId;
 
@@ -33,67 +33,68 @@ import microsoft.exchange.webservices.data.property.complex.ServiceId;
  */
 public final class ItemChange extends Change {
 
-  /**
-   * The is read.
-   */
-  private boolean isRead;
+    /**
+     * The is read.
+     */
+    private boolean isRead;
 
-  /**
-   * Initializes a new instance of ItemChange.
-   */
-  public ItemChange() {
-    super();
-  }
+    /**
+     * Initializes a new instance of ItemChange.
+     */
+    public ItemChange() {
+        super();
+    }
 
-  /**
-   * Creates an ItemId instance.
-   *
-   * @return A ItemId.
-   */
-  @Override public ServiceId createId() {
-    return new ItemId();
-  }
+    /**
+     * Creates an ItemId instance.
+     *
+     * @return A ItemId.
+     */
+    @Override
+    public ServiceId createId() {
+        return new ItemId();
+    }
 
-  /**
-   * Gets the item the change applies to. Item is null when ChangeType is
-   * equal to either ChangeType.Delete or ChangeType.ReadFlagChange. In those
-   * cases, use the ItemId property to retrieve the Id of the item that was
-   * deleted or whose IsRead property changed.
-   *
-   * @return the item
-   */
-  public Item getItem() {
-    return (Item) this.getServiceObject();
-  }
+    /**
+     * Gets the item the change applies to. Item is null when ChangeType is
+     * equal to either ChangeType.Delete or ChangeType.ReadFlagChange. In those
+     * cases, use the ItemId property to retrieve the Id of the item that was
+     * deleted or whose IsRead property changed.
+     *
+     * @return the item
+     */
+    public Item getItem() {
+        return (Item) this.getServiceObject();
+    }
 
-  /**
-   * Gets the IsRead property for the item that the change applies to.
-   * IsRead is only valid when ChangeType is equal to
-   * ChangeType.ReadFlagChange.
-   *
-   * @return the checks if is read
-   */
-  public boolean getIsRead() {
-    return this.isRead;
-  }
+    /**
+     * Gets the IsRead property for the item that the change applies to.
+     * IsRead is only valid when ChangeType is equal to
+     * ChangeType.ReadFlagChange.
+     *
+     * @return the checks if is read
+     */
+    public boolean getIsRead() {
+        return this.isRead;
+    }
 
-  /**
-   * Sets the checks if is read.
-   *
-   * @param isRead the new checks if is read
-   */
-  public void setIsRead(boolean isRead) {
-    this.isRead = isRead;
-  }
+    /**
+     * Sets the checks if is read.
+     *
+     * @param isRead the new checks if is read
+     */
+    public void setIsRead(boolean isRead) {
+        this.isRead = isRead;
+    }
 
-  /**
-   * Gets the Id of the item the change applies to.
-   *
-   * @return the item id
-   * @throws ServiceLocalException the service local exception
-   */
-  public ItemId getItemId() throws ServiceLocalException {
-    return (ItemId) this.getId();
-  }
+    /**
+     * Gets the Id of the item the change applies to.
+     *
+     * @return the item id
+     * @throws ServiceLocalException the service local exception
+     */
+    public ItemId getItemId() throws ServiceLocalException {
+        return (ItemId) this.getId();
+    }
 
 }

@@ -28,22 +28,22 @@ package microsoft.exchange.webservices.data.core.enumeration.property;
  */
 public enum MemberStatus {
 
-  // The member is unrecognized.
-  /**
-   * The Unrecognized.
-   */
-  Unrecognized,
+    // The member is unrecognized.
+    /**
+     * The Unrecognized.
+     */
+    Unrecognized,
 
-  // The member is normal.
-  /**
-   * The Normal.
-   */
-  Normal,
+    // The member is normal.
+    /**
+     * The Normal.
+     */
+    Normal,
 
-  // The member is demoted.
-  /**
-   * The Demoted.
-   */
-  Demoted
+    // The member is demoted.
+    /**
+     * The Demoted.
+     */
+    Demoted
 
 }

@@ -25,12 +25,12 @@ package microsoft.exchange.webservices.data.autodiscover.configuration;
 
 import microsoft.exchange.webservices.data.attribute.EditorBrowsable;
 import microsoft.exchange.webservices.data.autodiscover.enumeration.AutodiscoverResponseType;
+import microsoft.exchange.webservices.data.autodiscover.enumeration.UserSettingName;
 import microsoft.exchange.webservices.data.autodiscover.exception.error.AutodiscoverError;
 import microsoft.exchange.webservices.data.autodiscover.response.GetUserSettingsResponse;
 import microsoft.exchange.webservices.data.core.EwsXmlReader;
 import microsoft.exchange.webservices.data.core.XmlElementNames;
 import microsoft.exchange.webservices.data.core.enumeration.attribute.EditorBrowsableState;
-import microsoft.exchange.webservices.data.autodiscover.enumeration.UserSettingName;
 import microsoft.exchange.webservices.data.core.enumeration.misc.XmlNamespace;
 
 import java.net.URI;
@@ -39,110 +39,111 @@ import java.util.List;
 /**
  * Represents the base class for configuration settings.
  */
-@EditorBrowsable(state = EditorBrowsableState.Never) public abstract class ConfigurationSettingsBase {
+@EditorBrowsable(state = EditorBrowsableState.Never)
+public abstract class ConfigurationSettingsBase {
 
-  /**
-   * The error.
-   */
-  private AutodiscoverError error;
+    /**
+     * The error.
+     */
+    private AutodiscoverError error;
 
-  /**
-   * Initializes a new instance of the ConfigurationSettingsBase class.
-   */
-  public ConfigurationSettingsBase() {
-  }
-
-  /**
-   * Tries to read the current XML element.
-   *
-   * @param reader the reader
-   * @return True is the current element was read, false otherwise.
-   * @throws Exception the exception
-   */
-  public boolean tryReadCurrentXmlElement(EwsXmlReader reader)
-      throws Exception {
-    if (reader.getLocalName().equalsIgnoreCase(XmlElementNames.Error)) {
-      this.error = AutodiscoverError.parse(reader);
-
-      return true;
-    } else {
-      return false;
+    /**
+     * Initializes a new instance of the ConfigurationSettingsBase class.
+     */
+    public ConfigurationSettingsBase() {
     }
-  }
 
-  /**
-   * Loads the settings from XML.
-   *
-   * @param reader the reader
-   * @throws Exception the exception
-   */
-  public void loadFromXml(EwsXmlReader reader) throws Exception {
-    reader.readStartElement(XmlNamespace.NotSpecified,
-        XmlElementNames.Autodiscover);
-    reader.readStartElement(XmlNamespace.NotSpecified,
-        XmlElementNames.Response);
+    /**
+     * Tries to read the current XML element.
+     *
+     * @param reader the reader
+     * @return True is the current element was read, false otherwise.
+     * @throws Exception the exception
+     */
+    public boolean tryReadCurrentXmlElement(EwsXmlReader reader)
+            throws Exception {
+        if (reader.getLocalName().equalsIgnoreCase(XmlElementNames.Error)) {
+            this.error = AutodiscoverError.parse(reader);
 
-    do {
-      reader.read();
-
-      if (reader.isStartElement()) {
-        if (!this.tryReadCurrentXmlElement(reader)) {
-          reader.skipCurrentElement();
+            return true;
+        } else {
+            return false;
         }
-      }
-    } while (!reader.isEndElement(XmlNamespace.NotSpecified,
-        XmlElementNames.Response));
+    }
 
-    reader.readEndElement(XmlNamespace.NotSpecified,
-        XmlElementNames.Autodiscover);
-  }
+    /**
+     * Loads the settings from XML.
+     *
+     * @param reader the reader
+     * @throws Exception the exception
+     */
+    public void loadFromXml(EwsXmlReader reader) throws Exception {
+        reader.readStartElement(XmlNamespace.NotSpecified,
+                XmlElementNames.Autodiscover);
+        reader.readStartElement(XmlNamespace.NotSpecified,
+                XmlElementNames.Response);
 
-  /**
-   * Gets the namespace that defines the settings.
-   *
-   * @return The namespace that defines the settings
-   */
-  public abstract String getNamespace();
+        do {
+            reader.read();
 
-  /**
-   * Makes this instance a redirection response.
-   *
-   * @param redirectUrl the redirect url
-   */
-  public abstract void makeRedirectionResponse(URI redirectUrl);
+            if (reader.isStartElement()) {
+                if (!this.tryReadCurrentXmlElement(reader)) {
+                    reader.skipCurrentElement();
+                }
+            }
+        } while (!reader.isEndElement(XmlNamespace.NotSpecified,
+                XmlElementNames.Response));
 
-  /**
-   * Gets the type of the response.
-   *
-   * @return The type of the response.
-   */
-  public abstract AutodiscoverResponseType getResponseType();
+        reader.readEndElement(XmlNamespace.NotSpecified,
+                XmlElementNames.Autodiscover);
+    }
 
-  /**
-   * Gets the redirect target.
-   *
-   * @return The redirect target.
-   */
-  public abstract String getRedirectTarget();
+    /**
+     * Gets the namespace that defines the settings.
+     *
+     * @return The namespace that defines the settings
+     */
+    public abstract String getNamespace();
 
-  /**
-   * Convert ConfigurationSettings to GetUserSettings response.
-   *
-   * @param smtpAddress       SMTP address.
-   * @param requestedSettings The requested settings.
-   * @return GetUserSettingsResponse.
-   */
-  public abstract GetUserSettingsResponse convertSettings(
-      String smtpAddress,
-      List<UserSettingName> requestedSettings);
+    /**
+     * Makes this instance a redirection response.
+     *
+     * @param redirectUrl the redirect url
+     */
+    public abstract void makeRedirectionResponse(URI redirectUrl);
+
+    /**
+     * Gets the type of the response.
+     *
+     * @return The type of the response.
+     */
+    public abstract AutodiscoverResponseType getResponseType();
+
+    /**
+     * Gets the redirect target.
+     *
+     * @return The redirect target.
+     */
+    public abstract String getRedirectTarget();
+
+    /**
+     * Convert ConfigurationSettings to GetUserSettings response.
+     *
+     * @param smtpAddress       SMTP address.
+     * @param requestedSettings The requested settings.
+     * @return GetUserSettingsResponse.
+     */
+    public abstract GetUserSettingsResponse convertSettings(
+            String smtpAddress,
+            List<UserSettingName> requestedSettings);
 
 
-  /**
-   * Gets the error.
-   *
-   * @return The error.
-   */
-  public AutodiscoverError getError() {
-    return this.error;
-  }
+    /**
+     * Gets the error.
+     *
+     * @return The error.
+     */
+    public AutodiscoverError getError() {
+        return this.error;
+    }
 }

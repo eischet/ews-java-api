@@ -28,14 +28,14 @@ package microsoft.exchange.webservices.data.core.enumeration.misc;
  */
 public enum DateTimePrecision {
 
-  // Default value. No SOAP header emitted.
-  Default,
+    // Default value. No SOAP header emitted.
+    Default,
 
-  // Seconds
+    // Seconds
 
-  Seconds,
+    Seconds,
 
-  // Milliseconds
+    // Milliseconds
 
-  Milliseconds
+    Milliseconds
 }

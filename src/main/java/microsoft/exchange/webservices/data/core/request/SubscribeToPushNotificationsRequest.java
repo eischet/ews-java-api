@@ -27,148 +27,147 @@ import microsoft.exchange.webservices.data.core.EwsServiceXmlWriter;
 import microsoft.exchange.webservices.data.core.EwsUtilities;
 import microsoft.exchange.webservices.data.core.ExchangeService;
 import microsoft.exchange.webservices.data.core.XmlElementNames;
-import microsoft.exchange.webservices.data.core.response.SubscribeResponse;
 import microsoft.exchange.webservices.data.core.enumeration.misc.ExchangeVersion;
 import microsoft.exchange.webservices.data.core.enumeration.misc.XmlNamespace;
 import microsoft.exchange.webservices.data.core.exception.misc.ArgumentException;
 import microsoft.exchange.webservices.data.core.exception.service.local.ServiceXmlSerializationException;
+import microsoft.exchange.webservices.data.core.response.SubscribeResponse;
 import microsoft.exchange.webservices.data.notification.PushSubscription;
 
 import javax.xml.stream.XMLStreamException;
-
 import java.net.URI;
 
 /**
  * The Class SubscribeToPushNotificationsRequest.
  */
 public class SubscribeToPushNotificationsRequest extends
-    SubscribeRequest<PushSubscription> {
+        SubscribeRequest<PushSubscription> {
 
-  /**
-   * The frequency.
-   */
-  private int frequency = 30;
+    /**
+     * The frequency.
+     */
+    private int frequency = 30;
 
-  /**
-   * The url.
-   */
-  private URI url;
+    /**
+     * The url.
+     */
+    private URI url;
 
-  /**
-   * Instantiates a new subscribe to push notification request.
-   *
-   * @param service the service
-   * @throws Exception
-   */
-  public SubscribeToPushNotificationsRequest(ExchangeService service)
-      throws Exception {
-    super(service);
-  }
-
-  /*
-   * (non-Javadoc)
-   *
-   * @see microsoft.exchange.webservices.SubscribeRequest#validate()
-   */
-  @Override
-  protected void validate() throws Exception {
-    super.validate();
-    EwsUtilities.validateParam(this.getUrl(), "Url");
-    if ((this.getFrequency() < 1) || (this.getFrequency() > 1440)) {
-      throw new ArgumentException(String.format(
-          "%d is not a valid frequency value. Valid values range from 1 to 1440.", this.getFrequency()));
+    /**
+     * Instantiates a new subscribe to push notification request.
+     *
+     * @param service the service
+     * @throws Exception
+     */
+    public SubscribeToPushNotificationsRequest(ExchangeService service)
+            throws Exception {
+        super(service);
     }
-  }
 
-  /*
-   * (non-Javadoc)
-   *
-   * @see
-   * microsoft.exchange.webservices.SubscribeRequest
-   * #getSubscriptionXmlElementName
-   * ()
-   */
-  @Override
-  protected String getSubscriptionXmlElementName() {
-    return XmlElementNames.PushSubscriptionRequest;
-  }
+    /*
+     * (non-Javadoc)
+     *
+     * @see microsoft.exchange.webservices.SubscribeRequest#validate()
+     */
+    @Override
+    protected void validate() throws Exception {
+        super.validate();
+        EwsUtilities.validateParam(this.getUrl(), "Url");
+        if ((this.getFrequency() < 1) || (this.getFrequency() > 1440)) {
+            throw new ArgumentException(String.format(
+                    "%d is not a valid frequency value. Valid values range from 1 to 1440.", this.getFrequency()));
+        }
+    }
 
-  /*
-   * (non-Javadoc)
-   *
-   * @see
-   * microsoft.exchange.webservices.SubscribeRequest
-   * #internalWriteElementsToXml
-   * (microsoft.exchange.webservices.EwsServiceXmlWriter)
-   */
-  @Override
-  protected void internalWriteElementsToXml(EwsServiceXmlWriter writer)
-      throws XMLStreamException, ServiceXmlSerializationException {
-    writer.writeElementValue(XmlNamespace.Types,
-        XmlElementNames.StatusFrequency, this.getFrequency());
-    writer.writeElementValue(XmlNamespace.Types, XmlElementNames.URL, this
-        .getUrl().toString());
-  }
+    /*
+     * (non-Javadoc)
+     *
+     * @see
+     * microsoft.exchange.webservices.SubscribeRequest
+     * #getSubscriptionXmlElementName
+     * ()
+     */
+    @Override
+    protected String getSubscriptionXmlElementName() {
+        return XmlElementNames.PushSubscriptionRequest;
+    }
 
-  /*
-   * (non-Javadoc)
-   *
-   * @seemicrosoft.exchange.webservices.MultiResponseServiceRequest#
-   * createServiceResponse(microsoft.exchange.webservices.ExchangeService,
-   * int)
-   */
-  @Override
-  protected SubscribeResponse<PushSubscription> createServiceResponse(
-      ExchangeService service, int responseIndex) throws Exception {
-    return new SubscribeResponse<PushSubscription>(new PushSubscription(
-        service));
-  }
+    /*
+     * (non-Javadoc)
+     *
+     * @see
+     * microsoft.exchange.webservices.SubscribeRequest
+     * #internalWriteElementsToXml
+     * (microsoft.exchange.webservices.EwsServiceXmlWriter)
+     */
+    @Override
+    protected void internalWriteElementsToXml(EwsServiceXmlWriter writer)
+            throws XMLStreamException, ServiceXmlSerializationException {
+        writer.writeElementValue(XmlNamespace.Types,
+                XmlElementNames.StatusFrequency, this.getFrequency());
+        writer.writeElementValue(XmlNamespace.Types, XmlElementNames.URL, this
+                .getUrl().toString());
+    }
 
-  /*
-   * (non-Javadoc)
-   *
-   * @seemicrosoft.exchange.webservices.ServiceRequestBase#
-   * getMinimumRequiredServerVersion()
-   */
-  @Override
-  protected ExchangeVersion getMinimumRequiredServerVersion() {
-    return ExchangeVersion.Exchange2007_SP1;
-  }
+    /*
+     * (non-Javadoc)
+     *
+     * @seemicrosoft.exchange.webservices.MultiResponseServiceRequest#
+     * createServiceResponse(microsoft.exchange.webservices.ExchangeService,
+     * int)
+     */
+    @Override
+    protected SubscribeResponse<PushSubscription> createServiceResponse(
+            ExchangeService service, int responseIndex) throws Exception {
+        return new SubscribeResponse<PushSubscription>(new PushSubscription(
+                service));
+    }
 
-  /**
-   * Gets the frequency.
-   *
-   * @return the frequency
-   */
-  public int getFrequency() {
-    return this.frequency;
-  }
+    /*
+     * (non-Javadoc)
+     *
+     * @seemicrosoft.exchange.webservices.ServiceRequestBase#
+     * getMinimumRequiredServerVersion()
+     */
+    @Override
+    protected ExchangeVersion getMinimumRequiredServerVersion() {
+        return ExchangeVersion.Exchange2007_SP1;
+    }
 
-  /**
-   * Sets the frequency.
-   *
-   * @param frequency the new frequency
-   */
-  public void setFrequency(int frequency) {
-    this.frequency = frequency;
-  }
+    /**
+     * Gets the frequency.
+     *
+     * @return the frequency
+     */
+    public int getFrequency() {
+        return this.frequency;
+    }
 
-  /**
-   * Gets the url.
-   *
-   * @return the url
-   */
-  public URI getUrl() {
-    return this.url;
-  }
+    /**
+     * Sets the frequency.
+     *
+     * @param frequency the new frequency
+     */
+    public void setFrequency(int frequency) {
+        this.frequency = frequency;
+    }
 
-  /**
-   * Sets the url.
-   *
-   * @param url the new url
-   */
-  public void setUrl(URI url) {
-    this.url = url;
-  }
+    /**
+     * Gets the url.
+     *
+     * @return the url
+     */
+    public URI getUrl() {
+        return this.url;
+    }
+
+    /**
+     * Sets the url.
+     *
+     * @param url the new url
+     */
+    public void setUrl(URI url) {
+        this.url = url;
+    }
 
 }

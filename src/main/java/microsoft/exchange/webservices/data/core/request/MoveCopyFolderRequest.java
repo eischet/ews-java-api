@@ -27,10 +27,10 @@ import microsoft.exchange.webservices.data.core.EwsServiceXmlWriter;
 import microsoft.exchange.webservices.data.core.EwsUtilities;
 import microsoft.exchange.webservices.data.core.ExchangeService;
 import microsoft.exchange.webservices.data.core.XmlElementNames;
+import microsoft.exchange.webservices.data.core.enumeration.misc.XmlNamespace;
 import microsoft.exchange.webservices.data.core.enumeration.service.error.ServiceErrorHandling;
 import microsoft.exchange.webservices.data.core.response.ServiceResponse;
 import microsoft.exchange.webservices.data.core.service.folder.Folder;
-import microsoft.exchange.webservices.data.core.enumeration.misc.XmlNamespace;
 import microsoft.exchange.webservices.data.misc.FolderIdWrapperList;
 
 import java.util.logging.Level;
@@ -42,74 +42,74 @@ import java.util.logging.Logger;
  * @param <TResponse> The type of response
  */
 abstract class MoveCopyFolderRequest<TResponse extends ServiceResponse> extends
-    MoveCopyRequest<Folder, TResponse> {
+        MoveCopyRequest<Folder, TResponse> {
 
-  private static final Logger LOG = Logger.getLogger(MoveCopyFolderRequest.class.getCanonicalName());
+    private static final Logger LOG = Logger.getLogger(MoveCopyFolderRequest.class.getCanonicalName());
 
-  /**
-   * The folder ids.
-   */
-  private FolderIdWrapperList folderIds = new FolderIdWrapperList();
+    /**
+     * The folder ids.
+     */
+    private final FolderIdWrapperList folderIds = new FolderIdWrapperList();
 
-  /**
-   * Validates request.
-   *
-   * @throws Exception the exception
-   */
-  @Override
-  protected void validate() throws Exception {
-    super.validate();
-    EwsUtilities.validateParamCollection(this.getFolderIds().iterator(), "FolderIds");
-    this.getFolderIds().validate(
-        this.getService().getRequestedServerVersion());
-  }
-
-  /**
-   * Initializes a new instance of the <see
-   * cref="MoveCopyFolderRequest&lt;TResponse&gt;"/> class.
-   *
-   * @param service           The service.
-   * @param errorHandlingMode Indicates how errors should be handled.
-   * @throws Exception
-   */
-  protected MoveCopyFolderRequest(ExchangeService service,
-      ServiceErrorHandling errorHandlingMode)
-      throws Exception {
-    super(service, errorHandlingMode);
-  }
-
-  /**
-   * Writes the ids as XML.
-   *
-   * @param writer the writer
-   */
-  @Override
-  protected void writeIdsToXml(EwsServiceXmlWriter writer) {
-    try {
-      this.folderIds.writeToXml(writer, XmlNamespace.Messages,
-          XmlElementNames.FolderIds);
-    } catch (Exception e) {
-      LOG.log(Level.SEVERE, "error writing IDs to XML", e);
+    /**
+     * Validates request.
+     *
+     * @throws Exception the exception
+     */
+    @Override
+    protected void validate() throws Exception {
+        super.validate();
+        EwsUtilities.validateParamCollection(this.getFolderIds().iterator(), "FolderIds");
+        this.getFolderIds().validate(
+                this.getService().getRequestedServerVersion());
     }
-  }
 
-  /**
-   * Gets the expected response message count.
-   *
-   * @return Number of expected response messages.
-   */
-  @Override
-  protected int getExpectedResponseMessageCount() {
-    return this.getFolderIds().getCount();
-  }
+    /**
+     * Initializes a new instance of the <see
+     * cref="MoveCopyFolderRequest&lt;TResponse&gt;"/> class.
+     *
+     * @param service           The service.
+     * @param errorHandlingMode Indicates how errors should be handled.
+     * @throws Exception
+     */
+    protected MoveCopyFolderRequest(ExchangeService service,
+                                    ServiceErrorHandling errorHandlingMode)
+            throws Exception {
+        super(service, errorHandlingMode);
+    }
 
-  /**
-   * Gets the folder ids.
-   *
-   * @return The folder ids.
-   */
-  public FolderIdWrapperList getFolderIds() {
-    return this.folderIds;
-  }
+    /**
+     * Writes the ids as XML.
+     *
+     * @param writer the writer
+     */
+    @Override
+    protected void writeIdsToXml(EwsServiceXmlWriter writer) {
+        try {
+            this.folderIds.writeToXml(writer, XmlNamespace.Messages,
+                    XmlElementNames.FolderIds);
+        } catch (Exception e) {
+            LOG.log(Level.SEVERE, "error writing IDs to XML", e);
+        }
+    }
+
+    /**
+     * Gets the expected response message count.
+     *
+     * @return Number of expected response messages.
+     */
+    @Override
+    protected int getExpectedResponseMessageCount() {
+        return this.getFolderIds().getCount();
+    }
+
+    /**
+     * Gets the folder ids.
+     *
+     * @return The folder ids.
+     */
+    public FolderIdWrapperList getFolderIds() {
+        return this.folderIds;
+    }
 
 }

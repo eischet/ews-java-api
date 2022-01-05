@@ -35,56 +35,56 @@ import microsoft.exchange.webservices.data.security.XmlNodeType;
  */
 public final class GetAttachmentResponse extends ServiceResponse {
 
-  /**
-   * The attachment.
-   */
-  private Attachment attachment;
+    /**
+     * The attachment.
+     */
+    private final Attachment attachment;
 
-  /**
-   * Initializes a new instance of the GetAttachmentResponse class.
-   *
-   * @param attachment the attachment
-   */
-  public GetAttachmentResponse(Attachment attachment) {
-    super();
-    EwsUtilities.ewsAssert(attachment != null, "GetAttachmentResponse.ctor", "attachment is null");
+    /**
+     * Initializes a new instance of the GetAttachmentResponse class.
+     *
+     * @param attachment the attachment
+     */
+    public GetAttachmentResponse(Attachment attachment) {
+        super();
+        EwsUtilities.ewsAssert(attachment != null, "GetAttachmentResponse.ctor", "attachment is null");
 
-    this.attachment = attachment;
-  }
-
-  /**
-   * Reads response elements from XML.
-   *
-   * @param reader The reader.
-   * @throws Exception the exception
-   */
-  @Override
-  protected void readElementsFromXml(EwsServiceXmlReader reader)
-      throws Exception {
-    super.readElementsFromXml(reader);
-
-    reader.readStartElement(XmlNamespace.Messages,
-        XmlElementNames.Attachments);
-    if (!reader.isEmptyElement()) {
-      XmlNodeType x = new XmlNodeType(XmlNodeType.START_ELEMENT);
-      reader.read(x);
-
-      this.attachment.loadFromXml(reader, reader.getLocalName());
-
-      reader.readEndElement(XmlNamespace.Messages,
-          XmlElementNames.Attachments);
-    } else {
-      reader.read();
+        this.attachment = attachment;
     }
-  }
 
-  /**
-   * Gets the attachment that was retrieved.
-   *
-   * @return the attachment
-   */
-  protected Attachment getAttachment() {
-    return this.attachment;
-  }
+    /**
+     * Reads response elements from XML.
+     *
+     * @param reader The reader.
+     * @throws Exception the exception
+     */
+    @Override
+    protected void readElementsFromXml(EwsServiceXmlReader reader)
+            throws Exception {
+        super.readElementsFromXml(reader);
+
+        reader.readStartElement(XmlNamespace.Messages,
+                XmlElementNames.Attachments);
+        if (!reader.isEmptyElement()) {
+            XmlNodeType x = new XmlNodeType(XmlNodeType.START_ELEMENT);
+            reader.read(x);
+
+            this.attachment.loadFromXml(reader, reader.getLocalName());
+
+            reader.readEndElement(XmlNamespace.Messages,
+                    XmlElementNames.Attachments);
+        } else {
+            reader.read();
+        }
+    }
+
+    /**
+     * Gets the attachment that was retrieved.
+     *
+     * @return the attachment
+     */
+    protected Attachment getAttachment() {
+        return this.attachment;
+    }
 
 }

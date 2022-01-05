@@ -27,10 +27,10 @@ import microsoft.exchange.webservices.data.core.EwsServiceXmlWriter;
 import microsoft.exchange.webservices.data.core.EwsUtilities;
 import microsoft.exchange.webservices.data.core.ExchangeService;
 import microsoft.exchange.webservices.data.core.XmlElementNames;
+import microsoft.exchange.webservices.data.core.enumeration.misc.XmlNamespace;
 import microsoft.exchange.webservices.data.core.enumeration.service.error.ServiceErrorHandling;
 import microsoft.exchange.webservices.data.core.response.ServiceResponse;
 import microsoft.exchange.webservices.data.core.service.item.Item;
-import microsoft.exchange.webservices.data.core.enumeration.misc.XmlNamespace;
 import microsoft.exchange.webservices.data.misc.ItemIdWrapperList;
 
 /**
@@ -39,76 +39,76 @@ import microsoft.exchange.webservices.data.misc.ItemIdWrapperList;
  * @param <TResponse> The type of the response.
  */
 public abstract class MoveCopyItemRequest<TResponse extends ServiceResponse>
-    extends MoveCopyRequest<Item, TResponse> {
-  private ItemIdWrapperList itemIds = new ItemIdWrapperList();
-  private Boolean newItemIds;
+        extends MoveCopyRequest<Item, TResponse> {
+    private final ItemIdWrapperList itemIds = new ItemIdWrapperList();
+    private Boolean newItemIds;
 
-  /**
-   * Validates request.
-   *
-   * @throws Exception the exception
-   */
-  @Override
-  public void validate() throws Exception {
-    super.validate();
-    EwsUtilities.validateParam(this.getItemIds(), "ItemIds");
-  }
-
-  /**
-   * Initializes a new instance of the class.
-   *
-   * @param service           the service
-   * @param errorHandlingMode the error handling mode
-   * @throws Exception on error
-   */
-  protected MoveCopyItemRequest(ExchangeService service,
-      ServiceErrorHandling errorHandlingMode)
-      throws Exception {
-    super(service, errorHandlingMode);
-  }
-
-  /**
-   * Writes the ids as XML.
-   *
-   * @param writer the writer
-   * @throws Exception the exception
-   */
-  @Override
-  protected void writeIdsToXml(EwsServiceXmlWriter writer) throws Exception {
-    this.getItemIds().writeToXml(writer, XmlNamespace.Messages,
-        XmlElementNames.ItemIds);
-    if (this.getReturnNewItemIds() != null) {
-      writer.writeElementValue(
-          XmlNamespace.Messages,
-          XmlElementNames.ReturnNewItemIds,
-          this.getReturnNewItemIds());
+    /**
+     * Validates request.
+     *
+     * @throws Exception the exception
+     */
+    @Override
+    public void validate() throws Exception {
+        super.validate();
+        EwsUtilities.validateParam(this.getItemIds(), "ItemIds");
     }
-  }
 
-  /**
-   * Gets the expected response message count.
-   *
-   * @return Number of expected response messages.
-   */
-  @Override
-  protected int getExpectedResponseMessageCount() {
-    return this.getItemIds().getCount();
-  }
+    /**
+     * Initializes a new instance of the class.
+     *
+     * @param service           the service
+     * @param errorHandlingMode the error handling mode
+     * @throws Exception on error
+     */
+    protected MoveCopyItemRequest(ExchangeService service,
+                                  ServiceErrorHandling errorHandlingMode)
+            throws Exception {
+        super(service, errorHandlingMode);
+    }
 
-  /**
-   * Gets the item ids.
-   *
-   * @return the item ids
-   */
-  public ItemIdWrapperList getItemIds() {
-    return this.itemIds;
-  }
+    /**
+     * Writes the ids as XML.
+     *
+     * @param writer the writer
+     * @throws Exception the exception
+     */
+    @Override
+    protected void writeIdsToXml(EwsServiceXmlWriter writer) throws Exception {
+        this.getItemIds().writeToXml(writer, XmlNamespace.Messages,
+                XmlElementNames.ItemIds);
+        if (this.getReturnNewItemIds() != null) {
+            writer.writeElementValue(
+                    XmlNamespace.Messages,
+                    XmlElementNames.ReturnNewItemIds,
+                    this.getReturnNewItemIds());
+        }
+    }
 
-  protected Boolean getReturnNewItemIds() {
-    return this.newItemIds;
-  }
+    /**
+     * Gets the expected response message count.
+     *
+     * @return Number of expected response messages.
+     */
+    @Override
+    protected int getExpectedResponseMessageCount() {
+        return this.getItemIds().getCount();
+    }
 
-  public void setReturnNewItemIds(Boolean value) {
-    this.newItemIds = value;
-  }
+    /**
+     * Gets the item ids.
+     *
+     * @return the item ids
+     */
+    public ItemIdWrapperList getItemIds() {
+        return this.itemIds;
+    }
+
+    protected Boolean getReturnNewItemIds() {
+        return this.newItemIds;
+    }
+
+    public void setReturnNewItemIds(Boolean value) {
+        this.newItemIds = value;
+    }
 }

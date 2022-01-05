@@ -31,7 +31,6 @@ import microsoft.exchange.webservices.data.core.exception.service.local.ServiceV
 import microsoft.exchange.webservices.data.core.exception.service.local.ServiceXmlSerializationException;
 
 import javax.xml.stream.XMLStreamException;
-
 import java.util.Date;
 
 /**
@@ -39,104 +38,104 @@ import java.util.Date;
  */
 public final class RulePredicateDateRange extends ComplexProperty {
 
-  /**
-   * The end DateTime.
-   */
-  private Date start;
+    /**
+     * The end DateTime.
+     */
+    private Date start;
 
-  /**
-   * The end DateTime.
-   */
-  private Date end;
+    /**
+     * The end DateTime.
+     */
+    private Date end;
 
-  /**
-   * Initializes a new instance of the RulePredicateDateRange class.
-   */
-  protected RulePredicateDateRange() {
-    super();
-  }
-
-  /**
-   * Gets or sets the range start date and time.
-   * If Start is set to null, no start date applies.
-   */
-  public Date getStart() {
-    return this.start;
-  }
-
-  public void setStart(Date value) {
-    if (this.canSetFieldValue(this.start, value)) {
-      this.start = value;
-      this.changed();
+    /**
+     * Initializes a new instance of the RulePredicateDateRange class.
+     */
+    protected RulePredicateDateRange() {
+        super();
     }
-  }
 
-  /**
-   * Gets or sets the range end date and time.
-   * If End is set to null, no end date applies.
-   */
-  public Date getEnd() {
-    return this.end;
-  }
+    /**
+     * Gets or sets the range start date and time.
+     * If Start is set to null, no start date applies.
+     */
+    public Date getStart() {
+        return this.start;
+    }
 
-  public void setEnd(Date value) {
-    if (this.canSetFieldValue(this.end, value)) {
-      this.end = value;
-      this.changed();
+    public void setStart(Date value) {
+        if (this.canSetFieldValue(this.start, value)) {
+            this.start = value;
+            this.changed();
+        }
     }
-  }
 
-  /**
-   * Tries to read element from XML.
-   *
-   * @param reader The reader.
-   * @return True if element was read.
-   */
-  @Override
-  public boolean tryReadElementFromXml(EwsServiceXmlReader
-      reader) throws Exception {
-    if (reader.getLocalName().equalsIgnoreCase(XmlElementNames.StartDateTime)) {
-      this.start = reader.readElementValueAsDateTime();
-      return true;
-    } else if (reader.getLocalName().equalsIgnoreCase(XmlElementNames.EndDateTime)) {
-      this.end = reader.readElementValueAsDateTime();
-      return true;
-    } else {
-      return false;
+    /**
+     * Gets or sets the range end date and time.
+     * If End is set to null, no end date applies.
+     */
+    public Date getEnd() {
+        return this.end;
     }
-  }
 
-  /**
-   * Writes elements to XML.
-   *
-   * @param writer the writer
-   * @throws XMLStreamException the XML stream exception
-   */
-  @Override
-  public void writeElementsToXml(EwsServiceXmlWriter writer)
-      throws ServiceXmlSerializationException, XMLStreamException {
-    if (this.getStart() != null) {
-      writer.writeElementValue(XmlNamespace.Types,
-          XmlElementNames.StartDateTime, this.getStart());
+    public void setEnd(Date value) {
+        if (this.canSetFieldValue(this.end, value)) {
+            this.end = value;
+            this.changed();
+        }
     }
-    if (this.getEnd() != null) {
-      writer.writeElementValue(XmlNamespace.Types,
-          XmlElementNames.EndDateTime, this.getEnd());
-    }
-  }
 
-  /**
-   * Validates this instance.
-   */
-  @Override
-  protected void internalValidate()
-      throws ServiceValidationException, Exception {
-    super.internalValidate();
-    if (this.start != null &&
-        this.end != null &&
-        this.start.after(this.end)) {
-      throw new ServiceValidationException(
-          "Start date time cannot be bigger than end date time.");
+    /**
+     * Tries to read element from XML.
+     *
+     * @param reader The reader.
+     * @return True if element was read.
+     */
+    @Override
+    public boolean tryReadElementFromXml(EwsServiceXmlReader
+                                                 reader) throws Exception {
+        if (reader.getLocalName().equalsIgnoreCase(XmlElementNames.StartDateTime)) {
+            this.start = reader.readElementValueAsDateTime();
+            return true;
+        } else if (reader.getLocalName().equalsIgnoreCase(XmlElementNames.EndDateTime)) {
+            this.end = reader.readElementValueAsDateTime();
+            return true;
+        } else {
+            return false;
+        }
     }
-  }
+
+    /**
+     * Writes elements to XML.
+     *
+     * @param writer the writer
+     * @throws XMLStreamException the XML stream exception
+     */
+    @Override
+    public void writeElementsToXml(EwsServiceXmlWriter writer)
+            throws ServiceXmlSerializationException, XMLStreamException {
+        if (this.getStart() != null) {
+            writer.writeElementValue(XmlNamespace.Types,
+                    XmlElementNames.StartDateTime, this.getStart());
+        }
+        if (this.getEnd() != null) {
+            writer.writeElementValue(XmlNamespace.Types,
+                    XmlElementNames.EndDateTime, this.getEnd());
+        }
+    }
+
+    /**
+     * Validates this instance.
+     */
+    @Override
+    protected void internalValidate()
+            throws Exception {
+        super.internalValidate();
+        if (this.start != null &&
+                this.end != null &&
+                this.start.after(this.end)) {
+            throw new ServiceValidationException(
+                    "Start date time cannot be bigger than end date time.");
+        }
+    }
 }

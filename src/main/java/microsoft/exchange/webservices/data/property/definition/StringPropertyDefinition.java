@@ -33,45 +33,46 @@ import java.util.EnumSet;
  */
 public class StringPropertyDefinition extends TypedPropertyDefinition<String> {
 
-  /**
-   * Initializes a new instance of the "StringPropertyDefinition" class.
-   *
-   * @param xmlElementName Name of the XML element.
-   * @param uri            The URI.
-   * @param flags          The flags.
-   * @param version        The version.
-   */
-  public StringPropertyDefinition(String xmlElementName, String uri, EnumSet<PropertyDefinitionFlags> flags,
-      ExchangeVersion version) {
-    super(xmlElementName, uri, flags, version);
-  }
+    /**
+     * Initializes a new instance of the "StringPropertyDefinition" class.
+     *
+     * @param xmlElementName Name of the XML element.
+     * @param uri            The URI.
+     * @param flags          The flags.
+     * @param version        The version.
+     */
+    public StringPropertyDefinition(String xmlElementName, String uri, EnumSet<PropertyDefinitionFlags> flags,
+                                    ExchangeVersion version) {
+        super(xmlElementName, uri, flags, version);
+    }
 
-  /**
-   * Parses the specified value.
-   *
-   * @param value The value.
-   * @return Typed value.
-   */
-  @Override
-  protected String parse(String value) {
-    return value;
-  }
+    /**
+     * Parses the specified value.
+     *
+     * @param value The value.
+     * @return Typed value.
+     */
+    @Override
+    protected String parse(String value) {
+        return value;
+    }
 
-  /**
-   * Gets a value indicating whether this property definition is for a
-   * nullable type (ref, int?, bool?...).
-   *
-   * @return True
-   */
-  @Override public boolean isNullable() {
-    return true;
-  }
+    /**
+     * Gets a value indicating whether this property definition is for a
+     * nullable type (ref, int?, bool?...).
+     *
+     * @return True
+     */
+    @Override
+    public boolean isNullable() {
+        return true;
+    }
 
-  /**
-   * Gets the property type.
-   */
-  @Override
-  public Class<String> getType() {
-    return String.class;
-  }
+    /**
+     * Gets the property type.
+     */
+    @Override
+    public Class<String> getType() {
+        return String.class;
+    }
 }

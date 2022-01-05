@@ -32,33 +32,33 @@ import microsoft.exchange.webservices.data.core.response.GetFolderResponse;
  */
 public final class GetFolderRequest extends GetFolderRequestBase<GetFolderResponse> {
 
-  // private FolderIdWrapperList folderIds = new FolderIdWrapperList();
+    // private FolderIdWrapperList folderIds = new FolderIdWrapperList();
 
-  /**
-   * Initializes a new instance of the GetFolderRequest class.
-   *
-   * @param service           the service
-   * @param errorHandlingMode Indicates how errors should be handled.
-   * @throws Exception
-   */
-  public GetFolderRequest(ExchangeService service, ServiceErrorHandling errorHandlingMode)
-      throws Exception {
-    super(service, errorHandlingMode);
-  }
+    /**
+     * Initializes a new instance of the GetFolderRequest class.
+     *
+     * @param service           the service
+     * @param errorHandlingMode Indicates how errors should be handled.
+     * @throws Exception
+     */
+    public GetFolderRequest(ExchangeService service, ServiceErrorHandling errorHandlingMode)
+            throws Exception {
+        super(service, errorHandlingMode);
+    }
 
-  /**
-   * Creates the service response.
-   *
-   * @param service       The service
-   * @param responseIndex Index of the response.
-   * @return Service response.
-   */
-  @Override
-  protected GetFolderResponse createServiceResponse(ExchangeService service,
-      int responseIndex) {
-    return new GetFolderResponse(this.getFolderIds()
-        .getFolderIdWrapperList(responseIndex).getFolder(), this
-        .getPropertySet());
-  }
+    /**
+     * Creates the service response.
+     *
+     * @param service       The service
+     * @param responseIndex Index of the response.
+     * @return Service response.
+     */
+    @Override
+    protected GetFolderResponse createServiceResponse(ExchangeService service,
+                                                      int responseIndex) {
+        return new GetFolderResponse(this.getFolderIds()
+                .getFolderIdWrapperList(responseIndex).getFolder(), this
+                .getPropertySet());
+    }
 
 }

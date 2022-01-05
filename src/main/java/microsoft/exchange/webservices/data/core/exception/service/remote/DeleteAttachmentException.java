@@ -33,45 +33,45 @@ import microsoft.exchange.webservices.data.core.response.ServiceResponseCollecti
  */
 public final class DeleteAttachmentException extends ServiceRemoteException {
 
-  /**
-   * Constant serialized ID used for compatibility.
-   */
-  private static final long serialVersionUID = 1L;
+    /**
+     * Constant serialized ID used for compatibility.
+     */
+    private static final long serialVersionUID = 1L;
 
-  /**
-   * The response.
-   */
-  private ServiceResponseCollection<DeleteAttachmentResponse> responses;
+    /**
+     * The response.
+     */
+    private final ServiceResponseCollection<DeleteAttachmentResponse> responses;
 
-  /**
-   * Initializes a new instance of DeleteAttachmentException.
-   *
-   * @param serviceResponses The list of response to be associated with this exception.
-   * @param message          The message that describes the error.
-   */
-  public DeleteAttachmentException(ServiceResponseCollection<DeleteAttachmentResponse> serviceResponses,
-      String message) {
-    super(message);
-    EwsUtilities.ewsAssert(serviceResponses != null,
-      "MultiServiceResponseException.ctor", "serviceResponses is null");
+    /**
+     * Initializes a new instance of DeleteAttachmentException.
+     *
+     * @param serviceResponses The list of response to be associated with this exception.
+     * @param message          The message that describes the error.
+     */
+    public DeleteAttachmentException(ServiceResponseCollection<DeleteAttachmentResponse> serviceResponses,
+                                     String message) {
+        super(message);
+        EwsUtilities.ewsAssert(serviceResponses != null,
+                "MultiServiceResponseException.ctor", "serviceResponses is null");
 
-    this.responses = serviceResponses;
-  }
+        this.responses = serviceResponses;
+    }
 
-  /**
-   * Initializes a new instance of DeleteAttachmentException.
-   *
-   * @param serviceResponses The list of response to be associated with this exception.
-   * @param message          The message that describes the error.
-   * @param innerException   The exception that is the cause of the current exception.
-   */
-  protected DeleteAttachmentException(
-      ServiceResponseCollection<DeleteAttachmentResponse> serviceResponses,
-      String message, Exception innerException) {
-    super(message, innerException);
-    EwsUtilities.ewsAssert(serviceResponses != null,
-      "MultiServiceResponseException.ctor", "serviceResponses is null");
+    /**
+     * Initializes a new instance of DeleteAttachmentException.
+     *
+     * @param serviceResponses The list of response to be associated with this exception.
+     * @param message          The message that describes the error.
+     * @param innerException   The exception that is the cause of the current exception.
+     */
+    protected DeleteAttachmentException(
+            ServiceResponseCollection<DeleteAttachmentResponse> serviceResponses,
+            String message, Exception innerException) {
+        super(message, innerException);
+        EwsUtilities.ewsAssert(serviceResponses != null,
+                "MultiServiceResponseException.ctor", "serviceResponses is null");
 
-    this.responses = serviceResponses;
-  }
+        this.responses = serviceResponses;
+    }
 }

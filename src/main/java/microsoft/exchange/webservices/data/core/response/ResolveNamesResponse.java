@@ -35,56 +35,56 @@ import microsoft.exchange.webservices.data.misc.NameResolutionCollection;
  */
 public final class ResolveNamesResponse extends ServiceResponse {
 
-  /**
-   * The resolutions.
-   */
-  private NameResolutionCollection resolutions;
+    /**
+     * The resolutions.
+     */
+    private final NameResolutionCollection resolutions;
 
-  /**
-   * Initializes a new instance of the class.
-   *
-   * @param service the service
-   */
-  public ResolveNamesResponse(ExchangeService service) {
-    super();
-    EwsUtilities.ewsAssert(service != null, "ResolveNamesResponse.ctor", "service is null");
+    /**
+     * Initializes a new instance of the class.
+     *
+     * @param service the service
+     */
+    public ResolveNamesResponse(ExchangeService service) {
+        super();
+        EwsUtilities.ewsAssert(service != null, "ResolveNamesResponse.ctor", "service is null");
 
-    this.resolutions = new NameResolutionCollection(service);
-  }
-
-  /**
-   * Reads response elements from XML.
-   *
-   * @param reader the reader
-   * @throws Exception the exception
-   */
-  @Override
-  protected void readElementsFromXml(EwsServiceXmlReader reader)
-      throws Exception {
-    super.readElementsFromXml(reader);
-    this.resolutions.loadFromXml(reader);
-  }
-
-  /**
-   * Override base implementation so that API does not throw when name
-   * resolution fails to find a match. EWS returns an error in this case but
-   * the API will just return an empty NameResolutionCollection.
-   *
-   * @throws ServiceResponseException the service response exception
-   */
-  @Override
-  protected void internalThrowIfNecessary() throws ServiceResponseException {
-    if (this.getErrorCode() != ServiceError.ErrorNameResolutionNoResults) {
-      super.internalThrowIfNecessary();
+        this.resolutions = new NameResolutionCollection(service);
     }
-  }
 
-  /**
-   * Gets a list of name resolution suggestions.
-   *
-   * @return the resolutions
-   */
-  public NameResolutionCollection getResolutions() {
-    return this.resolutions;
-  }
+    /**
+     * Reads response elements from XML.
+     *
+     * @param reader the reader
+     * @throws Exception the exception
+     */
+    @Override
+    protected void readElementsFromXml(EwsServiceXmlReader reader)
+            throws Exception {
+        super.readElementsFromXml(reader);
+        this.resolutions.loadFromXml(reader);
+    }
+
+    /**
+     * Override base implementation so that API does not throw when name
+     * resolution fails to find a match. EWS returns an error in this case but
+     * the API will just return an empty NameResolutionCollection.
+     *
+     * @throws ServiceResponseException the service response exception
+     */
+    @Override
+    protected void internalThrowIfNecessary() throws ServiceResponseException {
+        if (this.getErrorCode() != ServiceError.ErrorNameResolutionNoResults) {
+            super.internalThrowIfNecessary();
+        }
+    }
+
+    /**
+     * Gets a list of name resolution suggestions.
+     *
+     * @return the resolutions
+     */
+    public NameResolutionCollection getResolutions() {
+        return this.resolutions;
+    }
 }

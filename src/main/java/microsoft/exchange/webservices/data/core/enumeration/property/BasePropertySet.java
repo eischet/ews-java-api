@@ -29,39 +29,39 @@ package microsoft.exchange.webservices.data.core.enumeration.property;
  */
 public enum BasePropertySet {
 
-  // Only includes the Id of item and folder.
-  /**
-   * The Id only.
-   */
-  IdOnly("IdOnly"),
+    // Only includes the Id of item and folder.
+    /**
+     * The Id only.
+     */
+    IdOnly("IdOnly"),
 
-  // Includes all the first class property of item and folder.
-  /**
-   * The First class property.
-   */
-  FirstClassProperties("AllProperties");
+    // Includes all the first class property of item and folder.
+    /**
+     * The First class property.
+     */
+    FirstClassProperties("AllProperties");
 
-  /**
-   * The base shape value.
-   */
-  private String baseShapeValue;
+    /**
+     * The base shape value.
+     */
+    private final String baseShapeValue;
 
-  /**
-   * Instantiates a new base property set.
-   *
-   * @param baseShapeValue the base shape value
-   */
-  BasePropertySet(String baseShapeValue) {
-    this.baseShapeValue = baseShapeValue;
-  }
+    /**
+     * Instantiates a new base property set.
+     *
+     * @param baseShapeValue the base shape value
+     */
+    BasePropertySet(String baseShapeValue) {
+        this.baseShapeValue = baseShapeValue;
+    }
 
-  /**
-   * Gets the base shape value.
-   *
-   * @return the base shape value
-   */
-  public String getBaseShapeValue() {
-    return this.baseShapeValue;
-  }
+    /**
+     * Gets the base shape value.
+     *
+     * @return the base shape value
+     */
+    public String getBaseShapeValue() {
+        return this.baseShapeValue;
+    }
 
 }

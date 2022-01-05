@@ -32,6 +32,7 @@ import java.lang.annotation.Target;
  * The Interface Attachable.
  */
 @Target(ElementType.TYPE)
-@Retention(RetentionPolicy.RUNTIME) public @interface Attachable {
+@Retention(RetentionPolicy.RUNTIME)
+public @interface Attachable {
 
 }

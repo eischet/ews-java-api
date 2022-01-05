@@ -23,11 +23,9 @@
 
 package microsoft.exchange.webservices.data.core.exception.service.local;
 
-import microsoft.exchange.webservices.data.core.exception.service.local.ServiceLocalException;
-
 /**
  * The Class InvalidOrUnsupportedTimeZoneDefinitionException.
- *
+ * <p>
  * Thrown when time zone definition is not valid.
  *
  * @see microsoft.exchange.webservices.data.property.complex.time.TimeZoneDefinition
@@ -35,38 +33,38 @@ import microsoft.exchange.webservices.data.core.exception.service.local.ServiceL
  */
 public class InvalidOrUnsupportedTimeZoneDefinitionException extends ServiceLocalException {
 
-  /**
-   * Constant serialized ID used for compatibility.
-   */
-  private static final long serialVersionUID = 1L;
+    /**
+     * Constant serialized ID used for compatibility.
+     */
+    private static final long serialVersionUID = 1L;
 
-  /**
-   * Constructs an <code>InvalidOrUnsupportedTimeZoneDefinitionException</code> with no detail message.
-   */
-  public InvalidOrUnsupportedTimeZoneDefinitionException() {
-    super();
-  }
+    /**
+     * Constructs an <code>InvalidOrUnsupportedTimeZoneDefinitionException</code> with no detail message.
+     */
+    public InvalidOrUnsupportedTimeZoneDefinitionException() {
+        super();
+    }
 
-  /**
-   * Constructs an <code>InvalidOrUnsupportedTimeZoneDefinitionException</code> with the specified detail message.
-   *
-   * @param message the detail message.
-   */
-  public InvalidOrUnsupportedTimeZoneDefinitionException(String message) {
-    super(message);
-  }
+    /**
+     * Constructs an <code>InvalidOrUnsupportedTimeZoneDefinitionException</code> with the specified detail message.
+     *
+     * @param message the detail message.
+     */
+    public InvalidOrUnsupportedTimeZoneDefinitionException(String message) {
+        super(message);
+    }
 
-  /**
-   * Constructs a new exception with the specified detail message and cause.
-   *
-   * @param message the detail message (which is saved for later retrieval by the {@link
-   *                Throwable#getMessage()} method).
-   * @param innerException   the cause (which is saved for later retrieval by the {@link Throwable#getCause()}
-   *                method).  (A <tt>null</tt> value is permitted, and indicates that the cause is nonexistent
-   *                or unknown.)
-   */
-  public InvalidOrUnsupportedTimeZoneDefinitionException(String message, Exception innerException) {
-    super(message, innerException);
-  }
+    /**
+     * Constructs a new exception with the specified detail message and cause.
+     *
+     * @param message        the detail message (which is saved for later retrieval by the {@link
+     *                       Throwable#getMessage()} method).
+     * @param innerException the cause (which is saved for later retrieval by the {@link Throwable#getCause()}
+     *                       method).  (A <tt>null</tt> value is permitted, and indicates that the cause is nonexistent
+     *                       or unknown.)
+     */
+    public InvalidOrUnsupportedTimeZoneDefinitionException(String message, Exception innerException) {
+        super(message, innerException);
+    }
 
 }

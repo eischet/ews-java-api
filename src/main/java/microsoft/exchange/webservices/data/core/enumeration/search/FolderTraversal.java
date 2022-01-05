@@ -28,22 +28,22 @@ package microsoft.exchange.webservices.data.core.enumeration.search;
  */
 public enum FolderTraversal {
 
-  // Only direct sub-folder are retrieved.
-  /**
-   * The Shallow.
-   */
-  Shallow,
+    // Only direct sub-folder are retrieved.
+    /**
+     * The Shallow.
+     */
+    Shallow,
 
-  // The entire hierarchy of sub-folder is retrieved.
-  /**
-   * The Deep.
-   */
-  Deep,
+    // The entire hierarchy of sub-folder is retrieved.
+    /**
+     * The Deep.
+     */
+    Deep,
 
-  // Only soft deleted folder are retrieved.
-  /**
-   * The Soft deleted.
-   */
-  SoftDeleted
+    // Only soft deleted folder are retrieved.
+    /**
+     * The Soft deleted.
+     */
+    SoftDeleted
 
 }

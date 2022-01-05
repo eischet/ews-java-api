@@ -32,45 +32,45 @@ import microsoft.exchange.webservices.data.property.complex.RuleCollection;
  * Represents the response to a GetInboxRules operation.
  */
 public final class GetInboxRulesResponse extends ServiceResponse {
-  /**
-   * Rule collection.
-   */
-  private RuleCollection ruleCollection;
+    /**
+     * Rule collection.
+     */
+    private final RuleCollection ruleCollection;
 
-  /**
-   * Initializes a new instance of the {@link GetInboxRulesResponse} class.
-   */
-  public GetInboxRulesResponse() {
-    super();
-    this.ruleCollection = new RuleCollection();
-  }
-
-  /**
-   * Reads response elements from XML.
-   *
-   * @param reader The reader.
-   */
-  @Override
-  protected void readElementsFromXml(EwsServiceXmlReader reader)
-      throws Exception {
-    reader.read();
-    this.ruleCollection.setOutlookRuleBlobExists(reader.
-        readElementValue(Boolean.class,
-            XmlNamespace.Messages,
-            XmlElementNames.OutlookRuleBlobExists));
-    reader.read();
-    if (reader.isStartElement(XmlNamespace.NotSpecified, XmlElementNames.InboxRules)) {
-      this.ruleCollection.loadFromXml(reader,
-          XmlNamespace.NotSpecified,
-          XmlElementNames.InboxRules);
+    /**
+     * Initializes a new instance of the {@link GetInboxRulesResponse} class.
+     */
+    public GetInboxRulesResponse() {
+        super();
+        this.ruleCollection = new RuleCollection();
     }
-  }
 
-  /**
-   * Gets the rule collection in the response.
-   */
-  public RuleCollection getRules() {
-    return this.ruleCollection;
-  }
+    /**
+     * Reads response elements from XML.
+     *
+     * @param reader The reader.
+     */
+    @Override
+    protected void readElementsFromXml(EwsServiceXmlReader reader)
+            throws Exception {
+        reader.read();
+        this.ruleCollection.setOutlookRuleBlobExists(reader.
+                readElementValue(Boolean.class,
+                        XmlNamespace.Messages,
+                        XmlElementNames.OutlookRuleBlobExists));
+        reader.read();
+        if (reader.isStartElement(XmlNamespace.NotSpecified, XmlElementNames.InboxRules)) {
+            this.ruleCollection.loadFromXml(reader,
+                    XmlNamespace.NotSpecified,
+                    XmlElementNames.InboxRules);
+        }
+    }
+
+    /**
+     * Gets the rule collection in the response.
+     */
+    public RuleCollection getRules() {
+        return this.ruleCollection;
+    }
 }
 

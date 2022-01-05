@@ -28,16 +28,16 @@ package microsoft.exchange.webservices.data.core.enumeration.search;
  */
 public enum LogicalOperator {
 
-  // The AND operator.
-  /**
-   * The And.
-   */
-  And,
+    // The AND operator.
+    /**
+     * The And.
+     */
+    And,
 
-  // The OR operator.
-  /**
-   * The Or.
-   */
-  Or
+    // The OR operator.
+    /**
+     * The Or.
+     */
+    Or
 
 }

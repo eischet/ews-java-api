@@ -30,42 +30,42 @@ import microsoft.exchange.webservices.data.core.XmlElementNames;
  * Represents a collection of response to GetDomainSettings.
  */
 public final class GetDomainSettingsResponseCollection extends
-                                                       AutodiscoverResponseCollection<GetDomainSettingsResponse> {
+        AutodiscoverResponseCollection<GetDomainSettingsResponse> {
 
-  /**
-   * Initializes a new instance of the AutodiscoverResponseCollection class.
-   */
-  public GetDomainSettingsResponseCollection() {
-  }
+    /**
+     * Initializes a new instance of the AutodiscoverResponseCollection class.
+     */
+    public GetDomainSettingsResponseCollection() {
+    }
 
-  /**
-   * Create a response instance.
-   *
-   * @return GetDomainSettingsResponse.
-   */
-  @Override
-  protected GetDomainSettingsResponse createResponseInstance() {
-    return new GetDomainSettingsResponse();
-  }
+    /**
+     * Create a response instance.
+     *
+     * @return GetDomainSettingsResponse.
+     */
+    @Override
+    protected GetDomainSettingsResponse createResponseInstance() {
+        return new GetDomainSettingsResponse();
+    }
 
-  /**
-   * Gets the name of the response collection XML element.
-   *
-   * @return Response collection XMl element name.
-   */
-  @Override
-  protected String getResponseCollectionXmlElementName() {
-    return XmlElementNames.DomainResponses;
-  }
+    /**
+     * Gets the name of the response collection XML element.
+     *
+     * @return Response collection XMl element name.
+     */
+    @Override
+    protected String getResponseCollectionXmlElementName() {
+        return XmlElementNames.DomainResponses;
+    }
 
-  /**
-   * Gets the name of the response instance XML element.
-   *
-   * @return Response instance XMl element name.
-   */
-  @Override
-  protected String getResponseInstanceXmlElementName() {
-    return XmlElementNames.DomainResponse;
-  }
+    /**
+     * Gets the name of the response instance XML element.
+     *
+     * @return Response instance XMl element name.
+     */
+    @Override
+    protected String getResponseInstanceXmlElementName() {
+        return XmlElementNames.DomainResponse;
+    }
 
 }

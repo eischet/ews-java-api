@@ -26,8 +26,8 @@ package microsoft.exchange.webservices.data.property.complex.time;
 import microsoft.exchange.webservices.data.core.EwsServiceXmlReader;
 import microsoft.exchange.webservices.data.core.EwsServiceXmlWriter;
 import microsoft.exchange.webservices.data.core.XmlElementNames;
-import microsoft.exchange.webservices.data.core.enumeration.property.time.DayOfTheWeek;
 import microsoft.exchange.webservices.data.core.enumeration.misc.XmlNamespace;
+import microsoft.exchange.webservices.data.core.enumeration.property.time.DayOfTheWeek;
 import microsoft.exchange.webservices.data.core.exception.service.local.ServiceXmlSerializationException;
 
 import javax.xml.stream.XMLStreamException;
@@ -38,111 +38,111 @@ import javax.xml.stream.XMLStreamException;
  */
 class RelativeDayOfMonthTransition extends AbsoluteMonthTransition {
 
-  /**
-   * The day of the week.
-   */
-  private DayOfTheWeek dayOfTheWeek;
+    /**
+     * The day of the week.
+     */
+    private DayOfTheWeek dayOfTheWeek;
 
-  /**
-   * The week index.
-   */
-  private int weekIndex;
+    /**
+     * The week index.
+     */
+    private int weekIndex;
 
-  /**
-   * Gets the XML element name associated with the transition.
-   *
-   * @return The XML element name associated with the transition.
-   */
-  @Override
-  protected String getXmlElementName() {
-    return XmlElementNames.RecurringDayTransition;
-  }
-
-  /**
-   * Tries to read element from XML.
-   *
-   * @param reader accepts EwsServiceXmlReader
-   * @return True if element was read.
-   * @throws Exception throws Exception
-   */
-  @Override
-  public boolean tryReadElementFromXml(EwsServiceXmlReader reader)
-      throws Exception {
-    if (super.tryReadElementFromXml(reader)) {
-      return true;
-    } else {
-      if (reader.getLocalName().equals(XmlElementNames.DayOfWeek)) {
-        this.dayOfTheWeek = reader.readElementValue(DayOfTheWeek.class);
-        return true;
-      } else if (reader.getLocalName().equals(XmlElementNames.Occurrence)) {
-        this.weekIndex = reader.readElementValue(Integer.class);
-        return true;
-      } else {
-        return false;
-      }
+    /**
+     * Gets the XML element name associated with the transition.
+     *
+     * @return The XML element name associated with the transition.
+     */
+    @Override
+    protected String getXmlElementName() {
+        return XmlElementNames.RecurringDayTransition;
     }
-  }
 
-  /**
-   * Writes elements to XML.
-   *
-   * @param writer the writer
-   * @throws ServiceXmlSerializationException the service xml serialization exception
-   * @throws XMLStreamException the XML stream exception
-   */
-  @Override
-  public void writeElementsToXml(EwsServiceXmlWriter writer)
-      throws ServiceXmlSerializationException, XMLStreamException {
-    super.writeElementsToXml(writer);
+    /**
+     * Tries to read element from XML.
+     *
+     * @param reader accepts EwsServiceXmlReader
+     * @return True if element was read.
+     * @throws Exception throws Exception
+     */
+    @Override
+    public boolean tryReadElementFromXml(EwsServiceXmlReader reader)
+            throws Exception {
+        if (super.tryReadElementFromXml(reader)) {
+            return true;
+        } else {
+            if (reader.getLocalName().equals(XmlElementNames.DayOfWeek)) {
+                this.dayOfTheWeek = reader.readElementValue(DayOfTheWeek.class);
+                return true;
+            } else if (reader.getLocalName().equals(XmlElementNames.Occurrence)) {
+                this.weekIndex = reader.readElementValue(Integer.class);
+                return true;
+            } else {
+                return false;
+            }
+        }
+    }
 
-    writer.writeElementValue(
-        XmlNamespace.Types,
-        XmlElementNames.DayOfWeek,
-        this.dayOfTheWeek);
+    /**
+     * Writes elements to XML.
+     *
+     * @param writer the writer
+     * @throws ServiceXmlSerializationException the service xml serialization exception
+     * @throws XMLStreamException               the XML stream exception
+     */
+    @Override
+    public void writeElementsToXml(EwsServiceXmlWriter writer)
+            throws ServiceXmlSerializationException, XMLStreamException {
+        super.writeElementsToXml(writer);
 
-    writer.writeElementValue(
-        XmlNamespace.Types,
-        XmlElementNames.Occurrence,
-        this.weekIndex);
-  }
+        writer.writeElementValue(
+                XmlNamespace.Types,
+                XmlElementNames.DayOfWeek,
+                this.dayOfTheWeek);
 
-  /**
-   * Initializes a new instance of the "RelativeDayOfMonthTransition class.
-   *
-   * @param timeZoneDefinition the time zone definition
-   */
-  protected RelativeDayOfMonthTransition(
-      TimeZoneDefinition timeZoneDefinition) {
-    super(timeZoneDefinition);
-  }
+        writer.writeElementValue(
+                XmlNamespace.Types,
+                XmlElementNames.Occurrence,
+                this.weekIndex);
+    }
 
-  /**
-   * Initializes a new instance of the "RelativeDayOfMonthTransition class.
-   *
-   * @param timeZoneDefinition the time zone definition
-   * @param targetPeriod       the target period
-   */
-  protected RelativeDayOfMonthTransition(
-      TimeZoneDefinition timeZoneDefinition,
-      TimeZonePeriod targetPeriod) {
-    super(timeZoneDefinition, targetPeriod);
-  }
+    /**
+     * Initializes a new instance of the "RelativeDayOfMonthTransition class.
+     *
+     * @param timeZoneDefinition the time zone definition
+     */
+    protected RelativeDayOfMonthTransition(
+            TimeZoneDefinition timeZoneDefinition) {
+        super(timeZoneDefinition);
+    }
 
-  /**
-   * Gets the day of the week when the transition occurs.
-   *
-   * @return the day of the week
-   */
-  protected DayOfTheWeek getDayOfTheWeek() {
-    return this.dayOfTheWeek;
-  }
+    /**
+     * Initializes a new instance of the "RelativeDayOfMonthTransition class.
+     *
+     * @param timeZoneDefinition the time zone definition
+     * @param targetPeriod       the target period
+     */
+    protected RelativeDayOfMonthTransition(
+            TimeZoneDefinition timeZoneDefinition,
+            TimeZonePeriod targetPeriod) {
+        super(timeZoneDefinition, targetPeriod);
+    }
 
-  /**
-   * Gets the index of the week in the month when the transition occurs.
-   *
-   * @return the week index
-   */
-  protected int getWeekIndex() {
-    return this.weekIndex;
-  }
+    /**
+     * Gets the day of the week when the transition occurs.
+     *
+     * @return the day of the week
+     */
+    protected DayOfTheWeek getDayOfTheWeek() {
+        return this.dayOfTheWeek;
+    }
+
+    /**
+     * Gets the index of the week in the month when the transition occurs.
+     *
+     * @return the week index
+     */
+    protected int getWeekIndex() {
+        return this.weekIndex;
+    }
 }

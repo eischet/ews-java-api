@@ -26,7 +26,6 @@ package microsoft.exchange.webservices.data.core;
 import javax.xml.stream.XMLEventReader;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
-
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -45,62 +44,62 @@ import java.io.InputStreamReader;
  */
 public class EwsServiceMultiResponseXmlReader extends EwsServiceXmlReader {
 
-  /**
-   * Initializes a new instance of the
-   * EwsServiceMultiResponseXmlReader class.
-   *
-   * @param stream  The stream.
-   * @param service The service.
-   * @throws Exception
-   */
-  private EwsServiceMultiResponseXmlReader(InputStream stream,
-      ExchangeService service) throws Exception {
-    super(stream, service);
-  }
+    /**
+     * Initializes a new instance of the
+     * EwsServiceMultiResponseXmlReader class.
+     *
+     * @param stream  The stream.
+     * @param service The service.
+     * @throws Exception
+     */
+    private EwsServiceMultiResponseXmlReader(InputStream stream,
+                                             ExchangeService service) throws Exception {
+        super(stream, service);
+    }
 
-  /**
-   * Creates a new instance of the EwsServiceMultiResponseXmlReader class.
-   *
-   * @param stream the stream
-   * @param service the service
-   * @return an instance of EwsServiceMultiResponseXmlReader wrapped around the input stream
-   * @throws Exception on error
-   */
-  public static EwsServiceMultiResponseXmlReader create(InputStream stream, ExchangeService service) throws Exception {
-    return new EwsServiceMultiResponseXmlReader(stream, service);
-  }
+    /**
+     * Creates a new instance of the EwsServiceMultiResponseXmlReader class.
+     *
+     * @param stream  the stream
+     * @param service the service
+     * @return an instance of EwsServiceMultiResponseXmlReader wrapped around the input stream
+     * @throws Exception on error
+     */
+    public static EwsServiceMultiResponseXmlReader create(InputStream stream, ExchangeService service) throws Exception {
+        return new EwsServiceMultiResponseXmlReader(stream, service);
+    }
 
-  /**
-   * Creates the XML reader.
-   *
-   * @param stream The stream
-   * @return an XML reader to use
-   * @throws XMLStreamException the XML stream exception
-   */
-  private static XMLEventReader createXmlReader(InputStream stream)
-      throws XMLStreamException {
+    /**
+     * Creates the XML reader.
+     *
+     * @param stream The stream
+     * @return an XML reader to use
+     * @throws XMLStreamException the XML stream exception
+     */
+    private static XMLEventReader createXmlReader(InputStream stream)
+            throws XMLStreamException {
 
-    // E14:240522 The ProhibitDtd property is used to indicate whether XmlReader should process DTDs or not. By default,
-    // it will do so. EWS doesn't use DTD references so we want to turn this off. Also, the XmlResolver property is
-    // set to an instance of XmlUrlResolver by default. We don't want XmlTextReader to try to resolve this DTD reference
-    // so we disable the XmlResolver as well.
-    XMLInputFactory inputFactory = XMLInputFactory.newInstance();
-    InputStreamReader isr = new InputStreamReader(stream);
-    BufferedReader in = new BufferedReader(isr);
-    return inputFactory.createXMLEventReader(in);
-  }
+        // E14:240522 The ProhibitDtd property is used to indicate whether XmlReader should process DTDs or not. By default,
+        // it will do so. EWS doesn't use DTD references so we want to turn this off. Also, the XmlResolver property is
+        // set to an instance of XmlUrlResolver by default. We don't want XmlTextReader to try to resolve this DTD reference
+        // so we disable the XmlResolver as well.
+        XMLInputFactory inputFactory = XMLInputFactory.newInstance();
+        InputStreamReader isr = new InputStreamReader(stream);
+        BufferedReader in = new BufferedReader(isr);
+        return inputFactory.createXMLEventReader(in);
+    }
 
 
-  /**
-   * Initializes the XML reader.
-   *
-   * @param stream The stream. An XML reader to use.
-   * @throws Exception on error
-   */
-  @Override
-  protected XMLEventReader initializeXmlReader(InputStream stream)
-      throws Exception {
-    return createXmlReader(stream);
-  }
+    /**
+     * Initializes the XML reader.
+     *
+     * @param stream The stream. An XML reader to use.
+     * @throws Exception on error
+     */
+    @Override
+    protected XMLEventReader initializeXmlReader(InputStream stream)
+            throws Exception {
+        return createXmlReader(stream);
+    }
 
 }

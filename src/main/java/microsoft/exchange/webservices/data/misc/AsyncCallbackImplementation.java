@@ -28,12 +28,12 @@ import java.util.logging.Logger;
 
 public class AsyncCallbackImplementation extends AsyncCallback {
 
-  private static final Logger LOG = Logger.getLogger(AsyncCallbackImplementation.class.getCanonicalName());
+    private static final Logger LOG = Logger.getLogger(AsyncCallbackImplementation.class.getCanonicalName());
 
-  @Override
-  public Object processMe(Future<?> task) {
-    LOG.fine(() -> "In Async Callback" + task.isDone());
-    return null;
-  }
+    @Override
+    public Object processMe(Future<?> task) {
+        LOG.fine(() -> "In Async Callback" + task.isDone());
+        return null;
+    }
 
 }

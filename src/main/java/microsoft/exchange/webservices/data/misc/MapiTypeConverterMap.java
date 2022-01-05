@@ -31,11 +31,11 @@ import java.util.HashMap;
  * The Class MapiTypeConverterMap.
  */
 public class MapiTypeConverterMap extends
-    HashMap<MapiPropertyType, MapiTypeConverterMapEntry> {
+        HashMap<MapiPropertyType, MapiTypeConverterMapEntry> {
 
-  /**
-   * Constant serialized ID used for compatibility.
-   */
-  private static final long serialVersionUID = 1L;
+    /**
+     * Constant serialized ID used for compatibility.
+     */
+    private static final long serialVersionUID = 1L;
 
 }

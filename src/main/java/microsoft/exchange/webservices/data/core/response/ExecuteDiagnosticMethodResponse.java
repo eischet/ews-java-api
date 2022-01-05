@@ -41,7 +41,6 @@ import javax.xml.stream.events.Attribute;
 import javax.xml.stream.events.Namespace;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
-
 import java.util.Iterator;
 
 
@@ -51,119 +50,119 @@ import java.util.Iterator;
 public final class ExecuteDiagnosticMethodResponse extends ServiceResponse {
 
 
-  /**
-   * Initializes a new instance of the ExecuteDiagnosticMethodResponse class.
-   *
-   * @param service The service
-   */
-  public ExecuteDiagnosticMethodResponse(ExchangeService service) {
-    super();
-    EwsUtilities.ewsAssert(service != null, "ExecuteDiagnosticMethodResponse.ctor", "service is null");
-  }
-
-  /**
-   * Reads response elements from XML.
-   *
-   * @throws Exception
-   */
-  @Override
-  protected void readElementsFromXml(EwsServiceXmlReader reader)
-      throws Exception {
-    reader.readStartElement(XmlNamespace.Messages,
-        XmlElementNames.ReturnValue);
-
-    XMLEventReader returnValueReader = reader.getXmlReaderForNode();
-    //this.returnValue = (Document) new SafeXmlDocument();
-    {
-      this.returnValue = retriveDocument(returnValueReader);
+    /**
+     * Initializes a new instance of the ExecuteDiagnosticMethodResponse class.
+     *
+     * @param service The service
+     */
+    public ExecuteDiagnosticMethodResponse(ExchangeService service) {
+        super();
+        EwsUtilities.ewsAssert(service != null, "ExecuteDiagnosticMethodResponse.ctor", "service is null");
     }
 
-    reader.skipCurrentElement();
-    reader.readEndElementIfNecessary(XmlNamespace.Messages,
-        XmlElementNames.ReturnValue);
-  }
+    /**
+     * Reads response elements from XML.
+     *
+     * @throws Exception
+     */
+    @Override
+    protected void readElementsFromXml(EwsServiceXmlReader reader)
+            throws Exception {
+        reader.readStartElement(XmlNamespace.Messages,
+                XmlElementNames.ReturnValue);
 
-
-  /**
-   * @return document
-   * @throws javax.xml.parsers.ParserConfigurationException
-   */
-  public Document retriveDocument(XMLEventReader xmlEventReader)
-      throws ParserConfigurationException {
-    DocumentBuilderFactory dbfInstance = DocumentBuilderFactory
-        .newInstance();
-    DocumentBuilder documentBuilder = dbfInstance.newDocumentBuilder();
-    Document document = documentBuilder.newDocument();
-
-    Element currentElement = document.getDocumentElement();
-
-    while (xmlEventReader.hasNext()) {
-      XMLEvent xmleve = (XMLEvent) xmlEventReader.next();
-
-      if (xmleve.getEventType() == XmlNodeType.END_ELEMENT) {
-        Node node = currentElement.getParentNode();
-        if (node instanceof Document) {
-          currentElement = ((Document) node).getDocumentElement();
-        } else {
-          currentElement = (Element) currentElement.getParentNode();
-        }
-      }
-
-      if (xmleve.getEventType() == XmlNodeType.START_ELEMENT) {
-        // startElement((StartElement) xmleve,doc);
-        StartElement ele = (StartElement) xmleve;
-        Element element = null;
-        element = document.createElementNS(ele.getName()
-            .getNamespaceURI(), ele.getName().getLocalPart());
-
-
-        Iterator<Attribute> ite = ele.getAttributes();
-
-        while (ite.hasNext()) {
-          Attribute attr = ite.next();
-          element.setAttribute(attr.getName().getLocalPart(),
-                  attr.getValue());
+        XMLEventReader returnValueReader = reader.getXmlReaderForNode();
+        //this.returnValue = (Document) new SafeXmlDocument();
+        {
+            this.returnValue = retriveDocument(returnValueReader);
         }
 
-        String xmlns = EwsUtilities.WSTrustFebruary2005Namespace;//"http://schemas.xmlsoap.org/wsdl/";
-        final Iterator<Namespace> iteNS = ele.getNamespaces();
-        while (iteNS.hasNext()) {
-          Namespace ns = iteNS.next();
-          String name = ns.getPrefix();
-          if (!name.isEmpty()) {
-            element.setAttributeNS(xmlns, name,
-                ns.getNamespaceURI());
-          } else {
-            xmlns = ns.getNamespaceURI();
-          }
-        }
-
-        if (currentElement == null) {
-          document.appendChild(element);
-        } else {
-          currentElement.appendChild(element);
-        }
-
-        currentElement = element;
-        element.setUserData("location", ele.getLocation(), null);
-      }
+        reader.skipCurrentElement();
+        reader.readEndElementIfNecessary(XmlNamespace.Messages,
+                XmlElementNames.ReturnValue);
     }
-    return document;
-  }
 
-  private Document returnValue;
 
-  /**
-   * Gets the return value.
-   */
-  public Document getReturnValue() {
-    return returnValue;
-  }
+    /**
+     * @return document
+     * @throws javax.xml.parsers.ParserConfigurationException
+     */
+    public Document retriveDocument(XMLEventReader xmlEventReader)
+            throws ParserConfigurationException {
+        DocumentBuilderFactory dbfInstance = DocumentBuilderFactory
+                .newInstance();
+        DocumentBuilder documentBuilder = dbfInstance.newDocumentBuilder();
+        Document document = documentBuilder.newDocument();
 
-  /**
-   * Sets the return value.
-   */
-  private void setReturnValue(Document value) {
-    returnValue = value;
-  }
+        Element currentElement = document.getDocumentElement();
+
+        while (xmlEventReader.hasNext()) {
+            XMLEvent xmleve = (XMLEvent) xmlEventReader.next();
+
+            if (xmleve.getEventType() == XmlNodeType.END_ELEMENT) {
+                Node node = currentElement.getParentNode();
+                if (node instanceof Document) {
+                    currentElement = ((Document) node).getDocumentElement();
+                } else {
+                    currentElement = (Element) currentElement.getParentNode();
+                }
+            }
+
+            if (xmleve.getEventType() == XmlNodeType.START_ELEMENT) {
+                // startElement((StartElement) xmleve,doc);
+                StartElement ele = (StartElement) xmleve;
+                Element element = null;
+                element = document.createElementNS(ele.getName()
+                        .getNamespaceURI(), ele.getName().getLocalPart());
+
+
+                Iterator<Attribute> ite = ele.getAttributes();
+
+                while (ite.hasNext()) {
+                    Attribute attr = ite.next();
+                    element.setAttribute(attr.getName().getLocalPart(),
+                            attr.getValue());
+                }
+
+                String xmlns = EwsUtilities.WSTrustFebruary2005Namespace;//"http://schemas.xmlsoap.org/wsdl/";
+                final Iterator<Namespace> iteNS = ele.getNamespaces();
+                while (iteNS.hasNext()) {
+                    Namespace ns = iteNS.next();
+                    String name = ns.getPrefix();
+                    if (!name.isEmpty()) {
+                        element.setAttributeNS(xmlns, name,
+                                ns.getNamespaceURI());
+                    } else {
+                        xmlns = ns.getNamespaceURI();
+                    }
+                }
+
+                if (currentElement == null) {
+                    document.appendChild(element);
+                } else {
+                    currentElement.appendChild(element);
+                }
+
+                currentElement = element;
+                element.setUserData("location", ele.getLocation(), null);
+            }
+        }
+        return document;
+    }
+
+    private Document returnValue;
+
+    /**
+     * Gets the return value.
+     */
+    public Document getReturnValue() {
+        return returnValue;
+    }
+
+    /**
+     * Sets the return value.
+     */
+    private void setReturnValue(Document value) {
+        returnValue = value;
+    }
 }

@@ -28,16 +28,16 @@ package microsoft.exchange.webservices.data.core.enumeration.search;
  */
 public enum OffsetBasePoint {
 
-  // The offset is from the beginning of the view.
-  /**
-   * The Beginning.
-   */
-  Beginning,
+    // The offset is from the beginning of the view.
+    /**
+     * The Beginning.
+     */
+    Beginning,
 
-  // The offset is from the end of the view.
-  /**
-   * The End.
-   */
-  End
+    // The offset is from the end of the view.
+    /**
+     * The End.
+     */
+    End
 
 }

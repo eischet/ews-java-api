@@ -27,13 +27,13 @@ import microsoft.exchange.webservices.data.core.EwsServiceXmlWriter;
 import microsoft.exchange.webservices.data.core.EwsUtilities;
 import microsoft.exchange.webservices.data.core.ExchangeService;
 import microsoft.exchange.webservices.data.core.XmlElementNames;
+import microsoft.exchange.webservices.data.core.enumeration.misc.ExchangeVersion;
+import microsoft.exchange.webservices.data.core.enumeration.misc.XmlNamespace;
+import microsoft.exchange.webservices.data.core.enumeration.service.ServiceObjectType;
 import microsoft.exchange.webservices.data.core.enumeration.service.error.ServiceErrorHandling;
+import microsoft.exchange.webservices.data.core.exception.service.local.ServiceLocalException;
 import microsoft.exchange.webservices.data.core.response.ServiceResponse;
 import microsoft.exchange.webservices.data.core.service.item.Item;
-import microsoft.exchange.webservices.data.core.enumeration.misc.ExchangeVersion;
-import microsoft.exchange.webservices.data.core.enumeration.service.ServiceObjectType;
-import microsoft.exchange.webservices.data.core.enumeration.misc.XmlNamespace;
-import microsoft.exchange.webservices.data.core.exception.service.local.ServiceLocalException;
 import microsoft.exchange.webservices.data.misc.ItemIdWrapperList;
 
 /**
@@ -43,109 +43,109 @@ import microsoft.exchange.webservices.data.misc.ItemIdWrapperList;
  */
 abstract class GetItemRequestBase<TResponse extends ServiceResponse> extends GetRequest<Item, TResponse> {
 
-  /**
-   * The item ids.
-   */
-  private ItemIdWrapperList itemIds = new ItemIdWrapperList();
+    /**
+     * The item ids.
+     */
+    private final ItemIdWrapperList itemIds = new ItemIdWrapperList();
 
-  /**
-   * Initializes a new instance of the class.
-   *
-   * @param service           the service
-   * @param errorHandlingMode the error handling mode
-   * @throws Exception
-   */
-  protected GetItemRequestBase(ExchangeService service,
-      ServiceErrorHandling errorHandlingMode)
-      throws Exception {
-    super(service, errorHandlingMode);
-  }
+    /**
+     * Initializes a new instance of the class.
+     *
+     * @param service           the service
+     * @param errorHandlingMode the error handling mode
+     * @throws Exception
+     */
+    protected GetItemRequestBase(ExchangeService service,
+                                 ServiceErrorHandling errorHandlingMode)
+            throws Exception {
+        super(service, errorHandlingMode);
+    }
 
-  /**
-   * Validate request.
-   *
-   * @throws ServiceLocalException the service local exception
-   * @throws Exception             the exception
-   */
-  protected void validate() throws ServiceLocalException, Exception {
-    super.validate();
-    EwsUtilities.validateParamCollection(this.getItemIds().iterator(), "ItemIds");
-  }
+    /**
+     * Validate request.
+     *
+     * @throws ServiceLocalException the service local exception
+     * @throws Exception             the exception
+     */
+    protected void validate() throws ServiceLocalException, Exception {
+        super.validate();
+        EwsUtilities.validateParamCollection(this.getItemIds().iterator(), "ItemIds");
+    }
 
-  /**
-   * Gets the expected response message count.
-   *
-   * @return Number of expected response messages
-   */
-  protected int getExpectedResponseMessageCount() {
-    return this.itemIds.getCount();
-  }
+    /**
+     * Gets the expected response message count.
+     *
+     * @return Number of expected response messages
+     */
+    protected int getExpectedResponseMessageCount() {
+        return this.itemIds.getCount();
+    }
 
-  /**
-   * Gets the type of the service object this request applies to.
-   *
-   * @return The type of service object the request applies to
-   */
-  protected ServiceObjectType getServiceObjectType() {
-    return ServiceObjectType.Item;
-  }
+    /**
+     * Gets the type of the service object this request applies to.
+     *
+     * @return The type of service object the request applies to
+     */
+    protected ServiceObjectType getServiceObjectType() {
+        return ServiceObjectType.Item;
+    }
 
-  /**
-   * Writes XML elements.
-   *
-   * @param writer the writer
-   * @throws Exception the exception
-   */
-  protected void writeElementsToXml(EwsServiceXmlWriter writer)
-      throws Exception {
-    super.writeElementsToXml(writer);
+    /**
+     * Writes XML elements.
+     *
+     * @param writer the writer
+     * @throws Exception the exception
+     */
+    protected void writeElementsToXml(EwsServiceXmlWriter writer)
+            throws Exception {
+        super.writeElementsToXml(writer);
 
-    this.itemIds.writeToXml(writer, XmlNamespace.Messages,
-        XmlElementNames.ItemIds);
-  }
+        this.itemIds.writeToXml(writer, XmlNamespace.Messages,
+                XmlElementNames.ItemIds);
+    }
 
-  /**
-   * Gets the name of the XML element.
-   *
-   * @return XML element name
-   */
-  public String getXmlElementName() {
-    return XmlElementNames.GetItem;
-  }
+    /**
+     * Gets the name of the XML element.
+     *
+     * @return XML element name
+     */
+    public String getXmlElementName() {
+        return XmlElementNames.GetItem;
+    }
 
-  /**
-   * Gets the name of the XML element.
-   *
-   * @return XML element name
-   */
-  protected String getResponseXmlElementName() {
-    return XmlElementNames.GetItemResponse;
-  }
+    /**
+     * Gets the name of the XML element.
+     *
+     * @return XML element name
+     */
+    protected String getResponseXmlElementName() {
+        return XmlElementNames.GetItemResponse;
+    }
 
-  /**
-   * Gets the name of the XML element.
-   *
-   * @return XML element name
-   */
-  protected String getResponseMessageXmlElementName() {
-    return XmlElementNames.GetItemResponseMessage;
-  }
+    /**
+     * Gets the name of the XML element.
+     *
+     * @return XML element name
+     */
+    protected String getResponseMessageXmlElementName() {
+        return XmlElementNames.GetItemResponseMessage;
+    }
 
-  /**
-   * Gets the request version.
-   *
-   * @return Earliest Exchange version in which this request is supported
-   */
-  protected ExchangeVersion getMinimumRequiredServerVersion() {
-    return ExchangeVersion.Exchange2007_SP1;
-  }
+    /**
+     * Gets the request version.
+     *
+     * @return Earliest Exchange version in which this request is supported
+     */
+    protected ExchangeVersion getMinimumRequiredServerVersion() {
+        return ExchangeVersion.Exchange2007_SP1;
+    }
 
-  /**
-   * Gets the item ids.
-   *
-   * @return the item ids
-   */
-  public ItemIdWrapperList getItemIds() {
-    return this.itemIds;
-  }
+    /**
+     * Gets the item ids.
+     *
+     * @return the item ids
+     */
+    public ItemIdWrapperList getItemIds() {
+        return this.itemIds;
+    }
 }

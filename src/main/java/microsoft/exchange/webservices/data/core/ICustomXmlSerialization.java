@@ -30,11 +30,11 @@ import javax.xml.stream.XMLStreamWriter;
  */
 public interface ICustomXmlSerialization {
 
-  /**
-   * Custom xml serialization.
-   *
-   * @param writer the writer
-   */
-  void CustomXmlSerialization(XMLStreamWriter writer);
+    /**
+     * Custom xml serialization.
+     *
+     * @param writer the writer
+     */
+    void CustomXmlSerialization(XMLStreamWriter writer);
 
 }

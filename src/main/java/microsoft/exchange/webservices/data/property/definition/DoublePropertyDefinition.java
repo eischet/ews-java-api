@@ -32,19 +32,19 @@ import java.util.EnumSet;
  * Represents double-precision floating point property definition.
  */
 public final class DoublePropertyDefinition extends
-    GenericPropertyDefinition<Double> {
+        GenericPropertyDefinition<Double> {
 
-  /**
-   * Initializes a new instance of the "DoublePropertyDefinition" class.
-   *
-   * @param xmlElementName Name of the XML element.
-   * @param uri            The URI.
-   * @param flags          The flags.
-   * @param version        The version.
-   */
-  public DoublePropertyDefinition(String xmlElementName, String uri, EnumSet<PropertyDefinitionFlags> flags,
-      ExchangeVersion version) {
-    super(Double.class, xmlElementName, uri, flags, version);
-  }
+    /**
+     * Initializes a new instance of the "DoublePropertyDefinition" class.
+     *
+     * @param xmlElementName Name of the XML element.
+     * @param uri            The URI.
+     * @param flags          The flags.
+     * @param version        The version.
+     */
+    public DoublePropertyDefinition(String xmlElementName, String uri, EnumSet<PropertyDefinitionFlags> flags,
+                                    ExchangeVersion version) {
+        super(Double.class, xmlElementName, uri, flags, version);
+    }
 
 }

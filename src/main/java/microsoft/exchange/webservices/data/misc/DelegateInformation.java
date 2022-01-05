@@ -23,8 +23,8 @@
 
 package microsoft.exchange.webservices.data.misc;
 
-import microsoft.exchange.webservices.data.core.response.DelegateUserResponse;
 import microsoft.exchange.webservices.data.core.enumeration.service.MeetingRequestsDeliveryScope;
+import microsoft.exchange.webservices.data.core.response.DelegateUserResponse;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -35,47 +35,47 @@ import java.util.List;
  */
 public final class DelegateInformation {
 
-  /**
-   * The delegate user response.
-   */
-  private Collection<DelegateUserResponse> delegateUserResponses;
+    /**
+     * The delegate user response.
+     */
+    private final Collection<DelegateUserResponse> delegateUserResponses;
 
-  /**
-   * The meeting reqests delivery scope.
-   */
-  private MeetingRequestsDeliveryScope meetingReqestsDeliveryScope;
+    /**
+     * The meeting reqests delivery scope.
+     */
+    private final MeetingRequestsDeliveryScope meetingReqestsDeliveryScope;
 
-  /**
-   * Initializes a DelegateInformation object.
-   *
-   * @param delegateUserResponses       the delegate user response
-   * @param meetingReqestsDeliveryScope the meeting reqests delivery scope
-   */
-  public DelegateInformation(List<DelegateUserResponse> delegateUserResponses,
-      MeetingRequestsDeliveryScope meetingReqestsDeliveryScope) {
-    this.delegateUserResponses = new ArrayList<DelegateUserResponse>(
-        delegateUserResponses);
-    this.meetingReqestsDeliveryScope = meetingReqestsDeliveryScope;
-  }
+    /**
+     * Initializes a DelegateInformation object.
+     *
+     * @param delegateUserResponses       the delegate user response
+     * @param meetingReqestsDeliveryScope the meeting reqests delivery scope
+     */
+    public DelegateInformation(List<DelegateUserResponse> delegateUserResponses,
+                               MeetingRequestsDeliveryScope meetingReqestsDeliveryScope) {
+        this.delegateUserResponses = new ArrayList<DelegateUserResponse>(
+                delegateUserResponses);
+        this.meetingReqestsDeliveryScope = meetingReqestsDeliveryScope;
+    }
 
-  /**
-   * Gets a list of response for each of the delegate users concerned by the
-   * operation.
-   *
-   * @return the delegate user response
-   */
-  public Collection<DelegateUserResponse> getDelegateUserResponses() {
-    return delegateUserResponses;
-  }
+    /**
+     * Gets a list of response for each of the delegate users concerned by the
+     * operation.
+     *
+     * @return the delegate user response
+     */
+    public Collection<DelegateUserResponse> getDelegateUserResponses() {
+        return delegateUserResponses;
+    }
 
-  /**
-   * Gets a value indicating if and how meeting request are delivered to
-   * delegates.
-   *
-   * @return the meeting reqests delivery scope
-   */
-  public MeetingRequestsDeliveryScope getMeetingReqestsDeliveryScope() {
-    return meetingReqestsDeliveryScope;
-  }
+    /**
+     * Gets a value indicating if and how meeting request are delivered to
+     * delegates.
+     *
+     * @return the meeting reqests delivery scope
+     */
+    public MeetingRequestsDeliveryScope getMeetingReqestsDeliveryScope() {
+        return meetingReqestsDeliveryScope;
+    }
 
 }

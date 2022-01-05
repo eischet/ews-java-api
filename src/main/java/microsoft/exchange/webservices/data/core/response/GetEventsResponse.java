@@ -31,37 +31,37 @@ import microsoft.exchange.webservices.data.notification.GetEventsResults;
  */
 public final class GetEventsResponse extends ServiceResponse {
 
-  /**
-   * The results.
-   */
-  private GetEventsResults results = new GetEventsResults();
+    /**
+     * The results.
+     */
+    private final GetEventsResults results = new GetEventsResults();
 
-  /**
-   * Initializes a new instance.
-   */
-  public GetEventsResponse() {
-    super();
-  }
+    /**
+     * Initializes a new instance.
+     */
+    public GetEventsResponse() {
+        super();
+    }
 
-  /**
-   * Reads response elements from XML.
-   *
-   * @param reader the reader
-   * @throws Exception the exception
-   */
-  protected void readElementsFromXml(EwsServiceXmlReader reader)
-      throws Exception {
-    super.readElementsFromXml(reader);
-    this.results.loadFromXml(reader);
-  }
+    /**
+     * Reads response elements from XML.
+     *
+     * @param reader the reader
+     * @throws Exception the exception
+     */
+    protected void readElementsFromXml(EwsServiceXmlReader reader)
+            throws Exception {
+        super.readElementsFromXml(reader);
+        this.results.loadFromXml(reader);
+    }
 
-  /**
-   * gets the results.
-   *
-   * @return the results.
-   */
-  public GetEventsResults getResults() {
-    return results;
-  }
+    /**
+     * gets the results.
+     *
+     * @return the results.
+     */
+    public GetEventsResults getResults() {
+        return results;
+    }
 
 }

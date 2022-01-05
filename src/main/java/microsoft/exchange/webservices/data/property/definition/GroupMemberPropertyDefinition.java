@@ -32,95 +32,96 @@ import microsoft.exchange.webservices.data.core.exception.service.local.ServiceX
  * Represents the definition of the GroupMember property.
  */
 public final class GroupMemberPropertyDefinition extends
-    ServiceObjectPropertyDefinition {
+        ServiceObjectPropertyDefinition {
 
-  // / FieldUri of IndexedFieldURI for a group member.
-  /**
-   * The Constant FIELDURI.
-   */
-  private final static String FIELDURI = "distributionlist:Members:Member";
+    // / FieldUri of IndexedFieldURI for a group member.
+    /**
+     * The Constant FIELDURI.
+     */
+    private final static String FIELDURI = "distributionlist:Members:Member";
 
-  // / Member key.
-  // / Maps to the Index attribute of IndexedFieldURI element.
-  /**
-   * The key.
-   */
-  private String key;
+    // / Member key.
+    // / Maps to the Index attribute of IndexedFieldURI element.
+    /**
+     * The key.
+     */
+    private String key;
 
-  /**
-   * Initializes a new instance of the GroupMemberPropertyDefinition class.
-   *
-   * @param key the key
-   */
-  public GroupMemberPropertyDefinition(String key) {
-    super(FIELDURI);
-    this.key = key;
-  }
+    /**
+     * Initializes a new instance of the GroupMemberPropertyDefinition class.
+     *
+     * @param key the key
+     */
+    public GroupMemberPropertyDefinition(String key) {
+        super(FIELDURI);
+        this.key = key;
+    }
 
-  /**
-   * Initializes a new instance of the GroupMemberPropertyDefinition class
-   * without key.
-   */
-  public GroupMemberPropertyDefinition() {
-    super(FIELDURI);
-  }
+    /**
+     * Initializes a new instance of the GroupMemberPropertyDefinition class
+     * without key.
+     */
+    public GroupMemberPropertyDefinition() {
+        super(FIELDURI);
+    }
 
-  /**
-   * Gets the key.
-   *
-   * @return the key
-   */
-  public String getKey() {
-    return key;
-  }
+    /**
+     * Gets the key.
+     *
+     * @return the key
+     */
+    public String getKey() {
+        return key;
+    }
 
-  /**
-   * Sets the key.
-   *
-   * @param key the new key
-   */
-  public void setKey(String key) {
-    this.key = key;
-  }
+    /**
+     * Sets the key.
+     *
+     * @param key the new key
+     */
+    public void setKey(String key) {
+        this.key = key;
+    }
 
-  /**
-   * Gets the name of the XML element.
-   *
-   * @return XML element name.
-   */
-  protected String getXmlElementName() {
-    return XmlElementNames.IndexedFieldURI;
-  }
+    /**
+     * Gets the name of the XML element.
+     *
+     * @return XML element name.
+     */
+    protected String getXmlElementName() {
+        return XmlElementNames.IndexedFieldURI;
+    }
 
-  /**
-   * Writes the attribute to XML.
-   *
-   * @param writer the writer
-   * @throws ServiceXmlSerializationException the service xml serialization exception
-   */
-  protected void writeAttributesToXml(EwsServiceXmlWriter writer)
-      throws ServiceXmlSerializationException {
-    super.writeAttributesToXml(writer);
-    writer.writeAttributeValue(XmlAttributeNames.FieldIndex, this.key);
-  }
+    /**
+     * Writes the attribute to XML.
+     *
+     * @param writer the writer
+     * @throws ServiceXmlSerializationException the service xml serialization exception
+     */
+    protected void writeAttributesToXml(EwsServiceXmlWriter writer)
+            throws ServiceXmlSerializationException {
+        super.writeAttributesToXml(writer);
+        writer.writeAttributeValue(XmlAttributeNames.FieldIndex, this.key);
+    }
 
-  /**
-   * Gets the property definition's printable name.
-   *
-   * @return The property definition's printable name.
-   */
-  @Override public String getPrintableName() {
-    return String.format("%s:%s", FIELDURI, this.key);
-  }
+    /**
+     * Gets the property definition's printable name.
+     *
+     * @return The property definition's printable name.
+     */
+    @Override
+    public String getPrintableName() {
+        return String.format("%s:%s", FIELDURI, this.key);
+    }
 
 
-  /**
-   * Gets the property type.
-   */
-  @Override
-  public Class<String> getType() {
-    return String.class;
-  }
+    /**
+     * Gets the property type.
+     */
+    @Override
+    public Class<String> getType() {
+        return String.class;
+    }
 
 
 }

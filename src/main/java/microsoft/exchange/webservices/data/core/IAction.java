@@ -31,11 +31,11 @@ package microsoft.exchange.webservices.data.core;
  */
 public interface IAction<T> {
 
-  /**
-   * Encapsulates a method that takes a single parameter and does not return a
-   * value.
-   *
-   * @param obj The parameter of the method that this delegate encapsulates.
-   */
-  void action(T obj);
+    /**
+     * Encapsulates a method that takes a single parameter and does not return a
+     * value.
+     *
+     * @param obj The parameter of the method that this delegate encapsulates.
+     */
+    void action(T obj);
 }

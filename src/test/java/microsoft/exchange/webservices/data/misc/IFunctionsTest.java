@@ -31,6 +31,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
+import java.util.Arrays;
 import java.util.Date;
 import java.util.UUID;
 
@@ -77,13 +78,18 @@ public class IFunctionsTest {
     final String value = "123";
     final IFunctions.Base64Decoder f = IFunctions.Base64Decoder.INSTANCE;
     Assert.assertArrayEquals(Base64.decodeBase64(value), (byte[]) f.func(value));
+    Assert.assertArrayEquals(Base64.decodeBase64(value), java.util.Base64.getMimeDecoder().decode(value));
+    Assert.assertEquals(Arrays.toString(java.util.Base64.getMimeDecoder().decode(value)), Arrays.toString((byte[]) f.func(value)));
   }
 
   @Test
   public void testBase64Encoder() {
     final byte[] value = StringUtils.getBytesUtf8("123");
     final IFunctions.Base64Encoder f = IFunctions.Base64Encoder.INSTANCE;
-    Assert.assertEquals(Base64.encodeBase64String(value), f.func(value));
+    final String encodedByApache = Base64.encodeBase64String(value);
+    Assert.assertEquals(encodedByApache, f.func(value));
+    final String encodedByJava = java.util.Base64.getMimeEncoder().encodeToString(value);
+    Assert.assertEquals(encodedByJava, encodedByApache);
   }
 
   @Test

@@ -28,21 +28,21 @@ package microsoft.exchange.webservices.data.core.enumeration.misc;
  */
 public enum ConnectingIdType {
 
-  // / The connecting Id is a principal name.
-  /**
-   * The Principal name.
-   */
-  PrincipalName,
+    // / The connecting Id is a principal name.
+    /**
+     * The Principal name.
+     */
+    PrincipalName,
 
-  // / The Id is an SID.
-  /**
-   * The SID.
-   */
-  SID,
+    // / The Id is an SID.
+    /**
+     * The SID.
+     */
+    SID,
 
-  // / The Id is an SMTP address.
-  /**
-   * The Smtp address.
-   */
-  SmtpAddress
+    // / The Id is an SMTP address.
+    /**
+     * The Smtp address.
+     */
+    SmtpAddress
 }

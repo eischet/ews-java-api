@@ -28,17 +28,17 @@ package microsoft.exchange.webservices.data.core.enumeration.property;
  */
 public enum StandardUser {
 
-  // The Default delegate user, used to define default delegation permissions.
-  /**
-   * The Default.
-   */
-  Default,
+    // The Default delegate user, used to define default delegation permissions.
+    /**
+     * The Default.
+     */
+    Default,
 
-  // The Anonymous delegate user, used to define delegate permissions for
-  // unauthenticated users.
-  /**
-   * The Anonymous.
-   */
-  Anonymous
+    // The Anonymous delegate user, used to define delegate permissions for
+    // unauthenticated users.
+    /**
+     * The Anonymous.
+     */
+    Anonymous
 
 }

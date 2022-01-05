@@ -33,39 +33,39 @@ import microsoft.exchange.webservices.data.core.exception.service.local.ServiceX
  */
 public final class RecurringAppointmentMasterId extends ItemId {
 
-  /**
-   * Represents the Id of an occurrence of a recurring appointment.
-   *
-   * @param occurrenceId the occurrence id
-   * @throws Exception the exception
-   */
-  public RecurringAppointmentMasterId(String occurrenceId) throws Exception {
-    super(occurrenceId);
-  }
+    /**
+     * Represents the Id of an occurrence of a recurring appointment.
+     *
+     * @param occurrenceId the occurrence id
+     * @throws Exception the exception
+     */
+    public RecurringAppointmentMasterId(String occurrenceId) throws Exception {
+        super(occurrenceId);
+    }
 
-  /**
-   * Gets the name of the XML element.
-   *
-   * @return XML element name.
-   */
-  @Override
-  public String getXmlElementName() {
-    return XmlElementNames.RecurringMasterItemId;
-  }
+    /**
+     * Gets the name of the XML element.
+     *
+     * @return XML element name.
+     */
+    @Override
+    public String getXmlElementName() {
+        return XmlElementNames.RecurringMasterItemId;
+    }
 
-  /**
-   * Writes attribute to XML.
-   *
-   * @param writer the writer
-   * @throws ServiceXmlSerializationException the service xml serialization exception
-   */
-  @Override
-  public void writeAttributesToXml(EwsServiceXmlWriter writer)
-      throws ServiceXmlSerializationException {
-    writer.writeAttributeValue(XmlAttributeNames.OccurrenceId, this
-        .getUniqueId());
-    writer.writeAttributeValue(XmlAttributeNames.ChangeKey, this
-        .getChangeKey());
-  }
+    /**
+     * Writes attribute to XML.
+     *
+     * @param writer the writer
+     * @throws ServiceXmlSerializationException the service xml serialization exception
+     */
+    @Override
+    public void writeAttributesToXml(EwsServiceXmlWriter writer)
+            throws ServiceXmlSerializationException {
+        writer.writeAttributeValue(XmlAttributeNames.OccurrenceId, this
+                .getUniqueId());
+        writer.writeAttributeValue(XmlAttributeNames.ChangeKey, this
+                .getChangeKey());
+    }
 
 }

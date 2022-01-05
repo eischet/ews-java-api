@@ -26,11 +26,11 @@ package microsoft.exchange.webservices.data.core.request;
 import microsoft.exchange.webservices.data.core.EwsServiceXmlWriter;
 import microsoft.exchange.webservices.data.core.ExchangeService;
 import microsoft.exchange.webservices.data.core.XmlElementNames;
-import microsoft.exchange.webservices.data.core.enumeration.service.error.ServiceErrorHandling;
-import microsoft.exchange.webservices.data.core.response.ExecuteDiagnosticMethodResponse;
 import microsoft.exchange.webservices.data.core.enumeration.misc.ExchangeVersion;
 import microsoft.exchange.webservices.data.core.enumeration.misc.XmlNamespace;
+import microsoft.exchange.webservices.data.core.enumeration.service.error.ServiceErrorHandling;
 import microsoft.exchange.webservices.data.core.exception.service.local.ServiceXmlSerializationException;
+import microsoft.exchange.webservices.data.core.response.ExecuteDiagnosticMethodResponse;
 import org.w3c.dom.Node;
 
 import javax.xml.stream.XMLStreamException;
@@ -39,133 +39,134 @@ import javax.xml.stream.XMLStreamException;
  * Defines the ExecuteDiagnosticMethodRequest class.
  */
 public final class ExecuteDiagnosticMethodRequest extends
-    MultiResponseServiceRequest<ExecuteDiagnosticMethodResponse> {
+        MultiResponseServiceRequest<ExecuteDiagnosticMethodResponse> {
 
-  private Node xmlNode;
-  private String verb;
+    private Node xmlNode;
+    private String verb;
 
-  /**
-   * Initializes a new instance of the ExecuteDiagnosticMethodRequest class.
-   *
-   * @throws Exception
-   */
-  public ExecuteDiagnosticMethodRequest(ExchangeService service)
-      throws Exception {
-    super(service, ServiceErrorHandling.ThrowOnError);
-  }
-
-  /**
-   * Gets the name of the XML element.
-   *
-   * @return XmlElementNames
-   */
-  @Override public String getXmlElementName() {
-    return XmlElementNames.ExecuteDiagnosticMethod;
-  }
-
-  /**
-   * Writes XML elements.
-   *
-   * @param writer The writer
-   * @throws XMLStreamException the XML stream exception
-   * @throws ServiceXmlSerializationException
-   */
-  @Override
-  protected void writeElementsToXml(EwsServiceXmlWriter writer)
-      throws ServiceXmlSerializationException, XMLStreamException {
-    writer.writeElementValue(XmlNamespace.Messages,
-        XmlElementNames.Verb, this.getVerb());
-
-    writer.writeStartElement(XmlNamespace.Messages,
-        XmlElementNames.Parameter);
-    writer.writeNode(this.getParameter());
-    writer.writeEndElement();
-  }
-
-  /**
-   * Gets the name of the response XML element.
-   *
-   * @return XML element name
-   */
-  @Override
-  protected String getResponseXmlElementName() {
-    return XmlElementNames.ExecuteDiagnosticMethodResponse;
-  }
-
-  /**
-   * Gets the request version.
-   *
-   * @return Earliest Exchange version in which this request is supported.
-   */
-  @Override
-  protected ExchangeVersion getMinimumRequiredServerVersion() {
-    /** Set to 2007_SP1 because only test code
-     * will be using this method (it's marked internal.
-     * If it were marked for 2010_SP1, test cases
-     * would have to create new ExchangeService instances
-     * when using this method for tests running under older versions.
+    /**
+     * Initializes a new instance of the ExecuteDiagnosticMethodRequest class.
+     *
+     * @throws Exception
      */
-    return ExchangeVersion.Exchange2007_SP1;
-  }
+    public ExecuteDiagnosticMethodRequest(ExchangeService service)
+            throws Exception {
+        super(service, ServiceErrorHandling.ThrowOnError);
+    }
 
-  /**
-   * Gets the verb of the method to execute.
-   */
-  protected String getVerb() {
-    return verb;
-  }
+    /**
+     * Gets the name of the XML element.
+     *
+     * @return XmlElementNames
+     */
+    @Override
+    public String getXmlElementName() {
+        return XmlElementNames.ExecuteDiagnosticMethod;
+    }
 
-  /**
-   * Sets the verb of the method to execute.
-   */
-  public void setVerb(String value) {
-    this.verb = value;
-  }
+    /**
+     * Writes XML elements.
+     *
+     * @param writer The writer
+     * @throws XMLStreamException               the XML stream exception
+     * @throws ServiceXmlSerializationException
+     */
+    @Override
+    protected void writeElementsToXml(EwsServiceXmlWriter writer)
+            throws ServiceXmlSerializationException, XMLStreamException {
+        writer.writeElementValue(XmlNamespace.Messages,
+                XmlElementNames.Verb, this.getVerb());
 
-  /**
-   * Gets the parameter to the executing method.
-   */
-  protected Node getParameter() {
-    return xmlNode;
-  }
+        writer.writeStartElement(XmlNamespace.Messages,
+                XmlElementNames.Parameter);
+        writer.writeNode(this.getParameter());
+        writer.writeEndElement();
+    }
 
-  /**
-   * Sets the parameter to the executing method.
-   */
-  public void setParameter(Node value) {
-    this.xmlNode = value;
-  }
+    /**
+     * Gets the name of the response XML element.
+     *
+     * @return XML element name
+     */
+    @Override
+    protected String getResponseXmlElementName() {
+        return XmlElementNames.ExecuteDiagnosticMethodResponse;
+    }
 
-  /**
-   * Creates the service response.
-   *
-   * @param service       The service
-   * @param responseIndex Index of the response
-   * @return Service response
-   */
-  @Override
-  protected ExecuteDiagnosticMethodResponse createServiceResponse(ExchangeService service,
-      int responseIndex) {
-    return new ExecuteDiagnosticMethodResponse(service);
-  }
+    /**
+     * Gets the request version.
+     *
+     * @return Earliest Exchange version in which this request is supported.
+     */
+    @Override
+    protected ExchangeVersion getMinimumRequiredServerVersion() {
+        /** Set to 2007_SP1 because only test code
+         * will be using this method (it's marked internal.
+         * If it were marked for 2010_SP1, test cases
+         * would have to create new ExchangeService instances
+         * when using this method for tests running under older versions.
+         */
+        return ExchangeVersion.Exchange2007_SP1;
+    }
 
-  /**
-   * Gets the name of the response message XML element.
-   *
-   * @return XmlElementNames
-   */
-  @Override
-  protected String getResponseMessageXmlElementName() {
-    return XmlElementNames.ExecuteDiagnosticMethodResponseMEssage;
-  }
+    /**
+     * Gets the verb of the method to execute.
+     */
+    protected String getVerb() {
+        return verb;
+    }
 
-  /**
-   * Gets the expected response message count.
-   *
-   * @return Number of expected response messages.
-   */
-  @Override
-  protected int getExpectedResponseMessageCount() {
-    return 1;
-  }
+    /**
+     * Sets the verb of the method to execute.
+     */
+    public void setVerb(String value) {
+        this.verb = value;
+    }
+
+    /**
+     * Gets the parameter to the executing method.
+     */
+    protected Node getParameter() {
+        return xmlNode;
+    }
+
+    /**
+     * Sets the parameter to the executing method.
+     */
+    public void setParameter(Node value) {
+        this.xmlNode = value;
+    }
+
+    /**
+     * Creates the service response.
+     *
+     * @param service       The service
+     * @param responseIndex Index of the response
+     * @return Service response
+     */
+    @Override
+    protected ExecuteDiagnosticMethodResponse createServiceResponse(ExchangeService service,
+                                                                    int responseIndex) {
+        return new ExecuteDiagnosticMethodResponse(service);
+    }
+
+    /**
+     * Gets the name of the response message XML element.
+     *
+     * @return XmlElementNames
+     */
+    @Override
+    protected String getResponseMessageXmlElementName() {
+        return XmlElementNames.ExecuteDiagnosticMethodResponseMEssage;
+    }
+
+    /**
+     * Gets the expected response message count.
+     *
+     * @return Number of expected response messages.
+     */
+    @Override
+    protected int getExpectedResponseMessageCount() {
+        return 1;
+    }
 }

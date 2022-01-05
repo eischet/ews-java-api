@@ -27,9 +27,9 @@ import microsoft.exchange.webservices.data.attribute.EditorBrowsable;
 import microsoft.exchange.webservices.data.core.EwsServiceXmlReader;
 import microsoft.exchange.webservices.data.core.ExchangeService;
 import microsoft.exchange.webservices.data.core.XmlElementNames;
+import microsoft.exchange.webservices.data.core.enumeration.attribute.EditorBrowsableState;
 import microsoft.exchange.webservices.data.core.service.ServiceObject;
 import microsoft.exchange.webservices.data.core.service.item.Item;
-import microsoft.exchange.webservices.data.core.enumeration.attribute.EditorBrowsableState;
 
 import java.util.List;
 
@@ -38,70 +38,70 @@ import java.util.List;
  */
 @EditorBrowsable(state = EditorBrowsableState.Never)
 abstract class CreateItemResponseBase extends ServiceResponse implements
-                                                              IGetObjectInstanceDelegate<ServiceObject> {
+        IGetObjectInstanceDelegate<ServiceObject> {
 
-  /**
-   * The item.
-   */
-  private List<Item> items;
+    /**
+     * The item.
+     */
+    private List<Item> items;
 
-  /**
-   * Gets Item instance.
-   *
-   * @param service        The service.
-   * @param xmlElementName Name of the XML element.
-   * @return Item.
-   * @throws InstantiationException the instantiation exception
-   * @throws IllegalAccessException the illegal access exception
-   * @throws Exception              the exception
-   */
-  protected abstract Item getObjectInstance(ExchangeService service,
-      String xmlElementName) throws InstantiationException,
-      IllegalAccessException, Exception;
+    /**
+     * Gets Item instance.
+     *
+     * @param service        The service.
+     * @param xmlElementName Name of the XML element.
+     * @return Item.
+     * @throws InstantiationException the instantiation exception
+     * @throws IllegalAccessException the illegal access exception
+     * @throws Exception              the exception
+     */
+    protected abstract Item getObjectInstance(ExchangeService service,
+                                              String xmlElementName) throws InstantiationException,
+            IllegalAccessException, Exception;
 
-  /**
-   * Gets the object instance delegate.
-   *
-   * @param service        accepts ExchangeService
-   * @param xmlElementName accepts String
-   * @return object
-   * @throws Exception throws Exception
-   */
-  public ServiceObject getObjectInstanceDelegate(ExchangeService service,
-      String xmlElementName) throws Exception {
-    return this.getObjectInstance(service, xmlElementName);
-  }
+    /**
+     * Gets the object instance delegate.
+     *
+     * @param service        accepts ExchangeService
+     * @param xmlElementName accepts String
+     * @return object
+     * @throws Exception throws Exception
+     */
+    public ServiceObject getObjectInstanceDelegate(ExchangeService service,
+                                                   String xmlElementName) throws Exception {
+        return this.getObjectInstance(service, xmlElementName);
+    }
 
-  /**
-   * Initializes a new instance.
-   */
-  protected CreateItemResponseBase() {
-    super();
-  }
+    /**
+     * Initializes a new instance.
+     */
+    protected CreateItemResponseBase() {
+        super();
+    }
 
-  /**
-   * Reads response elements from XML.
-   *
-   * @param reader the reader
-   * @throws Exception the exception
-   */
-  @Override
-  protected void readElementsFromXml(EwsServiceXmlReader reader)
-      throws Exception {
-    super.readElementsFromXml(reader);
-    this.items = reader.readServiceObjectsCollectionFromXml(
-        XmlElementNames.Items, this, false, /* clearPropertyBag */
-        null, /* requestedPropertySet */
-        false); /* summaryPropertiesOnly */
-  }
+    /**
+     * Reads response elements from XML.
+     *
+     * @param reader the reader
+     * @throws Exception the exception
+     */
+    @Override
+    protected void readElementsFromXml(EwsServiceXmlReader reader)
+            throws Exception {
+        super.readElementsFromXml(reader);
+        this.items = reader.readServiceObjectsCollectionFromXml(
+                XmlElementNames.Items, this, false, /* clearPropertyBag */
+                null, /* requestedPropertySet */
+                false); /* summaryPropertiesOnly */
+    }
 
-  /**
-   * Gets the item.
-   *
-   * @return List of item.
-   */
-  public List<Item> getItems() {
-    return items;
-  }
+    /**
+     * Gets the item.
+     *
+     * @return List of item.
+     */
+    public List<Item> getItems() {
+        return items;
+    }
 
 }

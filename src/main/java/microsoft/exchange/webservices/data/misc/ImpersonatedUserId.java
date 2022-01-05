@@ -34,99 +34,99 @@ import microsoft.exchange.webservices.data.core.enumeration.misc.XmlNamespace;
  */
 public final class ImpersonatedUserId {
 
-  /**
-   * The id type.
-   */
-  private ConnectingIdType idType;
+    /**
+     * The id type.
+     */
+    private ConnectingIdType idType;
 
-  /**
-   * The id.
-   */
-  private String id;
+    /**
+     * The id.
+     */
+    private String id;
 
-  /**
-   * Instantiates a new impersonated user id.
-   */
-  public ImpersonatedUserId() {
-  }
-
-  /**
-   * Initializes a new instance of ConnectingId.
-   *
-   * @param idType The type of this Id.
-   * @param id     The user Id.
-   */
-  public ImpersonatedUserId(ConnectingIdType idType, String id) {
-    this();
-    this.idType = idType;
-    this.id = id;
-  }
-
-  /**
-   * Writes to XML.
-   *
-   * @param writer The writer
-   * @throws Exception the exception
-   */
-  public void writeToXml(EwsServiceXmlWriter writer) throws Exception {
-    if (this.id == null || this.id.isEmpty()) {
-      throw new Exception("The Id property must be set.");
+    /**
+     * Instantiates a new impersonated user id.
+     */
+    public ImpersonatedUserId() {
     }
 
-    writer.writeStartElement(XmlNamespace.Types,
-        XmlElementNames.ExchangeImpersonation);
-    writer.writeStartElement(XmlNamespace.Types,
-        XmlElementNames.ConnectingSID);
+    /**
+     * Initializes a new instance of ConnectingId.
+     *
+     * @param idType The type of this Id.
+     * @param id     The user Id.
+     */
+    public ImpersonatedUserId(ConnectingIdType idType, String id) {
+        this();
+        this.idType = idType;
+        this.id = id;
+    }
 
-    // For 2007 SP1, use PrimarySmtpAddress for type SmtpAddress
-    String connectingIdTypeLocalName = (this.idType ==
-        ConnectingIdType.SmtpAddress) &&
-        (writer.getService().getRequestedServerVersion() ==
-            ExchangeVersion.Exchange2007_SP1) ?
-        XmlElementNames.PrimarySmtpAddress :
-        this.getIdType().toString();
+    /**
+     * Writes to XML.
+     *
+     * @param writer The writer
+     * @throws Exception the exception
+     */
+    public void writeToXml(EwsServiceXmlWriter writer) throws Exception {
+        if (this.id == null || this.id.isEmpty()) {
+            throw new Exception("The Id property must be set.");
+        }
 
-    writer.writeElementValue(XmlNamespace.Types, connectingIdTypeLocalName,
-        this.id);
+        writer.writeStartElement(XmlNamespace.Types,
+                XmlElementNames.ExchangeImpersonation);
+        writer.writeStartElement(XmlNamespace.Types,
+                XmlElementNames.ConnectingSID);
 
-    writer.writeEndElement(); // ConnectingSID
-    writer.writeEndElement(); // ExchangeImpersonation
-  }
+        // For 2007 SP1, use PrimarySmtpAddress for type SmtpAddress
+        String connectingIdTypeLocalName = (this.idType ==
+                ConnectingIdType.SmtpAddress) &&
+                (writer.getService().getRequestedServerVersion() ==
+                        ExchangeVersion.Exchange2007_SP1) ?
+                XmlElementNames.PrimarySmtpAddress :
+                this.getIdType().toString();
 
-  /**
-   * Gets  the type of the Id.
-   *
-   * @return the id type
-   */
-  public ConnectingIdType getIdType() {
-    return idType;
-  }
+        writer.writeElementValue(XmlNamespace.Types, connectingIdTypeLocalName,
+                this.id);
 
-  /**
-   * Sets the id type.
-   *
-   * @param idType the new id type
-   */
-  public void setIdType(ConnectingIdType idType) {
-    this.idType = idType;
-  }
+        writer.writeEndElement(); // ConnectingSID
+        writer.writeEndElement(); // ExchangeImpersonation
+    }
 
-  /**
-   * Gets  the user Id.
-   *
-   * @return the id
-   */
-  public String getId() {
-    return id;
-  }
+    /**
+     * Gets  the type of the Id.
+     *
+     * @return the id type
+     */
+    public ConnectingIdType getIdType() {
+        return idType;
+    }
 
-  /**
-   * Sets the id.
-   *
-   * @param id the new id
-   */
-  public void setId(String id) {
-    this.id = id;
-  }
+    /**
+     * Sets the id type.
+     *
+     * @param idType the new id type
+     */
+    public void setIdType(ConnectingIdType idType) {
+        this.idType = idType;
+    }
+
+    /**
+     * Gets  the user Id.
+     *
+     * @return the id
+     */
+    public String getId() {
+        return id;
+    }
+
+    /**
+     * Sets the id.
+     *
+     * @param id the new id
+     */
+    public void setId(String id) {
+        this.id = id;
+    }
 
 }

@@ -28,29 +28,29 @@ package microsoft.exchange.webservices.data.core.enumeration.permission.folder;
  */
 public enum FolderPermissionReadAccess {
 
-  // The user has no read access on the item in the folder.
-  /**
-   * The None.
-   */
-  None,
+    // The user has no read access on the item in the folder.
+    /**
+     * The None.
+     */
+    None,
 
-  // The user can read the start and end date and time of appointments. (Can
-  // only be applied to Calendar folder).
-  /**
-   * The Time only.
-   */
-  TimeOnly,
+    // The user can read the start and end date and time of appointments. (Can
+    // only be applied to Calendar folder).
+    /**
+     * The Time only.
+     */
+    TimeOnly,
 
-  // The user can read the start and end date and time, subject and location
-  // of appointments. (Can only be applied to Calendar folder).
-  /**
-   * The Time and subject and location.
-   */
-  TimeAndSubjectAndLocation,
+    // The user can read the start and end date and time, subject and location
+    // of appointments. (Can only be applied to Calendar folder).
+    /**
+     * The Time and subject and location.
+     */
+    TimeAndSubjectAndLocation,
 
-  // The user has access to the full details of item.
-  /**
-   * The Full details.
-   */
-  FullDetails
+    // The user has access to the full details of item.
+    /**
+     * The Full details.
+     */
+    FullDetails
 }

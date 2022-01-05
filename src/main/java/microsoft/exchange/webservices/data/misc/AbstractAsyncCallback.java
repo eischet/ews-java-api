@@ -27,30 +27,30 @@ import java.util.concurrent.Future;
 
 public abstract class AbstractAsyncCallback implements Runnable, Callback<Object> {
 
-  Future<?> task;
-  static boolean callbackProcessed = false;
+    Future<?> task;
+    static boolean callbackProcessed = false;
 
-  AbstractAsyncCallback() {
-  }
-
-  AbstractAsyncCallback(Future<?> t) {
-    this.task = t;
-  }
-
-  public void run() {
-    while (!callbackProcessed) {
-
-      if (task.isDone()) {
-        processMe(task);
-        callbackProcessed = true;
-        try {
-          Thread.sleep(1000);
-        } catch (InterruptedException e) {
-          Thread.currentThread().interrupt();
-        }
-        break;
-      }
-
+    AbstractAsyncCallback() {
     }
-  }
+
+    AbstractAsyncCallback(Future<?> t) {
+        this.task = t;
+    }
+
+    public void run() {
+        while (!callbackProcessed) {
+
+            if (task.isDone()) {
+                processMe(task);
+                callbackProcessed = true;
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                }
+                break;
+            }
+
+        }
+    }
 }

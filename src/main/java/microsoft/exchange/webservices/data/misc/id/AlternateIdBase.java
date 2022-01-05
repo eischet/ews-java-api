@@ -38,105 +38,105 @@ import javax.xml.stream.XMLStreamException;
  */
 public abstract class AlternateIdBase implements ISelfValidate {
 
-  /**
-   * Id format.
-   */
-  private IdFormat format;
+    /**
+     * Id format.
+     */
+    private IdFormat format;
 
-  /**
-   * Initializes a new instance of the class.
-   */
-  protected AlternateIdBase() {
-  }
+    /**
+     * Initializes a new instance of the class.
+     */
+    protected AlternateIdBase() {
+    }
 
-  /**
-   * Initializes a new instance of the class.
-   *
-   * @param format the format
-   */
-  protected AlternateIdBase(IdFormat format) {
-    super();
-    this.format = format;
-  }
+    /**
+     * Initializes a new instance of the class.
+     *
+     * @param format the format
+     */
+    protected AlternateIdBase(IdFormat format) {
+        super();
+        this.format = format;
+    }
 
-  /**
-   * Gets the format in which the Id in expressed.
-   *
-   * @return the format
-   */
-  public IdFormat getFormat() {
-    return this.format;
-  }
+    /**
+     * Gets the format in which the Id in expressed.
+     *
+     * @return the format
+     */
+    public IdFormat getFormat() {
+        return this.format;
+    }
 
-  /**
-   * Sets the format.
-   *
-   * @param format the new format
-   */
-  public void setFormat(IdFormat format) {
-    this.format = format;
-  }
+    /**
+     * Sets the format.
+     *
+     * @param format the new format
+     */
+    public void setFormat(IdFormat format) {
+        this.format = format;
+    }
 
-  /**
-   * Gets the name of the XML element.
-   *
-   * @return XML element name.
-   */
-  protected abstract String getXmlElementName();
+    /**
+     * Gets the name of the XML element.
+     *
+     * @return XML element name.
+     */
+    protected abstract String getXmlElementName();
 
-  /**
-   * Writes the attribute to XML.
-   *
-   * @param writer the writer
-   * @throws ServiceXmlSerializationException the service xml serialization exception
-   */
-  protected void writeAttributesToXml(EwsServiceXmlWriter writer)
-      throws ServiceXmlSerializationException {
-    writer.writeAttributeValue(XmlAttributeNames.Format, this.getFormat());
-  }
+    /**
+     * Writes the attribute to XML.
+     *
+     * @param writer the writer
+     * @throws ServiceXmlSerializationException the service xml serialization exception
+     */
+    protected void writeAttributesToXml(EwsServiceXmlWriter writer)
+            throws ServiceXmlSerializationException {
+        writer.writeAttributeValue(XmlAttributeNames.Format, this.getFormat());
+    }
 
-  /**
-   * Loads the attribute from XML.
-   *
-   * @param reader the reader
-   * @throws Exception the exception
-   */
-  public void loadAttributesFromXml(EwsServiceXmlReader reader)
-      throws Exception {
-    this.setFormat(reader.readAttributeValue(IdFormat.class,
-        XmlAttributeNames.Format));
-  }
+    /**
+     * Loads the attribute from XML.
+     *
+     * @param reader the reader
+     * @throws Exception the exception
+     */
+    public void loadAttributesFromXml(EwsServiceXmlReader reader)
+            throws Exception {
+        this.setFormat(reader.readAttributeValue(IdFormat.class,
+                XmlAttributeNames.Format));
+    }
 
-  /**
-   * Writes to XML.
-   *
-   * @param writer the writer
-   * @throws ServiceXmlSerializationException the service xml serialization exception
-   * @throws XMLStreamException the XML stream exception
-   */
-  public void writeToXml(EwsServiceXmlWriter writer)
-      throws ServiceXmlSerializationException, XMLStreamException {
-    writer.writeStartElement(XmlNamespace.Types, this.getXmlElementName());
-    this.writeAttributesToXml(writer);
-    writer.writeEndElement(); // this.GetXmlElementName()
-  }
+    /**
+     * Writes to XML.
+     *
+     * @param writer the writer
+     * @throws ServiceXmlSerializationException the service xml serialization exception
+     * @throws XMLStreamException               the XML stream exception
+     */
+    public void writeToXml(EwsServiceXmlWriter writer)
+            throws ServiceXmlSerializationException, XMLStreamException {
+        writer.writeStartElement(XmlNamespace.Types, this.getXmlElementName());
+        this.writeAttributesToXml(writer);
+        writer.writeEndElement(); // this.GetXmlElementName()
+    }
 
-  /**
-   * Validate this instance.
-   *
-   * @throws Exception
-   */
-  protected void internalValidate() throws Exception {
-    // nothing to do.
-  }
+    /**
+     * Validate this instance.
+     *
+     * @throws Exception
+     */
+    protected void internalValidate() throws Exception {
+        // nothing to do.
+    }
 
-  /**
-   * Validates this instance.
-   *
-   * @throws Exception
-   */
-  public void validate() throws Exception {
-    this.internalValidate();
-  }
+    /**
+     * Validates this instance.
+     *
+     * @throws Exception
+     */
+    public void validate() throws Exception {
+        this.internalValidate();
+    }
 
 }

@@ -24,49 +24,49 @@
 package microsoft.exchange.webservices.data.core.request;
 
 import microsoft.exchange.webservices.data.core.ExchangeService;
+import microsoft.exchange.webservices.data.core.enumeration.misc.ExchangeVersion;
 import microsoft.exchange.webservices.data.core.enumeration.service.error.ServiceErrorHandling;
 import microsoft.exchange.webservices.data.core.response.CreateResponseObjectResponse;
 import microsoft.exchange.webservices.data.core.service.ServiceObject;
-import microsoft.exchange.webservices.data.core.enumeration.misc.ExchangeVersion;
 
 /**
  * Represents a CreateItem request for a response object.
  */
 public final class CreateResponseObjectRequest extends
-    CreateItemRequestBase<ServiceObject, CreateResponseObjectResponse> {
+        CreateItemRequestBase<ServiceObject, CreateResponseObjectResponse> {
 
-  /**
-   * Initializes a new instance of the CreateResponseObjectRequest class.
-   *
-   * @param service           The Service
-   * @param errorHandlingMode Indicates how errors should be handled.
-   * @throws Exception
-   */
-  public CreateResponseObjectRequest(ExchangeService service, ServiceErrorHandling errorHandlingMode)
-      throws Exception {
-    super(service, errorHandlingMode);
-  }
+    /**
+     * Initializes a new instance of the CreateResponseObjectRequest class.
+     *
+     * @param service           The Service
+     * @param errorHandlingMode Indicates how errors should be handled.
+     * @throws Exception
+     */
+    public CreateResponseObjectRequest(ExchangeService service, ServiceErrorHandling errorHandlingMode)
+            throws Exception {
+        super(service, errorHandlingMode);
+    }
 
-  /**
-   * Creates the service response.
-   *
-   * @param service       the service
-   * @param responseIndex the response index
-   * @return Service object.
-   */
-  @Override
-  protected CreateResponseObjectResponse createServiceResponse(
-      ExchangeService service, int responseIndex) {
-    return new CreateResponseObjectResponse();
-  }
+    /**
+     * Creates the service response.
+     *
+     * @param service       the service
+     * @param responseIndex the response index
+     * @return Service object.
+     */
+    @Override
+    protected CreateResponseObjectResponse createServiceResponse(
+            ExchangeService service, int responseIndex) {
+        return new CreateResponseObjectResponse();
+    }
 
-  /**
-   * Gets the request version.
-   *
-   * @return Earliest Exchange version in which this request is supported.
-   */
-  @Override
-  protected ExchangeVersion getMinimumRequiredServerVersion() {
-    return ExchangeVersion.Exchange2007_SP1;
-  }
+    /**
+     * Gets the request version.
+     *
+     * @return Earliest Exchange version in which this request is supported.
+     */
+    @Override
+    protected ExchangeVersion getMinimumRequiredServerVersion() {
+        return ExchangeVersion.Exchange2007_SP1;
+    }
 }

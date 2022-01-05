@@ -35,22 +35,23 @@ import java.util.TimeZone;
  */
 public class OlsonTimeZoneDefinition extends TimeZoneDefinition {
 
-  /**
-   * Create a TimeZoneDefinition compatible with java.util.TimeZone
-   * @param timeZone a java time zone object, will be converted to Microsoft timezone.
-   */
-  public OlsonTimeZoneDefinition(TimeZone timeZone) {
-    final String microsoftTimeZoneName = TimeZoneUtils.getMicrosoftTimeZoneName(timeZone);
-    if (microsoftTimeZoneName != null) {
-      this.id = microsoftTimeZoneName;
+    /**
+     * Create a TimeZoneDefinition compatible with java.util.TimeZone
+     *
+     * @param timeZone a java time zone object, will be converted to Microsoft timezone.
+     */
+    public OlsonTimeZoneDefinition(TimeZone timeZone) {
+        final String microsoftTimeZoneName = TimeZoneUtils.getMicrosoftTimeZoneName(timeZone);
+        if (microsoftTimeZoneName != null) {
+            this.id = microsoftTimeZoneName;
+        }
+        this.name = timeZone.getDisplayName(timeZone.inDaylightTime(new Date()), TimeZone.LONG);
     }
-    this.name = timeZone.getDisplayName(timeZone.inDaylightTime(new Date()), TimeZone.LONG);
-  }
 
-  @Override
-  public void validate() throws ServiceLocalException {
-    if (this.id == null) {
-      throw new ServiceLocalException("Invalid TimeZone (" + this.name + ") Specified");
+    @Override
+    public void validate() throws ServiceLocalException {
+        if (this.id == null) {
+            throw new ServiceLocalException("Invalid TimeZone (" + this.name + ") Specified");
+        }
     }
-  }
 }

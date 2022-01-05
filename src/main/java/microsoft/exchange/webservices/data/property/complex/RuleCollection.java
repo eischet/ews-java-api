@@ -36,88 +36,88 @@ import java.util.Iterator;
  */
 public final class RuleCollection extends ComplexProperty implements Iterable<Rule> {
 
-  /**
-   * The OutlookRuleBlobExists flag.
-   */
-  private boolean outlookRuleBlobExists;
+    /**
+     * The OutlookRuleBlobExists flag.
+     */
+    private boolean outlookRuleBlobExists;
 
-  /**
-   * The rules in the rule collection.
-   */
-  private ArrayList<Rule> rules;
+    /**
+     * The rules in the rule collection.
+     */
+    private final ArrayList<Rule> rules;
 
-  /**
-   * Initializes a new instance of the RuleCollection class.
-   */
-  public RuleCollection() {
-    super();
-    this.rules = new ArrayList<Rule>();
-  }
-
-  /**
-   * Gets a value indicating whether an Outlook rule blob exists in the user's
-   * mailbox. To update rules with EWS when the Outlook rule blob exists, call
-   * SetInboxRules passing true as the
-   * value of the removeOutlookBlob parameter.
-   */
-  public boolean getOutlookRuleBlobExists() {
-    return this.outlookRuleBlobExists;
-  }
-
-  public void setOutlookRuleBlobExists(boolean value) {
-    this.outlookRuleBlobExists = value;
-  }
-
-  /**
-   * Gets the number of rules in this collection.
-   */
-  public int getCount() {
-    return this.rules.size();
-  }
-
-  /**
-   * Gets the rule at the specified index in the collection.
-   *
-   * @param index The index of the rule to get.
-   * @return The rule at the specified index.
-   * @throws ArgumentOutOfRangeException
-   */
-  public Rule getRule(int index) throws ArgumentOutOfRangeException {
-    if (index < 0 || index >= this.rules.size()) {
-      throw new ArgumentOutOfRangeException("Index");
+    /**
+     * Initializes a new instance of the RuleCollection class.
+     */
+    public RuleCollection() {
+        super();
+        this.rules = new ArrayList<Rule>();
     }
 
-    return this.rules.get(index);
-
-  }
-
-
-  /**
-   * Tries to read element from XML.
-   *
-   * @param reader The reader.
-   * @return True if element was read.
-   * @throws Exception
-   */
-  @Override
-  public boolean tryReadElementFromXml(EwsServiceXmlReader reader)
-      throws Exception {
-    if (reader.isStartElement(XmlNamespace.Types, XmlElementNames.Rule)) {
-      Rule rule = new Rule();
-      rule.loadFromXml(reader, XmlElementNames.Rule);
-      this.rules.add(rule);
-      return true;
-    } else {
-      return false;
+    /**
+     * Gets a value indicating whether an Outlook rule blob exists in the user's
+     * mailbox. To update rules with EWS when the Outlook rule blob exists, call
+     * SetInboxRules passing true as the
+     * value of the removeOutlookBlob parameter.
+     */
+    public boolean getOutlookRuleBlobExists() {
+        return this.outlookRuleBlobExists;
     }
-  }
 
-  /**
-   * Get an enumerator for the collection
-   */
-  @Override
-  public Iterator<Rule> iterator() {
-    return this.rules.iterator();
-  }
+    public void setOutlookRuleBlobExists(boolean value) {
+        this.outlookRuleBlobExists = value;
+    }
+
+    /**
+     * Gets the number of rules in this collection.
+     */
+    public int getCount() {
+        return this.rules.size();
+    }
+
+    /**
+     * Gets the rule at the specified index in the collection.
+     *
+     * @param index The index of the rule to get.
+     * @return The rule at the specified index.
+     * @throws ArgumentOutOfRangeException
+     */
+    public Rule getRule(int index) throws ArgumentOutOfRangeException {
+        if (index < 0 || index >= this.rules.size()) {
+            throw new ArgumentOutOfRangeException("Index");
+        }
+
+        return this.rules.get(index);
+
+    }
+
+
+    /**
+     * Tries to read element from XML.
+     *
+     * @param reader The reader.
+     * @return True if element was read.
+     * @throws Exception
+     */
+    @Override
+    public boolean tryReadElementFromXml(EwsServiceXmlReader reader)
+            throws Exception {
+        if (reader.isStartElement(XmlNamespace.Types, XmlElementNames.Rule)) {
+            Rule rule = new Rule();
+            rule.loadFromXml(reader, XmlElementNames.Rule);
+            this.rules.add(rule);
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * Get an enumerator for the collection
+     */
+    @Override
+    public Iterator<Rule> iterator() {
+        return this.rules.iterator();
+    }
 
 }

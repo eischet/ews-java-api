@@ -28,8 +28,8 @@ package microsoft.exchange.webservices.data.core;
  */
 public interface IDisposable {
 
-  /**
-   * Dispose.
-   */
-  void dispose();
+    /**
+     * Dispose.
+     */
+    void dispose();
 }

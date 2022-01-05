@@ -34,47 +34,47 @@ import java.util.List;
  * Represents an array of byte arrays
  */
 public class ByteArrayArray extends ComplexProperty {
-  final static String ItemXmlElementName = "Base64Binary";
-  private List<byte[]> content = new ArrayList<byte[]>();
+    final static String ItemXmlElementName = "Base64Binary";
+    private final List<byte[]> content = new ArrayList<byte[]>();
 
-  public ByteArrayArray() {
-  }
-
-  /**
-   * Gets the content of the array of byte arrays
-   */
-  public byte[][] getContent() {
-    return (byte[][]) this.content.toArray();
-  }
-
-  /**
-   * Tries to read element from XML.
-   */
-  public boolean tryReadElementFromXml(EwsServiceXmlReader reader)
-      throws Exception {
-
-    if (reader.getLocalName().equalsIgnoreCase(
-        ByteArrayArray.ItemXmlElementName)) {
-      this.content.add(reader.readBase64ElementValue());
-      return true;
-    } else {
-      return false;
+    public ByteArrayArray() {
     }
 
-  }
-
-  /**
-   * The Writer
-   */
-  public void writeElementsToXml(EwsServiceXmlWriter writer)
-      throws Exception {
-    for (byte[] item : this.content) {
-      writer.writeStartElement(XmlNamespace.Types,
-          ByteArrayArray.ItemXmlElementName);
-      writer.writeBase64ElementValue(item);
-      writer.writeEndElement();
+    /**
+     * Gets the content of the array of byte arrays
+     */
+    public byte[][] getContent() {
+        return (byte[][]) this.content.toArray();
     }
 
-  }
+    /**
+     * Tries to read element from XML.
+     */
+    public boolean tryReadElementFromXml(EwsServiceXmlReader reader)
+            throws Exception {
+
+        if (reader.getLocalName().equalsIgnoreCase(
+                ByteArrayArray.ItemXmlElementName)) {
+            this.content.add(reader.readBase64ElementValue());
+            return true;
+        } else {
+            return false;
+        }
+
+    }
+
+    /**
+     * The Writer
+     */
+    public void writeElementsToXml(EwsServiceXmlWriter writer)
+            throws Exception {
+        for (byte[] item : this.content) {
+            writer.writeStartElement(XmlNamespace.Types,
+                    ByteArrayArray.ItemXmlElementName);
+            writer.writeBase64ElementValue(item);
+            writer.writeEndElement();
+        }
+
+    }
 
 }

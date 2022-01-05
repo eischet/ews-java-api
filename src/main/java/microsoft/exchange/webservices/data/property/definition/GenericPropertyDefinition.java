@@ -37,81 +37,81 @@ import java.util.EnumSet;
  * @param <TPropertyValue> Property type.
  */
 public class GenericPropertyDefinition<TPropertyValue extends Serializable> extends
-    TypedPropertyDefinition<TPropertyValue> {
+        TypedPropertyDefinition<TPropertyValue> {
 
-  private Class<TPropertyValue> instance;
+    private final Class<TPropertyValue> instance;
 
-  /**
-   * Initializes a new instance of the "GenericPropertyDefinition&lt;T&gt;"
-   * class.
-   *
-   * @param xmlElementName Name of the XML element.
-   * @param uri            The URI.
-   * @param version        The version.
-   */
-  public GenericPropertyDefinition(Class<TPropertyValue> cls, String xmlElementName, String uri,
-      ExchangeVersion version) {
-    super(xmlElementName, uri, version);
-    this.instance = cls;
-  }
+    /**
+     * Initializes a new instance of the "GenericPropertyDefinition&lt;T&gt;"
+     * class.
+     *
+     * @param xmlElementName Name of the XML element.
+     * @param uri            The URI.
+     * @param version        The version.
+     */
+    public GenericPropertyDefinition(Class<TPropertyValue> cls, String xmlElementName, String uri,
+                                     ExchangeVersion version) {
+        super(xmlElementName, uri, version);
+        this.instance = cls;
+    }
 
-  /**
-   * Initializes a new instance of the "GenericPropertyDefinition&lt;T&gt;"
-   * class.
-   *
-   * @param xmlElementName Name of the XML element.
-   * @param uri            The URI.
-   * @param flags          The flags.
-   * @param version        The version.
-   */
-  public GenericPropertyDefinition(Class<TPropertyValue> cls, String xmlElementName, String uri,
-      EnumSet<PropertyDefinitionFlags> flags, ExchangeVersion version) {
-    super(xmlElementName, uri, flags, version);
-    this.instance = cls;
-  }
+    /**
+     * Initializes a new instance of the "GenericPropertyDefinition&lt;T&gt;"
+     * class.
+     *
+     * @param xmlElementName Name of the XML element.
+     * @param uri            The URI.
+     * @param flags          The flags.
+     * @param version        The version.
+     */
+    public GenericPropertyDefinition(Class<TPropertyValue> cls, String xmlElementName, String uri,
+                                     EnumSet<PropertyDefinitionFlags> flags, ExchangeVersion version) {
+        super(xmlElementName, uri, flags, version);
+        this.instance = cls;
+    }
 
-  /**
-   * Initializes a new instance of the GenericPropertyDefinition class.
-   *
-   * @param xmlElementName Name of the XML element.
-   * @param uri            The URI.
-   * @param flags          The flags.
-   * @param version        The version.
-   * @param isNullable     if set to true, property value is nullable.
-   */
-  protected GenericPropertyDefinition(
-      Class<TPropertyValue> cls,
-      String xmlElementName,
-      String uri,
-      EnumSet<PropertyDefinitionFlags> flags,
-      ExchangeVersion version,
-      boolean isNullable) {
-    super(xmlElementName, uri, flags, version, isNullable);
-    this.instance = cls;
-  }
+    /**
+     * Initializes a new instance of the GenericPropertyDefinition class.
+     *
+     * @param xmlElementName Name of the XML element.
+     * @param uri            The URI.
+     * @param flags          The flags.
+     * @param version        The version.
+     * @param isNullable     if set to true, property value is nullable.
+     */
+    protected GenericPropertyDefinition(
+            Class<TPropertyValue> cls,
+            String xmlElementName,
+            String uri,
+            EnumSet<PropertyDefinitionFlags> flags,
+            ExchangeVersion version,
+            boolean isNullable) {
+        super(xmlElementName, uri, flags, version, isNullable);
+        this.instance = cls;
+    }
 
 
-  /**
-   * Parses the specified value.
-   *
-   * @param value The value
-   * @return Double value from parsed value.
-   * @throws java.text.ParseException
-   * @throws IllegalAccessException
-   * @throws InstantiationException
-   */
-  @Override
-  protected TPropertyValue parse(String value) throws InstantiationException,
-      IllegalAccessException, ParseException {
+    /**
+     * Parses the specified value.
+     *
+     * @param value The value
+     * @return Double value from parsed value.
+     * @throws java.text.ParseException
+     * @throws IllegalAccessException
+     * @throws InstantiationException
+     */
+    @Override
+    protected TPropertyValue parse(String value) throws InstantiationException,
+            IllegalAccessException, ParseException {
 
-    return EwsUtilities.parse(instance, value);
-  }
+        return EwsUtilities.parse(instance, value);
+    }
 
-  /**
-   * Gets the property type.
-   */
-  @Override
-  public Class<TPropertyValue> getType() {
-    return instance;
-  }
+    /**
+     * Gets the property type.
+     */
+    @Override
+    public Class<TPropertyValue> getType() {
+        return instance;
+    }
 }

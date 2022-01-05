@@ -26,11 +26,11 @@ package microsoft.exchange.webservices.data.core.request;
 import microsoft.exchange.webservices.data.core.EwsServiceXmlWriter;
 import microsoft.exchange.webservices.data.core.ExchangeService;
 import microsoft.exchange.webservices.data.core.XmlElementNames;
-import microsoft.exchange.webservices.data.core.response.SubscribeResponse;
 import microsoft.exchange.webservices.data.core.enumeration.misc.ExchangeVersion;
 import microsoft.exchange.webservices.data.core.enumeration.misc.XmlNamespace;
 import microsoft.exchange.webservices.data.core.exception.misc.ArgumentException;
 import microsoft.exchange.webservices.data.core.exception.service.local.ServiceXmlSerializationException;
+import microsoft.exchange.webservices.data.core.response.SubscribeResponse;
 import microsoft.exchange.webservices.data.notification.PullSubscription;
 
 import javax.xml.stream.XMLStreamException;
@@ -39,104 +39,104 @@ import javax.xml.stream.XMLStreamException;
  * Represents a "pull" Subscribe request.
  */
 public class SubscribeToPullNotificationsRequest extends
-    SubscribeRequest<PullSubscription> {
+        SubscribeRequest<PullSubscription> {
 
-  /**
-   * The timeout.
-   */
-  private int timeout = 30;
+    /**
+     * The timeout.
+     */
+    private int timeout = 30;
 
-  /**
-   * Instantiates a new subscribe to pull notification request.
-   *
-   * @param service the service
-   * @throws Exception the exception
-   */
-  public SubscribeToPullNotificationsRequest(ExchangeService service)
-      throws Exception {
+    /**
+     * Instantiates a new subscribe to pull notification request.
+     *
+     * @param service the service
+     * @throws Exception the exception
+     */
+    public SubscribeToPullNotificationsRequest(ExchangeService service)
+            throws Exception {
 
-    super(service);
+        super(service);
 
-  }
-
-  /**
-   * Gets the timeout.
-   *
-   * @return the timeout
-   */
-  public int getTimeout() {
-    return this.timeout;
-  }
-
-  /**
-   * Sets the time out.
-   *
-   * @param timeout the new time out
-   */
-  public void setTimeOut(int timeout) {
-    this.timeout = timeout;
-  }
-
-  /**
-   * Validate request.
-   *
-   * @throws Exception the exception
-   */
-  protected void validate() throws Exception {
-    super.validate();
-    if ((this.getTimeout() < 1) || (this.getTimeout() > 1440)) {
-      throw new ArgumentException(String.format(
-          "%d is not a valid timeout value. Valid values range from 1 to 1440.", this.getTimeout()));
     }
-  }
 
-  /**
-   * Creates the service response.
-   *
-   * @param service       The service.
-   * @param responseIndex Index of the response.
-   * @return Service response.
-   * @throws Exception the exception
-   */
-  @Override
-  protected SubscribeResponse<PullSubscription> createServiceResponse(
-      ExchangeService service, int responseIndex) throws Exception {
-    return new SubscribeResponse<PullSubscription>(new PullSubscription(
-        service));
-  }
+    /**
+     * Gets the timeout.
+     *
+     * @return the timeout
+     */
+    public int getTimeout() {
+        return this.timeout;
+    }
 
-  /**
-   * Gets the minimum server version required to process this request.
-   *
-   * @return Exchange server version.
-   */
-  @Override
-  protected ExchangeVersion getMinimumRequiredServerVersion() {
-    return ExchangeVersion.Exchange2007_SP1;
-  }
+    /**
+     * Sets the time out.
+     *
+     * @param timeout the new time out
+     */
+    public void setTimeOut(int timeout) {
+        this.timeout = timeout;
+    }
 
-  /**
-   * Gets the name of the subscription XML element.
-   *
-   * @return XML element name
-   */
-  @Override
-  protected String getSubscriptionXmlElementName() {
-    return XmlElementNames.PullSubscriptionRequest;
-  }
+    /**
+     * Validate request.
+     *
+     * @throws Exception the exception
+     */
+    protected void validate() throws Exception {
+        super.validate();
+        if ((this.getTimeout() < 1) || (this.getTimeout() > 1440)) {
+            throw new ArgumentException(String.format(
+                    "%d is not a valid timeout value. Valid values range from 1 to 1440.", this.getTimeout()));
+        }
+    }
 
-  /**
-   * Reads response elements from XML.
-   *
-   * @param writer the writer
-   * @throws XMLStreamException the XML stream exception
-   * @throws ServiceXmlSerializationException the service xml serialization exception
-   */
-  @Override
-  protected void internalWriteElementsToXml(EwsServiceXmlWriter writer)
-      throws XMLStreamException, ServiceXmlSerializationException {
-    writer.writeElementValue(XmlNamespace.Types, XmlElementNames.Timeout,
-        this.getTimeout());
+    /**
+     * Creates the service response.
+     *
+     * @param service       The service.
+     * @param responseIndex Index of the response.
+     * @return Service response.
+     * @throws Exception the exception
+     */
+    @Override
+    protected SubscribeResponse<PullSubscription> createServiceResponse(
+            ExchangeService service, int responseIndex) throws Exception {
+        return new SubscribeResponse<PullSubscription>(new PullSubscription(
+                service));
+    }
 
-  }
+    /**
+     * Gets the minimum server version required to process this request.
+     *
+     * @return Exchange server version.
+     */
+    @Override
+    protected ExchangeVersion getMinimumRequiredServerVersion() {
+        return ExchangeVersion.Exchange2007_SP1;
+    }
+
+    /**
+     * Gets the name of the subscription XML element.
+     *
+     * @return XML element name
+     */
+    @Override
+    protected String getSubscriptionXmlElementName() {
+        return XmlElementNames.PullSubscriptionRequest;
+    }
+
+    /**
+     * Reads response elements from XML.
+     *
+     * @param writer the writer
+     * @throws XMLStreamException               the XML stream exception
+     * @throws ServiceXmlSerializationException the service xml serialization exception
+     */
+    @Override
+    protected void internalWriteElementsToXml(EwsServiceXmlWriter writer)
+            throws XMLStreamException, ServiceXmlSerializationException {
+        writer.writeElementValue(XmlNamespace.Types, XmlElementNames.Timeout,
+                this.getTimeout());
+
+    }
 }

@@ -23,201 +23,198 @@
 
 package microsoft.exchange.webservices.data.core.request;
 
-import microsoft.exchange.webservices.data.core.EwsServiceXmlWriter;
-import microsoft.exchange.webservices.data.core.EwsUtilities;
-import microsoft.exchange.webservices.data.core.ExchangeService;
-import microsoft.exchange.webservices.data.core.XmlAttributeNames;
-import microsoft.exchange.webservices.data.core.XmlElementNames;
-import microsoft.exchange.webservices.data.core.enumeration.service.error.ServiceErrorHandling;
-import microsoft.exchange.webservices.data.core.response.ServiceResponse;
-import microsoft.exchange.webservices.data.core.service.item.Item;
+import microsoft.exchange.webservices.data.core.*;
 import microsoft.exchange.webservices.data.core.enumeration.misc.ExchangeVersion;
 import microsoft.exchange.webservices.data.core.enumeration.misc.XmlNamespace;
+import microsoft.exchange.webservices.data.core.enumeration.service.error.ServiceErrorHandling;
 import microsoft.exchange.webservices.data.core.exception.service.local.ServiceXmlSerializationException;
+import microsoft.exchange.webservices.data.core.response.ServiceResponse;
+import microsoft.exchange.webservices.data.core.service.item.Item;
 import microsoft.exchange.webservices.data.property.complex.FolderId;
 
 /**
  * Represents a SendItem request.
  */
 public final class SendItemRequest extends
-    MultiResponseServiceRequest<ServiceResponse> {
+        MultiResponseServiceRequest<ServiceResponse> {
 
-  /**
-   * The item.
-   */
-  private Iterable<Item> items;
+    /**
+     * The item.
+     */
+    private Iterable<Item> items;
 
-  /**
-   * The saved copy destination folder id.
-   */
-  private FolderId savedCopyDestinationFolderId;
+    /**
+     * The saved copy destination folder id.
+     */
+    private FolderId savedCopyDestinationFolderId;
 
-  /**
-   * Asserts the valid.
-   *
-   * @throws Exception the exception
-   */
-  @Override
-  protected void validate() throws Exception {
-    super.validate();
-    EwsUtilities.validateParam(this.items, "Items");
+    /**
+     * Asserts the valid.
+     *
+     * @throws Exception the exception
+     */
+    @Override
+    protected void validate() throws Exception {
+        super.validate();
+        EwsUtilities.validateParam(this.items, "Items");
 
-    if (this.savedCopyDestinationFolderId != null) {
-      this.savedCopyDestinationFolderId.validate(this.getService()
-          .getRequestedServerVersion());
-    }
-  }
-
-  /**
-   * Creates the service response.
-   *
-   * @param service       the service
-   * @param responseIndex the response index
-   * @return Service response.
-   */
-  @Override
-  protected ServiceResponse createServiceResponse(ExchangeService service,
-      int responseIndex) {
-    return new ServiceResponse();
-  }
-
-  /**
-   * Gets the expected response message count.
-   *
-   * @return Number of expected response messages.
-   */
-  @Override
-  protected int getExpectedResponseMessageCount() {
-    return EwsUtilities.getEnumeratedObjectCount(this.items.iterator());
-  }
-
-  /**
-   * Gets the name of the XML element.
-   *
-   * @return XML element name
-   */
-  @Override public String getXmlElementName() {
-    return XmlElementNames.SendItem;
-  }
-
-  /**
-   * Gets the name of the response XML element.
-   *
-   * @return XML element name
-   */
-  @Override
-  protected String getResponseXmlElementName() {
-    return XmlElementNames.SendItemResponse;
-  }
-
-  /**
-   * Gets the name of the response message XML element.
-   *
-   * @return XML element name
-   */
-  @Override
-  protected String getResponseMessageXmlElementName() {
-    return XmlElementNames.SendItemResponseMessage;
-  }
-
-  /**
-   * Writes the attribute to XML.
-   *
-   * @param writer the writer
-   * @throws ServiceXmlSerializationException the service xml serialization exception
-   */
-  @Override
-  protected void writeAttributesToXml(EwsServiceXmlWriter writer)
-      throws ServiceXmlSerializationException {
-    super.writeAttributesToXml(writer);
-
-    writer.writeAttributeValue(XmlAttributeNames.SaveItemToFolder,
-        this.savedCopyDestinationFolderId != null);
-  }
-
-  /**
-   * Writes the elements to XML.
-   *
-   * @param writer the writer
-   * @throws Exception the exception
-   */
-  @Override
-  protected void writeElementsToXml(EwsServiceXmlWriter writer) throws Exception {
-    writer
-        .writeStartElement(XmlNamespace.Messages,
-            XmlElementNames.ItemIds);
-
-    for (Item item : this.getItems()) {
-      item.getId().writeToXml(writer, XmlElementNames.ItemId);
+        if (this.savedCopyDestinationFolderId != null) {
+            this.savedCopyDestinationFolderId.validate(this.getService()
+                    .getRequestedServerVersion());
+        }
     }
 
-    writer.writeEndElement(); // ItemIds
-
-    if (this.savedCopyDestinationFolderId != null) {
-      writer.writeStartElement(XmlNamespace.Messages,
-          XmlElementNames.SavedItemFolderId);
-      this.savedCopyDestinationFolderId.writeToXml(writer);
-      writer.writeEndElement();
+    /**
+     * Creates the service response.
+     *
+     * @param service       the service
+     * @param responseIndex the response index
+     * @return Service response.
+     */
+    @Override
+    protected ServiceResponse createServiceResponse(ExchangeService service,
+                                                    int responseIndex) {
+        return new ServiceResponse();
     }
-  }
 
-  /**
-   * Gets the request version.
-   *
-   * @return Earliest Exchange version in which this request is supported.
-   */
-  @Override
-  protected ExchangeVersion getMinimumRequiredServerVersion() {
-    return ExchangeVersion.Exchange2007_SP1;
-  }
+    /**
+     * Gets the expected response message count.
+     *
+     * @return Number of expected response messages.
+     */
+    @Override
+    protected int getExpectedResponseMessageCount() {
+        return EwsUtilities.getEnumeratedObjectCount(this.items.iterator());
+    }
 
-  /**
-   * Initializes a new instance of the class.
-   *
-   * @param service           the service
-   * @param errorHandlingMode the error handling mode
-   * @throws Exception
-   */
-  public SendItemRequest(ExchangeService service, ServiceErrorHandling errorHandlingMode)
-      throws Exception {
-    super(service, errorHandlingMode);
-  }
+    /**
+     * Gets the name of the XML element.
+     *
+     * @return XML element name
+     */
+    @Override
+    public String getXmlElementName() {
+        return XmlElementNames.SendItem;
+    }
 
-  /**
-   * Gets the item. <value>The item.</value>
-   *
-   * @return the item
-   */
-  public Iterable<Item> getItems() {
-    return this.items;
-  }
+    /**
+     * Gets the name of the response XML element.
+     *
+     * @return XML element name
+     */
+    @Override
+    protected String getResponseXmlElementName() {
+        return XmlElementNames.SendItemResponse;
+    }
 
-  /**
-   * Sets the item.
-   *
-   * @param items the new item
-   */
-  public void setItems(Iterable<Item> items) {
-    this.items = items;
-  }
+    /**
+     * Gets the name of the response message XML element.
+     *
+     * @return XML element name
+     */
+    @Override
+    protected String getResponseMessageXmlElementName() {
+        return XmlElementNames.SendItemResponseMessage;
+    }
 
-  /**
-   * Gets the saved copy destination folder id.
-   *
-   * @return the saved copy destination folder id
-   */
-  public FolderId getSavedCopyDestinationFolderId() {
-    return this.savedCopyDestinationFolderId;
-  }
+    /**
+     * Writes the attribute to XML.
+     *
+     * @param writer the writer
+     * @throws ServiceXmlSerializationException the service xml serialization exception
+     */
+    @Override
+    protected void writeAttributesToXml(EwsServiceXmlWriter writer)
+            throws ServiceXmlSerializationException {
+        super.writeAttributesToXml(writer);
 
-  /**
-   * Sets the saved copy destination folder id.
-   *
-   * @param savedCopyDestinationFolderId the new saved copy destination folder id
-   */
-  public void setSavedCopyDestinationFolderId(
-      FolderId savedCopyDestinationFolderId) {
-    this.savedCopyDestinationFolderId = savedCopyDestinationFolderId;
-  }
+        writer.writeAttributeValue(XmlAttributeNames.SaveItemToFolder,
+                this.savedCopyDestinationFolderId != null);
+    }
+
+    /**
+     * Writes the elements to XML.
+     *
+     * @param writer the writer
+     * @throws Exception the exception
+     */
+    @Override
+    protected void writeElementsToXml(EwsServiceXmlWriter writer) throws Exception {
+        writer
+                .writeStartElement(XmlNamespace.Messages,
+                        XmlElementNames.ItemIds);
+
+        for (Item item : this.getItems()) {
+            item.getId().writeToXml(writer, XmlElementNames.ItemId);
+        }
+
+        writer.writeEndElement(); // ItemIds
+
+        if (this.savedCopyDestinationFolderId != null) {
+            writer.writeStartElement(XmlNamespace.Messages,
+                    XmlElementNames.SavedItemFolderId);
+            this.savedCopyDestinationFolderId.writeToXml(writer);
+            writer.writeEndElement();
+        }
+    }
+
+    /**
+     * Gets the request version.
+     *
+     * @return Earliest Exchange version in which this request is supported.
+     */
+    @Override
+    protected ExchangeVersion getMinimumRequiredServerVersion() {
+        return ExchangeVersion.Exchange2007_SP1;
+    }
+
+    /**
+     * Initializes a new instance of the class.
+     *
+     * @param service           the service
+     * @param errorHandlingMode the error handling mode
+     * @throws Exception
+     */
+    public SendItemRequest(ExchangeService service, ServiceErrorHandling errorHandlingMode)
+            throws Exception {
+        super(service, errorHandlingMode);
+    }
+
+    /**
+     * Gets the item. <value>The item.</value>
+     *
+     * @return the item
+     */
+    public Iterable<Item> getItems() {
+        return this.items;
+    }
+
+    /**
+     * Sets the item.
+     *
+     * @param items the new item
+     */
+    public void setItems(Iterable<Item> items) {
+        this.items = items;
+    }
+
+    /**
+     * Gets the saved copy destination folder id.
+     *
+     * @return the saved copy destination folder id
+     */
+    public FolderId getSavedCopyDestinationFolderId() {
+        return this.savedCopyDestinationFolderId;
+    }
+
+    /**
+     * Sets the saved copy destination folder id.
+     *
+     * @param savedCopyDestinationFolderId the new saved copy destination folder id
+     */
+    public void setSavedCopyDestinationFolderId(
+            FolderId savedCopyDestinationFolderId) {
+        this.savedCopyDestinationFolderId = savedCopyDestinationFolderId;
+    }
 
 }

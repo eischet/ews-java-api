@@ -28,16 +28,16 @@ package microsoft.exchange.webservices.data.core.enumeration.search;
  */
 public enum SearchFolderTraversal {
 
-  // Items belonging to the root folder are retrieved.
-  /**
-   * The Shallow.
-   */
-  Shallow,
+    // Items belonging to the root folder are retrieved.
+    /**
+     * The Shallow.
+     */
+    Shallow,
 
-  // Items belonging to the root folder and its sub-folder are retrieved.
-  /**
-   * The Deep.
-   */
-  Deep
+    // Items belonging to the root folder and its sub-folder are retrieved.
+    /**
+     * The Deep.
+     */
+    Deep
 
 }

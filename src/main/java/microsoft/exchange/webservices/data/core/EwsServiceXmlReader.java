@@ -23,10 +23,10 @@
 
 package microsoft.exchange.webservices.data.core;
 
-import microsoft.exchange.webservices.data.core.response.IGetObjectInstanceDelegate;
-import microsoft.exchange.webservices.data.core.service.ServiceObject;
 import microsoft.exchange.webservices.data.core.enumeration.misc.XmlNamespace;
 import microsoft.exchange.webservices.data.core.exception.service.local.ServiceLocalException;
+import microsoft.exchange.webservices.data.core.response.IGetObjectInstanceDelegate;
+import microsoft.exchange.webservices.data.core.service.ServiceObject;
 import microsoft.exchange.webservices.data.util.DateTimeUtils;
 
 import java.io.InputStream;
@@ -42,164 +42,164 @@ import java.util.TimeZone;
  */
 public class EwsServiceXmlReader extends EwsXmlReader {
 
-  /**
-   * The service.
-   */
-  private ExchangeService service;
+    /**
+     * The service.
+     */
+    private ExchangeService service;
 
-  /**
-   * Initializes a new instance of the EwsXmlReader class.
-   *
-   * @param stream the stream
-   * @param service the service
-   * @throws Exception on error
-   */
-  public EwsServiceXmlReader(InputStream stream, ExchangeService service)
-      throws Exception {
-    super(stream);
-    this.service = service;
-  }
-
-  /**
-   * Reads the element value as date time.
-   *
-   * @return Element value
-   * @throws Exception the exception
-   */
-  public Date readElementValueAsDateTime() throws Exception {
-    return DateTimeUtils.convertDateTimeStringToDate(readElementValue());
-  }
-
-  /**
-   * Reads the element value as unspecified date.
-   *
-   * @return element value
-   * @throws Exception on error
-   */
-  public Date readElementValueAsUnspecifiedDate() throws Exception {
-    return DateTimeUtils.convertDateStringToDate(readElementValue());
-  }
-
-  /**
-   * Reads the element value as date time, assuming it is unbiased (e.g.
-   * 2009/01/01T08:00) and scoped to service's time zone.
-   *
-   * @return Date
-   * @throws Exception the exception
-   */
-  public Date readElementValueAsUnbiasedDateTimeScopedToServiceTimeZone()
-      throws Exception {
-    // Convert the element's value to a DateTime with no adjustment.
-    String date = this.readElementValue();
-
-    try {
-      DateFormat formatter =
-          new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-      formatter.setTimeZone(TimeZone.getTimeZone("UTC"));
-      return formatter.parse(date);
-    } catch (Exception e) {
-      DateFormat formatter = new SimpleDateFormat(
-          "yyyy-MM-dd'T'HH:mm:ss.SSS");
-      formatter.setTimeZone(TimeZone.getTimeZone("UTC"));
-      return formatter.parse(date);
+    /**
+     * Initializes a new instance of the EwsXmlReader class.
+     *
+     * @param stream  the stream
+     * @param service the service
+     * @throws Exception on error
+     */
+    public EwsServiceXmlReader(InputStream stream, ExchangeService service)
+            throws Exception {
+        super(stream);
+        this.service = service;
     }
-  }
 
-  /**
-   * Reads the element value as date time.
-   *
-   * @param xmlNamespace the xml namespace
-   * @param localName    the local name
-   * @return the date
-   * @throws Exception the exception
-   */
-  public Date readElementValueAsDateTime(XmlNamespace xmlNamespace, String localName) throws Exception {
-    return DateTimeUtils.convertDateTimeStringToDate(readElementValue(xmlNamespace, localName));
-  }
+    /**
+     * Reads the element value as date time.
+     *
+     * @return Element value
+     * @throws Exception the exception
+     */
+    public Date readElementValueAsDateTime() throws Exception {
+        return DateTimeUtils.convertDateTimeStringToDate(readElementValue());
+    }
 
-  /**
-   * Reads the service objects collection from XML.
-   *
-   * @param <TServiceObject>          the generic type
-   * @param collectionXmlElementName  the collection xml element name
-   * @param getObjectInstanceDelegate the get object instance delegate
-   * @param clearPropertyBag          the clear property bag
-   * @param requestedPropertySet      the requested property set
-   * @param summaryPropertiesOnly     the summary property only
-   * @return the list
-   * @throws Exception the exception
-   */
-  public <TServiceObject extends ServiceObject> List<TServiceObject>
-  readServiceObjectsCollectionFromXml(
-      String collectionXmlElementName,
-      IGetObjectInstanceDelegate<ServiceObject>
-          getObjectInstanceDelegate,
-      boolean clearPropertyBag, PropertySet requestedPropertySet,
-      boolean summaryPropertiesOnly) throws Exception {
+    /**
+     * Reads the element value as unspecified date.
+     *
+     * @return element value
+     * @throws Exception on error
+     */
+    public Date readElementValueAsUnspecifiedDate() throws Exception {
+        return DateTimeUtils.convertDateStringToDate(readElementValue());
+    }
 
-    List<TServiceObject> serviceObjects = new ArrayList<TServiceObject>();
-    TServiceObject serviceObject;
+    /**
+     * Reads the element value as date time, assuming it is unbiased (e.g.
+     * 2009/01/01T08:00) and scoped to service's time zone.
+     *
+     * @return Date
+     * @throws Exception the exception
+     */
+    public Date readElementValueAsUnbiasedDateTimeScopedToServiceTimeZone()
+            throws Exception {
+        // Convert the element's value to a DateTime with no adjustment.
+        String date = this.readElementValue();
 
-    this.readStartElement(XmlNamespace.Messages, collectionXmlElementName);
-
-    if (!this.isEmptyElement()) {
-      do {
-        this.read();
-
-        if (this.isStartElement()) {
-          serviceObject = (TServiceObject) getObjectInstanceDelegate
-              .getObjectInstanceDelegate(this.getService(), this
-                  .getLocalName());
-          if (serviceObject == null) {
-            this.skipCurrentElement();
-          } else {
-            if (!(this.getLocalName()).equals(serviceObject
-                .getXmlElementName())) {
-
-              throw new ServiceLocalException(String
-                  .format(
-                      "The type of the " + "object in " +
-                          "the store (%s)" +
-                          " does not match that" +
-                          " of the " +
-                          "local object (%s).",
-                      this.getLocalName(), serviceObject
-                          .getXmlElementName()));
-            }
-            serviceObject.loadFromXml(this, clearPropertyBag,
-                requestedPropertySet, summaryPropertiesOnly);
-
-            serviceObjects.add(serviceObject);
-          }
+        try {
+            DateFormat formatter =
+                    new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+            formatter.setTimeZone(TimeZone.getTimeZone("UTC"));
+            return formatter.parse(date);
+        } catch (Exception e) {
+            DateFormat formatter = new SimpleDateFormat(
+                    "yyyy-MM-dd'T'HH:mm:ss.SSS");
+            formatter.setTimeZone(TimeZone.getTimeZone("UTC"));
+            return formatter.parse(date);
         }
-      } while (!this.isEndElement(XmlNamespace.Messages,
-          collectionXmlElementName));
-    } else {
-      // For empty elements read End Element tag
-      // i.e. position cursor on End Element
-      this.read();
     }
 
-    return serviceObjects;
+    /**
+     * Reads the element value as date time.
+     *
+     * @param xmlNamespace the xml namespace
+     * @param localName    the local name
+     * @return the date
+     * @throws Exception the exception
+     */
+    public Date readElementValueAsDateTime(XmlNamespace xmlNamespace, String localName) throws Exception {
+        return DateTimeUtils.convertDateTimeStringToDate(readElementValue(xmlNamespace, localName));
+    }
 
-  }
+    /**
+     * Reads the service objects collection from XML.
+     *
+     * @param <TServiceObject>          the generic type
+     * @param collectionXmlElementName  the collection xml element name
+     * @param getObjectInstanceDelegate the get object instance delegate
+     * @param clearPropertyBag          the clear property bag
+     * @param requestedPropertySet      the requested property set
+     * @param summaryPropertiesOnly     the summary property only
+     * @return the list
+     * @throws Exception the exception
+     */
+    public <TServiceObject extends ServiceObject> List<TServiceObject>
+    readServiceObjectsCollectionFromXml(
+            String collectionXmlElementName,
+            IGetObjectInstanceDelegate<ServiceObject>
+                    getObjectInstanceDelegate,
+            boolean clearPropertyBag, PropertySet requestedPropertySet,
+            boolean summaryPropertiesOnly) throws Exception {
 
-  /**
-   * Gets the service.
-   *
-   * @return the service
-   */
-  public ExchangeService getService() {
-    return service;
-  }
+        List<TServiceObject> serviceObjects = new ArrayList<TServiceObject>();
+        TServiceObject serviceObject;
 
-  /**
-   * Sets the service.
-   *
-   * @param service the new service
-   */
-  public void setService(ExchangeService service) {
-    this.service = service;
-  }
+        this.readStartElement(XmlNamespace.Messages, collectionXmlElementName);
+
+        if (!this.isEmptyElement()) {
+            do {
+                this.read();
+
+                if (this.isStartElement()) {
+                    serviceObject = (TServiceObject) getObjectInstanceDelegate
+                            .getObjectInstanceDelegate(this.getService(), this
+                                    .getLocalName());
+                    if (serviceObject == null) {
+                        this.skipCurrentElement();
+                    } else {
+                        if (!(this.getLocalName()).equals(serviceObject
+                                .getXmlElementName())) {
+
+                            throw new ServiceLocalException(String
+                                    .format(
+                                            "The type of the " + "object in " +
+                                                    "the store (%s)" +
+                                                    " does not match that" +
+                                                    " of the " +
+                                                    "local object (%s).",
+                                            this.getLocalName(), serviceObject
+                                                    .getXmlElementName()));
+                        }
+                        serviceObject.loadFromXml(this, clearPropertyBag,
+                                requestedPropertySet, summaryPropertiesOnly);
+
+                        serviceObjects.add(serviceObject);
+                    }
+                }
+            } while (!this.isEndElement(XmlNamespace.Messages,
+                    collectionXmlElementName));
+        } else {
+            // For empty elements read End Element tag
+            // i.e. position cursor on End Element
+            this.read();
+        }
+
+        return serviceObjects;
+
+    }
+
+    /**
+     * Gets the service.
+     *
+     * @return the service
+     */
+    public ExchangeService getService() {
+        return service;
+    }
+
+    /**
+     * Sets the service.
+     *
+     * @param service the new service
+     */
+    public void setService(ExchangeService service) {
+        this.service = service;
+    }
 
 }

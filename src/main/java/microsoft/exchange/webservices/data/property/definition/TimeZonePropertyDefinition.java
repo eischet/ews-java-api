@@ -38,63 +38,63 @@ import java.util.TimeZone;
  */
 public class TimeZonePropertyDefinition extends PropertyDefinition {
 
-  /**
-   * Initializes a new instance of the TimeZonePropertyDefinition class.
-   *
-   * @param xmlElementName the xml element name
-   * @param uri            the uri
-   * @param flags          the flags
-   * @param version        the version
-   */
-  public TimeZonePropertyDefinition(String xmlElementName, String uri, EnumSet<PropertyDefinitionFlags> flags,
-      ExchangeVersion version) {
-    super(xmlElementName, uri, flags, version);
-  }
-
-  /**
-   * Loads from XML.
-   *
-   * @param reader      the reader
-   * @param propertyBag the property bag
-   * @throws Exception the exception
-   */
-  public void loadPropertyValueFromXml(EwsServiceXmlReader reader, PropertyBag propertyBag) throws Exception {
-    TimeZoneDefinition timeZoneDefinition = new TimeZoneDefinition();
-    timeZoneDefinition.loadFromXml(reader, this.getXmlElement());
-    propertyBag.setObjectFromPropertyDefinition(this, timeZoneDefinition);
-  }
-
-  /**
-   * Writes to XML.
-   *
-   * @param writer            the writer
-   * @param propertyBag       the property bag
-   * @param isUpdateOperation the is update operation
-   * @throws Exception the exception
-   */
-  public void writePropertyValueToXml(EwsServiceXmlWriter writer, PropertyBag propertyBag,
-      boolean isUpdateOperation) throws Exception {
-    TimeZoneDefinition timeZoneDefinition = propertyBag.getObjectFromPropertyDefinition(this);
-
-    if (timeZoneDefinition != null) {
-      // We emit time zone property only if we have not emitted the time
-      // zone SOAP header
-      // or if this time zone is different from that of the service
-      // through which the request
-      // is being emitted.
-      if (!writer.isTimeZoneHeaderEmitted())// || value !=
-      // writer.getService().getTimeZone())
-      {
-        timeZoneDefinition.writeToXml(writer, this.getXmlElement());
-      }
+    /**
+     * Initializes a new instance of the TimeZonePropertyDefinition class.
+     *
+     * @param xmlElementName the xml element name
+     * @param uri            the uri
+     * @param flags          the flags
+     * @param version        the version
+     */
+    public TimeZonePropertyDefinition(String xmlElementName, String uri, EnumSet<PropertyDefinitionFlags> flags,
+                                      ExchangeVersion version) {
+        super(xmlElementName, uri, flags, version);
     }
-  }
 
-  /**
-   * Gets the property type.
-   */
-  @Override
-  public Class<TimeZone> getType() {
-    return TimeZone.class;
-  }
+    /**
+     * Loads from XML.
+     *
+     * @param reader      the reader
+     * @param propertyBag the property bag
+     * @throws Exception the exception
+     */
+    public void loadPropertyValueFromXml(EwsServiceXmlReader reader, PropertyBag propertyBag) throws Exception {
+        TimeZoneDefinition timeZoneDefinition = new TimeZoneDefinition();
+        timeZoneDefinition.loadFromXml(reader, this.getXmlElement());
+        propertyBag.setObjectFromPropertyDefinition(this, timeZoneDefinition);
+    }
+
+    /**
+     * Writes to XML.
+     *
+     * @param writer            the writer
+     * @param propertyBag       the property bag
+     * @param isUpdateOperation the is update operation
+     * @throws Exception the exception
+     */
+    public void writePropertyValueToXml(EwsServiceXmlWriter writer, PropertyBag propertyBag,
+                                        boolean isUpdateOperation) throws Exception {
+        TimeZoneDefinition timeZoneDefinition = propertyBag.getObjectFromPropertyDefinition(this);
+
+        if (timeZoneDefinition != null) {
+            // We emit time zone property only if we have not emitted the time
+            // zone SOAP header
+            // or if this time zone is different from that of the service
+            // through which the request
+            // is being emitted.
+            if (!writer.isTimeZoneHeaderEmitted())// || value !=
+            // writer.getService().getTimeZone())
+            {
+                timeZoneDefinition.writeToXml(writer, this.getXmlElement());
+            }
+        }
+    }
+
+    /**
+     * Gets the property type.
+     */
+    @Override
+    public Class<TimeZone> getType() {
+        return TimeZone.class;
+    }
 }

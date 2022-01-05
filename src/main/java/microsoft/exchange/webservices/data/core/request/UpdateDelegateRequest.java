@@ -27,10 +27,10 @@ import microsoft.exchange.webservices.data.core.EwsServiceXmlWriter;
 import microsoft.exchange.webservices.data.core.EwsUtilities;
 import microsoft.exchange.webservices.data.core.ExchangeService;
 import microsoft.exchange.webservices.data.core.XmlElementNames;
-import microsoft.exchange.webservices.data.core.response.DelegateManagementResponse;
 import microsoft.exchange.webservices.data.core.enumeration.misc.ExchangeVersion;
-import microsoft.exchange.webservices.data.core.enumeration.service.MeetingRequestsDeliveryScope;
 import microsoft.exchange.webservices.data.core.enumeration.misc.XmlNamespace;
+import microsoft.exchange.webservices.data.core.enumeration.service.MeetingRequestsDeliveryScope;
+import microsoft.exchange.webservices.data.core.response.DelegateManagementResponse;
 import microsoft.exchange.webservices.data.property.complex.DelegateUser;
 
 import java.util.ArrayList;
@@ -40,135 +40,136 @@ import java.util.List;
  * Represents an UpdateDelegate request.
  */
 public class UpdateDelegateRequest extends
-    DelegateManagementRequestBase<DelegateManagementResponse> {
+        DelegateManagementRequestBase<DelegateManagementResponse> {
 
-  /**
-   * The delegate users.
-   */
-  private List<DelegateUser> delegateUsers = new ArrayList<DelegateUser>();
+    /**
+     * The delegate users.
+     */
+    private final List<DelegateUser> delegateUsers = new ArrayList<DelegateUser>();
 
-  /**
-   * The meeting request delivery scope.
-   */
-  private MeetingRequestsDeliveryScope meetingRequestsDeliveryScope;
+    /**
+     * The meeting request delivery scope.
+     */
+    private MeetingRequestsDeliveryScope meetingRequestsDeliveryScope;
 
-  /**
-   * Initializes a new instance of the class.
-   *
-   * @param service the service
-   * @throws Exception
-   */
-  public UpdateDelegateRequest(ExchangeService service)
-      throws Exception {
-    super(service);
-  }
-
-  /**
-   * Validate request.
-   *
-   * @throws Exception the exception
-   */
-  @Override
-  protected void validate() throws Exception {
-    super.validate();
-    EwsUtilities.validateParamCollection(this.getDelegateUsers().iterator(), "DelegateUsers");
-    for (DelegateUser delegateUser : this.getDelegateUsers()) {
-      delegateUser.validateUpdateDelegate();
-    }
-  }
-
-  /**
-   * Writes XML elements.
-   *
-   * @param writer the writer
-   * @throws Exception the exception
-   */
-  @Override
-  protected void writeElementsToXml(EwsServiceXmlWriter writer)
-      throws Exception {
-    super.writeElementsToXml(writer);
-
-    writer.writeStartElement(XmlNamespace.Messages,
-        XmlElementNames.DelegateUsers);
-
-    for (DelegateUser delegateUser : this.getDelegateUsers()) {
-      delegateUser.writeToXml(writer, XmlElementNames.DelegateUser);
+    /**
+     * Initializes a new instance of the class.
+     *
+     * @param service the service
+     * @throws Exception
+     */
+    public UpdateDelegateRequest(ExchangeService service)
+            throws Exception {
+        super(service);
     }
 
-    writer.writeEndElement(); // DelegateUsers
-
-    if (this.getMeetingRequestsDeliveryScope() != null) {
-      writer.writeElementValue(XmlNamespace.Messages,
-          XmlElementNames.DeliverMeetingRequests, this
-              .getMeetingRequestsDeliveryScope());
+    /**
+     * Validate request.
+     *
+     * @throws Exception the exception
+     */
+    @Override
+    protected void validate() throws Exception {
+        super.validate();
+        EwsUtilities.validateParamCollection(this.getDelegateUsers().iterator(), "DelegateUsers");
+        for (DelegateUser delegateUser : this.getDelegateUsers()) {
+            delegateUser.validateUpdateDelegate();
+        }
     }
-  }
 
-  /**
-   * Gets the name of the response XML element.
-   *
-   * @return XML element name.
-   */
-  @Override
-  protected String getResponseXmlElementName() {
-    return XmlElementNames.UpdateDelegateResponse;
-  }
+    /**
+     * Writes XML elements.
+     *
+     * @param writer the writer
+     * @throws Exception the exception
+     */
+    @Override
+    protected void writeElementsToXml(EwsServiceXmlWriter writer)
+            throws Exception {
+        super.writeElementsToXml(writer);
 
-  /**
-   * Creates the response.
-   *
-   * @return Response object.
-   */
-  @Override
-  protected DelegateManagementResponse createResponse() {
-    return new DelegateManagementResponse(true, this.delegateUsers);
-  }
+        writer.writeStartElement(XmlNamespace.Messages,
+                XmlElementNames.DelegateUsers);
 
-  /**
-   * Gets the name of the XML element.
-   *
-   * @return Xml element name.
-   */
-  @Override public String getXmlElementName() {
-    return XmlElementNames.UpdateDelegate;
-  }
+        for (DelegateUser delegateUser : this.getDelegateUsers()) {
+            delegateUser.writeToXml(writer, XmlElementNames.DelegateUser);
+        }
 
-  /**
-   * Gets the request version.
-   *
-   * @return Earliest Exchange version in which this request is supported.
-   */
-  @Override
-  protected ExchangeVersion getMinimumRequiredServerVersion() {
-    return ExchangeVersion.Exchange2007_SP1;
-  }
+        writer.writeEndElement(); // DelegateUsers
 
-  /**
-   * Gets the meeting request delivery scope.
-   *
-   * @return the meeting request delivery scope
-   */
-  public MeetingRequestsDeliveryScope getMeetingRequestsDeliveryScope() {
-    return this.meetingRequestsDeliveryScope;
-  }
+        if (this.getMeetingRequestsDeliveryScope() != null) {
+            writer.writeElementValue(XmlNamespace.Messages,
+                    XmlElementNames.DeliverMeetingRequests, this
+                            .getMeetingRequestsDeliveryScope());
+        }
+    }
 
-  /**
-   * Sets the meeting request delivery scope.
-   *
-   * @param value the new meeting request delivery scope
-   */
-  public void setMeetingRequestsDeliveryScope(
-      MeetingRequestsDeliveryScope value) {
-    this.meetingRequestsDeliveryScope = value;
-  }
+    /**
+     * Gets the name of the response XML element.
+     *
+     * @return XML element name.
+     */
+    @Override
+    protected String getResponseXmlElementName() {
+        return XmlElementNames.UpdateDelegateResponse;
+    }
 
-  /**
-   * Gets the delegate users.
-   *
-   * @return the delegate users
-   */
-  public List<DelegateUser> getDelegateUsers() {
-    return this.delegateUsers;
-  }
+    /**
+     * Creates the response.
+     *
+     * @return Response object.
+     */
+    @Override
+    protected DelegateManagementResponse createResponse() {
+        return new DelegateManagementResponse(true, this.delegateUsers);
+    }
+
+    /**
+     * Gets the name of the XML element.
+     *
+     * @return Xml element name.
+     */
+    @Override
+    public String getXmlElementName() {
+        return XmlElementNames.UpdateDelegate;
+    }
+
+    /**
+     * Gets the request version.
+     *
+     * @return Earliest Exchange version in which this request is supported.
+     */
+    @Override
+    protected ExchangeVersion getMinimumRequiredServerVersion() {
+        return ExchangeVersion.Exchange2007_SP1;
+    }
+
+    /**
+     * Gets the meeting request delivery scope.
+     *
+     * @return the meeting request delivery scope
+     */
+    public MeetingRequestsDeliveryScope getMeetingRequestsDeliveryScope() {
+        return this.meetingRequestsDeliveryScope;
+    }
+
+    /**
+     * Sets the meeting request delivery scope.
+     *
+     * @param value the new meeting request delivery scope
+     */
+    public void setMeetingRequestsDeliveryScope(
+            MeetingRequestsDeliveryScope value) {
+        this.meetingRequestsDeliveryScope = value;
+    }
+
+    /**
+     * Gets the delegate users.
+     *
+     * @return the delegate users
+     */
+    public List<DelegateUser> getDelegateUsers() {
+        return this.delegateUsers;
+    }
 
 }

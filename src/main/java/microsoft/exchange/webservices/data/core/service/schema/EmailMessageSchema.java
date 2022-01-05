@@ -30,12 +30,7 @@ import microsoft.exchange.webservices.data.core.enumeration.property.PropertyDef
 import microsoft.exchange.webservices.data.property.complex.EmailAddress;
 import microsoft.exchange.webservices.data.property.complex.EmailAddressCollection;
 import microsoft.exchange.webservices.data.property.complex.ICreateComplexPropertyDelegate;
-import microsoft.exchange.webservices.data.property.definition.BoolPropertyDefinition;
-import microsoft.exchange.webservices.data.property.definition.ByteArrayPropertyDefinition;
-import microsoft.exchange.webservices.data.property.definition.ComplexPropertyDefinition;
-import microsoft.exchange.webservices.data.property.definition.ContainedPropertyDefinition;
-import microsoft.exchange.webservices.data.property.definition.PropertyDefinition;
-import microsoft.exchange.webservices.data.property.definition.StringPropertyDefinition;
+import microsoft.exchange.webservices.data.property.definition.*;
 
 import java.util.EnumSet;
 
@@ -45,378 +40,378 @@ import java.util.EnumSet;
 @Schema
 public class EmailMessageSchema extends ItemSchema {
 
-  /**
-   * The Interface FieldUris.
-   */
-  private static interface FieldUris {
+    /**
+     * The Interface FieldUris.
+     */
+    private interface FieldUris {
+
+        /**
+         * The Conversation index.
+         */
+        String ConversationIndex = "message:ConversationIndex";
+
+        /**
+         * The Conversation topic.
+         */
+        String ConversationTopic = "message:ConversationTopic";
+
+        /**
+         * The Internet message id.
+         */
+        String InternetMessageId = "message:InternetMessageId";
+
+        /**
+         * The Is read.
+         */
+        String IsRead = "message:IsRead";
+
+        /**
+         * The Is response requested.
+         */
+        String IsResponseRequested = "message:IsResponseRequested";
+
+        /**
+         * The Is read receipt requested.
+         */
+        String IsReadReceiptRequested = "message:IsReadReceiptRequested";
+
+        /**
+         * The Is delivery receipt requested.
+         */
+        String IsDeliveryReceiptRequested =
+                "message:IsDeliveryReceiptRequested";
+
+        /**
+         * The References.
+         */
+        String References = "message:References";
+
+        /**
+         * The Reply to.
+         */
+        String ReplyTo = "message:ReplyTo";
+
+        /**
+         * The From.
+         */
+        String From = "message:From";
+
+        /**
+         * The Sender.
+         */
+        String Sender = "message:Sender";
+
+        /**
+         * The To recipients.
+         */
+        String ToRecipients = "message:ToRecipients";
+
+        /**
+         * The Cc recipients.
+         */
+        String CcRecipients = "message:CcRecipients";
+
+        /**
+         * The Bcc recipients.
+         */
+        String BccRecipients = "message:BccRecipients";
+
+        /**
+         * The Received by.
+         */
+        String ReceivedBy = "message:ReceivedBy";
+
+        /**
+         * The Received representing.
+         */
+        String ReceivedRepresenting = "message:ReceivedRepresenting";
+    }
+
 
     /**
-     * The Conversation index.
+     * Defines the ToRecipients property.
      */
-    String ConversationIndex = "message:ConversationIndex";
+    public static final PropertyDefinition ToRecipients =
+            new ComplexPropertyDefinition<EmailAddressCollection>(
+                    EmailAddressCollection.class,
+                    XmlElementNames.ToRecipients,
+                    FieldUris.ToRecipients,
+                    EnumSet.of(PropertyDefinitionFlags.AutoInstantiateOnRead,
+                            PropertyDefinitionFlags.CanSet,
+                            PropertyDefinitionFlags.CanUpdate,
+                            PropertyDefinitionFlags.CanDelete),
+                    ExchangeVersion.Exchange2007_SP1,
+                    new ICreateComplexPropertyDelegate<EmailAddressCollection>() {
+                        @Override
+                        public EmailAddressCollection createComplexProperty() {
+                            return new EmailAddressCollection();
+                        }
+                    });
 
     /**
-     * The Conversation topic.
+     * Defines the BccRecipients property.
      */
-    String ConversationTopic = "message:ConversationTopic";
+    public static final PropertyDefinition BccRecipients =
+            new ComplexPropertyDefinition<EmailAddressCollection>(
+                    EmailAddressCollection.class,
+                    XmlElementNames.BccRecipients,
+                    FieldUris.BccRecipients,
+                    EnumSet.of(PropertyDefinitionFlags.AutoInstantiateOnRead,
+                            PropertyDefinitionFlags.CanSet,
+                            PropertyDefinitionFlags.CanUpdate,
+                            PropertyDefinitionFlags.CanDelete),
+                    ExchangeVersion.Exchange2007_SP1,
+                    new ICreateComplexPropertyDelegate
+                            <EmailAddressCollection>() {
+                        @Override
+                        public EmailAddressCollection createComplexProperty() {
+                            return new EmailAddressCollection();
+                        }
+                    });
 
     /**
-     * The Internet message id.
+     * Defines the CcRecipients property.
      */
-    String InternetMessageId = "message:InternetMessageId";
+    public static final PropertyDefinition CcRecipients =
+            new ComplexPropertyDefinition<EmailAddressCollection>(
+                    EmailAddressCollection.class,
+                    XmlElementNames.CcRecipients,
+                    FieldUris.CcRecipients,
+                    EnumSet.of(PropertyDefinitionFlags.AutoInstantiateOnRead,
+                            PropertyDefinitionFlags.CanSet,
+                            PropertyDefinitionFlags.CanUpdate,
+                            PropertyDefinitionFlags.CanDelete),
+                    ExchangeVersion.Exchange2007_SP1,
+                    new ICreateComplexPropertyDelegate
+                            <EmailAddressCollection>() {
+                        @Override
+                        public EmailAddressCollection createComplexProperty() {
+                            return new EmailAddressCollection();
+                        }
+                    });
 
     /**
-     * The Is read.
+     * Defines the ConversationIndex property.
      */
-    String IsRead = "message:IsRead";
+    public static final PropertyDefinition ConversationIndex =
+            new ByteArrayPropertyDefinition(
+                    XmlElementNames.ConversationIndex, FieldUris.ConversationIndex,
+                    EnumSet.of(PropertyDefinitionFlags.CanFind),
+                    ExchangeVersion.Exchange2007_SP1);
 
     /**
-     * The Is response requested.
+     * Defines the ConversationTopic property.
      */
-    String IsResponseRequested = "message:IsResponseRequested";
+    public static final PropertyDefinition ConversationTopic =
+            new StringPropertyDefinition(
+                    XmlElementNames.ConversationTopic, FieldUris.ConversationTopic,
+                    EnumSet.of(PropertyDefinitionFlags.CanFind),
+                    ExchangeVersion.Exchange2007_SP1);
 
     /**
-     * The Is read receipt requested.
+     * Defines the From property.
      */
-    String IsReadReceiptRequested = "message:IsReadReceiptRequested";
+    public static final PropertyDefinition From =
+            new ContainedPropertyDefinition<EmailAddress>(
+                    EmailAddress.class,
+                    XmlElementNames.From, FieldUris.From, XmlElementNames.Mailbox,
+                    EnumSet.of(PropertyDefinitionFlags.CanSet,
+                            PropertyDefinitionFlags.CanUpdate,
+                            PropertyDefinitionFlags.CanDelete,
+                            PropertyDefinitionFlags.CanFind),
+                    ExchangeVersion.Exchange2007_SP1,
+                    new ICreateComplexPropertyDelegate<EmailAddress>() {
+                        @Override
+                        public EmailAddress createComplexProperty() {
+                            return new EmailAddress();
+                        }
+                    });
 
     /**
-     * The Is delivery receipt requested.
+     * Defines the IsDeliveryReceiptRequested property.
      */
-    String IsDeliveryReceiptRequested =
-        "message:IsDeliveryReceiptRequested";
+    public static final PropertyDefinition IsDeliveryReceiptRequested =
+            new BoolPropertyDefinition(
+                    XmlElementNames.IsDeliveryReceiptRequested,
+                    FieldUris.IsDeliveryReceiptRequested, EnumSet.of(
+                    PropertyDefinitionFlags.CanSet,
+                    PropertyDefinitionFlags.CanUpdate,
+                    PropertyDefinitionFlags.CanDelete,
+                    PropertyDefinitionFlags.CanFind),
+                    ExchangeVersion.Exchange2007_SP1);
 
     /**
-     * The References.
+     * Defines the IsRead property.
      */
-    String References = "message:References";
+    public static final PropertyDefinition IsRead = new BoolPropertyDefinition(
+            XmlElementNames.IsRead, FieldUris.IsRead, EnumSet.of(
+            PropertyDefinitionFlags.CanSet,
+            PropertyDefinitionFlags.CanUpdate,
+            PropertyDefinitionFlags.CanFind),
+            ExchangeVersion.Exchange2007_SP1);
 
     /**
-     * The Reply to.
+     * Defines the IsReadReceiptRequested property.
      */
-    String ReplyTo = "message:ReplyTo";
+    public static final PropertyDefinition IsReadReceiptRequested =
+            new BoolPropertyDefinition(
+                    XmlElementNames.IsReadReceiptRequested,
+                    FieldUris.IsReadReceiptRequested, EnumSet.of(
+                    PropertyDefinitionFlags.CanSet,
+                    PropertyDefinitionFlags.CanUpdate,
+                    PropertyDefinitionFlags.CanDelete,
+                    PropertyDefinitionFlags.CanFind),
+                    ExchangeVersion.Exchange2007_SP1);
 
     /**
-     * The From.
+     * Defines the IsResponseRequested property.
      */
-    String From = "message:From";
+    public static final PropertyDefinition IsResponseRequested =
+            new BoolPropertyDefinition(
+                    XmlElementNames.IsResponseRequested, FieldUris.IsResponseRequested,
+                    EnumSet.of(PropertyDefinitionFlags.CanSet,
+                            PropertyDefinitionFlags.CanUpdate,
+                            PropertyDefinitionFlags.CanDelete,
+                            PropertyDefinitionFlags.CanFind),
+                    ExchangeVersion.Exchange2007_SP1, true); // isNullable
 
     /**
-     * The Sender.
+     * Defines the InternetMessageId property.
      */
-    String Sender = "message:Sender";
+    public static final PropertyDefinition InternetMessageId =
+            new StringPropertyDefinition(
+                    XmlElementNames.InternetMessageId, FieldUris.InternetMessageId,
+                    EnumSet.of(PropertyDefinitionFlags.CanFind),
+                    ExchangeVersion.Exchange2007_SP1);
 
     /**
-     * The To recipients.
+     * Defines the References property.
      */
-    String ToRecipients = "message:ToRecipients";
+    public static final PropertyDefinition References =
+            new StringPropertyDefinition(
+                    XmlElementNames.References, FieldUris.References, EnumSet.of(
+                    PropertyDefinitionFlags.CanSet,
+                    PropertyDefinitionFlags.CanUpdate,
+                    PropertyDefinitionFlags.CanDelete,
+                    PropertyDefinitionFlags.CanFind),
+                    ExchangeVersion.Exchange2007_SP1);
 
     /**
-     * The Cc recipients.
+     * Defines the ReplyTo property.
      */
-    String CcRecipients = "message:CcRecipients";
+    public static final PropertyDefinition ReplyTo =
+            new ComplexPropertyDefinition<EmailAddressCollection>(
+                    EmailAddressCollection.class,
+                    XmlElementNames.ReplyTo,
+                    FieldUris.ReplyTo,
+                    EnumSet.of(PropertyDefinitionFlags.AutoInstantiateOnRead,
+                            PropertyDefinitionFlags.CanSet,
+                            PropertyDefinitionFlags.CanUpdate,
+                            PropertyDefinitionFlags.CanDelete),
+                    ExchangeVersion.Exchange2007_SP1,
+                    new ICreateComplexPropertyDelegate
+                            <EmailAddressCollection>() {
+                        @Override
+                        public EmailAddressCollection createComplexProperty() {
+                            return new EmailAddressCollection();
+                        }
+                    });
 
     /**
-     * The Bcc recipients.
+     * Defines the Sender property.
      */
-    String BccRecipients = "message:BccRecipients";
+    public static final PropertyDefinition Sender =
+            new ContainedPropertyDefinition<EmailAddress>(
+                    EmailAddress.class,
+                    XmlElementNames.Sender, FieldUris.Sender, XmlElementNames.Mailbox,
+                    EnumSet.of(PropertyDefinitionFlags.CanSet,
+                            PropertyDefinitionFlags.CanFind),
+                    ExchangeVersion.Exchange2007_SP1,
+                    new ICreateComplexPropertyDelegate<EmailAddress>() {
+                        @Override
+                        public EmailAddress createComplexProperty() {
+                            return new EmailAddress();
+                        }
+                    });
 
     /**
-     * The Received by.
+     * Defines the ReceivedBy property.
      */
-    String ReceivedBy = "message:ReceivedBy";
+    public static final PropertyDefinition ReceivedBy =
+            new ContainedPropertyDefinition<EmailAddress>(
+                    EmailAddress.class,
+                    XmlElementNames.ReceivedBy, FieldUris.ReceivedBy,
+                    XmlElementNames.Mailbox, EnumSet
+                    .of(PropertyDefinitionFlags.CanFind),
+                    ExchangeVersion.Exchange2007_SP1,
+                    new ICreateComplexPropertyDelegate<EmailAddress>() {
+                        @Override
+                        public EmailAddress createComplexProperty() {
+                            return new EmailAddress();
+                        }
+                    });
 
     /**
-     * The Received representing.
+     * Defines the ReceivedRepresenting property.
      */
-    String ReceivedRepresenting = "message:ReceivedRepresenting";
-  }
+    public static final PropertyDefinition ReceivedRepresenting =
+            new ContainedPropertyDefinition<EmailAddress>(
+                    EmailAddress.class,
+                    XmlElementNames.ReceivedRepresenting,
+                    FieldUris.ReceivedRepresenting, XmlElementNames.Mailbox, EnumSet
+                    .of(PropertyDefinitionFlags.CanFind),
+                    ExchangeVersion.Exchange2007_SP1,
+                    new ICreateComplexPropertyDelegate<EmailAddress>() {
+                        @Override
+                        public EmailAddress createComplexProperty() {
+                            return new EmailAddress();
+                        }
+                    });
 
+    /**
+     * The Constant Instance.
+     */
+    public static final EmailMessageSchema Instance =
+            new EmailMessageSchema();
 
-  /**
-   * Defines the ToRecipients property.
-   */
-  public static final PropertyDefinition ToRecipients =
-      new ComplexPropertyDefinition<EmailAddressCollection>(
-          EmailAddressCollection.class,
-          XmlElementNames.ToRecipients,
-          FieldUris.ToRecipients,
-          EnumSet.of(PropertyDefinitionFlags.AutoInstantiateOnRead,
-              PropertyDefinitionFlags.CanSet,
-              PropertyDefinitionFlags.CanUpdate,
-              PropertyDefinitionFlags.CanDelete),
-          ExchangeVersion.Exchange2007_SP1,
-          new ICreateComplexPropertyDelegate<EmailAddressCollection>() {
-            @Override
-            public EmailAddressCollection createComplexProperty() {
-              return new EmailAddressCollection();
-            }
-          });
+    /**
+     * Gets the single instance of EmailMessageSchema.
+     *
+     * @return single instance of EmailMessageSchema
+     */
+    public static EmailMessageSchema getInstance() {
+        return Instance;
+    }
 
-  /**
-   * Defines the BccRecipients property.
-   */
-  public static final PropertyDefinition BccRecipients =
-      new ComplexPropertyDefinition<EmailAddressCollection>(
-          EmailAddressCollection.class,
-          XmlElementNames.BccRecipients,
-          FieldUris.BccRecipients,
-          EnumSet.of(PropertyDefinitionFlags.AutoInstantiateOnRead,
-              PropertyDefinitionFlags.CanSet,
-              PropertyDefinitionFlags.CanUpdate,
-              PropertyDefinitionFlags.CanDelete),
-          ExchangeVersion.Exchange2007_SP1,
-          new ICreateComplexPropertyDelegate
-              <EmailAddressCollection>() {
-            @Override
-            public EmailAddressCollection createComplexProperty() {
-              return new EmailAddressCollection();
-            }
-          });
+    /**
+     * Registers property. IMPORTANT NOTE: PROPERTIES MUST BE REGISTERED IN
+     * SCHEMA ORDER (i.e. the same order as they are defined in types.xsd)
+     */
+    @Override
+    protected void registerProperties() {
+        super.registerProperties();
+        this.registerProperty(Sender);
+        this.registerProperty(ToRecipients);
+        this.registerProperty(CcRecipients);
+        this.registerProperty(BccRecipients);
+        this.registerProperty(IsReadReceiptRequested);
+        this.registerProperty(IsDeliveryReceiptRequested);
+        this.registerProperty(ConversationIndex);
+        this.registerProperty(ConversationTopic);
+        this.registerProperty(From);
+        this.registerProperty(InternetMessageId);
+        this.registerProperty(IsRead);
+        this.registerProperty(IsResponseRequested);
+        this.registerProperty(References);
+        this.registerProperty(ReplyTo);
+        this.registerProperty(ReceivedBy);
+        this.registerProperty(ReceivedRepresenting);
+    }
 
-  /**
-   * Defines the CcRecipients property.
-   */
-  public static final PropertyDefinition CcRecipients =
-      new ComplexPropertyDefinition<EmailAddressCollection>(
-          EmailAddressCollection.class,
-          XmlElementNames.CcRecipients,
-          FieldUris.CcRecipients,
-          EnumSet.of(PropertyDefinitionFlags.AutoInstantiateOnRead,
-              PropertyDefinitionFlags.CanSet,
-              PropertyDefinitionFlags.CanUpdate,
-              PropertyDefinitionFlags.CanDelete),
-          ExchangeVersion.Exchange2007_SP1,
-          new ICreateComplexPropertyDelegate
-              <EmailAddressCollection>() {
-            @Override
-            public EmailAddressCollection createComplexProperty() {
-              return new EmailAddressCollection();
-            }
-          });
-
-  /**
-   * Defines the ConversationIndex property.
-   */
-  public static final PropertyDefinition ConversationIndex =
-      new ByteArrayPropertyDefinition(
-          XmlElementNames.ConversationIndex, FieldUris.ConversationIndex,
-          EnumSet.of(PropertyDefinitionFlags.CanFind),
-          ExchangeVersion.Exchange2007_SP1);
-
-  /**
-   * Defines the ConversationTopic property.
-   */
-  public static final PropertyDefinition ConversationTopic =
-      new StringPropertyDefinition(
-          XmlElementNames.ConversationTopic, FieldUris.ConversationTopic,
-          EnumSet.of(PropertyDefinitionFlags.CanFind),
-          ExchangeVersion.Exchange2007_SP1);
-
-  /**
-   * Defines the From property.
-   */
-  public static final PropertyDefinition From =
-      new ContainedPropertyDefinition<EmailAddress>(
-          EmailAddress.class,
-          XmlElementNames.From, FieldUris.From, XmlElementNames.Mailbox,
-          EnumSet.of(PropertyDefinitionFlags.CanSet,
-              PropertyDefinitionFlags.CanUpdate,
-              PropertyDefinitionFlags.CanDelete,
-              PropertyDefinitionFlags.CanFind),
-          ExchangeVersion.Exchange2007_SP1,
-          new ICreateComplexPropertyDelegate<EmailAddress>() {
-            @Override
-            public EmailAddress createComplexProperty() {
-              return new EmailAddress();
-            }
-          });
-
-  /**
-   * Defines the IsDeliveryReceiptRequested property.
-   */
-  public static final PropertyDefinition IsDeliveryReceiptRequested =
-      new BoolPropertyDefinition(
-          XmlElementNames.IsDeliveryReceiptRequested,
-          FieldUris.IsDeliveryReceiptRequested, EnumSet.of(
-          PropertyDefinitionFlags.CanSet,
-          PropertyDefinitionFlags.CanUpdate,
-          PropertyDefinitionFlags.CanDelete,
-          PropertyDefinitionFlags.CanFind),
-          ExchangeVersion.Exchange2007_SP1);
-
-  /**
-   * Defines the IsRead property.
-   */
-  public static final PropertyDefinition IsRead = new BoolPropertyDefinition(
-      XmlElementNames.IsRead, FieldUris.IsRead, EnumSet.of(
-      PropertyDefinitionFlags.CanSet,
-      PropertyDefinitionFlags.CanUpdate,
-      PropertyDefinitionFlags.CanFind),
-      ExchangeVersion.Exchange2007_SP1);
-
-  /**
-   * Defines the IsReadReceiptRequested property.
-   */
-  public static final PropertyDefinition IsReadReceiptRequested =
-      new BoolPropertyDefinition(
-          XmlElementNames.IsReadReceiptRequested,
-          FieldUris.IsReadReceiptRequested, EnumSet.of(
-          PropertyDefinitionFlags.CanSet,
-          PropertyDefinitionFlags.CanUpdate,
-          PropertyDefinitionFlags.CanDelete,
-          PropertyDefinitionFlags.CanFind),
-          ExchangeVersion.Exchange2007_SP1);
-
-  /**
-   * Defines the IsResponseRequested property.
-   */
-  public static final PropertyDefinition IsResponseRequested =
-      new BoolPropertyDefinition(
-          XmlElementNames.IsResponseRequested, FieldUris.IsResponseRequested,
-          EnumSet.of(PropertyDefinitionFlags.CanSet,
-              PropertyDefinitionFlags.CanUpdate,
-              PropertyDefinitionFlags.CanDelete,
-              PropertyDefinitionFlags.CanFind),
-          ExchangeVersion.Exchange2007_SP1, true); // isNullable
-
-  /**
-   * Defines the InternetMessageId property.
-   */
-  public static final PropertyDefinition InternetMessageId =
-      new StringPropertyDefinition(
-          XmlElementNames.InternetMessageId, FieldUris.InternetMessageId,
-          EnumSet.of(PropertyDefinitionFlags.CanFind),
-          ExchangeVersion.Exchange2007_SP1);
-
-  /**
-   * Defines the References property.
-   */
-  public static final PropertyDefinition References =
-      new StringPropertyDefinition(
-          XmlElementNames.References, FieldUris.References, EnumSet.of(
-          PropertyDefinitionFlags.CanSet,
-          PropertyDefinitionFlags.CanUpdate,
-          PropertyDefinitionFlags.CanDelete,
-          PropertyDefinitionFlags.CanFind),
-          ExchangeVersion.Exchange2007_SP1);
-
-  /**
-   * Defines the ReplyTo property.
-   */
-  public static final PropertyDefinition ReplyTo =
-      new ComplexPropertyDefinition<EmailAddressCollection>(
-          EmailAddressCollection.class,
-          XmlElementNames.ReplyTo,
-          FieldUris.ReplyTo,
-          EnumSet.of(PropertyDefinitionFlags.AutoInstantiateOnRead,
-              PropertyDefinitionFlags.CanSet,
-              PropertyDefinitionFlags.CanUpdate,
-              PropertyDefinitionFlags.CanDelete),
-          ExchangeVersion.Exchange2007_SP1,
-          new ICreateComplexPropertyDelegate
-              <EmailAddressCollection>() {
-            @Override
-            public EmailAddressCollection createComplexProperty() {
-              return new EmailAddressCollection();
-            }
-          });
-
-  /**
-   * Defines the Sender property.
-   */
-  public static final PropertyDefinition Sender =
-      new ContainedPropertyDefinition<EmailAddress>(
-          EmailAddress.class,
-          XmlElementNames.Sender, FieldUris.Sender, XmlElementNames.Mailbox,
-          EnumSet.of(PropertyDefinitionFlags.CanSet,
-              PropertyDefinitionFlags.CanFind),
-          ExchangeVersion.Exchange2007_SP1,
-          new ICreateComplexPropertyDelegate<EmailAddress>() {
-            @Override
-            public EmailAddress createComplexProperty() {
-              return new EmailAddress();
-            }
-          });
-
-  /**
-   * Defines the ReceivedBy property.
-   */
-  public static final PropertyDefinition ReceivedBy =
-      new ContainedPropertyDefinition<EmailAddress>(
-          EmailAddress.class,
-          XmlElementNames.ReceivedBy, FieldUris.ReceivedBy,
-          XmlElementNames.Mailbox, EnumSet
-          .of(PropertyDefinitionFlags.CanFind),
-          ExchangeVersion.Exchange2007_SP1,
-          new ICreateComplexPropertyDelegate<EmailAddress>() {
-            @Override
-            public EmailAddress createComplexProperty() {
-              return new EmailAddress();
-            }
-          });
-
-  /**
-   * Defines the ReceivedRepresenting property.
-   */
-  public static final PropertyDefinition ReceivedRepresenting =
-      new ContainedPropertyDefinition<EmailAddress>(
-          EmailAddress.class,
-          XmlElementNames.ReceivedRepresenting,
-          FieldUris.ReceivedRepresenting, XmlElementNames.Mailbox, EnumSet
-          .of(PropertyDefinitionFlags.CanFind),
-          ExchangeVersion.Exchange2007_SP1,
-          new ICreateComplexPropertyDelegate<EmailAddress>() {
-            @Override
-            public EmailAddress createComplexProperty() {
-              return new EmailAddress();
-            }
-          });
-
-  /**
-   * The Constant Instance.
-   */
-  public static final EmailMessageSchema Instance =
-      new EmailMessageSchema();
-
-  /**
-   * Gets the single instance of EmailMessageSchema.
-   *
-   * @return single instance of EmailMessageSchema
-   */
-  public static EmailMessageSchema getInstance() {
-    return Instance;
-  }
-
-  /**
-   * Registers property. IMPORTANT NOTE: PROPERTIES MUST BE REGISTERED IN
-   * SCHEMA ORDER (i.e. the same order as they are defined in types.xsd)
-   */
-  @Override
-  protected void registerProperties() {
-    super.registerProperties();
-    this.registerProperty(Sender);
-    this.registerProperty(ToRecipients);
-    this.registerProperty(CcRecipients);
-    this.registerProperty(BccRecipients);
-    this.registerProperty(IsReadReceiptRequested);
-    this.registerProperty(IsDeliveryReceiptRequested);
-    this.registerProperty(ConversationIndex);
-    this.registerProperty(ConversationTopic);
-    this.registerProperty(From);
-    this.registerProperty(InternetMessageId);
-    this.registerProperty(IsRead);
-    this.registerProperty(IsResponseRequested);
-    this.registerProperty(References);
-    this.registerProperty(ReplyTo);
-    this.registerProperty(ReceivedBy);
-    this.registerProperty(ReceivedRepresenting);
-  }
-
-  /**
-   * Initializes a new instance.
-   */
-  protected EmailMessageSchema() {
-    super();
-  }
+    /**
+     * Initializes a new instance.
+     */
+    protected EmailMessageSchema() {
+        super();
+    }
 }

@@ -28,65 +28,65 @@ package microsoft.exchange.webservices.data.core.enumeration.misc;
  */
 public enum UserConfigurationProperties {
 
-  // Retrieve the Id property.
-  /**
-   * The Id.
-   */
-  Id(1),
+    // Retrieve the Id property.
+    /**
+     * The Id.
+     */
+    Id(1),
 
-  // Retrieve the Dictionary property.
-  /**
-   * The Dictionary.
-   */
-  Dictionary(2),
+    // Retrieve the Dictionary property.
+    /**
+     * The Dictionary.
+     */
+    Dictionary(2),
 
-  // Retrieve the XmlData property.
-  /**
-   * The Xml data.
-   */
-  XmlData(4),
+    // Retrieve the XmlData property.
+    /**
+     * The Xml data.
+     */
+    XmlData(4),
 
-  // Retrieve the BinaryData property.
-  /**
-   * The Binary data.
-   */
-  BinaryData(8),
+    // Retrieve the BinaryData property.
+    /**
+     * The Binary data.
+     */
+    BinaryData(8),
 
-  // Retrieve all property.
-  /**
-   * The All.
-   */
-  All(UserConfigurationProperties.Id, UserConfigurationProperties.Dictionary,
-      UserConfigurationProperties.XmlData,
-      UserConfigurationProperties.BinaryData);
+    // Retrieve all property.
+    /**
+     * The All.
+     */
+    All(UserConfigurationProperties.Id, UserConfigurationProperties.Dictionary,
+            UserConfigurationProperties.XmlData,
+            UserConfigurationProperties.BinaryData);
 
-  /**
-   * The config property.
-   */
-  private int configProperties = 0;
+    /**
+     * The config property.
+     */
+    private int configProperties = 0;
 
-  /**
-   * Instantiates a new user configuration property.
-   *
-   * @param configProperties the config property
-   */
-  UserConfigurationProperties(int configProperties) {
-    this.configProperties = configProperties;
-  }
+    /**
+     * Instantiates a new user configuration property.
+     *
+     * @param configProperties the config property
+     */
+    UserConfigurationProperties(int configProperties) {
+        this.configProperties = configProperties;
+    }
 
-  /**
-   * Instantiates a new user configuration property.
-   *
-   * @param id         the id
-   * @param dictionary the dictionary
-   * @param xmlData    the xml data
-   * @param binaryData the binary data
-   */
-  UserConfigurationProperties(UserConfigurationProperties id,
-      UserConfigurationProperties dictionary,
-      UserConfigurationProperties xmlData,
-      UserConfigurationProperties binaryData) {
+    /**
+     * Instantiates a new user configuration property.
+     *
+     * @param id         the id
+     * @param dictionary the dictionary
+     * @param xmlData    the xml data
+     * @param binaryData the binary data
+     */
+    UserConfigurationProperties(UserConfigurationProperties id,
+                                UserConfigurationProperties dictionary,
+                                UserConfigurationProperties xmlData,
+                                UserConfigurationProperties binaryData) {
 
-  }
+    }
 
 }

@@ -32,11 +32,11 @@ import microsoft.exchange.webservices.data.core.exception.misc.FormatException;
  */
 public interface IFuncDelegate<TResult> {
 
-  /**
-   * Func.
-   *
-   * @return the t result
-   * @throws FormatException the format exception
-   */
-  TResult func() throws FormatException;
+    /**
+     * Func.
+     *
+     * @return the t result
+     * @throws FormatException the format exception
+     */
+    TResult func() throws FormatException;
 }

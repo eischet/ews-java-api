@@ -28,15 +28,15 @@ package microsoft.exchange.webservices.data.core.enumeration.service;
  */
 public enum SyncFolderItemsScope {
 
-  // Include only normal item in the response.
-  /**
-   * The Normal item.
-   */
-  NormalItems,
+    // Include only normal item in the response.
+    /**
+     * The Normal item.
+     */
+    NormalItems,
 
-  // Include normal and associated item in the response.
-  /**
-   * The Normal and associated item.
-   */
-  NormalAndAssociatedItems
+    // Include normal and associated item in the response.
+    /**
+     * The Normal and associated item.
+     */
+    NormalAndAssociatedItems
 }

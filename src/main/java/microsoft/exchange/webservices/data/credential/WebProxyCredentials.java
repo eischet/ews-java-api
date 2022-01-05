@@ -25,27 +25,27 @@ package microsoft.exchange.webservices.data.credential;
 
 public class WebProxyCredentials {
 
-  private String username;
+    private final String username;
 
-  private String password;
+    private final String password;
 
-  private String domain;
+    private final String domain;
 
-  public WebProxyCredentials(String username, String password, String domain) {
-    this.username = username;
-    this.password = password;
-    this.domain = domain;
-  }
+    public WebProxyCredentials(String username, String password, String domain) {
+        this.username = username;
+        this.password = password;
+        this.domain = domain;
+    }
 
-  public String getUsername() {
-    return username;
-  }
+    public String getUsername() {
+        return username;
+    }
 
-  public String getPassword() {
-    return password;
-  }
+    public String getPassword() {
+        return password;
+    }
 
-  public String getDomain() {
-    return domain;
-  }
+    public String getDomain() {
+        return domain;
+    }
 }

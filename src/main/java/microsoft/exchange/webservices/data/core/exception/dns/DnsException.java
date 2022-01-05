@@ -28,17 +28,17 @@ package microsoft.exchange.webservices.data.core.exception.dns;
  */
 public class DnsException extends Exception {
 
-  /**
-   * Constant serialized ID used for compatibility.
-   */
-  private static final long serialVersionUID = 1L;
+    /**
+     * Constant serialized ID used for compatibility.
+     */
+    private static final long serialVersionUID = 1L;
 
-  /**
-   * Instantiates a new dns exception.
-   *
-   * @param exceptionMessage the exception message
-   */
-  public DnsException(String exceptionMessage) {
-    super(exceptionMessage);
-  }
+    /**
+     * Instantiates a new dns exception.
+     *
+     * @param exceptionMessage the exception message
+     */
+    public DnsException(String exceptionMessage) {
+        super(exceptionMessage);
+    }
 }

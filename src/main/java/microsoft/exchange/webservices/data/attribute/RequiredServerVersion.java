@@ -34,12 +34,13 @@ import java.lang.annotation.Target;
  * The Interface RequiredServerVersion.
  */
 @Target({ElementType.TYPE, ElementType.FIELD, ElementType.METHOD})
-@Retention(RetentionPolicy.RUNTIME) public @interface RequiredServerVersion {
+@Retention(RetentionPolicy.RUNTIME)
+public @interface RequiredServerVersion {
 
-  /**
-   * Version.
-   *
-   * @return the exchange version
-   */
-  ExchangeVersion version();
+    /**
+     * Version.
+     *
+     * @return the exchange version
+     */
+    ExchangeVersion version();
 }

@@ -27,12 +27,12 @@ package microsoft.exchange.webservices.data.core.enumeration.property;
  * Defines the type of body of an item.
  */
 public enum BodyType {
-  /**
-   * The body is formatted in HTML.
-   */
-  HTML,
-  /**
-   * The body is in plain text.
-   */
-  Text
+    /**
+     * The body is formatted in HTML.
+     */
+    HTML,
+    /**
+     * The body is in plain text.
+     */
+    Text
 }

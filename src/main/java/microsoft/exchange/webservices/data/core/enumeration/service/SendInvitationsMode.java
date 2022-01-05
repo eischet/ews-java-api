@@ -28,23 +28,23 @@ package microsoft.exchange.webservices.data.core.enumeration.service;
  */
 public enum SendInvitationsMode {
 
-  // No meeting invitation is sent.
-  /**
-   * The Send to none.
-   */
-  SendToNone,
+    // No meeting invitation is sent.
+    /**
+     * The Send to none.
+     */
+    SendToNone,
 
-  // Meeting invitations are sent to all attendees.
-  /**
-   * The Send only to all.
-   */
-  SendOnlyToAll,
+    // Meeting invitations are sent to all attendees.
+    /**
+     * The Send only to all.
+     */
+    SendOnlyToAll,
 
-  // Meeting invitations are sent to all attendees and a copy of the
-  // invitation message is saved.
-  /**
-   * The Send to all and save copy.
-   */
-  SendToAllAndSaveCopy
+    // Meeting invitations are sent to all attendees and a copy of the
+    // invitation message is saved.
+    /**
+     * The Send to all and save copy.
+     */
+    SendToAllAndSaveCopy
 
 }

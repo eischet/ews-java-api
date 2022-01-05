@@ -40,52 +40,52 @@ import java.util.EnumSet;
 @Schema
 public class SearchFolderSchema extends FolderSchema {
 
-  /**
-   * Field URIs for search folder.
-   */
-  private static interface FieldUris {
+    /**
+     * Field URIs for search folder.
+     */
+    private interface FieldUris {
+
+        /**
+         * The Search parameters.
+         */
+        String SearchParameters = "folder:SearchParameters";
+    }
+
 
     /**
-     * The Search parameters.
+     * Defines the SearchParameters property.
      */
-    String SearchParameters = "folder:SearchParameters";
-  }
+    public static final PropertyDefinition SearchParameters =
+            new ComplexPropertyDefinition<SearchFolderParameters>(
+                    SearchFolderParameters.class,
+                    XmlElementNames.SearchParameters,
+                    FieldUris.SearchParameters,
+                    EnumSet.of(PropertyDefinitionFlags.CanSet,
+                            PropertyDefinitionFlags.CanUpdate,
+                            PropertyDefinitionFlags.AutoInstantiateOnRead),
+                    ExchangeVersion.Exchange2007_SP1,
+                    new ICreateComplexPropertyDelegate<SearchFolderParameters>() {
+                        @Override
+                        public SearchFolderParameters createComplexProperty() {
+                            return new SearchFolderParameters();
+                        }
+                    });
 
+    // This must be declared after the property definitions
+    /**
+     * The Constant Instance.
+     */
+    public static final SearchFolderSchema Instance = new SearchFolderSchema();
 
-  /**
-   * Defines the SearchParameters property.
-   */
-  public static final PropertyDefinition SearchParameters =
-      new ComplexPropertyDefinition<SearchFolderParameters>(
-          SearchFolderParameters.class,
-          XmlElementNames.SearchParameters,
-          FieldUris.SearchParameters,
-          EnumSet.of(PropertyDefinitionFlags.CanSet,
-              PropertyDefinitionFlags.CanUpdate,
-              PropertyDefinitionFlags.AutoInstantiateOnRead),
-          ExchangeVersion.Exchange2007_SP1,
-          new ICreateComplexPropertyDelegate<SearchFolderParameters>() {
-            @Override
-            public SearchFolderParameters createComplexProperty() {
-              return new SearchFolderParameters();
-            }
-          });
+    /**
+     * Registers property.
+     */
+    // IMPORTANT NOTE: PROPERTIES MUST BE REGISTERED IN SCHEMA ORDER (i.e. the
+    // same order as they are defined in types.xsd)
+    @Override
+    protected void registerProperties() {
+        super.registerProperties();
 
-  // This must be declared after the property definitions
-  /**
-   * The Constant Instance.
-   */
-  public static final SearchFolderSchema Instance = new SearchFolderSchema();
-
-  /**
-   * Registers property.
-   */
-  // IMPORTANT NOTE: PROPERTIES MUST BE REGISTERED IN SCHEMA ORDER (i.e. the
-  // same order as they are defined in types.xsd)
-  @Override
-  protected void registerProperties() {
-    super.registerProperties();
-
-    this.registerProperty(SearchParameters);
-  }
+        this.registerProperty(SearchParameters);
+    }
 }

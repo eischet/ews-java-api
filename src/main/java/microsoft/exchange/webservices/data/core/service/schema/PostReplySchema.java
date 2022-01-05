@@ -28,25 +28,25 @@ package microsoft.exchange.webservices.data.core.service.schema;
  */
 public final class PostReplySchema extends ServiceObjectSchema {
 
-  // This must be declared after the property definitions
-  /**
-   * The Constant Instance.
-   */
-  public static final PostReplySchema Instance = new PostReplySchema();
+    // This must be declared after the property definitions
+    /**
+     * The Constant Instance.
+     */
+    public static final PostReplySchema Instance = new PostReplySchema();
 
-  /**
-   * Registers property.
-   * <p/>
-   * IMPORTANT NOTE: PROPERTIES MUST BE REGISTERED IN SCHEMA ORDER (i.e. the
-   * same order as they are defined in types.xsd)
-   */
-  @Override
-  protected void registerProperties() {
-    super.registerProperties();
+    /**
+     * Registers property.
+     * <p/>
+     * IMPORTANT NOTE: PROPERTIES MUST BE REGISTERED IN SCHEMA ORDER (i.e. the
+     * same order as they are defined in types.xsd)
+     */
+    @Override
+    protected void registerProperties() {
+        super.registerProperties();
 
-    this.registerProperty(ItemSchema.Subject);
-    this.registerProperty(ItemSchema.Body);
-    this.registerProperty(ResponseObjectSchema.ReferenceItemId);
-    this.registerProperty(ResponseObjectSchema.BodyPrefix);
-  }
+        this.registerProperty(ItemSchema.Subject);
+        this.registerProperty(ItemSchema.Body);
+        this.registerProperty(ResponseObjectSchema.ReferenceItemId);
+        this.registerProperty(ResponseObjectSchema.BodyPrefix);
+    }
 }

@@ -28,24 +28,24 @@ package microsoft.exchange.webservices.data.autodiscover.enumeration;
  */
 public enum AutodiscoverResponseType {
 
-  // The request returned an error.
-  /**
-   * The Error.
-   */
-  Error,
-  // A URL redirection is necessary.
-  /**
-   * The Redirect url.
-   */
-  RedirectUrl,
-  // An address redirection is necessary.
-  /**
-   * The Redirect address.
-   */
-  RedirectAddress,
-  // The request succeeded.
-  /**
-   * The Success.
-   */
-  Success
+    // The request returned an error.
+    /**
+     * The Error.
+     */
+    Error,
+    // A URL redirection is necessary.
+    /**
+     * The Redirect url.
+     */
+    RedirectUrl,
+    // An address redirection is necessary.
+    /**
+     * The Redirect address.
+     */
+    RedirectAddress,
+    // The request succeeded.
+    /**
+     * The Success.
+     */
+    Success
 }

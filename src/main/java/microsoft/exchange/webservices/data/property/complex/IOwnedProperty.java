@@ -31,17 +31,17 @@ import microsoft.exchange.webservices.data.core.service.ServiceObject;
  */
 public interface IOwnedProperty {
 
-  /**
-   * Gets the owner.
-   *
-   * @return The owner.
-   */
-  ServiceObject getOwner();
+    /**
+     * Gets the owner.
+     *
+     * @return The owner.
+     */
+    ServiceObject getOwner();
 
-  /**
-   * Sets the owner.
-   *
-   * @param obj The owner.
-   */
-  void setOwner(ServiceObject obj);
+    /**
+     * Sets the owner.
+     *
+     * @param obj The owner.
+     */
+    void setOwner(ServiceObject obj);
 }

@@ -36,53 +36,53 @@ import microsoft.exchange.webservices.data.property.complex.Attachment;
  */
 public final class DeleteAttachmentResponse extends ServiceResponse {
 
-  /**
-   * The attachment.
-   */
-  private Attachment attachment;
+    /**
+     * The attachment.
+     */
+    private final Attachment attachment;
 
-  /**
-   * Initializes a new instance of the DeleteAttachmentResponse class.
-   *
-   * @param attachment the attachment
-   */
-  public DeleteAttachmentResponse(Attachment attachment) {
-    super();
-    EwsUtilities.ewsAssert(attachment != null, "DeleteAttachmentResponse.ctor", "attachment is null");
+    /**
+     * Initializes a new instance of the DeleteAttachmentResponse class.
+     *
+     * @param attachment the attachment
+     */
+    public DeleteAttachmentResponse(Attachment attachment) {
+        super();
+        EwsUtilities.ewsAssert(attachment != null, "DeleteAttachmentResponse.ctor", "attachment is null");
 
-    this.attachment = attachment;
-  }
-
-  /**
-   * Reads response elements from XML.
-   *
-   * @param reader the reader
-   * @throws ServiceLocalException the service local exception
-   * @throws Exception                                                 the exception
-   */
-  @Override
-  protected void readElementsFromXml(EwsServiceXmlReader reader)
-      throws ServiceLocalException, Exception {
-    super.readElementsFromXml(reader);
-
-    reader.readStartElement(XmlNamespace.Messages,
-        XmlElementNames.RootItemId);
-
-    String changeKey = reader
-        .readAttributeValue(XmlAttributeNames.RootItemChangeKey);
-    if (!(null == changeKey || changeKey.isEmpty())) {
-      this.attachment.getOwner().getRootItemId().setChangeKey(changeKey);
+        this.attachment = attachment;
     }
-    reader.readEndElement(XmlNamespace.Messages,
-        XmlElementNames.RootItemId);
-  }
 
-  /**
-   * Gets the attachment that was deleted.
-   *
-   * @return the attachment
-   */
-  public Attachment getAttachment() {
-    return this.attachment;
-  }
+    /**
+     * Reads response elements from XML.
+     *
+     * @param reader the reader
+     * @throws ServiceLocalException the service local exception
+     * @throws Exception             the exception
+     */
+    @Override
+    protected void readElementsFromXml(EwsServiceXmlReader reader)
+            throws ServiceLocalException, Exception {
+        super.readElementsFromXml(reader);
+
+        reader.readStartElement(XmlNamespace.Messages,
+                XmlElementNames.RootItemId);
+
+        String changeKey = reader
+                .readAttributeValue(XmlAttributeNames.RootItemChangeKey);
+        if (!(null == changeKey || changeKey.isEmpty())) {
+            this.attachment.getOwner().getRootItemId().setChangeKey(changeKey);
+        }
+        reader.readEndElement(XmlNamespace.Messages,
+                XmlElementNames.RootItemId);
+    }
+
+    /**
+     * Gets the attachment that was deleted.
+     *
+     * @return the attachment
+     */
+    public Attachment getAttachment() {
+        return this.attachment;
+    }
 }

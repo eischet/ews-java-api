@@ -30,7 +30,6 @@ import microsoft.exchange.webservices.data.core.enumeration.misc.XmlNamespace;
 import microsoft.exchange.webservices.data.core.exception.service.local.ServiceXmlSerializationException;
 
 import javax.xml.stream.XMLStreamException;
-
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -41,98 +40,98 @@ import java.util.Date;
  */
 public class AbsoluteDateTransition extends TimeZoneTransition {
 
-  /**
-   * The date time.
-   */
-  private Date dateTime;
+    /**
+     * The date time.
+     */
+    private Date dateTime;
 
-  /**
-   * Gets the XML element name associated with the transition.
-   *
-   * @return The XML element name associated with the transition.
-   */
-  @Override
-  protected String getXmlElementName() {
-    return XmlElementNames.AbsoluteDateTransition;
-  }
-
-  /**
-   * Tries to read element from XML.
-   *
-   * @param reader the reader
-   * @return True if element was read.
-   * @throws java.text.ParseException the parse exception
-   * @throws Exception                the exception
-   */
-  @Override
-  public boolean tryReadElementFromXml(EwsServiceXmlReader reader)
-      throws ParseException, Exception {
-    boolean result = super.tryReadElementFromXml(reader);
-
-    if (!result) {
-      if (reader.getLocalName().equals(XmlElementNames.DateTime)) {
-        SimpleDateFormat sdfin = new SimpleDateFormat(
-            "yyyy-MM-dd'T'HH:mm:ss");
-        this.dateTime = sdfin.parse(reader.readElementValue());
-
-        result = true;
-      }
+    /**
+     * Gets the XML element name associated with the transition.
+     *
+     * @return The XML element name associated with the transition.
+     */
+    @Override
+    protected String getXmlElementName() {
+        return XmlElementNames.AbsoluteDateTransition;
     }
 
-    return result;
-  }
+    /**
+     * Tries to read element from XML.
+     *
+     * @param reader the reader
+     * @return True if element was read.
+     * @throws java.text.ParseException the parse exception
+     * @throws Exception                the exception
+     */
+    @Override
+    public boolean tryReadElementFromXml(EwsServiceXmlReader reader)
+            throws ParseException, Exception {
+        boolean result = super.tryReadElementFromXml(reader);
 
-  /**
-   * Writes elements to XML.
-   *
-   * @param writer the writer
-   * @throws ServiceXmlSerializationException the service xml serialization exception
-   * @throws XMLStreamException the XML stream exception
-   */
-  @Override
-  public void writeElementsToXml(EwsServiceXmlWriter writer)
-      throws ServiceXmlSerializationException, XMLStreamException {
-    super.writeElementsToXml(writer);
+        if (!result) {
+            if (reader.getLocalName().equals(XmlElementNames.DateTime)) {
+                SimpleDateFormat sdfin = new SimpleDateFormat(
+                        "yyyy-MM-dd'T'HH:mm:ss");
+                this.dateTime = sdfin.parse(reader.readElementValue());
 
-    writer.writeElementValue(XmlNamespace.Types, XmlElementNames.DateTime,
-        this.dateTime);
-  }
+                result = true;
+            }
+        }
 
-  /**
-   * Initializes a new instance of the AbsoluteDateTransition class.
-   *
-   * @param timeZoneDefinition , The time zone definition the transition will belong to.
-   */
-  protected AbsoluteDateTransition(TimeZoneDefinition timeZoneDefinition) {
-    super(timeZoneDefinition);
-  }
+        return result;
+    }
 
-  /**
-   * Initializes a new instance of the AbsoluteDateTransition class.
-   *
-   * @param timeZoneDefinition The time zone definition the transition will belong to.
-   * @param targetGroup        the target group
-   */
-  protected AbsoluteDateTransition(TimeZoneDefinition timeZoneDefinition,
-      TimeZoneTransitionGroup targetGroup) {
-    super(timeZoneDefinition, targetGroup);
-  }
+    /**
+     * Writes elements to XML.
+     *
+     * @param writer the writer
+     * @throws ServiceXmlSerializationException the service xml serialization exception
+     * @throws XMLStreamException               the XML stream exception
+     */
+    @Override
+    public void writeElementsToXml(EwsServiceXmlWriter writer)
+            throws ServiceXmlSerializationException, XMLStreamException {
+        super.writeElementsToXml(writer);
 
-  /**
-   * Gets the absolute date and time when the transition occurs.
-   *
-   * @return the date time
-   */
-  public Date getDateTime() {
-    return dateTime;
-  }
+        writer.writeElementValue(XmlNamespace.Types, XmlElementNames.DateTime,
+                this.dateTime);
+    }
 
-  /**
-   * Sets the date time.
-   *
-   * @param dateTime the new date time
-   */
-  protected void setDateTime(Date dateTime) {
-    this.dateTime = dateTime;
-  }
+    /**
+     * Initializes a new instance of the AbsoluteDateTransition class.
+     *
+     * @param timeZoneDefinition , The time zone definition the transition will belong to.
+     */
+    protected AbsoluteDateTransition(TimeZoneDefinition timeZoneDefinition) {
+        super(timeZoneDefinition);
+    }
+
+    /**
+     * Initializes a new instance of the AbsoluteDateTransition class.
+     *
+     * @param timeZoneDefinition The time zone definition the transition will belong to.
+     * @param targetGroup        the target group
+     */
+    protected AbsoluteDateTransition(TimeZoneDefinition timeZoneDefinition,
+                                     TimeZoneTransitionGroup targetGroup) {
+        super(timeZoneDefinition, targetGroup);
+    }
+
+    /**
+     * Gets the absolute date and time when the transition occurs.
+     *
+     * @return the date time
+     */
+    public Date getDateTime() {
+        return dateTime;
+    }
+
+    /**
+     * Sets the date time.
+     *
+     * @param dateTime the new date time
+     */
+    protected void setDateTime(Date dateTime) {
+        this.dateTime = dateTime;
+    }
 }

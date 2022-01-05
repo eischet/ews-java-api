@@ -32,42 +32,42 @@ import microsoft.exchange.webservices.data.misc.UserConfiguration;
  */
 public final class GetUserConfigurationResponse extends ServiceResponse {
 
-  /**
-   * The user configuration.
-   */
-  private UserConfiguration userConfiguration;
+    /**
+     * The user configuration.
+     */
+    private final UserConfiguration userConfiguration;
 
-  /**
-   * Initializes a new instance of the class.
-   *
-   * @param userConfiguration the user configuration
-   */
-  public GetUserConfigurationResponse(UserConfiguration userConfiguration) {
-    super();
-    EwsUtilities.ewsAssert(userConfiguration != null, "GetUserConfigurationResponse.ctor",
-                           "userConfiguration is null");
+    /**
+     * Initializes a new instance of the class.
+     *
+     * @param userConfiguration the user configuration
+     */
+    public GetUserConfigurationResponse(UserConfiguration userConfiguration) {
+        super();
+        EwsUtilities.ewsAssert(userConfiguration != null, "GetUserConfigurationResponse.ctor",
+                "userConfiguration is null");
 
-    this.userConfiguration = userConfiguration;
-  }
+        this.userConfiguration = userConfiguration;
+    }
 
-  /**
-   * Reads response elements from XML.
-   *
-   * @param reader the reader
-   * @throws Exception the exception
-   */
-  @Override
-  protected void readElementsFromXml(EwsServiceXmlReader reader) throws Exception {
-    super.readElementsFromXml(reader);
-    this.userConfiguration.loadFromXml(reader);
-  }
+    /**
+     * Reads response elements from XML.
+     *
+     * @param reader the reader
+     * @throws Exception the exception
+     */
+    @Override
+    protected void readElementsFromXml(EwsServiceXmlReader reader) throws Exception {
+        super.readElementsFromXml(reader);
+        this.userConfiguration.loadFromXml(reader);
+    }
 
-  /**
-   * Gets the user configuration that was created.
-   *
-   * @return the user configuration
-   */
-  public UserConfiguration getUserConfiguration() {
-    return this.userConfiguration;
-  }
+    /**
+     * Gets the user configuration that was created.
+     *
+     * @return the user configuration
+     */
+    public UserConfiguration getUserConfiguration() {
+        return this.userConfiguration;
+    }
 }

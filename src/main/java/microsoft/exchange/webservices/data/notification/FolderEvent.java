@@ -25,8 +25,8 @@ package microsoft.exchange.webservices.data.notification;
 
 import microsoft.exchange.webservices.data.core.EwsServiceXmlReader;
 import microsoft.exchange.webservices.data.core.XmlElementNames;
-import microsoft.exchange.webservices.data.core.enumeration.notification.EventType;
 import microsoft.exchange.webservices.data.core.enumeration.misc.XmlNamespace;
+import microsoft.exchange.webservices.data.core.enumeration.notification.EventType;
 import microsoft.exchange.webservices.data.property.complex.FolderId;
 
 import java.util.Date;
@@ -36,109 +36,109 @@ import java.util.Date;
  */
 public class FolderEvent extends NotificationEvent {
 
-  /**
-   * The folder id.
-   */
-  private FolderId folderId;
+    /**
+     * The folder id.
+     */
+    private FolderId folderId;
 
-  /**
-   * The old folder id.
-   */
-  private FolderId oldFolderId;
+    /**
+     * The old folder id.
+     */
+    private FolderId oldFolderId;
 
-  /**
-   * The new number of unread messages. This is is only meaningful when
-   * EventType is equal to EventType.Modified. For all other event types, it's
-   * null.
-   */
-  private int unreadCount;
+    /**
+     * The new number of unread messages. This is is only meaningful when
+     * EventType is equal to EventType.Modified. For all other event types, it's
+     * null.
+     */
+    private int unreadCount;
 
-  /**
-   * Initializes a new instance.
-   *
-   * @param eventType the event type
-   * @param timestamp the timestamp
-   */
-  protected FolderEvent(EventType eventType, Date timestamp) {
-    super(eventType, timestamp);
-  }
+    /**
+     * Initializes a new instance.
+     *
+     * @param eventType the event type
+     * @param timestamp the timestamp
+     */
+    protected FolderEvent(EventType eventType, Date timestamp) {
+        super(eventType, timestamp);
+    }
 
-  /**
-   * Load from XML.
-   *
-   * @param reader the reader
-   * @throws Exception the exception
-   */
-  protected void internalLoadFromXml(EwsServiceXmlReader reader)
-      throws Exception {
-    super.internalLoadFromXml(reader);
+    /**
+     * Load from XML.
+     *
+     * @param reader the reader
+     * @throws Exception the exception
+     */
+    protected void internalLoadFromXml(EwsServiceXmlReader reader)
+            throws Exception {
+        super.internalLoadFromXml(reader);
 
-    this.folderId = new FolderId();
-    this.folderId.loadFromXml(reader, reader.getLocalName());
-
-    reader.read();
-
-    setParentFolderId(new FolderId());
-    getParentFolderId().loadFromXml(reader, XmlElementNames.ParentFolderId);
-
-    switch (getEventType()) {
-      case Moved:
-      case Copied:
-        reader.read();
-
-        this.oldFolderId = new FolderId();
-        this.oldFolderId.loadFromXml(reader, reader.getLocalName());
+        this.folderId = new FolderId();
+        this.folderId.loadFromXml(reader, reader.getLocalName());
 
         reader.read();
 
         setParentFolderId(new FolderId());
-        getParentFolderId().loadFromXml(reader, reader.getLocalName());
-        break;
+        getParentFolderId().loadFromXml(reader, XmlElementNames.ParentFolderId);
 
-      case Modified:
-        reader.read();
-        if (reader.isStartElement()) {
-          reader.ensureCurrentNodeIsStartElement(XmlNamespace.Types,
-              XmlElementNames.UnreadCount);
-          String str = reader.readValue();
-          this.unreadCount = Integer.parseInt(str);
+        switch (getEventType()) {
+            case Moved:
+            case Copied:
+                reader.read();
+
+                this.oldFolderId = new FolderId();
+                this.oldFolderId.loadFromXml(reader, reader.getLocalName());
+
+                reader.read();
+
+                setParentFolderId(new FolderId());
+                getParentFolderId().loadFromXml(reader, reader.getLocalName());
+                break;
+
+            case Modified:
+                reader.read();
+                if (reader.isStartElement()) {
+                    reader.ensureCurrentNodeIsStartElement(XmlNamespace.Types,
+                            XmlElementNames.UnreadCount);
+                    String str = reader.readValue();
+                    this.unreadCount = Integer.parseInt(str);
+                }
+                break;
+
+            default:
+                break;
         }
-        break;
-
-      default:
-        break;
     }
-  }
 
-  /**
-   * Gets the Id of the folder this event applies to.
-   *
-   * @return folderId
-   */
-  public FolderId getFolderId() {
-    return folderId;
-  }
+    /**
+     * Gets the Id of the folder this event applies to.
+     *
+     * @return folderId
+     */
+    public FolderId getFolderId() {
+        return folderId;
+    }
 
-  /**
-   * gets the Id of the folder that was moved or copied. OldFolderId is only
-   * meaningful when EventType is equal to either EventType.Moved or
-   * EventType.Copied. For all other event types, OldFolderId is null.
-   *
-   * @return oldFolderId
-   */
-  public FolderId getOldFolderId() {
-    return oldFolderId;
-  }
+    /**
+     * gets the Id of the folder that was moved or copied. OldFolderId is only
+     * meaningful when EventType is equal to either EventType.Moved or
+     * EventType.Copied. For all other event types, OldFolderId is null.
+     *
+     * @return oldFolderId
+     */
+    public FolderId getOldFolderId() {
+        return oldFolderId;
+    }
 
-  /**
-   * Gets the new number of unread messages. This is is only meaningful when
-   * EventType is equal to EventType.Modified. For all other event types,
-   * UnreadCount is null.
-   *
-   * @return unreadCount
-   */
-  public int getUnreadCount() {
-    return unreadCount;
-  }
+    /**
+     * Gets the new number of unread messages. This is is only meaningful when
+     * EventType is equal to EventType.Modified. For all other event types,
+     * UnreadCount is null.
+     *
+     * @return unreadCount
+     */
+    public int getUnreadCount() {
+        return unreadCount;
+    }
 
 }

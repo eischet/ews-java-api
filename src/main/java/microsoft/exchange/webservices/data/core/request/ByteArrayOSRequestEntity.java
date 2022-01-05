@@ -33,38 +33,38 @@ import java.io.OutputStream;
 
 public class ByteArrayOSRequestEntity extends BasicHttpEntity {
 
-  private ByteArrayOutputStream os = null;
+    private ByteArrayOutputStream os = null;
 
-  /**
-   * Constructor for ByteArrayOSRequestEntity.
-   */
-  public ByteArrayOSRequestEntity(OutputStream os) {
-    super();
-    this.os = (ByteArrayOutputStream) os;
-  }
+    /**
+     * Constructor for ByteArrayOSRequestEntity.
+     */
+    public ByteArrayOSRequestEntity(OutputStream os) {
+        super();
+        this.os = (ByteArrayOutputStream) os;
+    }
 
-  @Override
-  public long getContentLength() {
-    return os.size();
-  }
+    @Override
+    public long getContentLength() {
+        return os.size();
+    }
 
-  @Override
-  public Header getContentType() {
-    return new BasicHeader("Content-Type", "text/xml; charset=utf-8");
-  }
+    @Override
+    public Header getContentType() {
+        return new BasicHeader("Content-Type", "text/xml; charset=utf-8");
+    }
 
-  @Override
-  public boolean isRepeatable() {
-    return true;
-  }
+    @Override
+    public boolean isRepeatable() {
+        return true;
+    }
 
-  @Override
-  public void writeTo(OutputStream out) throws IOException {
-    os.writeTo(out);
-  }
+    @Override
+    public void writeTo(OutputStream out) throws IOException {
+        os.writeTo(out);
+    }
 
-  @Override
-  public boolean isStreaming() {
-    return false;
-  }
+    @Override
+    public boolean isStreaming() {
+        return false;
+    }
 }

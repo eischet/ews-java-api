@@ -36,42 +36,42 @@ package microsoft.exchange.webservices.data.core;
  */
 public class LazyMember<T> {
 
-  /**
-   * The lazy member.
-   */
-  private volatile T lazyMember;
+    /**
+     * The lazy member.
+     */
+    private volatile T lazyMember;
 
-  /**
-   * The lazy implementation.
-   */
-  private final ILazyMember<T> lazyImplementation;
+    /**
+     * The lazy implementation.
+     */
+    private final ILazyMember<T> lazyImplementation;
 
-  /**
-   * Public accessor for the lazy member. Lazy initializes the member on first
-   * access
-   *
-   * @return the member
-   */
-  public T getMember() {
-    T result = this.lazyMember;
-    if (result == null) {  // first check (no locking)
-      synchronized (this) {
-        result = this.lazyMember;
-        if (result == null) { // second check (with locking)
-          this.lazyMember = result = lazyImplementation.createInstance();
+    /**
+     * Public accessor for the lazy member. Lazy initializes the member on first
+     * access
+     *
+     * @return the member
+     */
+    public T getMember() {
+        T result = this.lazyMember;
+        if (result == null) {  // first check (no locking)
+            synchronized (this) {
+                result = this.lazyMember;
+                if (result == null) { // second check (with locking)
+                    this.lazyMember = result = lazyImplementation.createInstance();
+                }
+            }
         }
-      }
+        return result;
     }
-    return result;
-  }
 
-  /**
-   * Constructor.
-   *
-   * @param lazyImplementation The initialization delegate to call for the item on first
-   *                           access
-   */
-  public LazyMember(ILazyMember<T> lazyImplementation) {
-    this.lazyImplementation = lazyImplementation;
-  }
+    /**
+     * Constructor.
+     *
+     * @param lazyImplementation The initialization delegate to call for the item on first
+     *                           access
+     */
+    public LazyMember(ILazyMember<T> lazyImplementation) {
+        this.lazyImplementation = lazyImplementation;
+    }
 }

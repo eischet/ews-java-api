@@ -32,46 +32,46 @@ import microsoft.exchange.webservices.data.sync.ItemChange;
  * Represents the response to a folder item synchronization operation.
  */
 public final class SyncFolderItemsResponse extends
-    SyncResponse<Item, ItemChange> {
+        SyncResponse<Item, ItemChange> {
 
-  /**
-   * Initializes a new instance of the class.
-   *
-   * @param propertySet the property set
-   */
-  public SyncFolderItemsResponse(PropertySet propertySet) {
-    super(propertySet);
-  }
+    /**
+     * Initializes a new instance of the class.
+     *
+     * @param propertySet the property set
+     */
+    public SyncFolderItemsResponse(PropertySet propertySet) {
+        super(propertySet);
+    }
 
-  /**
-   * Gets the name of the includes last in range XML element.
-   *
-   * @return XML element name.
-   */
-  @Override
-  protected String getIncludesLastInRangeXmlElementName() {
-    return XmlElementNames.IncludesLastItemInRange;
-  }
+    /**
+     * Gets the name of the includes last in range XML element.
+     *
+     * @return XML element name.
+     */
+    @Override
+    protected String getIncludesLastInRangeXmlElementName() {
+        return XmlElementNames.IncludesLastItemInRange;
+    }
 
-  /**
-   * Creates an item change instance.
-   *
-   * @return ItemChange instance
-   */
-  @Override
-  protected ItemChange createChangeInstance() {
-    return new ItemChange();
-  }
+    /**
+     * Creates an item change instance.
+     *
+     * @return ItemChange instance
+     */
+    @Override
+    protected ItemChange createChangeInstance() {
+        return new ItemChange();
+    }
 
-  /**
-   * Gets a value indicating whether this request returns full or summary property.
-   * "true" if summary property only; otherwise, "false".
-   *
-   * @return the summary property only
-   */
-  @Override
-  protected boolean getSummaryPropertiesOnly() {
-    return true;
-  }
+    /**
+     * Gets a value indicating whether this request returns full or summary property.
+     * "true" if summary property only; otherwise, "false".
+     *
+     * @return the summary property only
+     */
+    @Override
+    protected boolean getSummaryPropertiesOnly() {
+        return true;
+    }
 
 }

@@ -25,8 +25,8 @@ package microsoft.exchange.webservices.data.notification;
 
 import microsoft.exchange.webservices.data.core.EwsServiceXmlReader;
 import microsoft.exchange.webservices.data.core.XmlElementNames;
-import microsoft.exchange.webservices.data.core.enumeration.notification.EventType;
 import microsoft.exchange.webservices.data.core.enumeration.misc.XmlNamespace;
+import microsoft.exchange.webservices.data.core.enumeration.notification.EventType;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -37,128 +37,128 @@ import java.util.Date;
  */
 public final class GetStreamingEventsResults {
 
-  /**
-   * Structure to track a subscription and its associated notification events.
-   */
-  protected static class NotificationGroup {
     /**
-     * Subscription Id
+     * Structure to track a subscription and its associated notification events.
      */
-    protected String subscriptionId;
+    protected static class NotificationGroup {
+        /**
+         * Subscription Id
+         */
+        protected String subscriptionId;
+
+        /**
+         * Events in the response associated with the subscription id.
+         */
+        protected Collection<NotificationEvent> events;
+    }
+
 
     /**
-     * Events in the response associated with the subscription id.
+     * Collection of notification events.
      */
-    protected Collection<NotificationEvent> events;
-  }
+    private final Collection<NotificationGroup> events =
+            new ArrayList<NotificationGroup>();
 
+    /**
+     * Initializes a new instance of the <see cref=
+     * "GetStreamingEventsResults"/> class.
+     */
+    public GetStreamingEventsResults() {
+    }
 
-  /**
-   * Collection of notification events.
-   */
-  private Collection<NotificationGroup> events =
-      new ArrayList<NotificationGroup>();
+    /**
+     * Loads from XML.
+     *
+     * @param reader The reader.
+     * @throws Exception
+     */
+    public void loadFromXml(EwsServiceXmlReader reader) throws Exception {
+        reader.readStartElement(XmlNamespace.Messages,
+                XmlElementNames.Notification);
 
-  /**
-   * Initializes a new instance of the <see cref=
-   * "GetStreamingEventsResults"/> class.
-   */
-  public GetStreamingEventsResults() {
-  }
+        do {
+            NotificationGroup notifications = new NotificationGroup();
+            notifications.subscriptionId = reader.readElementValue(
+                    XmlNamespace.Types,
+                    XmlElementNames.SubscriptionId);
+            notifications.events = new ArrayList<NotificationEvent>();
 
-  /**
-   * Loads from XML.
-   *
-   * @param reader The reader.
-   * @throws Exception
-   */
-  public void loadFromXml(EwsServiceXmlReader reader) throws Exception {
-    reader.readStartElement(XmlNamespace.Messages,
-        XmlElementNames.Notification);
+            synchronized (this) {
+                this.events.add(notifications);
+            }
 
-    do {
-      NotificationGroup notifications = new NotificationGroup();
-      notifications.subscriptionId = reader.readElementValue(
-          XmlNamespace.Types,
-          XmlElementNames.SubscriptionId);
-      notifications.events = new ArrayList<NotificationEvent>();
+            do {
+                reader.read();
 
-      synchronized (this) {
-        this.events.add(notifications);
-      }
+                if (reader.isStartElement()) {
+                    String eventElementName = reader.getLocalName();
+                    EventType eventType;
+                    if (GetEventsResults.getXmlElementNameToEventTypeMap().containsKey(eventElementName)) {
+                        eventType = GetEventsResults.getXmlElementNameToEventTypeMap().
+                                get(eventElementName);
+                        if (eventType == EventType.Status) {
+                            // We don't need to return status events
+                            reader.readEndElementIfNecessary(XmlNamespace.Types,
+                                    eventElementName);
+                        } else {
+                            this.loadNotificationEventFromXml(
+                                    reader,
+                                    eventElementName,
+                                    eventType,
+                                    notifications);
+                        }
+                    } else {
+                        reader.skipCurrentElement();
+                    }
+                }
+            }
+            while (!reader.isEndElement(XmlNamespace.Messages,
+                    XmlElementNames.Notification));
 
-      do {
+            reader.read();
+        }
+        while (!reader.isEndElement(XmlNamespace.Messages,
+                XmlElementNames.Notifications));
+    }
+
+    /**
+     * Loads a notification event from XML.
+     *
+     * @param reader           The reader.
+     * @param eventElementName Name of the event XML element.
+     * @param eventType        Type of the event.
+     * @param notifications    Collection of notification
+     * @throws Exception
+     */
+    private void loadNotificationEventFromXml(
+            EwsServiceXmlReader reader,
+            String eventElementName,
+            EventType eventType,
+            NotificationGroup notifications) throws Exception {
+        Date timestamp = reader.readElementValue(Date.class, XmlNamespace.Types,
+                XmlElementNames.TimeStamp);
+
+        NotificationEvent notificationEvent;
+
         reader.read();
 
-        if (reader.isStartElement()) {
-          String eventElementName = reader.getLocalName();
-          EventType eventType;
-          if (GetEventsResults.getXmlElementNameToEventTypeMap().containsKey(eventElementName)) {
-            eventType = GetEventsResults.getXmlElementNameToEventTypeMap().
-                get(eventElementName);
-            if (eventType == EventType.Status) {
-              // We don't need to return status events
-              reader.readEndElementIfNecessary(XmlNamespace.Types,
-                  eventElementName);
-            } else {
-              this.loadNotificationEventFromXml(
-                  reader,
-                  eventElementName,
-                  eventType,
-                  notifications);
-            }
-          } else {
-            reader.skipCurrentElement();
-          }
+        if (reader.getLocalName().equals(XmlElementNames.FolderId)) {
+            notificationEvent = new FolderEvent(eventType, timestamp);
+        } else {
+            notificationEvent = new ItemEvent(eventType, timestamp);
         }
-      }
-      while (!reader.isEndElement(XmlNamespace.Messages,
-          XmlElementNames.Notification));
 
-      reader.read();
-    }
-    while (!reader.isEndElement(XmlNamespace.Messages,
-        XmlElementNames.Notifications));
-  }
-
-  /**
-   * Loads a notification event from XML.
-   *
-   * @param reader           The reader.
-   * @param eventElementName Name of the event XML element.
-   * @param eventType        Type of the event.
-   * @param notifications    Collection of notification
-   * @throws Exception
-   */
-  private void loadNotificationEventFromXml(
-      EwsServiceXmlReader reader,
-      String eventElementName,
-      EventType eventType,
-      NotificationGroup notifications) throws Exception {
-    Date timestamp = reader.readElementValue(Date.class, XmlNamespace.Types,
-        XmlElementNames.TimeStamp);
-
-    NotificationEvent notificationEvent;
-
-    reader.read();
-
-    if (reader.getLocalName().equals(XmlElementNames.FolderId)) {
-      notificationEvent = new FolderEvent(eventType, timestamp);
-    } else {
-      notificationEvent = new ItemEvent(eventType, timestamp);
+        notificationEvent.loadFromXml(reader, eventElementName);
+        notifications.events.add(notificationEvent);
     }
 
-    notificationEvent.loadFromXml(reader, eventElementName);
-    notifications.events.add(notificationEvent);
-  }
-
-  /**
-   * Gets the notification collection.
-   *
-   * @value The notification collection.
-   */
-  protected Collection<NotificationGroup> getNotifications() {
-    return this.events;
-  }
+    /**
+     * Gets the notification collection.
+     *
+     * @value The notification collection.
+     */
+    protected Collection<NotificationGroup> getNotifications() {
+        return this.events;
+    }
 }
 

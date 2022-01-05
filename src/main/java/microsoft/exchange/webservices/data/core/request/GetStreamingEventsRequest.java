@@ -27,11 +27,11 @@ import microsoft.exchange.webservices.data.core.EwsServiceXmlReader;
 import microsoft.exchange.webservices.data.core.EwsServiceXmlWriter;
 import microsoft.exchange.webservices.data.core.ExchangeService;
 import microsoft.exchange.webservices.data.core.XmlElementNames;
-import microsoft.exchange.webservices.data.core.response.GetStreamingEventsResponse;
 import microsoft.exchange.webservices.data.core.enumeration.misc.ExchangeVersion;
 import microsoft.exchange.webservices.data.core.enumeration.misc.XmlNamespace;
 import microsoft.exchange.webservices.data.core.exception.service.local.ServiceVersionException;
 import microsoft.exchange.webservices.data.core.exception.service.local.ServiceXmlSerializationException;
+import microsoft.exchange.webservices.data.core.response.GetStreamingEventsResponse;
 
 import javax.xml.stream.XMLStreamException;
 
@@ -40,118 +40,118 @@ import javax.xml.stream.XMLStreamException;
  */
 public class GetStreamingEventsRequest extends HangingServiceRequestBase<GetStreamingEventsResponse> {
 
-  protected final static int HeartbeatFrequencyDefault = 45000; ////45s in ms
-  private static int heartbeatFrequency = HeartbeatFrequencyDefault;
+    protected final static int HeartbeatFrequencyDefault = 45000; ////45s in ms
+    private static int heartbeatFrequency = HeartbeatFrequencyDefault;
 
-  private Iterable<String> subscriptionIds;
-  private int connectionTimeout;
+    private final Iterable<String> subscriptionIds;
+    private final int connectionTimeout;
 
-  /**
-   * Initializes a new instance of the GetStreamingEventsRequest class.
-   *
-   * @param service              The service
-   * @param serviceObjectHandler The serviceObjectHandler
-   * @param subscriptionIds      The subscriptionIds
-   * @param connectionTimeout    The connectionTimeout
-   * @throws ServiceVersionException
-   */
-  public GetStreamingEventsRequest(ExchangeService service, IHandleResponseObject serviceObjectHandler,
-      Iterable<String> subscriptionIds, int connectionTimeout)
-      throws ServiceVersionException {
-    super(service, serviceObjectHandler,
-        GetStreamingEventsRequest.heartbeatFrequency);
-    this.subscriptionIds = subscriptionIds;
-    this.connectionTimeout = connectionTimeout;
-  }
-
-  /**
-   * Gets the name of the XML element.
-   *
-   * @return XmlElementNames
-   */
-  @Override public String getXmlElementName() {
-    return XmlElementNames.GetStreamingEvents;
-  }
-
-  /**
-   * Gets the name of the response XML element.
-   *
-   * @return XmlElementNames
-   */
-  @Override
-  protected String getResponseXmlElementName() {
-    return XmlElementNames.GetStreamingEventsResponse;
-  }
-
-  /**
-   * Writes the elements to XML writer.
-   *
-   * @param writer the writer
-   * @throws XMLStreamException the XML stream exception
-   * @throws ServiceXmlSerializationException
-   */
-  @Override
-  protected void writeElementsToXml(EwsServiceXmlWriter writer)
-      throws ServiceXmlSerializationException, XMLStreamException {
-    writer.writeStartElement(XmlNamespace.Messages,
-        XmlElementNames.SubscriptionIds);
-
-    for (String id : this.subscriptionIds) {
-      writer.writeElementValue(
-          XmlNamespace.Types,
-          XmlElementNames.SubscriptionId,
-          id);
+    /**
+     * Initializes a new instance of the GetStreamingEventsRequest class.
+     *
+     * @param service              The service
+     * @param serviceObjectHandler The serviceObjectHandler
+     * @param subscriptionIds      The subscriptionIds
+     * @param connectionTimeout    The connectionTimeout
+     * @throws ServiceVersionException
+     */
+    public GetStreamingEventsRequest(ExchangeService service, IHandleResponseObject serviceObjectHandler,
+                                     Iterable<String> subscriptionIds, int connectionTimeout)
+            throws ServiceVersionException {
+        super(service, serviceObjectHandler,
+                GetStreamingEventsRequest.heartbeatFrequency);
+        this.subscriptionIds = subscriptionIds;
+        this.connectionTimeout = connectionTimeout;
     }
 
-    writer.writeEndElement();
+    /**
+     * Gets the name of the XML element.
+     *
+     * @return XmlElementNames
+     */
+    @Override
+    public String getXmlElementName() {
+        return XmlElementNames.GetStreamingEvents;
+    }
 
-    writer.writeElementValue(
-        XmlNamespace.Messages,
-        XmlElementNames.ConnectionTimeout,
-        this.connectionTimeout);
-  }
+    /**
+     * Gets the name of the response XML element.
+     *
+     * @return XmlElementNames
+     */
+    @Override
+    protected String getResponseXmlElementName() {
+        return XmlElementNames.GetStreamingEventsResponse;
+    }
 
-  /**
-   * Gets the request version.
-   *
-   * @return ExchangeVersion
-   */
-  @Override
-  protected ExchangeVersion getMinimumRequiredServerVersion() {
-    return ExchangeVersion.Exchange2010_SP1;
-  }
+    /**
+     * Writes the elements to XML writer.
+     *
+     * @param writer the writer
+     * @throws XMLStreamException               the XML stream exception
+     * @throws ServiceXmlSerializationException
+     */
+    @Override
+    protected void writeElementsToXml(EwsServiceXmlWriter writer)
+            throws ServiceXmlSerializationException, XMLStreamException {
+        writer.writeStartElement(XmlNamespace.Messages,
+                XmlElementNames.SubscriptionIds);
 
-  /**
-   * {@inheritDoc}
-   */
-  @Override
-  protected GetStreamingEventsResponse parseResponse(EwsServiceXmlReader reader)
-      throws Exception {
-    reader.readStartElement(XmlNamespace.Messages,
-        XmlElementNames.ResponseMessages);
+        for (String id : this.subscriptionIds) {
+            writer.writeElementValue(
+                    XmlNamespace.Types,
+                    XmlElementNames.SubscriptionId,
+                    id);
+        }
 
-    GetStreamingEventsResponse response =
-        new GetStreamingEventsResponse(this);
-    response.loadFromXml(reader, XmlElementNames.
-        GetStreamingEventsResponseMessage);
+        writer.writeEndElement();
 
-    reader.readEndElementIfNecessary(XmlNamespace.Messages,
-        XmlElementNames.ResponseMessages);
+        writer.writeElementValue(
+                XmlNamespace.Messages,
+                XmlElementNames.ConnectionTimeout,
+                this.connectionTimeout);
+    }
 
-    return response;
-  }
+    /**
+     * Gets the request version.
+     *
+     * @return ExchangeVersion
+     */
+    @Override
+    protected ExchangeVersion getMinimumRequiredServerVersion() {
+        return ExchangeVersion.Exchange2010_SP1;
+    }
 
-  /**
-   * region Test hooks
-   * Allow test code to change heartbeat value
-   */
-  protected static void setHeartbeatFrequency(int heartbeatFrequency) {
-    GetStreamingEventsRequest.heartbeatFrequency = heartbeatFrequency;
-  }
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected GetStreamingEventsResponse parseResponse(EwsServiceXmlReader reader)
+            throws Exception {
+        reader.readStartElement(XmlNamespace.Messages,
+                XmlElementNames.ResponseMessages);
 
-  @Override
-	protected HttpWebRequest buildEwsHttpWebRequest() throws Exception
-	{
-		return super.buildEwsHttpPoolingWebRequest();
-	}
+        GetStreamingEventsResponse response =
+                new GetStreamingEventsResponse(this);
+        response.loadFromXml(reader, XmlElementNames.
+                GetStreamingEventsResponseMessage);
+
+        reader.readEndElementIfNecessary(XmlNamespace.Messages,
+                XmlElementNames.ResponseMessages);
+
+        return response;
+    }
+
+    /**
+     * region Test hooks
+     * Allow test code to change heartbeat value
+     */
+    protected static void setHeartbeatFrequency(int heartbeatFrequency) {
+        GetStreamingEventsRequest.heartbeatFrequency = heartbeatFrequency;
+    }
+
+    @Override
+    protected HttpWebRequest buildEwsHttpWebRequest() throws Exception {
+        return super.buildEwsHttpPoolingWebRequest();
+    }
 }

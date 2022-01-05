@@ -23,14 +23,10 @@
 
 package microsoft.exchange.webservices.data.core.request;
 
-import microsoft.exchange.webservices.data.core.EwsServiceXmlReader;
-import microsoft.exchange.webservices.data.core.EwsServiceXmlWriter;
-import microsoft.exchange.webservices.data.core.EwsUtilities;
-import microsoft.exchange.webservices.data.core.ExchangeService;
-import microsoft.exchange.webservices.data.core.XmlElementNames;
-import microsoft.exchange.webservices.data.core.response.DelegateManagementResponse;
+import microsoft.exchange.webservices.data.core.*;
 import microsoft.exchange.webservices.data.core.enumeration.misc.XmlNamespace;
 import microsoft.exchange.webservices.data.core.exception.service.local.ServiceLocalException;
+import microsoft.exchange.webservices.data.core.response.DelegateManagementResponse;
 import microsoft.exchange.webservices.data.property.complex.Mailbox;
 
 /**
@@ -39,94 +35,94 @@ import microsoft.exchange.webservices.data.property.complex.Mailbox;
  * @param <TResponse> The type of the response.
  */
 abstract class DelegateManagementRequestBase<TResponse extends DelegateManagementResponse>
-    extends SimpleServiceRequestBase<TResponse> {
+        extends SimpleServiceRequestBase<TResponse> {
 
-  /**
-   * The mailbox.
-   */
-  private Mailbox mailbox;
+    /**
+     * The mailbox.
+     */
+    private Mailbox mailbox;
 
-  /**
-   * Initializes a new instance of the class.
-   *
-   * @param service the service
-   * @throws Exception
-   */
-  protected DelegateManagementRequestBase(ExchangeService service)
-      throws Exception {
-    super(service);
-  }
+    /**
+     * Initializes a new instance of the class.
+     *
+     * @param service the service
+     * @throws Exception
+     */
+    protected DelegateManagementRequestBase(ExchangeService service)
+            throws Exception {
+        super(service);
+    }
 
-  /**
-   * Validate request.
-   *
-   * @throws ServiceLocalException the service local exception
-   * @throws Exception                                                 the exception
-   */
-  @Override
-  protected void validate() throws ServiceLocalException, Exception {
-    super.validate();
-    EwsUtilities.validateParam(this.getMailbox(), "Mailbox");
-  }
+    /**
+     * Validate request.
+     *
+     * @throws ServiceLocalException the service local exception
+     * @throws Exception             the exception
+     */
+    @Override
+    protected void validate() throws ServiceLocalException, Exception {
+        super.validate();
+        EwsUtilities.validateParam(this.getMailbox(), "Mailbox");
+    }
 
-  /**
-   * Writes XML elements.
-   *
-   * @param writer the writer
-   * @throws Exception the exception
-   */
-  @Override
-  protected void writeElementsToXml(EwsServiceXmlWriter writer)
-      throws Exception {
-    this.getMailbox().writeToXml(writer, XmlNamespace.Messages,
-        XmlElementNames.Mailbox);
-  }
+    /**
+     * Writes XML elements.
+     *
+     * @param writer the writer
+     * @throws Exception the exception
+     */
+    @Override
+    protected void writeElementsToXml(EwsServiceXmlWriter writer)
+            throws Exception {
+        this.getMailbox().writeToXml(writer, XmlNamespace.Messages,
+                XmlElementNames.Mailbox);
+    }
 
-  /**
-   * Creates the response.
-   *
-   * @return Response object.
-   */
-  protected abstract TResponse createResponse();
+    /**
+     * Creates the response.
+     *
+     * @return Response object.
+     */
+    protected abstract TResponse createResponse();
 
-  /**
-   * {@inheritDoc}
-   */
-  @Override
-  protected TResponse parseResponse(EwsServiceXmlReader reader)
-      throws Exception {
-    TResponse response = this.createResponse();
-    response.loadFromXml(reader, this.getResponseXmlElementName());
-    return response;
-  }
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected TResponse parseResponse(EwsServiceXmlReader reader)
+            throws Exception {
+        TResponse response = this.createResponse();
+        response.loadFromXml(reader, this.getResponseXmlElementName());
+        return response;
+    }
 
-  /**
-   * Executes this request.
-   *
-   * @return Response object.
-   * @throws Exception the exception
-   */
-  public TResponse execute() throws Exception {
-    TResponse serviceResponse = internalExecute();
-    serviceResponse.throwIfNecessary();
-    return serviceResponse;
-  }
+    /**
+     * Executes this request.
+     *
+     * @return Response object.
+     * @throws Exception the exception
+     */
+    public TResponse execute() throws Exception {
+        TResponse serviceResponse = internalExecute();
+        serviceResponse.throwIfNecessary();
+        return serviceResponse;
+    }
 
-  /**
-   * Gets  the mailbox. <value>The mailbox.</value>
-   *
-   * @return the mailbox
-   */
-  public Mailbox getMailbox() {
-    return this.mailbox;
-  }
+    /**
+     * Gets  the mailbox. <value>The mailbox.</value>
+     *
+     * @return the mailbox
+     */
+    public Mailbox getMailbox() {
+        return this.mailbox;
+    }
 
-  /**
-   * Sets the mailbox.
-   *
-   * @param mailbox the new mailbox
-   */
-  public void setMailbox(Mailbox mailbox) {
-    this.mailbox = mailbox;
-  }
+    /**
+     * Sets the mailbox.
+     *
+     * @param mailbox the new mailbox
+     */
+    public void setMailbox(Mailbox mailbox) {
+        this.mailbox = mailbox;
+    }
 }

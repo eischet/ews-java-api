@@ -29,7 +29,6 @@ import microsoft.exchange.webservices.data.core.EwsServiceXmlReader;
 import microsoft.exchange.webservices.data.core.EwsServiceXmlWriter;
 import microsoft.exchange.webservices.data.core.enumeration.attribute.EditorBrowsableState;
 import microsoft.exchange.webservices.data.core.enumeration.misc.XmlNamespace;
-import microsoft.exchange.webservices.data.core.exception.service.local.ServiceValidationException;
 import microsoft.exchange.webservices.data.core.exception.service.local.ServiceXmlSerializationException;
 import microsoft.exchange.webservices.data.security.XmlNodeType;
 
@@ -42,147 +41,147 @@ import java.util.List;
 @EditorBrowsable(state = EditorBrowsableState.Never)
 public abstract class ComplexProperty implements ISelfValidate, ComplexFunctionDelegate<EwsServiceXmlReader> {
 
-  /**
-   * The xml namespace.
-   */
-  private XmlNamespace xmlNamespace = XmlNamespace.Types;
+    /**
+     * The xml namespace.
+     */
+    private XmlNamespace xmlNamespace = XmlNamespace.Types;
 
-  /**
-   * Initializes a new instance.
-   */
-  protected ComplexProperty() {
+    /**
+     * Initializes a new instance.
+     */
+    protected ComplexProperty() {
 
-  }
-
-  /**
-   * Gets the namespace.
-   *
-   * @return the namespace.
-   */
-  public XmlNamespace getNamespace() {
-    return xmlNamespace;
-  }
-
-  /**
-   * Sets the namespace.
-   *
-   * @param xmlNamespace the namespace.
-   */
-  public void setNamespace(XmlNamespace xmlNamespace) {
-    this.xmlNamespace = xmlNamespace;
-  }
-
-  /**
-   * Instance was changed.
-   */
-  public void changed() {
-    if (!onChangeList.isEmpty()) {
-      for (IComplexPropertyChangedDelegate change : onChangeList) {
-        change.complexPropertyChanged(this);
-      }
     }
-  }
 
-  /**
-   * Sets value of field.
-   *
-   * @param <T>   Field type.
-   * @param field The field.
-   * @param value The value.
-   * @return true, if successful
-   */
-  public <T> boolean canSetFieldValue(T field, T value) {
-    boolean applyChange;
-    if (field == null) {
-      applyChange = value != null;
-    } else {
-      if (field instanceof Comparable<?>) {
-        Comparable<T> c = (Comparable<T>) field;
-        applyChange = value != null && c.compareTo(value) != 0;
-      } else {
-        applyChange = true;
-      }
+    /**
+     * Gets the namespace.
+     *
+     * @return the namespace.
+     */
+    public XmlNamespace getNamespace() {
+        return xmlNamespace;
     }
-    return applyChange;
-  }
 
-  /**
-   * Clears the change log.
-   */
-  public void clearChangeLog() {
-  }
+    /**
+     * Sets the namespace.
+     *
+     * @param xmlNamespace the namespace.
+     */
+    public void setNamespace(XmlNamespace xmlNamespace) {
+        this.xmlNamespace = xmlNamespace;
+    }
 
-  /**
-   * Reads the attribute from XML.
-   *
-   * @param reader The reader.
-   * @throws Exception the exception
-   */
-  public void readAttributesFromXml(EwsServiceXmlReader reader)
-      throws Exception {
-  }
+    /**
+     * Instance was changed.
+     */
+    public void changed() {
+        if (!onChangeList.isEmpty()) {
+            for (IComplexPropertyChangedDelegate change : onChangeList) {
+                change.complexPropertyChanged(this);
+            }
+        }
+    }
 
-  /**
-   * Reads the text value from XML.
-   *
-   * @param reader The reader.
-   * @throws Exception the exception
-   */
-  public void readTextValueFromXml(EwsServiceXmlReader reader)
-      throws Exception {
-  }
+    /**
+     * Sets value of field.
+     *
+     * @param <T>   Field type.
+     * @param field The field.
+     * @param value The value.
+     * @return true, if successful
+     */
+    public <T> boolean canSetFieldValue(T field, T value) {
+        boolean applyChange;
+        if (field == null) {
+            applyChange = value != null;
+        } else {
+            if (field instanceof Comparable<?>) {
+                Comparable<T> c = (Comparable<T>) field;
+                applyChange = value != null && c.compareTo(value) != 0;
+            } else {
+                applyChange = true;
+            }
+        }
+        return applyChange;
+    }
 
-  /**
-   * Tries to read element from XML.
-   *
-   * @param reader The reader.
-   * @return True if element was read.
-   * @throws Exception the exception
-   */
-  public boolean tryReadElementFromXml(EwsServiceXmlReader reader)
-      throws Exception {
-    return false;
-  }
+    /**
+     * Clears the change log.
+     */
+    public void clearChangeLog() {
+    }
 
-  /**
-   * Tries to read element from XML to patch this property.
-   *
-   * @param reader The reader.
-   *               True if element was read.
-   */
-  public boolean tryReadElementFromXmlToPatch(EwsServiceXmlReader reader) throws Exception {
-    return false;
-  }
+    /**
+     * Reads the attribute from XML.
+     *
+     * @param reader The reader.
+     * @throws Exception the exception
+     */
+    public void readAttributesFromXml(EwsServiceXmlReader reader)
+            throws Exception {
+    }
 
-  /**
-   * Writes the attribute to XML.
-   *
-   * @param writer The writer.
-   * @throws ServiceXmlSerializationException the service xml serialization exception
-   */
-  public void writeAttributesToXml(EwsServiceXmlWriter writer)
-      throws ServiceXmlSerializationException {
-  }
+    /**
+     * Reads the text value from XML.
+     *
+     * @param reader The reader.
+     * @throws Exception the exception
+     */
+    public void readTextValueFromXml(EwsServiceXmlReader reader)
+            throws Exception {
+    }
 
-  /**
-   * Writes elements to XML.
-   *
-   * @param writer The writer.
-   * @throws Exception the exception
-   */
-  public void writeElementsToXml(EwsServiceXmlWriter writer)
-      throws Exception {
-  }
+    /**
+     * Tries to read element from XML.
+     *
+     * @param reader The reader.
+     * @return True if element was read.
+     * @throws Exception the exception
+     */
+    public boolean tryReadElementFromXml(EwsServiceXmlReader reader)
+            throws Exception {
+        return false;
+    }
 
-  /**
-   * Loads from XML.
-   *
-   * @param reader         The reader.
-   * @param xmlNamespace   the xml namespace
-   * @param xmlElementName Name of the XML element.
-   * @throws Exception the exception
-   */
-  public void loadFromXml(EwsServiceXmlReader reader, XmlNamespace xmlNamespace, String xmlElementName) throws Exception {
+    /**
+     * Tries to read element from XML to patch this property.
+     *
+     * @param reader The reader.
+     *               True if element was read.
+     */
+    public boolean tryReadElementFromXmlToPatch(EwsServiceXmlReader reader) throws Exception {
+        return false;
+    }
+
+    /**
+     * Writes the attribute to XML.
+     *
+     * @param writer The writer.
+     * @throws ServiceXmlSerializationException the service xml serialization exception
+     */
+    public void writeAttributesToXml(EwsServiceXmlWriter writer)
+            throws ServiceXmlSerializationException {
+    }
+
+    /**
+     * Writes elements to XML.
+     *
+     * @param writer The writer.
+     * @throws Exception the exception
+     */
+    public void writeElementsToXml(EwsServiceXmlWriter writer)
+            throws Exception {
+    }
+
+    /**
+     * Loads from XML.
+     *
+     * @param reader         The reader.
+     * @param xmlNamespace   the xml namespace
+     * @param xmlElementName Name of the XML element.
+     * @throws Exception the exception
+     */
+    public void loadFromXml(EwsServiceXmlReader reader, XmlNamespace xmlNamespace, String xmlElementName) throws Exception {
 
 		/*reader.ensureCurrentNodeIsStartElement(xmlNamespace, xmlElementName);
                 this.readAttributesFromXml(reader);
@@ -208,185 +207,185 @@ public abstract class ComplexProperty implements ISelfValidate, ComplexFunctionD
 			reader.isEndElement(xmlNamespace, xmlElementName);
 		} */
 
-    this.internalLoadFromXml(reader, xmlNamespace, xmlElementName);
-  }
-
-  /**
-   * Loads from XML to update this property.
-   *
-   * @param reader         The reader.
-   * @param xmlElementName Name of the XML element.
-   * @throws Exception
-   */
-  public void updateFromXml(EwsServiceXmlReader reader, String xmlElementName) throws Exception {
-    this.updateFromXml(reader, this.getNamespace(), xmlElementName);
-  }
-
-  /**
-   * Loads from XML to update itself.
-   *
-   * @param reader         The reader.
-   * @param xmlNamespace   The XML namespace.
-   * @param xmlElementName Name of the XML element.
-   */
-  public void updateFromXml(
-      EwsServiceXmlReader reader,
-      XmlNamespace xmlNamespace,
-      String xmlElementName) throws Exception {
-    this.internalupdateLoadFromXml(reader, xmlNamespace, xmlElementName);
-  }
-
-  /**
-   * Loads from XML
-   *
-   * @param reader         The Reader.
-   * @param xmlNamespace   The Xml NameSpace.
-   * @param xmlElementName The Xml ElementName
-   */
-  private void internalLoadFromXml(
-      EwsServiceXmlReader reader,
-      XmlNamespace xmlNamespace,
-      String xmlElementName) throws Exception {
-    reader.ensureCurrentNodeIsStartElement(xmlNamespace, xmlElementName);
-
-    this.readAttributesFromXml(reader);
-
-    if (!reader.isEmptyElement()) {
-      do {
-        reader.read();
-
-        switch (reader.getNodeType().nodeType) {
-          case XmlNodeType.START_ELEMENT:
-            if (!this.tryReadElementFromXml(reader)) {
-              reader.skipCurrentElement();
-            }
-            break;
-          case XmlNodeType.CHARACTERS:
-            this.readTextValueFromXml(reader);
-            break;
-        }
-      } while (!reader.isEndElement(xmlNamespace, xmlElementName));
-    } else {
-      // Adding this code to skip the END_ELEMENT of an Empty Element.
-      reader.read();
-      reader.isEndElement(xmlNamespace, xmlElementName);
+        this.internalLoadFromXml(reader, xmlNamespace, xmlElementName);
     }
-  }
 
-  private void internalupdateLoadFromXml(
-      EwsServiceXmlReader reader,
-      XmlNamespace xmlNamespace,
-      String xmlElementName) throws Exception {
-    reader.ensureCurrentNodeIsStartElement(xmlNamespace, xmlElementName);
-
-    this.readAttributesFromXml(reader);
-
-    if (!reader.isEmptyElement()) {
-      do {
-        reader.read();
-
-        switch (reader.getNodeType().nodeType) {
-          case XmlNodeType.START_ELEMENT:
-            if (!this.tryReadElementFromXmlToPatch(reader)) {
-              reader.skipCurrentElement();
-            }
-            break;
-          case XmlNodeType.CHARACTERS:
-            this.readTextValueFromXml(reader);
-            break;
-        }
-      } while (!reader.isEndElement(xmlNamespace, xmlElementName));
+    /**
+     * Loads from XML to update this property.
+     *
+     * @param reader         The reader.
+     * @param xmlElementName Name of the XML element.
+     * @throws Exception
+     */
+    public void updateFromXml(EwsServiceXmlReader reader, String xmlElementName) throws Exception {
+        this.updateFromXml(reader, this.getNamespace(), xmlElementName);
     }
-  }
 
-  /**
-   * Loads from XML.
-   *
-   * @param reader         The reader.
-   * @param xmlElementName Name of the XML element.
-   * @throws Exception the exception
-   */
-  public void loadFromXml(EwsServiceXmlReader reader, String xmlElementName)
-      throws Exception {
-    this.loadFromXml(reader, this.getNamespace(), xmlElementName);
-  }
+    /**
+     * Loads from XML to update itself.
+     *
+     * @param reader         The reader.
+     * @param xmlNamespace   The XML namespace.
+     * @param xmlElementName Name of the XML element.
+     */
+    public void updateFromXml(
+            EwsServiceXmlReader reader,
+            XmlNamespace xmlNamespace,
+            String xmlElementName) throws Exception {
+        this.internalupdateLoadFromXml(reader, xmlNamespace, xmlElementName);
+    }
 
-  /**
-   * Writes to XML.
-   *
-   * @param writer         The writer.
-   * @param xmlNamespace   The XML namespace.
-   * @param xmlElementName Name of the XML element.
-   * @throws Exception the exception
-   */
-  public void writeToXml(EwsServiceXmlWriter writer, XmlNamespace xmlNamespace, String xmlElementName) throws Exception {
-    writer.writeStartElement(xmlNamespace, xmlElementName);
-    this.writeAttributesToXml(writer);
-    this.writeElementsToXml(writer);
-    writer.writeEndElement();
-  }
+    /**
+     * Loads from XML
+     *
+     * @param reader         The Reader.
+     * @param xmlNamespace   The Xml NameSpace.
+     * @param xmlElementName The Xml ElementName
+     */
+    private void internalLoadFromXml(
+            EwsServiceXmlReader reader,
+            XmlNamespace xmlNamespace,
+            String xmlElementName) throws Exception {
+        reader.ensureCurrentNodeIsStartElement(xmlNamespace, xmlElementName);
 
-  /**
-   * Writes to XML.
-   *
-   * @param writer         The writer.
-   * @param xmlElementName Name of the XML element.
-   * @throws Exception the exception
-   */
-  public void writeToXml(EwsServiceXmlWriter writer, String xmlElementName)
-      throws Exception {
-    this.writeToXml(writer, this.getNamespace(), xmlElementName);
-  }
+        this.readAttributesFromXml(reader);
 
-  /**
-   * Change events occur when property changed.
-   */
-  private List<IComplexPropertyChangedDelegate> onChangeList =
-      new ArrayList<IComplexPropertyChangedDelegate>();
+        if (!reader.isEmptyElement()) {
+            do {
+                reader.read();
 
-  /**
-   * Set event to happen when property changed.
-   *
-   * @param change change event
-   */
-  public void addOnChangeEvent(IComplexPropertyChangedDelegate change) {
-    onChangeList.add(change);
-  }
+                switch (reader.getNodeType().nodeType) {
+                    case XmlNodeType.START_ELEMENT:
+                        if (!this.tryReadElementFromXml(reader)) {
+                            reader.skipCurrentElement();
+                        }
+                        break;
+                    case XmlNodeType.CHARACTERS:
+                        this.readTextValueFromXml(reader);
+                        break;
+                }
+            } while (!reader.isEndElement(xmlNamespace, xmlElementName));
+        } else {
+            // Adding this code to skip the END_ELEMENT of an Empty Element.
+            reader.read();
+            reader.isEndElement(xmlNamespace, xmlElementName);
+        }
+    }
 
-  /**
-   * Remove the event from happening when property changed.
-   *
-   * @param change change event
-   */
-  public void removeChangeEvent(IComplexPropertyChangedDelegate change) {
-    onChangeList.remove(change);
-  }
+    private void internalupdateLoadFromXml(
+            EwsServiceXmlReader reader,
+            XmlNamespace xmlNamespace,
+            String xmlElementName) throws Exception {
+        reader.ensureCurrentNodeIsStartElement(xmlNamespace, xmlElementName);
 
-  /**
-   * Clears change events list.
-   */
-  protected void clearChangeEvents() {
-    onChangeList.clear();
-  }
+        this.readAttributesFromXml(reader);
 
-  /**
-   * Implements ISelfValidate.validate. Validates this instance.
-   *
-   * @throws Exception the exception
-   */
-  public void validate() throws Exception {
-    this.internalValidate();
-  }
+        if (!reader.isEmptyElement()) {
+            do {
+                reader.read();
 
-  /**
-   * Validates this instance.
-   *
-   * @throws Exception the exception
-   */
-  protected void internalValidate() throws Exception {
-  }
+                switch (reader.getNodeType().nodeType) {
+                    case XmlNodeType.START_ELEMENT:
+                        if (!this.tryReadElementFromXmlToPatch(reader)) {
+                            reader.skipCurrentElement();
+                        }
+                        break;
+                    case XmlNodeType.CHARACTERS:
+                        this.readTextValueFromXml(reader);
+                        break;
+                }
+            } while (!reader.isEndElement(xmlNamespace, xmlElementName));
+        }
+    }
 
-  public Boolean func(EwsServiceXmlReader reader) throws Exception {
-    return !this.tryReadElementFromXml(reader);
-  }
+    /**
+     * Loads from XML.
+     *
+     * @param reader         The reader.
+     * @param xmlElementName Name of the XML element.
+     * @throws Exception the exception
+     */
+    public void loadFromXml(EwsServiceXmlReader reader, String xmlElementName)
+            throws Exception {
+        this.loadFromXml(reader, this.getNamespace(), xmlElementName);
+    }
+
+    /**
+     * Writes to XML.
+     *
+     * @param writer         The writer.
+     * @param xmlNamespace   The XML namespace.
+     * @param xmlElementName Name of the XML element.
+     * @throws Exception the exception
+     */
+    public void writeToXml(EwsServiceXmlWriter writer, XmlNamespace xmlNamespace, String xmlElementName) throws Exception {
+        writer.writeStartElement(xmlNamespace, xmlElementName);
+        this.writeAttributesToXml(writer);
+        this.writeElementsToXml(writer);
+        writer.writeEndElement();
+    }
+
+    /**
+     * Writes to XML.
+     *
+     * @param writer         The writer.
+     * @param xmlElementName Name of the XML element.
+     * @throws Exception the exception
+     */
+    public void writeToXml(EwsServiceXmlWriter writer, String xmlElementName)
+            throws Exception {
+        this.writeToXml(writer, this.getNamespace(), xmlElementName);
+    }
+
+    /**
+     * Change events occur when property changed.
+     */
+    private final List<IComplexPropertyChangedDelegate> onChangeList =
+            new ArrayList<IComplexPropertyChangedDelegate>();
+
+    /**
+     * Set event to happen when property changed.
+     *
+     * @param change change event
+     */
+    public void addOnChangeEvent(IComplexPropertyChangedDelegate change) {
+        onChangeList.add(change);
+    }
+
+    /**
+     * Remove the event from happening when property changed.
+     *
+     * @param change change event
+     */
+    public void removeChangeEvent(IComplexPropertyChangedDelegate change) {
+        onChangeList.remove(change);
+    }
+
+    /**
+     * Clears change events list.
+     */
+    protected void clearChangeEvents() {
+        onChangeList.clear();
+    }
+
+    /**
+     * Implements ISelfValidate.validate. Validates this instance.
+     *
+     * @throws Exception the exception
+     */
+    public void validate() throws Exception {
+        this.internalValidate();
+    }
+
+    /**
+     * Validates this instance.
+     *
+     * @throws Exception the exception
+     */
+    protected void internalValidate() throws Exception {
+    }
+
+    public Boolean func(EwsServiceXmlReader reader) throws Exception {
+        return !this.tryReadElementFromXml(reader);
+    }
 }

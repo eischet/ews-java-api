@@ -30,15 +30,15 @@ import microsoft.exchange.webservices.data.property.complex.ItemAttachment;
  */
 public interface ICreateServiceObjectWithAttachmentParam {
 
-  /**
-   * Creates the service object with attachment param.
-   *
-   * @param itemAttachment the item attachment
-   * @param isNew          the is new
-   * @return the object
-   * @throws Exception the exception
-   */
-  Object createServiceObjectWithAttachmentParam(
-      ItemAttachment itemAttachment, boolean isNew) throws Exception;
+    /**
+     * Creates the service object with attachment param.
+     *
+     * @param itemAttachment the item attachment
+     * @param isNew          the is new
+     * @return the object
+     * @throws Exception the exception
+     */
+    Object createServiceObjectWithAttachmentParam(
+            ItemAttachment itemAttachment, boolean isNew) throws Exception;
 
 }

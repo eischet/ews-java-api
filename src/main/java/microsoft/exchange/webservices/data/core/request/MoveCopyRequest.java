@@ -27,10 +27,10 @@ import microsoft.exchange.webservices.data.core.EwsServiceXmlWriter;
 import microsoft.exchange.webservices.data.core.EwsUtilities;
 import microsoft.exchange.webservices.data.core.ExchangeService;
 import microsoft.exchange.webservices.data.core.XmlElementNames;
+import microsoft.exchange.webservices.data.core.enumeration.misc.XmlNamespace;
 import microsoft.exchange.webservices.data.core.enumeration.service.error.ServiceErrorHandling;
 import microsoft.exchange.webservices.data.core.response.ServiceResponse;
 import microsoft.exchange.webservices.data.core.service.ServiceObject;
-import microsoft.exchange.webservices.data.core.enumeration.misc.XmlNamespace;
 import microsoft.exchange.webservices.data.property.complex.FolderId;
 
 /**
@@ -40,81 +40,81 @@ import microsoft.exchange.webservices.data.property.complex.FolderId;
  * @param <TResponse>      The type of the response.
  */
 abstract class MoveCopyRequest<TServiceObject extends ServiceObject,
-    TResponse extends ServiceResponse> extends
-    MultiResponseServiceRequest<TResponse> {
+        TResponse extends ServiceResponse> extends
+        MultiResponseServiceRequest<TResponse> {
 
-  /**
-   * The destination folder id.
-   */
-  private FolderId destinationFolderId;
+    /**
+     * The destination folder id.
+     */
+    private FolderId destinationFolderId;
 
-  /**
-   * Validates request.
-   *
-   * @throws Exception the exception
-   */
-  @Override
-  protected void validate() throws Exception {
-    EwsUtilities.validateParam(this.getDestinationFolderId(), "DestinationFolderId");
-    this.getDestinationFolderId().validate(
-        this.getService().getRequestedServerVersion());
-  }
+    /**
+     * Validates request.
+     *
+     * @throws Exception the exception
+     */
+    @Override
+    protected void validate() throws Exception {
+        EwsUtilities.validateParam(this.getDestinationFolderId(), "DestinationFolderId");
+        this.getDestinationFolderId().validate(
+                this.getService().getRequestedServerVersion());
+    }
 
-  /**
-   * Initializes a new instance of the MoveCopyRequest class.
-   *
-   * @param service           The Service
-   * @param errorHandlingMode Indicates how errors should be handled.
-   * @throws Exception
-   */
-  protected MoveCopyRequest(ExchangeService service,
-      ServiceErrorHandling errorHandlingMode)
-      throws Exception {
-    super(service, errorHandlingMode);
-  }
+    /**
+     * Initializes a new instance of the MoveCopyRequest class.
+     *
+     * @param service           The Service
+     * @param errorHandlingMode Indicates how errors should be handled.
+     * @throws Exception
+     */
+    protected MoveCopyRequest(ExchangeService service,
+                              ServiceErrorHandling errorHandlingMode)
+            throws Exception {
+        super(service, errorHandlingMode);
+    }
 
-  /**
-   * Writes the ids as XML.
-   *
-   * @param writer The Writer
-   * @throws Exception the exception
-   */
-  protected abstract void writeIdsToXml(EwsServiceXmlWriter writer)
-      throws Exception;
+    /**
+     * Writes the ids as XML.
+     *
+     * @param writer The Writer
+     * @throws Exception the exception
+     */
+    protected abstract void writeIdsToXml(EwsServiceXmlWriter writer)
+            throws Exception;
 
-  /**
-   * Writes XML elements.
-   *
-   * @param writer the writer
-   * @throws Exception the exception
-   */
-  @Override
-  protected void writeElementsToXml(EwsServiceXmlWriter writer)
-      throws Exception {
-    writer.writeStartElement(XmlNamespace.Messages,
-        XmlElementNames.ToFolderId);
-    this.getDestinationFolderId().writeToXml(writer);
-    writer.writeEndElement();
+    /**
+     * Writes XML elements.
+     *
+     * @param writer the writer
+     * @throws Exception the exception
+     */
+    @Override
+    protected void writeElementsToXml(EwsServiceXmlWriter writer)
+            throws Exception {
+        writer.writeStartElement(XmlNamespace.Messages,
+                XmlElementNames.ToFolderId);
+        this.getDestinationFolderId().writeToXml(writer);
+        writer.writeEndElement();
 
-    this.writeIdsToXml(writer);
-  }
+        this.writeIdsToXml(writer);
+    }
 
-  /**
-   * Gets the destination folder id.
-   *
-   * @return the destination folder id
-   */
-  public FolderId getDestinationFolderId() {
-    return this.destinationFolderId;
-  }
+    /**
+     * Gets the destination folder id.
+     *
+     * @return the destination folder id
+     */
+    public FolderId getDestinationFolderId() {
+        return this.destinationFolderId;
+    }
 
-  /**
-   * Sets the destination folder id.
-   *
-   * @param destinationFolderId the new destination folder id
-   */
-  public void setDestinationFolderId(FolderId destinationFolderId) {
-    this.destinationFolderId = destinationFolderId;
-  }
+    /**
+     * Sets the destination folder id.
+     *
+     * @param destinationFolderId the new destination folder id
+     */
+    public void setDestinationFolderId(FolderId destinationFolderId) {
+        this.destinationFolderId = destinationFolderId;
+    }
 
 }

@@ -26,8 +26,8 @@ package microsoft.exchange.webservices.data.core.response;
 import microsoft.exchange.webservices.data.core.EwsServiceXmlReader;
 import microsoft.exchange.webservices.data.core.EwsUtilities;
 import microsoft.exchange.webservices.data.core.XmlElementNames;
-import microsoft.exchange.webservices.data.core.service.item.Conversation;
 import microsoft.exchange.webservices.data.core.enumeration.misc.XmlNamespace;
+import microsoft.exchange.webservices.data.core.service.item.Conversation;
 import microsoft.exchange.webservices.data.security.XmlNodeType;
 
 import java.util.ArrayList;
@@ -38,62 +38,62 @@ import java.util.List;
  * Represents the response to a Conversation search operation.
  */
 public final class FindConversationResponse extends ServiceResponse {
-  List<Conversation> conversations = new ArrayList<Conversation>();
+    List<Conversation> conversations = new ArrayList<Conversation>();
 
-  /**
-   * Initializes a new instance of the FindConversationResponse class.
-   */
-  public FindConversationResponse() {
-    super();
-  }
-
-  /**
-   * Gets the results of the operation.
-   */
-  public Collection<Conversation> getConversations() {
-
-    return this.conversations;
-
-  }
-
-  /**
-   * Read Conversations from XML.
-   *
-   * @param reader The reader.
-   * @throws Exception
-   */
-  @Override
-  protected void readElementsFromXml(EwsServiceXmlReader reader)
-      throws Exception {
-    EwsUtilities.ewsAssert(conversations != null, "FindConversationResponse.ReadElementsFromXml",
-                           "conversations is null.");
-
-    reader.readStartElement(XmlNamespace.Messages,
-        XmlElementNames.Conversations);
-    if (!reader.isEmptyElement()) {
-      do {
-        reader.read();
-
-        if (reader.getNodeType().getNodeType() == XmlNodeType.START_ELEMENT) {
-          Conversation item = EwsUtilities.
-              createEwsObjectFromXmlElementName(Conversation.class,
-                  reader.getService(), reader.getLocalName());
-
-          if (item == null) {
-            reader.skipCurrentElement();
-          } else {
-            item.loadFromXml(
-                reader,
-                true, /* clearPropertyBag */
-                null,
-                false  /* summaryPropertiesOnly */);
-
-            conversations.add(item);
-          }
-        }
-      }
-      while (!reader.isEndElement(XmlNamespace.Messages,
-          XmlElementNames.Conversations));
+    /**
+     * Initializes a new instance of the FindConversationResponse class.
+     */
+    public FindConversationResponse() {
+        super();
     }
-  }
+
+    /**
+     * Gets the results of the operation.
+     */
+    public Collection<Conversation> getConversations() {
+
+        return this.conversations;
+
+    }
+
+    /**
+     * Read Conversations from XML.
+     *
+     * @param reader The reader.
+     * @throws Exception
+     */
+    @Override
+    protected void readElementsFromXml(EwsServiceXmlReader reader)
+            throws Exception {
+        EwsUtilities.ewsAssert(conversations != null, "FindConversationResponse.ReadElementsFromXml",
+                "conversations is null.");
+
+        reader.readStartElement(XmlNamespace.Messages,
+                XmlElementNames.Conversations);
+        if (!reader.isEmptyElement()) {
+            do {
+                reader.read();
+
+                if (reader.getNodeType().getNodeType() == XmlNodeType.START_ELEMENT) {
+                    Conversation item = EwsUtilities.
+                            createEwsObjectFromXmlElementName(Conversation.class,
+                                    reader.getService(), reader.getLocalName());
+
+                    if (item == null) {
+                        reader.skipCurrentElement();
+                    } else {
+                        item.loadFromXml(
+                                reader,
+                                true, /* clearPropertyBag */
+                                null,
+                                false  /* summaryPropertiesOnly */);
+
+                        conversations.add(item);
+                    }
+                }
+            }
+            while (!reader.isEndElement(XmlNamespace.Messages,
+                    XmlElementNames.Conversations));
+        }
+    }
 }

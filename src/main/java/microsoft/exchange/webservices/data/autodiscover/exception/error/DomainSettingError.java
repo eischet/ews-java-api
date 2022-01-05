@@ -34,80 +34,80 @@ import microsoft.exchange.webservices.data.security.XmlNodeType;
  */
 public final class DomainSettingError {
 
-  /**
-   * The error code.
-   */
-  private AutodiscoverErrorCode errorCode;
+    /**
+     * The error code.
+     */
+    private AutodiscoverErrorCode errorCode;
 
-  /**
-   * The error message.
-   */
-  private String errorMessage;
+    /**
+     * The error message.
+     */
+    private String errorMessage;
 
-  /**
-   * The setting name.
-   */
-  private String settingName;
+    /**
+     * The setting name.
+     */
+    private String settingName;
 
-  /**
-   * Initializes a new instance of the {@link DomainSettingError} class.
-   */
-  public DomainSettingError() {
-  }
+    /**
+     * Initializes a new instance of the {@link DomainSettingError} class.
+     */
+    public DomainSettingError() {
+    }
 
-  /**
-   * Loads from XML.
-   *
-   * @param reader The reader.
-   * @throws Exception the exception
-   */
-  public void loadFromXml(EwsXmlReader reader) throws Exception {
-    do {
-      reader.read();
+    /**
+     * Loads from XML.
+     *
+     * @param reader The reader.
+     * @throws Exception the exception
+     */
+    public void loadFromXml(EwsXmlReader reader) throws Exception {
+        do {
+            reader.read();
 
-      if (reader.getNodeType().getNodeType() == XmlNodeType.START_ELEMENT) {
-        if (reader.getLocalName().equals(XmlElementNames.ErrorCode)) {
-          this.errorCode = reader
-              .readElementValue(AutodiscoverErrorCode.class);
-        } else if (reader.getLocalName().equals(
-            XmlElementNames.ErrorMessage)) {
-          this.errorMessage = reader.readElementValue();
-        } else if (reader.getLocalName().equals(
-            XmlElementNames.SettingName)) {
-          this.settingName = reader.readElementValue();
-        }
-      }
-    } while (!reader.isEndElement(XmlNamespace.Autodiscover,
-        XmlElementNames.DomainSettingError));
-  }
+            if (reader.getNodeType().getNodeType() == XmlNodeType.START_ELEMENT) {
+                if (reader.getLocalName().equals(XmlElementNames.ErrorCode)) {
+                    this.errorCode = reader
+                            .readElementValue(AutodiscoverErrorCode.class);
+                } else if (reader.getLocalName().equals(
+                        XmlElementNames.ErrorMessage)) {
+                    this.errorMessage = reader.readElementValue();
+                } else if (reader.getLocalName().equals(
+                        XmlElementNames.SettingName)) {
+                    this.settingName = reader.readElementValue();
+                }
+            }
+        } while (!reader.isEndElement(XmlNamespace.Autodiscover,
+                XmlElementNames.DomainSettingError));
+    }
 
-  /**
-   * Gets the error code.
-   *
-   * @return The error code.
-   */
+    /**
+     * Gets the error code.
+     *
+     * @return The error code.
+     */
 
-  public AutodiscoverErrorCode getErrorCode() {
-    return this.errorCode;
-  }
+    public AutodiscoverErrorCode getErrorCode() {
+        return this.errorCode;
+    }
 
-  /**
-   * Gets the error message.
-   *
-   * @return The error message.
-   */
+    /**
+     * Gets the error message.
+     *
+     * @return The error message.
+     */
 
-  public String getErrorMessage() {
-    return this.errorMessage;
-  }
+    public String getErrorMessage() {
+        return this.errorMessage;
+    }
 
-  /**
-   * Gets the name of the setting.
-   *
-   * @return The name of the setting.
-   */
-  public String getSettingName() {
-    return this.settingName;
-  }
+    /**
+     * Gets the name of the setting.
+     *
+     * @return The name of the setting.
+     */
+    public String getSettingName() {
+        return this.settingName;
+    }
 
 }

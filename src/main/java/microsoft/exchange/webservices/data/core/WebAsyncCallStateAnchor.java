@@ -29,53 +29,53 @@ import microsoft.exchange.webservices.data.misc.AsyncCallback;
 
 public class WebAsyncCallStateAnchor {
 
-  ServiceRequestBase serviceRequest;
-  HttpWebRequest webRequest;
-  AsyncCallback asyncCallback;
-  Object asyncState;
+    ServiceRequestBase serviceRequest;
+    HttpWebRequest webRequest;
+    AsyncCallback asyncCallback;
+    Object asyncState;
 
-  public WebAsyncCallStateAnchor(ServiceRequestBase serviceRequest,
-      HttpWebRequest webRequest,
-      AsyncCallback asyncCallback,
-      Object asyncState)
-      throws Exception {
-    EwsUtilities.validateParam(serviceRequest, "serviceRequest");
-    EwsUtilities.validateParam(webRequest, "webRequest");
-    this.serviceRequest = serviceRequest;
-    this.webRequest = webRequest;
-    this.asyncCallback = asyncCallback;
-    this.asyncState = asyncState;
-  }
+    public WebAsyncCallStateAnchor(ServiceRequestBase serviceRequest,
+                                   HttpWebRequest webRequest,
+                                   AsyncCallback asyncCallback,
+                                   Object asyncState)
+            throws Exception {
+        EwsUtilities.validateParam(serviceRequest, "serviceRequest");
+        EwsUtilities.validateParam(webRequest, "webRequest");
+        this.serviceRequest = serviceRequest;
+        this.webRequest = webRequest;
+        this.asyncCallback = asyncCallback;
+        this.asyncState = asyncState;
+    }
 
-  public ServiceRequestBase getServiceRequest() {
-    return this.serviceRequest;
-  }
+    public ServiceRequestBase getServiceRequest() {
+        return this.serviceRequest;
+    }
 
-  public void setAsyncCallback(AsyncCallback asyncCallback) {
-    this.asyncCallback = asyncCallback;
-  }
+    public void setAsyncCallback(AsyncCallback asyncCallback) {
+        this.asyncCallback = asyncCallback;
+    }
 
-  public AsyncCallback getAsyncCallback() {
-    return this.asyncCallback;
-  }
+    public AsyncCallback getAsyncCallback() {
+        return this.asyncCallback;
+    }
 
-  public void setServiceRequest(ServiceRequestBase wasserviceRequest) {
-    serviceRequest = wasserviceRequest;
-  }
+    public void setServiceRequest(ServiceRequestBase wasserviceRequest) {
+        serviceRequest = wasserviceRequest;
+    }
 
-  public void setHttpWebRequest(HttpWebRequest waswebRequest) {
-    webRequest = waswebRequest;
-  }
+    public void setHttpWebRequest(HttpWebRequest waswebRequest) {
+        webRequest = waswebRequest;
+    }
 
-  public HttpWebRequest getHttpWebRequest() {
-    return this.webRequest;
-  }
+    public HttpWebRequest getHttpWebRequest() {
+        return this.webRequest;
+    }
 
-  public void setAsynncState(Object wasasyncState) {
-    asyncState = wasasyncState;
-  }
+    public void setAsynncState(Object wasasyncState) {
+        asyncState = wasasyncState;
+    }
 
-  public Object getAsyncState() {
-    return this.asyncState;
-  }
+    public Object getAsyncState() {
+        return this.asyncState;
+    }
 }

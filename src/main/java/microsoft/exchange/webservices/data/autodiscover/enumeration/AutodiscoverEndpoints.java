@@ -28,47 +28,47 @@ package microsoft.exchange.webservices.data.autodiscover.enumeration;
  */
 public enum AutodiscoverEndpoints {
 
-  /**
-   * No endpoints available.
-   */
-  None(0),
+    /**
+     * No endpoints available.
+     */
+    None(0),
 
-  /**
-   * The "legacy" Autodiscover endpoint.
-   */
-  Legacy(1),
+    /**
+     * The "legacy" Autodiscover endpoint.
+     */
+    Legacy(1),
 
-  /**
-   * The SOAP endpoint.
-   */
-  Soap(2),
+    /**
+     * The SOAP endpoint.
+     */
+    Soap(2),
 
-  /**
-   * The WS-Security endpoint.
-   */
-  WsSecurity(4),
+    /**
+     * The WS-Security endpoint.
+     */
+    WsSecurity(4),
 
-  /**
-   * The WS-Security/SymmetricKey endpoint.
-   */
-  WSSecuritySymmetricKey(8),
+    /**
+     * The WS-Security/SymmetricKey endpoint.
+     */
+    WSSecuritySymmetricKey(8),
 
-  /**
-   * The WS-Security/X509Cert endpoint.
-   */
-  WSSecurityX509Cert(16);
+    /**
+     * The WS-Security/X509Cert endpoint.
+     */
+    WSSecurityX509Cert(16);
 
-  /**
-   * The autodiscover end points.
-   */
-  private final int autodiscoverEndPoints;
+    /**
+     * The autodiscover end points.
+     */
+    private final int autodiscoverEndPoints;
 
-  /**
-   * Instantiates a new autodiscover endpoints.
-   *
-   * @param autodiscoverEndPoints the autodiscover end points
-   */
-  AutodiscoverEndpoints(int autodiscoverEndPoints) {
-    this.autodiscoverEndPoints = autodiscoverEndPoints;
-  }
+    /**
+     * Instantiates a new autodiscover endpoints.
+     *
+     * @param autodiscoverEndPoints the autodiscover end points
+     */
+    AutodiscoverEndpoints(int autodiscoverEndPoints) {
+        this.autodiscoverEndPoints = autodiscoverEndPoints;
+    }
 }

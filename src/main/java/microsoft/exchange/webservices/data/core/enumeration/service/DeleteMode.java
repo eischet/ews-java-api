@@ -28,23 +28,23 @@ package microsoft.exchange.webservices.data.core.enumeration.service;
  */
 public enum DeleteMode {
 
-  // The item or folder will be permanently deleted.
-  /**
-   * The Hard delete.
-   */
-  HardDelete,
+    // The item or folder will be permanently deleted.
+    /**
+     * The Hard delete.
+     */
+    HardDelete,
 
-  // The item or folder will be moved to the dumpster. Items and folder in
-  // the dumpster can be recovered.
-  /**
-   * The Soft delete.
-   */
-  SoftDelete,
+    // The item or folder will be moved to the dumpster. Items and folder in
+    // the dumpster can be recovered.
+    /**
+     * The Soft delete.
+     */
+    SoftDelete,
 
-  // The item or folder will be moved to the mailbox' Deleted Items folder.
-  /**
-   * The Move to deleted item.
-   */
-  MoveToDeletedItems
+    // The item or folder will be moved to the mailbox' Deleted Items folder.
+    /**
+     * The Move to deleted item.
+     */
+    MoveToDeletedItems
 
 }

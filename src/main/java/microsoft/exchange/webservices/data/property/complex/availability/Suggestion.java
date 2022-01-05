@@ -39,97 +39,97 @@ import java.util.Date;
  */
 public final class Suggestion extends ComplexProperty {
 
-  /**
-   * The date.
-   */
-  private Date date;
+    /**
+     * The date.
+     */
+    private Date date;
 
-  /**
-   * The quality.
-   */
-  private SuggestionQuality quality;
+    /**
+     * The quality.
+     */
+    private SuggestionQuality quality;
 
-  /**
-   * The time suggestions.
-   */
-  private Collection<TimeSuggestion> timeSuggestions =
-      new ArrayList<TimeSuggestion>();
+    /**
+     * The time suggestions.
+     */
+    private final Collection<TimeSuggestion> timeSuggestions =
+            new ArrayList<TimeSuggestion>();
 
-  /**
-   * Initializes a new instance of the Suggestion class.
-   */
-  public Suggestion() {
-    super();
-  }
-
-  /**
-   * Tries to read element from XML.
-   *
-   * @param reader the reader
-   * @return True if appropriate element was read.
-   * @throws Exception the exception
-   */
-  @Override
-  public boolean tryReadElementFromXml(EwsServiceXmlReader reader) throws Exception {
-    if (reader.getLocalName().equals(XmlElementNames.Date)) {
-      SimpleDateFormat sdfin = new SimpleDateFormat(
-          "yyyy-MM-dd'T'HH:mm:ss");
-      this.date = sdfin.parse(reader.readElementValue());
-      return true;
-    } else if (reader.getLocalName().equals(XmlElementNames.DayQuality)) {
-      this.quality = reader.readElementValue(SuggestionQuality.class);
-      return true;
-    } else if (reader.getLocalName()
-        .equals(XmlElementNames.SuggestionArray)) {
-      if (!reader.isEmptyElement()) {
-        do {
-          reader.read();
-
-          if (reader.isStartElement(XmlNamespace.Types,
-              XmlElementNames.Suggestion)) {
-            TimeSuggestion timeSuggestion = new TimeSuggestion();
-
-            timeSuggestion.loadFromXml(reader, reader
-                .getLocalName());
-
-            this.timeSuggestions.add(timeSuggestion);
-          }
-        } while (!reader.isEndElement(XmlNamespace.Types,
-            XmlElementNames.SuggestionArray));
-      }
-
-      return true;
-    } else {
-      return false;
+    /**
+     * Initializes a new instance of the Suggestion class.
+     */
+    public Suggestion() {
+        super();
     }
 
-  }
+    /**
+     * Tries to read element from XML.
+     *
+     * @param reader the reader
+     * @return True if appropriate element was read.
+     * @throws Exception the exception
+     */
+    @Override
+    public boolean tryReadElementFromXml(EwsServiceXmlReader reader) throws Exception {
+        if (reader.getLocalName().equals(XmlElementNames.Date)) {
+            SimpleDateFormat sdfin = new SimpleDateFormat(
+                    "yyyy-MM-dd'T'HH:mm:ss");
+            this.date = sdfin.parse(reader.readElementValue());
+            return true;
+        } else if (reader.getLocalName().equals(XmlElementNames.DayQuality)) {
+            this.quality = reader.readElementValue(SuggestionQuality.class);
+            return true;
+        } else if (reader.getLocalName()
+                .equals(XmlElementNames.SuggestionArray)) {
+            if (!reader.isEmptyElement()) {
+                do {
+                    reader.read();
 
-  /**
-   * Gets the date and time of the suggestion.
-   *
-   * @return the date
-   */
-  public Date getDate() {
-    return date;
-  }
+                    if (reader.isStartElement(XmlNamespace.Types,
+                            XmlElementNames.Suggestion)) {
+                        TimeSuggestion timeSuggestion = new TimeSuggestion();
 
-  /**
-   * Gets the quality of the suggestion.
-   *
-   * @return the quality
-   */
-  public SuggestionQuality getQuality() {
-    return quality;
-  }
+                        timeSuggestion.loadFromXml(reader, reader
+                                .getLocalName());
 
-  /**
-   * Gets a collection of suggested times within the suggested day.
-   *
-   * @return the time suggestions
-   */
-  public Collection<TimeSuggestion> getTimeSuggestions() {
-    return timeSuggestions;
-  }
+                        this.timeSuggestions.add(timeSuggestion);
+                    }
+                } while (!reader.isEndElement(XmlNamespace.Types,
+                        XmlElementNames.SuggestionArray));
+            }
+
+            return true;
+        } else {
+            return false;
+        }
+
+    }
+
+    /**
+     * Gets the date and time of the suggestion.
+     *
+     * @return the date
+     */
+    public Date getDate() {
+        return date;
+    }
+
+    /**
+     * Gets the quality of the suggestion.
+     *
+     * @return the quality
+     */
+    public SuggestionQuality getQuality() {
+        return quality;
+    }
+
+    /**
+     * Gets a collection of suggested times within the suggested day.
+     *
+     * @return the time suggestions
+     */
+    public Collection<TimeSuggestion> getTimeSuggestions() {
+        return timeSuggestions;
+    }
 
 }

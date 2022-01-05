@@ -23,11 +23,7 @@
 
 package microsoft.exchange.webservices.data.core.response;
 
-import microsoft.exchange.webservices.data.core.EwsServiceXmlReader;
-import microsoft.exchange.webservices.data.core.EwsUtilities;
-import microsoft.exchange.webservices.data.core.ExchangeService;
-import microsoft.exchange.webservices.data.core.PropertySet;
-import microsoft.exchange.webservices.data.core.XmlElementNames;
+import microsoft.exchange.webservices.data.core.*;
 import microsoft.exchange.webservices.data.core.service.ServiceObject;
 import microsoft.exchange.webservices.data.core.service.folder.Folder;
 
@@ -37,88 +33,88 @@ import java.util.List;
  * Represents the response to an individual folder retrieval operation.
  */
 public final class GetFolderResponse extends ServiceResponse implements
-                                                             IGetObjectInstanceDelegate<ServiceObject> {
+        IGetObjectInstanceDelegate<ServiceObject> {
 
-  /**
-   * The folder.
-   */
-  private Folder folder;
+    /**
+     * The folder.
+     */
+    private Folder folder;
 
-  /**
-   * The property set.
-   */
-  private PropertySet propertySet;
+    /**
+     * The property set.
+     */
+    private final PropertySet propertySet;
 
-  /**
-   * Initializes a new instance of the GetFolderResponse class.
-   *
-   * @param folder      The folder.
-   * @param propertySet The property set from the request.
-   */
-  public GetFolderResponse(Folder folder, PropertySet propertySet) {
-    super();
-    this.folder = folder;
-    this.propertySet = propertySet;
-    EwsUtilities
-        .ewsAssert(this.propertySet != null, "GetFolderResponse.ctor", "PropertySet should not be null");
-  }
-
-  /**
-   * Reads response elements from XML.
-   *
-   * @param reader the reader
-   * @throws Exception the exception
-   */
-  @Override
-  protected void readElementsFromXml(EwsServiceXmlReader reader)
-      throws Exception {
-    super.readElementsFromXml(reader);
-    List<Folder> folders = reader.readServiceObjectsCollectionFromXml(
-        XmlElementNames.Folders, this, true, /* clearPropertyBag */
-        this.propertySet, /* requestedPropertySet */
-        false); /* summaryPropertiesOnly */
-    this.folder = folders.get(0);
-  }
-
-  /**
-   * Gets the object instance delegate.
-   *
-   * @param service        the service
-   * @param xmlElementName the xml element name
-   * @return the object instance delegate
-   * @throws Exception the exception
-   */
-  @Override
-  public ServiceObject getObjectInstanceDelegate(ExchangeService service,
-      String xmlElementName) throws Exception {
-    return this.getObjectInstance(service, xmlElementName);
-  }
-
-  /**
-   * Gets the folder instance.
-   *
-   * @param service        The service.
-   * @param xmlElementName Name of the XML element.
-   * @return folder
-   * @throws Exception the exception
-   */
-  private Folder getObjectInstance(ExchangeService service,
-      String xmlElementName) throws Exception {
-    if (this.getFolder() != null) {
-      return this.getFolder();
-    } else {
-      return EwsUtilities.createEwsObjectFromXmlElementName(Folder.class,
-          service, xmlElementName);
+    /**
+     * Initializes a new instance of the GetFolderResponse class.
+     *
+     * @param folder      The folder.
+     * @param propertySet The property set from the request.
+     */
+    public GetFolderResponse(Folder folder, PropertySet propertySet) {
+        super();
+        this.folder = folder;
+        this.propertySet = propertySet;
+        EwsUtilities
+                .ewsAssert(this.propertySet != null, "GetFolderResponse.ctor", "PropertySet should not be null");
     }
-  }
 
-  /**
-   * Gets the folder that was retrieved.
-   *
-   * @return folder
-   */
-  public Folder getFolder() {
-    return this.folder;
-  }
+    /**
+     * Reads response elements from XML.
+     *
+     * @param reader the reader
+     * @throws Exception the exception
+     */
+    @Override
+    protected void readElementsFromXml(EwsServiceXmlReader reader)
+            throws Exception {
+        super.readElementsFromXml(reader);
+        List<Folder> folders = reader.readServiceObjectsCollectionFromXml(
+                XmlElementNames.Folders, this, true, /* clearPropertyBag */
+                this.propertySet, /* requestedPropertySet */
+                false); /* summaryPropertiesOnly */
+        this.folder = folders.get(0);
+    }
+
+    /**
+     * Gets the object instance delegate.
+     *
+     * @param service        the service
+     * @param xmlElementName the xml element name
+     * @return the object instance delegate
+     * @throws Exception the exception
+     */
+    @Override
+    public ServiceObject getObjectInstanceDelegate(ExchangeService service,
+                                                   String xmlElementName) throws Exception {
+        return this.getObjectInstance(service, xmlElementName);
+    }
+
+    /**
+     * Gets the folder instance.
+     *
+     * @param service        The service.
+     * @param xmlElementName Name of the XML element.
+     * @return folder
+     * @throws Exception the exception
+     */
+    private Folder getObjectInstance(ExchangeService service,
+                                     String xmlElementName) throws Exception {
+        if (this.getFolder() != null) {
+            return this.getFolder();
+        } else {
+            return EwsUtilities.createEwsObjectFromXmlElementName(Folder.class,
+                    service, xmlElementName);
+        }
+    }
+
+    /**
+     * Gets the folder that was retrieved.
+     *
+     * @return folder
+     */
+    public Folder getFolder() {
+        return this.folder;
+    }
 
 }

@@ -33,110 +33,110 @@ import java.util.Iterator;
  */
 public final class FindFoldersResults implements Iterable<Folder> {
 
-  /**
-   * The total count.
-   */
-  private int totalCount;
+    /**
+     * The total count.
+     */
+    private int totalCount;
 
-  /**
-   * The next page offset.
-   */
-  private Integer nextPageOffset;
+    /**
+     * The next page offset.
+     */
+    private Integer nextPageOffset;
 
-  /**
-   * The more available.
-   */
-  private boolean moreAvailable;
+    /**
+     * The more available.
+     */
+    private boolean moreAvailable;
 
-  /**
-   * The folder.
-   */
-  private ArrayList<Folder> folders = new ArrayList<Folder>();
+    /**
+     * The folder.
+     */
+    private final ArrayList<Folder> folders = new ArrayList<Folder>();
 
-  /**
-   * Initializes a new instance of the <see cref="FindFoldersResults"/> class.
-   */
-  public FindFoldersResults() {
+    /**
+     * Initializes a new instance of the <see cref="FindFoldersResults"/> class.
+     */
+    public FindFoldersResults() {
 
-  }
+    }
 
-  /**
-   * Gets the total number of folder matching the search criteria available
-   * in the searched folder.
-   *
-   * @return the total count
-   */
-  public int getTotalCount() {
-    return totalCount;
-  }
+    /**
+     * Gets the total number of folder matching the search criteria available
+     * in the searched folder.
+     *
+     * @return the total count
+     */
+    public int getTotalCount() {
+        return totalCount;
+    }
 
-  /**
-   * Sets the total number of folder.
-   *
-   * @param totalCount the new total count
-   */
-  public void setTotalCount(int totalCount) {
-    this.totalCount = totalCount;
-  }
+    /**
+     * Sets the total number of folder.
+     *
+     * @param totalCount the new total count
+     */
+    public void setTotalCount(int totalCount) {
+        this.totalCount = totalCount;
+    }
 
-  /**
-   * Gets the offset that should be used with FolderView to retrieve the next
-   * page of folder in a FindFolders operation.
-   *
-   * @return the next page offset
-   */
-  public Integer getNextPageOffset() {
-    return nextPageOffset;
-  }
+    /**
+     * Gets the offset that should be used with FolderView to retrieve the next
+     * page of folder in a FindFolders operation.
+     *
+     * @return the next page offset
+     */
+    public Integer getNextPageOffset() {
+        return nextPageOffset;
+    }
 
-  /**
-   * Sets the offset that should be used with FolderView to retrieve the next
-   * page of folder in a FindFolders operation.
-   *
-   * @param nextPageOffset the new next page offset
-   */
-  public void setNextPageOffset(Integer nextPageOffset) {
-    this.nextPageOffset = nextPageOffset;
-  }
+    /**
+     * Sets the offset that should be used with FolderView to retrieve the next
+     * page of folder in a FindFolders operation.
+     *
+     * @param nextPageOffset the new next page offset
+     */
+    public void setNextPageOffset(Integer nextPageOffset) {
+        this.nextPageOffset = nextPageOffset;
+    }
 
-  /**
-   * Gets a value indicating whether more folder matching the search
-   * criteria. are available in the searched folder.
-   *
-   * @return true, if is more available
-   */
-  public boolean isMoreAvailable() {
-    return moreAvailable;
-  }
+    /**
+     * Gets a value indicating whether more folder matching the search
+     * criteria. are available in the searched folder.
+     *
+     * @return true, if is more available
+     */
+    public boolean isMoreAvailable() {
+        return moreAvailable;
+    }
 
-  /**
-   * Sets a value indicating whether more folder matching the search
-   * criteria. are available in the searched folder.
-   *
-   * @param moreAvailable the new more available
-   */
-  public void setMoreAvailable(boolean moreAvailable) {
-    this.moreAvailable = moreAvailable;
-  }
+    /**
+     * Sets a value indicating whether more folder matching the search
+     * criteria. are available in the searched folder.
+     *
+     * @param moreAvailable the new more available
+     */
+    public void setMoreAvailable(boolean moreAvailable) {
+        this.moreAvailable = moreAvailable;
+    }
 
-  /**
-   * Gets a collection containing the folder that were found by the search
-   * operation.
-   *
-   * @return the folder
-   */
-  public ArrayList<Folder> getFolders() {
-    return folders;
-  }
+    /**
+     * Gets a collection containing the folder that were found by the search
+     * operation.
+     *
+     * @return the folder
+     */
+    public ArrayList<Folder> getFolders() {
+        return folders;
+    }
 
-  /**
-   * Returns an iterator that iterates through a collection.
-   *
-   * @return the iterator
-   */
-  @Override
-  public Iterator<Folder> iterator() {
-    return this.folders.iterator();
-  }
+    /**
+     * Returns an iterator that iterates through a collection.
+     *
+     * @return the iterator
+     */
+    @Override
+    public Iterator<Folder> iterator() {
+        return this.folders.iterator();
+    }
 
 }

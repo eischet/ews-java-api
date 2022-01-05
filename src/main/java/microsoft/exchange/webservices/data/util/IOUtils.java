@@ -1,6 +1,5 @@
 package microsoft.exchange.webservices.data.util;
 
-import java.io.ByteArrayOutputStream;
 import java.io.Closeable;
 import java.io.IOException;
 

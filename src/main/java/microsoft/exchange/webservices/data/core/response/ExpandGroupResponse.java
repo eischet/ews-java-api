@@ -31,38 +31,38 @@ import microsoft.exchange.webservices.data.misc.ExpandGroupResults;
  */
 public final class ExpandGroupResponse extends ServiceResponse {
 
-  /**
-   * AD or store group members.
-   */
-  private ExpandGroupResults members = new ExpandGroupResults();
+    /**
+     * AD or store group members.
+     */
+    private final ExpandGroupResults members = new ExpandGroupResults();
 
-  /**
-   * Initializes a new instance of the class.
-   */
-  public ExpandGroupResponse() {
-    super();
-  }
+    /**
+     * Initializes a new instance of the class.
+     */
+    public ExpandGroupResponse() {
+        super();
+    }
 
-  /**
-   * Gets a list of the group's members.
-   *
-   * @return the members
-   */
-  public ExpandGroupResults getMembers() {
-    return this.members;
-  }
+    /**
+     * Gets a list of the group's members.
+     *
+     * @return the members
+     */
+    public ExpandGroupResults getMembers() {
+        return this.members;
+    }
 
-  /**
-   * Reads response elements from XML.
-   *
-   * @param reader the reader
-   * @throws Exception the exception
-   */
-  @Override
-  protected void readElementsFromXml(EwsServiceXmlReader reader)
-      throws Exception {
-    super.readElementsFromXml(reader);
-    this.getMembers().loadFromXml(reader);
-  }
+    /**
+     * Reads response elements from XML.
+     *
+     * @param reader the reader
+     * @throws Exception the exception
+     */
+    @Override
+    protected void readElementsFromXml(EwsServiceXmlReader reader)
+            throws Exception {
+        super.readElementsFromXml(reader);
+        this.getMembers().loadFromXml(reader);
+    }
 
 }

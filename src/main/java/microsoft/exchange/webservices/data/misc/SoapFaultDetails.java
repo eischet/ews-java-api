@@ -27,8 +27,8 @@ import microsoft.exchange.webservices.data.core.EwsUtilities;
 import microsoft.exchange.webservices.data.core.EwsXmlReader;
 import microsoft.exchange.webservices.data.core.XmlAttributeNames;
 import microsoft.exchange.webservices.data.core.XmlElementNames;
-import microsoft.exchange.webservices.data.core.enumeration.misc.error.ServiceError;
 import microsoft.exchange.webservices.data.core.enumeration.misc.XmlNamespace;
+import microsoft.exchange.webservices.data.core.enumeration.misc.error.ServiceError;
 import microsoft.exchange.webservices.data.core.exception.service.local.ServiceXmlDeserializationException;
 import microsoft.exchange.webservices.data.security.XmlNodeType;
 
@@ -42,374 +42,374 @@ import java.util.logging.Logger;
  */
 public class SoapFaultDetails {
 
-  private static final Logger LOG = Logger.getLogger(SoapFaultDetails.class.getCanonicalName());
+    private static final Logger LOG = Logger.getLogger(SoapFaultDetails.class.getCanonicalName());
 
-  /**
-   * The fault code.
-   */
-  private String faultCode;
+    /**
+     * The fault code.
+     */
+    private String faultCode;
 
-  /**
-   * The fault string.
-   */
-  private String faultString;
+    /**
+     * The fault string.
+     */
+    private String faultString;
 
-  /**
-   * The fault actor.
-   */
-  private String faultActor;
+    /**
+     * The fault actor.
+     */
+    private String faultActor;
 
-  /**
-   * The response code.
-   */
-  private ServiceError responseCode = ServiceError.ErrorInternalServerError;
+    /**
+     * The response code.
+     */
+    private ServiceError responseCode = ServiceError.ErrorInternalServerError;
 
-  /**
-   * The message.
-   */
-  private String message;
+    /**
+     * The message.
+     */
+    private String message;
 
-  /**
-   * The error code.
-   */
-  private ServiceError errorCode = ServiceError.NoError;
+    /**
+     * The error code.
+     */
+    private ServiceError errorCode = ServiceError.NoError;
 
-  /**
-   * The exception type.
-   */
-  private String exceptionType;
+    /**
+     * The exception type.
+     */
+    private String exceptionType;
 
-  /**
-   * The line number.
-   */
-  private int lineNumber;
+    /**
+     * The line number.
+     */
+    private int lineNumber;
 
-  /**
-   * The position within line.
-   */
-  private int positionWithinLine;
+    /**
+     * The position within line.
+     */
+    private int positionWithinLine;
 
-  /**
-   * Dictionary of key/value pairs from the MessageXml node in the fault.
-   * Usually empty but there are a few cases where SOAP faults may include
-   * MessageXml details (e.g. CASOverBudgetException includes BackoffTime
-   * value).
-   */
-  private Map<String, String> errorDetails = new HashMap<String, String>();
+    /**
+     * Dictionary of key/value pairs from the MessageXml node in the fault.
+     * Usually empty but there are a few cases where SOAP faults may include
+     * MessageXml details (e.g. CASOverBudgetException includes BackoffTime
+     * value).
+     */
+    private Map<String, String> errorDetails = new HashMap<String, String>();
 
-  /**
-   * Parses the.
-   *
-   * @param reader        the reader
-   * @param soapNamespace the soap namespace
-   * @return the soap fault details
-   * @throws Exception the exception
-   */
-  public static SoapFaultDetails parse(EwsXmlReader reader, XmlNamespace soapNamespace) throws Exception {
-    SoapFaultDetails soapFaultDetails = new SoapFaultDetails();
+    /**
+     * Parses the.
+     *
+     * @param reader        the reader
+     * @param soapNamespace the soap namespace
+     * @return the soap fault details
+     * @throws Exception the exception
+     */
+    public static SoapFaultDetails parse(EwsXmlReader reader, XmlNamespace soapNamespace) throws Exception {
+        SoapFaultDetails soapFaultDetails = new SoapFaultDetails();
 
-    do {
-      reader.read();
-      if (reader.getNodeType().equals(
-          new XmlNodeType(XmlNodeType.START_ELEMENT))) {
-        String localName = reader.getLocalName();
-        if (localName.equals(XmlElementNames.SOAPFaultCodeElementName)) {
-          soapFaultDetails.setFaultCode(reader.readElementValue());
-        } else if (localName
-            .equals(XmlElementNames.SOAPFaultStringElementName)) {
-          soapFaultDetails.setFaultString(reader.readElementValue());
-        } else if (localName
-            .equals(XmlElementNames.SOAPFaultActorElementName)) {
-          soapFaultDetails.setFaultActor(reader.readElementValue());
-        } else if (localName
-            .equals(XmlElementNames.SOAPDetailElementName)) {
-          soapFaultDetails.parseDetailNode(reader);
-        }
-      }
-    } while (!reader.isEndElement(soapNamespace,
-        XmlElementNames.SOAPFaultElementName));
+        do {
+            reader.read();
+            if (reader.getNodeType().equals(
+                    new XmlNodeType(XmlNodeType.START_ELEMENT))) {
+                String localName = reader.getLocalName();
+                if (localName.equals(XmlElementNames.SOAPFaultCodeElementName)) {
+                    soapFaultDetails.setFaultCode(reader.readElementValue());
+                } else if (localName
+                        .equals(XmlElementNames.SOAPFaultStringElementName)) {
+                    soapFaultDetails.setFaultString(reader.readElementValue());
+                } else if (localName
+                        .equals(XmlElementNames.SOAPFaultActorElementName)) {
+                    soapFaultDetails.setFaultActor(reader.readElementValue());
+                } else if (localName
+                        .equals(XmlElementNames.SOAPDetailElementName)) {
+                    soapFaultDetails.parseDetailNode(reader);
+                }
+            }
+        } while (!reader.isEndElement(soapNamespace,
+                XmlElementNames.SOAPFaultElementName));
 
-    return soapFaultDetails;
-  }
-
-  /**
-   * Parses the detail node.
-   *
-   * @param reader the reader
-   * @throws Exception the exception
-   */
-  private void parseDetailNode(EwsXmlReader reader) throws Exception {
-    do {
-      reader.read();
-      if (reader.getNodeType().equals(
-          new XmlNodeType(XmlNodeType.START_ELEMENT))) {
-        String localName = reader.getLocalName();
-        if (localName
-            .equals(XmlElementNames.EwsResponseCodeElementName)) {
-          try {
-            this.setResponseCode(reader
-                .readElementValue(ServiceError.class));
-          } catch (Exception e) {
-            LOG.log(Level.SEVERE, "error parsing details", e);
-
-            // ServiceError couldn't be mapped to enum value, treat
-            // as an ISE
-            this
-                .setResponseCode(ServiceError.
-                    ErrorInternalServerError);
-          }
-
-        } else if (localName
-            .equals(XmlElementNames.EwsMessageElementName)) {
-          this.setMessage(reader.readElementValue());
-        } else if (localName.equals(XmlElementNames.EwsLineElementName)) {
-          this.setLineNumber(reader.readElementValue(Integer.class));
-        } else if (localName
-            .equals(XmlElementNames.EwsPositionElementName)) {
-          this.setPositionWithinLine(reader
-              .readElementValue(Integer.class));
-        } else if (localName
-            .equals(XmlElementNames.EwsErrorCodeElementName)) {
-          try {
-            this.setErrorCode(reader
-                .readElementValue(ServiceError.class));
-          } catch (Exception e) {
-            LOG.log(Level.SEVERE, "error parsing details", e);
-
-            // ServiceError couldn't be mapped to enum value, treat
-            // as an ISE
-            this
-                .setErrorCode(ServiceError.
-                    ErrorInternalServerError);
-          }
-
-        } else if (localName
-            .equals(XmlElementNames.EwsExceptionTypeElementName)) {
-          try {
-            this.setExceptionType(reader.readElementValue());
-          } catch (Exception e) {
-            LOG.log(Level.SEVERE, "error parsing details", e);
-            this.setExceptionType(null);
-          }
-        } else if (localName.equals(XmlElementNames.MessageXml)) {
-          this.parseMessageXml(reader);
-        }
-      }
-    } while (!reader.isEndElement(XmlNamespace.NotSpecified,
-        XmlElementNames.SOAPDetailElementName));
-  }
-
-  /**
-   * Parses the message xml.
-   *
-   * @param reader the reader
-   * @throws Exception                          the exception
-   * @throws ServiceXmlDeserializationException the service xml deserialization exception
-   */
-  private void parseMessageXml(EwsXmlReader reader) throws Exception, ServiceXmlDeserializationException, Exception {
-    // E14:172881: E12 and E14 return the MessageXml element in different
-    // namespaces (types namespace for E12, errors namespace in E14). To
-    // avoid this problem, the parser will match the namespace from the
-    // start and end elements.
-    XmlNamespace elementNS = EwsUtilities.getNamespaceFromUri(reader.getNamespaceUri());
-
-    if (!reader.isEmptyElement()) {
-      do {
-        reader.read();
-
-        if (reader.isStartElement() && !reader.isEmptyElement()) {
-          String localName = reader.getLocalName();
-          if (localName.equals(XmlElementNames.Value)) {
-            this.errorDetails.put(reader
-                    .readAttributeValue(XmlAttributeNames.Name),
-                reader.readElementValue());
-          }
-        }
-      } while (!reader
-          .isEndElement(elementNS, XmlElementNames.MessageXml));
-    } else {
-      reader.read();
+        return soapFaultDetails;
     }
 
-  }
+    /**
+     * Parses the detail node.
+     *
+     * @param reader the reader
+     * @throws Exception the exception
+     */
+    private void parseDetailNode(EwsXmlReader reader) throws Exception {
+        do {
+            reader.read();
+            if (reader.getNodeType().equals(
+                    new XmlNodeType(XmlNodeType.START_ELEMENT))) {
+                String localName = reader.getLocalName();
+                if (localName
+                        .equals(XmlElementNames.EwsResponseCodeElementName)) {
+                    try {
+                        this.setResponseCode(reader
+                                .readElementValue(ServiceError.class));
+                    } catch (Exception e) {
+                        LOG.log(Level.SEVERE, "error parsing details", e);
 
-  /**
-   * Gets the fault code.
-   *
-   * @return the fault code
-   */
-  protected String getFaultCode() {
-    return faultCode;
-  }
+                        // ServiceError couldn't be mapped to enum value, treat
+                        // as an ISE
+                        this
+                                .setResponseCode(ServiceError.
+                                        ErrorInternalServerError);
+                    }
 
-  /**
-   * Sets the fault code.
-   *
-   * @param faultCode the new fault code
-   */
-  protected void setFaultCode(String faultCode) {
-    this.faultCode = faultCode;
-  }
+                } else if (localName
+                        .equals(XmlElementNames.EwsMessageElementName)) {
+                    this.setMessage(reader.readElementValue());
+                } else if (localName.equals(XmlElementNames.EwsLineElementName)) {
+                    this.setLineNumber(reader.readElementValue(Integer.class));
+                } else if (localName
+                        .equals(XmlElementNames.EwsPositionElementName)) {
+                    this.setPositionWithinLine(reader
+                            .readElementValue(Integer.class));
+                } else if (localName
+                        .equals(XmlElementNames.EwsErrorCodeElementName)) {
+                    try {
+                        this.setErrorCode(reader
+                                .readElementValue(ServiceError.class));
+                    } catch (Exception e) {
+                        LOG.log(Level.SEVERE, "error parsing details", e);
 
-  /**
-   * Gets the fault string.
-   *
-   * @return the fault string
-   */
-  public String getFaultString() {
-    return faultString;
-  }
+                        // ServiceError couldn't be mapped to enum value, treat
+                        // as an ISE
+                        this
+                                .setErrorCode(ServiceError.
+                                        ErrorInternalServerError);
+                    }
 
-  /**
-   * Sets the fault string.
-   *
-   * @param faultString the new fault string
-   */
-  protected void setFaultString(String faultString) {
-    this.faultString = faultString;
-  }
+                } else if (localName
+                        .equals(XmlElementNames.EwsExceptionTypeElementName)) {
+                    try {
+                        this.setExceptionType(reader.readElementValue());
+                    } catch (Exception e) {
+                        LOG.log(Level.SEVERE, "error parsing details", e);
+                        this.setExceptionType(null);
+                    }
+                } else if (localName.equals(XmlElementNames.MessageXml)) {
+                    this.parseMessageXml(reader);
+                }
+            }
+        } while (!reader.isEndElement(XmlNamespace.NotSpecified,
+                XmlElementNames.SOAPDetailElementName));
+    }
 
-  /**
-   * Gets the fault actor.
-   *
-   * @return the fault actor
-   */
-  protected String getFaultActor() {
-    return faultActor;
-  }
+    /**
+     * Parses the message xml.
+     *
+     * @param reader the reader
+     * @throws Exception                          the exception
+     * @throws ServiceXmlDeserializationException the service xml deserialization exception
+     */
+    private void parseMessageXml(EwsXmlReader reader) throws Exception, ServiceXmlDeserializationException, Exception {
+        // E14:172881: E12 and E14 return the MessageXml element in different
+        // namespaces (types namespace for E12, errors namespace in E14). To
+        // avoid this problem, the parser will match the namespace from the
+        // start and end elements.
+        XmlNamespace elementNS = EwsUtilities.getNamespaceFromUri(reader.getNamespaceUri());
 
-  /**
-   * Sets the fault actor.
-   *
-   * @param faultActor the new fault actor
-   */
-  protected void setFaultActor(String faultActor) {
-    this.faultActor = faultActor;
-  }
+        if (!reader.isEmptyElement()) {
+            do {
+                reader.read();
 
-  /**
-   * Gets the response code.
-   *
-   * @return the response code
-   */
-  public ServiceError getResponseCode() {
-    return responseCode;
-  }
+                if (reader.isStartElement() && !reader.isEmptyElement()) {
+                    String localName = reader.getLocalName();
+                    if (localName.equals(XmlElementNames.Value)) {
+                        this.errorDetails.put(reader
+                                        .readAttributeValue(XmlAttributeNames.Name),
+                                reader.readElementValue());
+                    }
+                }
+            } while (!reader
+                    .isEndElement(elementNS, XmlElementNames.MessageXml));
+        } else {
+            reader.read();
+        }
 
-  /**
-   * Sets the response code.
-   *
-   * @param responseCode the new response code
-   */
-  protected void setResponseCode(ServiceError responseCode) {
-    this.responseCode = responseCode;
-  }
+    }
 
-  /**
-   * Gets the message.
-   *
-   * @return the message
-   */
-  protected String getMessage() {
-    return message;
-  }
+    /**
+     * Gets the fault code.
+     *
+     * @return the fault code
+     */
+    protected String getFaultCode() {
+        return faultCode;
+    }
 
-  /**
-   * Sets the message.
-   *
-   * @param message the new message
-   */
-  protected void setMessage(String message) {
-    this.message = message;
-  }
+    /**
+     * Sets the fault code.
+     *
+     * @param faultCode the new fault code
+     */
+    protected void setFaultCode(String faultCode) {
+        this.faultCode = faultCode;
+    }
 
-  /**
-   * Gets the error code.
-   *
-   * @return the error code
-   */
-  protected ServiceError getErrorCode() {
-    return errorCode;
-  }
+    /**
+     * Gets the fault string.
+     *
+     * @return the fault string
+     */
+    public String getFaultString() {
+        return faultString;
+    }
 
-  /**
-   * Sets the error code.
-   *
-   * @param errorCode the new error code
-   */
-  protected void setErrorCode(ServiceError errorCode) {
-    this.errorCode = errorCode;
-  }
+    /**
+     * Sets the fault string.
+     *
+     * @param faultString the new fault string
+     */
+    protected void setFaultString(String faultString) {
+        this.faultString = faultString;
+    }
 
-  /**
-   * Gets the exception type.
-   *
-   * @return the exception type
-   */
-  protected String getExceptionType() {
-    return exceptionType;
-  }
+    /**
+     * Gets the fault actor.
+     *
+     * @return the fault actor
+     */
+    protected String getFaultActor() {
+        return faultActor;
+    }
 
-  /**
-   * Sets the exception type.
-   *
-   * @param exceptionType the new exception type
-   */
-  protected void setExceptionType(String exceptionType) {
-    this.exceptionType = exceptionType;
-  }
+    /**
+     * Sets the fault actor.
+     *
+     * @param faultActor the new fault actor
+     */
+    protected void setFaultActor(String faultActor) {
+        this.faultActor = faultActor;
+    }
 
-  /**
-   * Gets the line number.
-   *
-   * @return the line number
-   */
-  protected int getLineNumber() {
-    return lineNumber;
-  }
+    /**
+     * Gets the response code.
+     *
+     * @return the response code
+     */
+    public ServiceError getResponseCode() {
+        return responseCode;
+    }
 
-  /**
-   * Sets the line number.
-   *
-   * @param lineNumber the new line number
-   */
-  protected void setLineNumber(int lineNumber) {
-    this.lineNumber = lineNumber;
-  }
+    /**
+     * Sets the response code.
+     *
+     * @param responseCode the new response code
+     */
+    protected void setResponseCode(ServiceError responseCode) {
+        this.responseCode = responseCode;
+    }
 
-  /**
-   * Gets the position within line.
-   *
-   * @return the position within line
-   */
-  protected int getPositionWithinLine() {
-    return positionWithinLine;
-  }
+    /**
+     * Gets the message.
+     *
+     * @return the message
+     */
+    protected String getMessage() {
+        return message;
+    }
 
-  /**
-   * Sets the position within line.
-   *
-   * @param positionWithinLine the new position within line
-   */
-  protected void setPositionWithinLine(int positionWithinLine) {
-    this.positionWithinLine = positionWithinLine;
-  }
+    /**
+     * Sets the message.
+     *
+     * @param message the new message
+     */
+    protected void setMessage(String message) {
+        this.message = message;
+    }
 
-  /**
-   * Gets the error details.
-   *
-   * @return the error details
-   */
-  public Map<String, String> getErrorDetails() {
-    return errorDetails;
-  }
+    /**
+     * Gets the error code.
+     *
+     * @return the error code
+     */
+    protected ServiceError getErrorCode() {
+        return errorCode;
+    }
 
-  /**
-   * Sets the error details.
-   *
-   * @param errorDetails the error details
-   */
-  protected void setErrorDetails(Map<String, String> errorDetails) {
-    this.errorDetails = errorDetails;
-  }
+    /**
+     * Sets the error code.
+     *
+     * @param errorCode the new error code
+     */
+    protected void setErrorCode(ServiceError errorCode) {
+        this.errorCode = errorCode;
+    }
+
+    /**
+     * Gets the exception type.
+     *
+     * @return the exception type
+     */
+    protected String getExceptionType() {
+        return exceptionType;
+    }
+
+    /**
+     * Sets the exception type.
+     *
+     * @param exceptionType the new exception type
+     */
+    protected void setExceptionType(String exceptionType) {
+        this.exceptionType = exceptionType;
+    }
+
+    /**
+     * Gets the line number.
+     *
+     * @return the line number
+     */
+    protected int getLineNumber() {
+        return lineNumber;
+    }
+
+    /**
+     * Sets the line number.
+     *
+     * @param lineNumber the new line number
+     */
+    protected void setLineNumber(int lineNumber) {
+        this.lineNumber = lineNumber;
+    }
+
+    /**
+     * Gets the position within line.
+     *
+     * @return the position within line
+     */
+    protected int getPositionWithinLine() {
+        return positionWithinLine;
+    }
+
+    /**
+     * Sets the position within line.
+     *
+     * @param positionWithinLine the new position within line
+     */
+    protected void setPositionWithinLine(int positionWithinLine) {
+        this.positionWithinLine = positionWithinLine;
+    }
+
+    /**
+     * Gets the error details.
+     *
+     * @return the error details
+     */
+    public Map<String, String> getErrorDetails() {
+        return errorDetails;
+    }
+
+    /**
+     * Sets the error details.
+     *
+     * @param errorDetails the error details
+     */
+    protected void setErrorDetails(Map<String, String> errorDetails) {
+        this.errorDetails = errorDetails;
+    }
 }

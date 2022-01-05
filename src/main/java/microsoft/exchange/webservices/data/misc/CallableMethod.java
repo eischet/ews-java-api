@@ -23,10 +23,10 @@
 
 package microsoft.exchange.webservices.data.misc;
 
-import microsoft.exchange.webservices.data.core.request.HttpClientWebRequest;
-import microsoft.exchange.webservices.data.core.request.HttpWebRequest;
 import microsoft.exchange.webservices.data.core.exception.http.EWSHttpException;
 import microsoft.exchange.webservices.data.core.exception.http.HttpErrorException;
+import microsoft.exchange.webservices.data.core.request.HttpClientWebRequest;
+import microsoft.exchange.webservices.data.core.request.HttpWebRequest;
 
 import java.io.IOException;
 import java.util.concurrent.Callable;
@@ -35,27 +35,27 @@ import java.util.logging.Logger;
 
 public class CallableMethod implements Callable<Object> {
 
-  private static final Logger LOG = Logger.getLogger(CallableMethod.class.getCanonicalName());
+    private static final Logger LOG = Logger.getLogger(CallableMethod.class.getCanonicalName());
 
-  HttpWebRequest request;
+    HttpWebRequest request;
 
-  public CallableMethod(HttpWebRequest request) {
-    this.request = request;
-  }
-
-  protected HttpClientWebRequest executeMethod() throws EWSHttpException, HttpErrorException, IOException {
-
-    request.executeRequest();
-    return (HttpClientWebRequest) request;
-  }
-
-  public HttpWebRequest call() {
-
-    try {
-      return executeMethod();
-    } catch (EWSHttpException | IOException | HttpErrorException e) {
-      LOG.log(Level.SEVERE, "error executing web request", e);
+    public CallableMethod(HttpWebRequest request) {
+        this.request = request;
     }
-    return request;
-  }
+
+    protected HttpClientWebRequest executeMethod() throws EWSHttpException, HttpErrorException, IOException {
+
+        request.executeRequest();
+        return (HttpClientWebRequest) request;
+    }
+
+    public HttpWebRequest call() {
+
+        try {
+            return executeMethod();
+        } catch (EWSHttpException | IOException | HttpErrorException e) {
+            LOG.log(Level.SEVERE, "error executing web request", e);
+        }
+        return request;
+    }
 }

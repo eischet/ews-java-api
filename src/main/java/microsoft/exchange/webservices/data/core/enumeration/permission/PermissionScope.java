@@ -28,19 +28,19 @@ package microsoft.exchange.webservices.data.core.enumeration.permission;
  */
 public enum PermissionScope {
 
-  /**
-   * The user does not have the associated permission.
-   */
-  None,
+    /**
+     * The user does not have the associated permission.
+     */
+    None,
 
-  /**
-   * The user has the associated permission on item that it owns.
-   */
-  Owned,
+    /**
+     * The user has the associated permission on item that it owns.
+     */
+    Owned,
 
-  /**
-   * The user has the associated permission on all item.
-   */
-  All
+    /**
+     * The user has the associated permission on all item.
+     */
+    All
 
 }

@@ -26,8 +26,8 @@ package microsoft.exchange.webservices.data.core.response;
 import microsoft.exchange.webservices.data.attribute.EditorBrowsable;
 import microsoft.exchange.webservices.data.core.EwsUtilities;
 import microsoft.exchange.webservices.data.core.ExchangeService;
-import microsoft.exchange.webservices.data.core.service.item.Item;
 import microsoft.exchange.webservices.data.core.enumeration.attribute.EditorBrowsableState;
+import microsoft.exchange.webservices.data.core.service.item.Item;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -35,34 +35,35 @@ import java.util.logging.Logger;
 /**
  * Represents response to generic Create request.
  */
-@EditorBrowsable(state = EditorBrowsableState.Never) public final class CreateResponseObjectResponse extends CreateItemResponseBase {
+@EditorBrowsable(state = EditorBrowsableState.Never)
+public final class CreateResponseObjectResponse extends CreateItemResponseBase {
 
-  private static final Logger LOG = Logger.getLogger(CreateResponseObjectResponse.class.getCanonicalName());
+    private static final Logger LOG = Logger.getLogger(CreateResponseObjectResponse.class.getCanonicalName());
 
-  /**
-   * Gets Item instance.
-   *
-   * @param service        The service.
-   * @param xmlElementName Name of the XML element.
-   * @return Item.
-   * @throws Exception the exception
-   */
-  @Override
-  protected Item getObjectInstance(ExchangeService service,
-      String xmlElementName) throws Exception {
-    try {
-      return EwsUtilities.createEwsObjectFromXmlElementName(Item.class, service, xmlElementName);
-    } catch (InstantiationException | IllegalAccessException e) {
-      LOG.log(Level.SEVERE, "error getting object instance for xml element name: " + xmlElementName, e);
-      return null;
+    /**
+     * Gets Item instance.
+     *
+     * @param service        The service.
+     * @param xmlElementName Name of the XML element.
+     * @return Item.
+     * @throws Exception the exception
+     */
+    @Override
+    protected Item getObjectInstance(ExchangeService service,
+                                     String xmlElementName) throws Exception {
+        try {
+            return EwsUtilities.createEwsObjectFromXmlElementName(Item.class, service, xmlElementName);
+        } catch (InstantiationException | IllegalAccessException e) {
+            LOG.log(Level.SEVERE, "error getting object instance for xml element name: " + xmlElementName, e);
+            return null;
+        }
     }
-  }
 
-  /**
-   * Initializes a new instance of the CreateResponseObjectResponse class.
-   */
-  public CreateResponseObjectResponse() {
-    super();
-  }
+    /**
+     * Initializes a new instance of the CreateResponseObjectResponse class.
+     */
+    public CreateResponseObjectResponse() {
+        super();
+    }
 
 }

@@ -27,87 +27,87 @@ import microsoft.exchange.webservices.data.core.EwsServiceXmlReader;
 import microsoft.exchange.webservices.data.core.EwsServiceXmlWriter;
 import microsoft.exchange.webservices.data.core.ExchangeService;
 import microsoft.exchange.webservices.data.core.XmlElementNames;
-import microsoft.exchange.webservices.data.core.response.GetPasswordExpirationDateResponse;
 import microsoft.exchange.webservices.data.core.enumeration.misc.ExchangeVersion;
 import microsoft.exchange.webservices.data.core.enumeration.misc.XmlNamespace;
+import microsoft.exchange.webservices.data.core.response.GetPasswordExpirationDateResponse;
 
 public final class GetPasswordExpirationDateRequest extends SimpleServiceRequestBase<GetPasswordExpirationDateResponse> {
 
-  @Override
-  protected ExchangeVersion getMinimumRequiredServerVersion() {
-    // TODO Auto-generated method stub
-    return ExchangeVersion.Exchange2010_SP1;
-  }
+    @Override
+    protected ExchangeVersion getMinimumRequiredServerVersion() {
+        // TODO Auto-generated method stub
+        return ExchangeVersion.Exchange2010_SP1;
+    }
 
-  /**
-   * Initializes a new instance of the GetPasswordExpirationDateRequest class
-   *
-   * @throws Exception
-   */
-  public GetPasswordExpirationDateRequest(ExchangeService service) throws Exception {
-    super(service);
-  }
+    /**
+     * Initializes a new instance of the GetPasswordExpirationDateRequest class
+     *
+     * @throws Exception
+     */
+    public GetPasswordExpirationDateRequest(ExchangeService service) throws Exception {
+        super(service);
+    }
 
-  protected String getResponseXmlElementName() {
-    return XmlElementNames.GetPasswordExpirationDateResponse;
-  }
+    protected String getResponseXmlElementName() {
+        return XmlElementNames.GetPasswordExpirationDateResponse;
+    }
 
-  /**
-   * Gets the name of the XML Element.
-   * returns XML element name
-   */
-  public String getXmlElementName() {
-    return XmlElementNames.GetPasswordExpirationDateRequest;
-  }
+    /**
+     * Gets the name of the XML Element.
+     * returns XML element name
+     */
+    public String getXmlElementName() {
+        return XmlElementNames.GetPasswordExpirationDateRequest;
+    }
 
-  @Override
-  protected void writeElementsToXml(EwsServiceXmlWriter writer) throws Exception {
-    writer.writeElementValue(XmlNamespace.Messages,
-        XmlElementNames.MailboxSmtpAddress,
-        this.getMailboxSmtpAddress());
-  }
+    @Override
+    protected void writeElementsToXml(EwsServiceXmlWriter writer) throws Exception {
+        writer.writeElementValue(XmlNamespace.Messages,
+                XmlElementNames.MailboxSmtpAddress,
+                this.getMailboxSmtpAddress());
+    }
 
-  /**
-   * {@inheritDoc}
-   */
-  @Override
-  protected GetPasswordExpirationDateResponse parseResponse(EwsServiceXmlReader reader) throws Exception {
-    GetPasswordExpirationDateResponse response = new GetPasswordExpirationDateResponse();
-    response.loadFromXml(reader, XmlElementNames.GetPasswordExpirationDateResponse);
-    return response;
-  }
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected GetPasswordExpirationDateResponse parseResponse(EwsServiceXmlReader reader) throws Exception {
+        GetPasswordExpirationDateResponse response = new GetPasswordExpirationDateResponse();
+        response.loadFromXml(reader, XmlElementNames.GetPasswordExpirationDateResponse);
+        return response;
+    }
 
-  /**
-   * Gets the request version
-   * @return Earliest Exchange version in which this request is supported.
-   *//*
+    /**
+     * Gets the request version
+     * @return Earliest Exchange version in which this request is supported.
+     *//*
         protected ExchangeVersion getMinimumRequiredServerVersion(){
 		return ExchangeVersion.Exchange2010_SP1;
 	}*/
 
-  /**
-   * Executes this request.
-   *
-   * @return Service response.
-   */
-  public GetPasswordExpirationDateResponse execute() throws Exception {
-    GetPasswordExpirationDateResponse serviceResponse = internalExecute();
-    serviceResponse.throwIfNecessary();
-    return serviceResponse;
-  }
+    /**
+     * Executes this request.
+     *
+     * @return Service response.
+     */
+    public GetPasswordExpirationDateResponse execute() throws Exception {
+        GetPasswordExpirationDateResponse serviceResponse = internalExecute();
+        serviceResponse.throwIfNecessary();
+        return serviceResponse;
+    }
 
-  /**
-   * Gets mailbox smtp address.
-   *
-   * @return The mailbox smtp address.
-   */
-  protected String getMailboxSmtpAddress() {
-    return this.mailboxSmtpAddress;
-  }
+    /**
+     * Gets mailbox smtp address.
+     *
+     * @return The mailbox smtp address.
+     */
+    protected String getMailboxSmtpAddress() {
+        return this.mailboxSmtpAddress;
+    }
 
-  public void setMailboxSmtpAddress(String mailboxSmtpAddress) {
-    this.mailboxSmtpAddress = mailboxSmtpAddress;
-  }
+    public void setMailboxSmtpAddress(String mailboxSmtpAddress) {
+        this.mailboxSmtpAddress = mailboxSmtpAddress;
+    }
 
-  private String mailboxSmtpAddress;
+    private String mailboxSmtpAddress;
 }

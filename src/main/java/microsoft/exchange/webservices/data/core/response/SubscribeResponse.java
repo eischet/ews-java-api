@@ -34,41 +34,41 @@ import microsoft.exchange.webservices.data.notification.SubscriptionBase;
  */
 public final class SubscribeResponse<TSubscription extends SubscriptionBase> extends ServiceResponse {
 
-  /**
-   * The subscription.
-   */
-  private TSubscription subscription;
+    /**
+     * The subscription.
+     */
+    private final TSubscription subscription;
 
-  /**
-   * Initializes a new instance of the SubscribeResponse&lt;TSubscription
-   * class.
-   *
-   * @param subscription The Subscription
-   */
-  public SubscribeResponse(TSubscription subscription) {
-    super();
-    EwsUtilities.ewsAssert(subscription != null, "SubscribeResponse.ctor", "subscription is null");
-    this.subscription = subscription;
-  }
+    /**
+     * Initializes a new instance of the SubscribeResponse&lt;TSubscription
+     * class.
+     *
+     * @param subscription The Subscription
+     */
+    public SubscribeResponse(TSubscription subscription) {
+        super();
+        EwsUtilities.ewsAssert(subscription != null, "SubscribeResponse.ctor", "subscription is null");
+        this.subscription = subscription;
+    }
 
-  /**
-   * Reads response elements from XML.
-   *
-   * @param reader the reader
-   * @throws Exception the exception
-   */
-  @Override
-  protected void readElementsFromXml(EwsServiceXmlReader reader) throws Exception {
-    super.readElementsFromXml(reader);
-    this.subscription.loadFromXml(reader);
-  }
+    /**
+     * Reads response elements from XML.
+     *
+     * @param reader the reader
+     * @throws Exception the exception
+     */
+    @Override
+    protected void readElementsFromXml(EwsServiceXmlReader reader) throws Exception {
+        super.readElementsFromXml(reader);
+        this.subscription.loadFromXml(reader);
+    }
 
-  /**
-   * Gets the subscription.
-   *
-   * @return the subscription
-   */
-  public TSubscription getSubscription() {
-    return this.subscription;
-  }
+    /**
+     * Gets the subscription.
+     *
+     * @return the subscription
+     */
+    public TSubscription getSubscription() {
+        return this.subscription;
+    }
 }

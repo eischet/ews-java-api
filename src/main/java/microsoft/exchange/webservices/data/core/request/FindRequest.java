@@ -26,13 +26,13 @@ package microsoft.exchange.webservices.data.core.request;
 import microsoft.exchange.webservices.data.core.EwsServiceXmlWriter;
 import microsoft.exchange.webservices.data.core.ExchangeService;
 import microsoft.exchange.webservices.data.core.XmlElementNames;
-import microsoft.exchange.webservices.data.core.enumeration.service.error.ServiceErrorHandling;
-import microsoft.exchange.webservices.data.core.response.ServiceResponse;
 import microsoft.exchange.webservices.data.core.enumeration.misc.ExchangeVersion;
 import microsoft.exchange.webservices.data.core.enumeration.misc.XmlNamespace;
+import microsoft.exchange.webservices.data.core.enumeration.service.error.ServiceErrorHandling;
 import microsoft.exchange.webservices.data.core.exception.service.local.ServiceLocalException;
 import microsoft.exchange.webservices.data.core.exception.service.local.ServiceVersionException;
 import microsoft.exchange.webservices.data.core.exception.service.local.ServiceXmlSerializationException;
+import microsoft.exchange.webservices.data.core.response.ServiceResponse;
 import microsoft.exchange.webservices.data.misc.FolderIdWrapperList;
 import microsoft.exchange.webservices.data.search.Grouping;
 import microsoft.exchange.webservices.data.search.ViewBase;
@@ -47,205 +47,205 @@ import java.util.logging.Logger;
  * @param <TResponse> The type of the response.
  */
 abstract class FindRequest<TResponse extends ServiceResponse> extends
-    MultiResponseServiceRequest<TResponse> {
+        MultiResponseServiceRequest<TResponse> {
 
-  private static final Logger LOG = Logger.getLogger(FindRequest.class.getCanonicalName());
+    private static final Logger LOG = Logger.getLogger(FindRequest.class.getCanonicalName());
 
-  /**
-   * The parent folder ids.
-   */
-  private FolderIdWrapperList parentFolderIds = new FolderIdWrapperList();
+    /**
+     * The parent folder ids.
+     */
+    private final FolderIdWrapperList parentFolderIds = new FolderIdWrapperList();
 
-  /**
-   * The search filter.
-   */
-  private SearchFilter searchFilter;
+    /**
+     * The search filter.
+     */
+    private SearchFilter searchFilter;
 
-  /**
-   * The query string.
-   */
-  private String queryString;
+    /**
+     * The query string.
+     */
+    private String queryString;
 
-  /**
-   * The view.
-   */
-  private ViewBase view;
+    /**
+     * The view.
+     */
+    private ViewBase view;
 
-  /**
-   * Initializes a new instance of the FindRequest class.
-   *
-   * @param service           The service.
-   * @param errorHandlingMode Indicates how errors should be handled.
-   * @throws Exception
-   */
-  protected FindRequest(ExchangeService service,
-      ServiceErrorHandling errorHandlingMode)
-      throws Exception {
-    super(service, errorHandlingMode);
-  }
-
-  /**
-   * Validate request.
-   *
-   * @throws ServiceLocalException the service local exception
-   * @throws Exception             the exception
-   */
-  @Override
-  protected void validate() throws ServiceLocalException, Exception {
-    super.validate();
-
-    this.getView().internalValidate(this);
-
-    // query string parameter is only valid for Exchange2010 or higher
-    //
-    if (!(this.queryString == null || this.queryString.isEmpty())
-        && this.getService().getRequestedServerVersion().ordinal() <
-        ExchangeVersion.Exchange2010.ordinal()) {
-      throw new ServiceVersionException(String.format(
-          "The parameter %s is only valid for Exchange Server version %s or a later version.",
-          "queryString", ExchangeVersion.Exchange2010));
+    /**
+     * Initializes a new instance of the FindRequest class.
+     *
+     * @param service           The service.
+     * @param errorHandlingMode Indicates how errors should be handled.
+     * @throws Exception
+     */
+    protected FindRequest(ExchangeService service,
+                          ServiceErrorHandling errorHandlingMode)
+            throws Exception {
+        super(service, errorHandlingMode);
     }
 
-    if ((!(this.queryString == null || this.queryString.isEmpty()))
-        && this.searchFilter != null) {
-      throw new ServiceLocalException(
-          "Both search filter and query string can't be specified. One of them must be null.");
-    }
-  }
+    /**
+     * Validate request.
+     *
+     * @throws ServiceLocalException the service local exception
+     * @throws Exception             the exception
+     */
+    @Override
+    protected void validate() throws ServiceLocalException, Exception {
+        super.validate();
 
-  /**
-   * Gets the expected response message count.
-   *
-   * @return XML element name.
-   */
-  @Override
-  protected int getExpectedResponseMessageCount() {
-    return this.getParentFolderIds().getCount();
-  }
+        this.getView().internalValidate(this);
 
-  /**
-   * Gets the group by clause.
-   *
-   * @return The group by clause, null if the request does not have or support
-   * grouping.
-   */
-  protected Grouping getGroupBy() {
-    return null;
-  }
+        // query string parameter is only valid for Exchange2010 or higher
+        //
+        if (!(this.queryString == null || this.queryString.isEmpty())
+                && this.getService().getRequestedServerVersion().ordinal() <
+                ExchangeVersion.Exchange2010.ordinal()) {
+            throw new ServiceVersionException(String.format(
+                    "The parameter %s is only valid for Exchange Server version %s or a later version.",
+                    "queryString", ExchangeVersion.Exchange2010));
+        }
 
-  /**
-   * Writes XML attribute.
-   *
-   * @param writer The Writer
-   * @throws ServiceXmlSerializationException the service xml serialization exception
-   */
-  @Override
-  protected void writeAttributesToXml(EwsServiceXmlWriter writer)
-      throws ServiceXmlSerializationException {
-    super.writeAttributesToXml(writer);
-
-    this.getView().writeAttributesToXml(writer);
-  }
-
-  /**
-   * Writes XML elements.
-   *
-   * @param writer The Writer
-   * @throws Exception the exception
-   */
-  @Override
-  protected void writeElementsToXml(EwsServiceXmlWriter writer)
-      throws Exception {
-    this.getView().writeToXml(writer, this.getGroupBy());
-
-    if (this.getSearchFilter() != null) {
-      writer.writeStartElement(XmlNamespace.Messages,
-          XmlElementNames.Restriction);
-      this.getSearchFilter().writeToXml(writer);
-      writer.writeEndElement(); // Restriction
+        if ((!(this.queryString == null || this.queryString.isEmpty()))
+                && this.searchFilter != null) {
+            throw new ServiceLocalException(
+                    "Both search filter and query string can't be specified. One of them must be null.");
+        }
     }
 
-    this.getView().writeOrderByToXml(writer);
-
-    try {
-      this.getParentFolderIds().writeToXml(writer, XmlNamespace.Messages,
-          XmlElementNames.ParentFolderIds);
-    } catch (Exception e) {
-      LOG.log(Level.SEVERE, "error writing XML", e);
+    /**
+     * Gets the expected response message count.
+     *
+     * @return XML element name.
+     */
+    @Override
+    protected int getExpectedResponseMessageCount() {
+        return this.getParentFolderIds().getCount();
     }
 
-    if (!(this.queryString == null || this.queryString.isEmpty())) {
-      writer.writeElementValue(XmlNamespace.Messages,
-          XmlElementNames.QueryString, this.queryString);
+    /**
+     * Gets the group by clause.
+     *
+     * @return The group by clause, null if the request does not have or support
+     * grouping.
+     */
+    protected Grouping getGroupBy() {
+        return null;
     }
-  }
 
-  /**
-   * Gets the parent folder ids.
-   *
-   * @return the parent folder ids
-   */
-  public FolderIdWrapperList getParentFolderIds() {
-    return this.parentFolderIds;
-  }
+    /**
+     * Writes XML attribute.
+     *
+     * @param writer The Writer
+     * @throws ServiceXmlSerializationException the service xml serialization exception
+     */
+    @Override
+    protected void writeAttributesToXml(EwsServiceXmlWriter writer)
+            throws ServiceXmlSerializationException {
+        super.writeAttributesToXml(writer);
 
-  /**
-   * Gets the search filter. Available search filter classes include
-   * SearchFilter.IsEqualTo, SearchFilter.ContainsSubstring and
-   * SearchFilter.SearchFilterCollection. If SearchFilter is null, no search
-   * filter are applied.
-   *
-   * @return the search filter
-   */
-  public SearchFilter getSearchFilter() {
-    return searchFilter;
-  }
+        this.getView().writeAttributesToXml(writer);
+    }
 
-  /**
-   * Sets the search filter. Available search filter classes include
-   * SearchFilter.IsEqualTo, SearchFilter.ContainsSubstring and
-   * SearchFilter.SearchFilterCollection. If SearchFilter is null, no search
-   * filter are applied.
-   *
-   * @param searchFilter the new search filter
-   */
-  public void setSearchFilter(SearchFilter searchFilter) {
-    this.searchFilter = searchFilter;
-  }
+    /**
+     * Writes XML elements.
+     *
+     * @param writer The Writer
+     * @throws Exception the exception
+     */
+    @Override
+    protected void writeElementsToXml(EwsServiceXmlWriter writer)
+            throws Exception {
+        this.getView().writeToXml(writer, this.getGroupBy());
 
-  /**
-   * Gets the query string for indexed search.
-   *
-   * @return the query string
-   */
-  public String getQueryString() {
-    return queryString;
-  }
+        if (this.getSearchFilter() != null) {
+            writer.writeStartElement(XmlNamespace.Messages,
+                    XmlElementNames.Restriction);
+            this.getSearchFilter().writeToXml(writer);
+            writer.writeEndElement(); // Restriction
+        }
 
-  /**
-   * Sets the query string for indexed search.
-   *
-   * @param queryString the new query string
-   */
-  public void setQueryString(String queryString) {
-    this.queryString = queryString;
-  }
+        this.getView().writeOrderByToXml(writer);
 
-  /**
-   * Gets the view controlling the number of item or folder returned.
-   *
-   * @return the view
-   */
-  public ViewBase getView() {
-    return view;
-  }
+        try {
+            this.getParentFolderIds().writeToXml(writer, XmlNamespace.Messages,
+                    XmlElementNames.ParentFolderIds);
+        } catch (Exception e) {
+            LOG.log(Level.SEVERE, "error writing XML", e);
+        }
 
-  /**
-   * Sets the view controlling the number of item or folder returned.
-   *
-   * @param view the new view
-   */
-  public void setView(ViewBase view) {
-    this.view = view;
-  }
+        if (!(this.queryString == null || this.queryString.isEmpty())) {
+            writer.writeElementValue(XmlNamespace.Messages,
+                    XmlElementNames.QueryString, this.queryString);
+        }
+    }
+
+    /**
+     * Gets the parent folder ids.
+     *
+     * @return the parent folder ids
+     */
+    public FolderIdWrapperList getParentFolderIds() {
+        return this.parentFolderIds;
+    }
+
+    /**
+     * Gets the search filter. Available search filter classes include
+     * SearchFilter.IsEqualTo, SearchFilter.ContainsSubstring and
+     * SearchFilter.SearchFilterCollection. If SearchFilter is null, no search
+     * filter are applied.
+     *
+     * @return the search filter
+     */
+    public SearchFilter getSearchFilter() {
+        return searchFilter;
+    }
+
+    /**
+     * Sets the search filter. Available search filter classes include
+     * SearchFilter.IsEqualTo, SearchFilter.ContainsSubstring and
+     * SearchFilter.SearchFilterCollection. If SearchFilter is null, no search
+     * filter are applied.
+     *
+     * @param searchFilter the new search filter
+     */
+    public void setSearchFilter(SearchFilter searchFilter) {
+        this.searchFilter = searchFilter;
+    }
+
+    /**
+     * Gets the query string for indexed search.
+     *
+     * @return the query string
+     */
+    public String getQueryString() {
+        return queryString;
+    }
+
+    /**
+     * Sets the query string for indexed search.
+     *
+     * @param queryString the new query string
+     */
+    public void setQueryString(String queryString) {
+        this.queryString = queryString;
+    }
+
+    /**
+     * Gets the view controlling the number of item or folder returned.
+     *
+     * @return the view
+     */
+    public ViewBase getView() {
+        return view;
+    }
+
+    /**
+     * Sets the view controlling the number of item or folder returned.
+     *
+     * @param view the new view
+     */
+    public void setView(ViewBase view) {
+        this.view = view;
+    }
 }

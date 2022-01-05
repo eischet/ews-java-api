@@ -26,8 +26,8 @@ package microsoft.exchange.webservices.data.property.complex;
 import microsoft.exchange.webservices.data.core.EwsServiceXmlReader;
 import microsoft.exchange.webservices.data.core.EwsServiceXmlWriter;
 import microsoft.exchange.webservices.data.core.XmlElementNames;
-import microsoft.exchange.webservices.data.core.enumeration.property.StandardUser;
 import microsoft.exchange.webservices.data.core.enumeration.misc.XmlNamespace;
+import microsoft.exchange.webservices.data.core.enumeration.property.StandardUser;
 import microsoft.exchange.webservices.data.core.exception.service.local.ServiceValidationException;
 
 /**
@@ -35,205 +35,205 @@ import microsoft.exchange.webservices.data.core.exception.service.local.ServiceV
  */
 public final class DelegateUser extends ComplexProperty {
 
-  /**
-   * The user id.
-   */
-  private UserId userId = new UserId();
+    /**
+     * The user id.
+     */
+    private UserId userId = new UserId();
 
-  /**
-   * The permissions.
-   */
-  private DelegatePermissions permissions = new DelegatePermissions();
+    /**
+     * The permissions.
+     */
+    private final DelegatePermissions permissions = new DelegatePermissions();
 
-  /**
-   * The receive copies of meeting messages.
-   */
-  private boolean receiveCopiesOfMeetingMessages;
+    /**
+     * The receive copies of meeting messages.
+     */
+    private boolean receiveCopiesOfMeetingMessages;
 
-  /**
-   * The view private item.
-   */
-  private boolean viewPrivateItems;
+    /**
+     * The view private item.
+     */
+    private boolean viewPrivateItems;
 
-  /**
-   * Initializes a new instance of the <see cref="DelegateUser"/> class.
-   */
-  public DelegateUser() {
-    super();
-    this.receiveCopiesOfMeetingMessages = false;
-    this.viewPrivateItems = false;
-  }
-
-  /**
-   * Initializes a new instance of the <see cref="DelegateUser"/> class.
-   *
-   * @param primarySmtpAddress the primary smtp address
-   */
-  public DelegateUser(String primarySmtpAddress) {
-    this();
-    this.userId.setPrimarySmtpAddress(primarySmtpAddress);
-  }
-
-  /**
-   * Initializes a new instance of the <see cref="DelegateUser"/> class.
-   *
-   * @param standardUser the standard user
-   */
-  public DelegateUser(StandardUser standardUser) {
-    this();
-
-    this.userId.setStandardUser(standardUser);
-  }
-
-  /**
-   * Gets the user Id of the delegate user.
-   *
-   * @return the user id
-   */
-  public UserId getUserId() {
-    return this.userId;
-  }
-
-  /**
-   * Gets the list of delegate user's permissions.
-   *
-   * @return the permissions
-   */
-  public DelegatePermissions getPermissions() {
-    return this.permissions;
-  }
-
-  /**
-   * Gets  a value indicating if the delegate user should receive
-   * copies of meeting request.
-   *
-   * @return the receive copies of meeting messages
-   */
-  public boolean getReceiveCopiesOfMeetingMessages() {
-    return this.receiveCopiesOfMeetingMessages;
-
-  }
-
-  /**
-   * Sets the receive copies of meeting messages.
-   *
-   * @param value the new receive copies of meeting messages
-   */
-  public void setReceiveCopiesOfMeetingMessages(boolean value) {
-    this.receiveCopiesOfMeetingMessages = value;
-  }
-
-  /**
-   * Gets  a value indicating if the delegate user should be
-   * able to view the principal's private item.
-   *
-   * @return the view private item
-   */
-  public boolean getViewPrivateItems() {
-    return this.viewPrivateItems;
-
-  }
-
-  /**
-   * Gets  a value indicating if the delegate user should be able to
-   * view the principal's private item.
-   *
-   * @param value the new view private item
-   */
-  public void setViewPrivateItems(boolean value) {
-
-    this.viewPrivateItems = value;
-  }
-
-  /**
-   * Tries to read element from XML.
-   *
-   * @param reader the reader
-   * @return true, if successful
-   * @throws Exception the exception
-   */
-  public boolean tryReadElementFromXml(EwsServiceXmlReader reader)
-      throws Exception {
-    if (reader.getLocalName().equals(XmlElementNames.UserId)) {
-
-      this.userId = new UserId();
-      this.userId.loadFromXml(reader, reader.getLocalName());
-      return true;
-    } else if (reader.getLocalName().equals(XmlElementNames.UserId)) {
-
-      this.permissions.reset();
-      this.permissions.loadFromXml(reader, reader.getLocalName());
-      return true;
-    } else if (reader.getLocalName().equals(
-        XmlElementNames.ReceiveCopiesOfMeetingMessages)) {
-
-      this.receiveCopiesOfMeetingMessages = reader
-          .readElementValue(Boolean.class);
-      return true;
-    } else if (reader.getLocalName().equals(
-        XmlElementNames.ViewPrivateItems)) {
-
-      this.viewPrivateItems = reader.readElementValue(Boolean.class);
-      return true;
-    } else {
-
-      return false;
+    /**
+     * Initializes a new instance of the <see cref="DelegateUser"/> class.
+     */
+    public DelegateUser() {
+        super();
+        this.receiveCopiesOfMeetingMessages = false;
+        this.viewPrivateItems = false;
     }
-  }
 
-  /**
-   * Writes elements to XML.
-   *
-   * @param writer the writer
-   * @throws Exception the exception
-   */
-  public void writeElementsToXml(EwsServiceXmlWriter writer)
-      throws Exception {
-    this.getUserId().writeToXml(writer, XmlElementNames.UserId);
-    this.getPermissions().writeToXml(writer,
-        XmlElementNames.DelegatePermissions);
-
-    writer.writeElementValue(XmlNamespace.Types,
-        XmlElementNames.ReceiveCopiesOfMeetingMessages,
-        this.receiveCopiesOfMeetingMessages);
-
-    writer.writeElementValue(XmlNamespace.Types,
-        XmlElementNames.ViewPrivateItems, this.viewPrivateItems);
-  }
-
-  /**
-   * Validates this instance.
-   *
-   * @throws ServiceValidationException the service validation exception
-   */
-  protected void internalValidate() throws ServiceValidationException {
-    if (this.getUserId() == null) {
-      throw new ServiceValidationException("The UserId in the DelegateUser hasn't been specified.");
-    } else if (!this.getUserId().isValid()) {
-      throw new ServiceValidationException(
-          "The UserId in the DelegateUser is invalid. The StandardUser, PrimarySmtpAddress or SID property must be set.");
+    /**
+     * Initializes a new instance of the <see cref="DelegateUser"/> class.
+     *
+     * @param primarySmtpAddress the primary smtp address
+     */
+    public DelegateUser(String primarySmtpAddress) {
+        this();
+        this.userId.setPrimarySmtpAddress(primarySmtpAddress);
     }
-  }
 
-  /**
-   * Validates this instance for AddDelegate.
-   *
-   * @throws Exception
-   * @throws ServiceValidationException
-   */
-  protected void validateAddDelegate() throws ServiceValidationException,
-      Exception {
-    {
-      this.permissions.validateAddDelegate();
-    }
-  }
+    /**
+     * Initializes a new instance of the <see cref="DelegateUser"/> class.
+     *
+     * @param standardUser the standard user
+     */
+    public DelegateUser(StandardUser standardUser) {
+        this();
 
-  /**
-   * Validates this instance for UpdateDelegate.
-   */
-  public void validateUpdateDelegate() throws Exception {
-    {
-      this.permissions.validateUpdateDelegate();
+        this.userId.setStandardUser(standardUser);
     }
-  }
+
+    /**
+     * Gets the user Id of the delegate user.
+     *
+     * @return the user id
+     */
+    public UserId getUserId() {
+        return this.userId;
+    }
+
+    /**
+     * Gets the list of delegate user's permissions.
+     *
+     * @return the permissions
+     */
+    public DelegatePermissions getPermissions() {
+        return this.permissions;
+    }
+
+    /**
+     * Gets  a value indicating if the delegate user should receive
+     * copies of meeting request.
+     *
+     * @return the receive copies of meeting messages
+     */
+    public boolean getReceiveCopiesOfMeetingMessages() {
+        return this.receiveCopiesOfMeetingMessages;
+
+    }
+
+    /**
+     * Sets the receive copies of meeting messages.
+     *
+     * @param value the new receive copies of meeting messages
+     */
+    public void setReceiveCopiesOfMeetingMessages(boolean value) {
+        this.receiveCopiesOfMeetingMessages = value;
+    }
+
+    /**
+     * Gets  a value indicating if the delegate user should be
+     * able to view the principal's private item.
+     *
+     * @return the view private item
+     */
+    public boolean getViewPrivateItems() {
+        return this.viewPrivateItems;
+
+    }
+
+    /**
+     * Gets  a value indicating if the delegate user should be able to
+     * view the principal's private item.
+     *
+     * @param value the new view private item
+     */
+    public void setViewPrivateItems(boolean value) {
+
+        this.viewPrivateItems = value;
+    }
+
+    /**
+     * Tries to read element from XML.
+     *
+     * @param reader the reader
+     * @return true, if successful
+     * @throws Exception the exception
+     */
+    public boolean tryReadElementFromXml(EwsServiceXmlReader reader)
+            throws Exception {
+        if (reader.getLocalName().equals(XmlElementNames.UserId)) {
+
+            this.userId = new UserId();
+            this.userId.loadFromXml(reader, reader.getLocalName());
+            return true;
+        } else if (reader.getLocalName().equals(XmlElementNames.UserId)) {
+
+            this.permissions.reset();
+            this.permissions.loadFromXml(reader, reader.getLocalName());
+            return true;
+        } else if (reader.getLocalName().equals(
+                XmlElementNames.ReceiveCopiesOfMeetingMessages)) {
+
+            this.receiveCopiesOfMeetingMessages = reader
+                    .readElementValue(Boolean.class);
+            return true;
+        } else if (reader.getLocalName().equals(
+                XmlElementNames.ViewPrivateItems)) {
+
+            this.viewPrivateItems = reader.readElementValue(Boolean.class);
+            return true;
+        } else {
+
+            return false;
+        }
+    }
+
+    /**
+     * Writes elements to XML.
+     *
+     * @param writer the writer
+     * @throws Exception the exception
+     */
+    public void writeElementsToXml(EwsServiceXmlWriter writer)
+            throws Exception {
+        this.getUserId().writeToXml(writer, XmlElementNames.UserId);
+        this.getPermissions().writeToXml(writer,
+                XmlElementNames.DelegatePermissions);
+
+        writer.writeElementValue(XmlNamespace.Types,
+                XmlElementNames.ReceiveCopiesOfMeetingMessages,
+                this.receiveCopiesOfMeetingMessages);
+
+        writer.writeElementValue(XmlNamespace.Types,
+                XmlElementNames.ViewPrivateItems, this.viewPrivateItems);
+    }
+
+    /**
+     * Validates this instance.
+     *
+     * @throws ServiceValidationException the service validation exception
+     */
+    protected void internalValidate() throws ServiceValidationException {
+        if (this.getUserId() == null) {
+            throw new ServiceValidationException("The UserId in the DelegateUser hasn't been specified.");
+        } else if (!this.getUserId().isValid()) {
+            throw new ServiceValidationException(
+                    "The UserId in the DelegateUser is invalid. The StandardUser, PrimarySmtpAddress or SID property must be set.");
+        }
+    }
+
+    /**
+     * Validates this instance for AddDelegate.
+     *
+     * @throws Exception
+     * @throws ServiceValidationException
+     */
+    protected void validateAddDelegate() throws ServiceValidationException,
+            Exception {
+        {
+            this.permissions.validateAddDelegate();
+        }
+    }
+
+    /**
+     * Validates this instance for UpdateDelegate.
+     */
+    public void validateUpdateDelegate() throws Exception {
+        {
+            this.permissions.validateUpdateDelegate();
+        }
+    }
 }

@@ -26,6 +26,6 @@ package microsoft.exchange.webservices.data.misc;
 import java.util.concurrent.Future;
 
 public interface Callback<T> {
-  T processMe(Future<?> task);
+    T processMe(Future<?> task);
 
 }

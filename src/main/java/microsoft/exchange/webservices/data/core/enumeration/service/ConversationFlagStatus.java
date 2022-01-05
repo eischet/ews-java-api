@@ -28,19 +28,19 @@ package microsoft.exchange.webservices.data.core.enumeration.service;
  */
 public enum ConversationFlagStatus {
 
-  /**
-   * Not Flagged.
-   */
-  NotFlagged,
+    /**
+     * Not Flagged.
+     */
+    NotFlagged,
 
-  /**
-   * Flagged.
-   */
-  Flagged,
+    /**
+     * Flagged.
+     */
+    Flagged,
 
-  /**
-   * Complete.
-   */
-  Complete
+    /**
+     * Complete.
+     */
+    Complete
 
 }

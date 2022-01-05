@@ -27,12 +27,12 @@ import microsoft.exchange.webservices.data.core.EwsServiceXmlWriter;
 import microsoft.exchange.webservices.data.core.EwsUtilities;
 import microsoft.exchange.webservices.data.core.ExchangeService;
 import microsoft.exchange.webservices.data.core.XmlElementNames;
+import microsoft.exchange.webservices.data.core.enumeration.misc.ExchangeVersion;
+import microsoft.exchange.webservices.data.core.enumeration.misc.XmlNamespace;
+import microsoft.exchange.webservices.data.core.enumeration.service.ServiceObjectType;
 import microsoft.exchange.webservices.data.core.enumeration.service.error.ServiceErrorHandling;
 import microsoft.exchange.webservices.data.core.response.ServiceResponse;
 import microsoft.exchange.webservices.data.core.service.folder.Folder;
-import microsoft.exchange.webservices.data.core.enumeration.misc.ExchangeVersion;
-import microsoft.exchange.webservices.data.core.enumeration.service.ServiceObjectType;
-import microsoft.exchange.webservices.data.core.enumeration.misc.XmlNamespace;
 import microsoft.exchange.webservices.data.misc.FolderIdWrapperList;
 
 /**
@@ -42,110 +42,110 @@ import microsoft.exchange.webservices.data.misc.FolderIdWrapperList;
  */
 abstract class GetFolderRequestBase<TResponse extends ServiceResponse> extends GetRequest<Folder, TResponse> {
 
-  /**
-   * The folder ids.
-   */
-  private FolderIdWrapperList folderIds = new FolderIdWrapperList();
+    /**
+     * The folder ids.
+     */
+    private final FolderIdWrapperList folderIds = new FolderIdWrapperList();
 
-  /**
-   * Initializes a new instance of the class.
-   *
-   * @param service           the service
-   * @param errorHandlingMode the error handling mode
-   * @throws Exception
-   */
-  protected GetFolderRequestBase(ExchangeService service,
-      ServiceErrorHandling errorHandlingMode)
-      throws Exception {
-    super(service, errorHandlingMode);
-  }
+    /**
+     * Initializes a new instance of the class.
+     *
+     * @param service           the service
+     * @param errorHandlingMode the error handling mode
+     * @throws Exception
+     */
+    protected GetFolderRequestBase(ExchangeService service,
+                                   ServiceErrorHandling errorHandlingMode)
+            throws Exception {
+        super(service, errorHandlingMode);
+    }
 
-  /**
-   * Validate request.
-   *
-   * @throws Exception the exception
-   */
-  protected void validate() throws Exception {
-    super.validate();
-    EwsUtilities.validateParamCollection(this.getFolderIds().iterator(), "FolderIds");
-    this.getFolderIds().validate(
-        this.getService().getRequestedServerVersion());
-  }
+    /**
+     * Validate request.
+     *
+     * @throws Exception the exception
+     */
+    protected void validate() throws Exception {
+        super.validate();
+        EwsUtilities.validateParamCollection(this.getFolderIds().iterator(), "FolderIds");
+        this.getFolderIds().validate(
+                this.getService().getRequestedServerVersion());
+    }
 
-  /**
-   * Gets the expected response message count.
-   *
-   * @return Number of expected response messages
-   */
-  protected int getExpectedResponseMessageCount() {
-    return this.getFolderIds().getCount();
-  }
+    /**
+     * Gets the expected response message count.
+     *
+     * @return Number of expected response messages
+     */
+    protected int getExpectedResponseMessageCount() {
+        return this.getFolderIds().getCount();
+    }
 
-  /**
-   * Gets the type of the service object this request applies to.
-   *
-   * @return The type of service object the request applies to
-   */
-  protected ServiceObjectType getServiceObjectType() {
-    return ServiceObjectType.Folder;
-  }
+    /**
+     * Gets the type of the service object this request applies to.
+     *
+     * @return The type of service object the request applies to
+     */
+    protected ServiceObjectType getServiceObjectType() {
+        return ServiceObjectType.Folder;
+    }
 
-  /**
-   * Writes XML elements.
-   *
-   * @param writer the writer
-   * @throws Exception the exception
-   */
-  protected void writeElementsToXml(EwsServiceXmlWriter writer)
-      throws Exception {
-    super.writeElementsToXml(writer);
-    this.getFolderIds().writeToXml(writer, XmlNamespace.Messages,
-        XmlElementNames.FolderIds);
-  }
+    /**
+     * Writes XML elements.
+     *
+     * @param writer the writer
+     * @throws Exception the exception
+     */
+    protected void writeElementsToXml(EwsServiceXmlWriter writer)
+            throws Exception {
+        super.writeElementsToXml(writer);
+        this.getFolderIds().writeToXml(writer, XmlNamespace.Messages,
+                XmlElementNames.FolderIds);
+    }
 
-  /**
-   * Gets the name of the XML element.
-   *
-   * @return XML element name
-   */
-  public String getXmlElementName() {
-    return XmlElementNames.GetFolder;
-  }
+    /**
+     * Gets the name of the XML element.
+     *
+     * @return XML element name
+     */
+    public String getXmlElementName() {
+        return XmlElementNames.GetFolder;
+    }
 
-  /**
-   * Gets the name of the response XML element.
-   *
-   * @return XML element name
-   */
-  protected String getResponseXmlElementName() {
-    return XmlElementNames.GetFolderResponse;
-  }
+    /**
+     * Gets the name of the response XML element.
+     *
+     * @return XML element name
+     */
+    protected String getResponseXmlElementName() {
+        return XmlElementNames.GetFolderResponse;
+    }
 
-  /**
-   * Gets the name of the response message XML element.
-   *
-   * @return XML element name
-   */
-  protected String getResponseMessageXmlElementName() {
-    return XmlElementNames.GetFolderResponseMessage;
-  }
+    /**
+     * Gets the name of the response message XML element.
+     *
+     * @return XML element name
+     */
+    protected String getResponseMessageXmlElementName() {
+        return XmlElementNames.GetFolderResponseMessage;
+    }
 
-  /**
-   * Gets the request version.
-   *
-   * @return Earliest Exchange version in which this request is supported
-   */
-  protected ExchangeVersion getMinimumRequiredServerVersion() {
-    return ExchangeVersion.Exchange2007_SP1;
-  }
+    /**
+     * Gets the request version.
+     *
+     * @return Earliest Exchange version in which this request is supported
+     */
+    protected ExchangeVersion getMinimumRequiredServerVersion() {
+        return ExchangeVersion.Exchange2007_SP1;
+    }
 
-  /**
-   * Gets the folder ids.
-   *
-   * @return the folder ids
-   */
-  public FolderIdWrapperList getFolderIds() {
-    return this.folderIds;
-  }
+    /**
+     * Gets the folder ids.
+     *
+     * @return the folder ids
+     */
+    public FolderIdWrapperList getFolderIds() {
+        return this.folderIds;
+    }
 
 }

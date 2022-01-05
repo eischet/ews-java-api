@@ -23,11 +23,7 @@
 
 package microsoft.exchange.webservices.data.property.complex;
 
-import microsoft.exchange.webservices.data.core.EwsServiceXmlReader;
-import microsoft.exchange.webservices.data.core.EwsServiceXmlWriter;
-import microsoft.exchange.webservices.data.core.EwsUtilities;
-import microsoft.exchange.webservices.data.core.XmlAttributeNames;
-import microsoft.exchange.webservices.data.core.XmlElementNames;
+import microsoft.exchange.webservices.data.core.*;
 import microsoft.exchange.webservices.data.core.enumeration.property.BodyType;
 import microsoft.exchange.webservices.data.core.exception.service.local.ServiceXmlDeserializationException;
 import microsoft.exchange.webservices.data.core.exception.service.local.ServiceXmlSerializationException;
@@ -40,109 +36,109 @@ import javax.xml.stream.XMLStreamException;
  */
 public final class UniqueBody extends ComplexProperty {
 
-  /**
-   * The body type.
-   */
-  private BodyType bodyType;
+    /**
+     * The body type.
+     */
+    private BodyType bodyType;
 
-  /**
-   * The text.
-   */
-  private String text;
+    /**
+     * The text.
+     */
+    private String text;
 
-  /**
-   * Initializes a new instance.
-   */
-  public UniqueBody() {
-  }
-
-  /**
-   * Defines an implicit conversion of UniqueBody into a string.
-   *
-   * @param messageBody the message body
-   * @return string containing the text of the UniqueBody
-   * @throws Exception the exception
-   */
-  public static String getStringFromUniqueBody(UniqueBody messageBody)
-      throws Exception {
-    EwsUtilities.validateParam(messageBody, "messageBody");
-    return messageBody.text;
-  }
-
-  /**
-   * Reads attribute from XML.
-   *
-   * @param reader the reader
-   * @throws Exception the exception
-   */
-  public void readAttributesFromXml(EwsServiceXmlReader reader)
-      throws Exception {
-    this.bodyType = reader.readAttributeValue(BodyType.class,
-        XmlAttributeNames.BodyType);
-  }
-
-  /**
-   * Reads attribute from XML.
-   *
-   * @param reader the reader
-   * @throws XMLStreamException the xml stream exception
-   * @throws ServiceXmlDeserializationException the service xml deserialization exception
-   */
-  public void readTextValueFromXml(EwsServiceXmlReader reader)
-      throws XMLStreamException, ServiceXmlDeserializationException {
-    this.text = reader.readValue();
-  }
-
-  /**
-   * Writes attributes from XML.
-   *
-   * @param writer the writer
-   * @throws ServiceXmlSerializationException the service xml serialization exception
-   */
-  public void writeAttributesToXml(EwsServiceXmlWriter writer)
-      throws ServiceXmlSerializationException {
-    writer.writeAttributeValue(XmlAttributeNames.BodyType, this.bodyType);
-  }
-
-  /**
-   * Writes elements to XML.
-   *
-   * @param writer the writer
-   * @throws ServiceXmlSerializationException the service xml serialization exception
-   */
-  public void writeElementsToXml(EwsServiceXmlWriter writer)
-      throws ServiceXmlSerializationException {
-    if (!(this.text == null || this.text.isEmpty())) {
-      writer.writeValue(this.text, XmlElementNames.UniqueBody);
+    /**
+     * Initializes a new instance.
+     */
+    public UniqueBody() {
     }
-  }
 
-  /**
-   * Gets the type of the unique body's text.
-   *
-   * @return bodytype
-   */
-  public BodyType getBodyType() {
-    return this.bodyType;
-  }
+    /**
+     * Defines an implicit conversion of UniqueBody into a string.
+     *
+     * @param messageBody the message body
+     * @return string containing the text of the UniqueBody
+     * @throws Exception the exception
+     */
+    public static String getStringFromUniqueBody(UniqueBody messageBody)
+            throws Exception {
+        EwsUtilities.validateParam(messageBody, "messageBody");
+        return messageBody.text;
+    }
 
-  /**
-   * Gets the text of the unique body.
-   *
-   * @return text
-   */
-  public String getText() {
-    return this.text;
-  }
+    /**
+     * Reads attribute from XML.
+     *
+     * @param reader the reader
+     * @throws Exception the exception
+     */
+    public void readAttributesFromXml(EwsServiceXmlReader reader)
+            throws Exception {
+        this.bodyType = reader.readAttributeValue(BodyType.class,
+                XmlAttributeNames.BodyType);
+    }
 
-  /*
-   * (non-Javadoc)
-   *
-   * @see java.lang.Object#toString()
-   */
-  @Override
-  public String toString() {
-    return (this.getText() == null) ? "" : this.getText();
-  }
+    /**
+     * Reads attribute from XML.
+     *
+     * @param reader the reader
+     * @throws XMLStreamException                 the xml stream exception
+     * @throws ServiceXmlDeserializationException the service xml deserialization exception
+     */
+    public void readTextValueFromXml(EwsServiceXmlReader reader)
+            throws XMLStreamException, ServiceXmlDeserializationException {
+        this.text = reader.readValue();
+    }
+
+    /**
+     * Writes attributes from XML.
+     *
+     * @param writer the writer
+     * @throws ServiceXmlSerializationException the service xml serialization exception
+     */
+    public void writeAttributesToXml(EwsServiceXmlWriter writer)
+            throws ServiceXmlSerializationException {
+        writer.writeAttributeValue(XmlAttributeNames.BodyType, this.bodyType);
+    }
+
+    /**
+     * Writes elements to XML.
+     *
+     * @param writer the writer
+     * @throws ServiceXmlSerializationException the service xml serialization exception
+     */
+    public void writeElementsToXml(EwsServiceXmlWriter writer)
+            throws ServiceXmlSerializationException {
+        if (!(this.text == null || this.text.isEmpty())) {
+            writer.writeValue(this.text, XmlElementNames.UniqueBody);
+        }
+    }
+
+    /**
+     * Gets the type of the unique body's text.
+     *
+     * @return bodytype
+     */
+    public BodyType getBodyType() {
+        return this.bodyType;
+    }
+
+    /**
+     * Gets the text of the unique body.
+     *
+     * @return text
+     */
+    public String getText() {
+        return this.text;
+    }
+
+    /*
+     * (non-Javadoc)
+     *
+     * @see java.lang.Object#toString()
+     */
+    @Override
+    public String toString() {
+        return (this.getText() == null) ? "" : this.getText();
+    }
 
 }

@@ -30,12 +30,12 @@ package microsoft.exchange.webservices.data.misc;
  */
 public class RefParam<T> extends Param<T> {
 
-  /**
-   * Instantiates a new ref param.
-   *
-   * @param param the param
-   */
-  public RefParam(T param) {
-    this.setParam(param);
-  }
+    /**
+     * Instantiates a new ref param.
+     *
+     * @param param the param
+     */
+    public RefParam(T param) {
+        this.setParam(param);
+    }
 }

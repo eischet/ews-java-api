@@ -34,112 +34,112 @@ import java.util.Iterator;
  * @param <TItem> The type of item returned by the search operation.
  */
 public final class FindItemsResults<TItem extends Item> implements
-    Iterable<TItem> {
+        Iterable<TItem> {
 
-  /**
-   * The total count.
-   */
-  private int totalCount;
+    /**
+     * The total count.
+     */
+    private int totalCount;
 
-  /**
-   * The next page offset.
-   */
-  private Integer nextPageOffset;
+    /**
+     * The next page offset.
+     */
+    private Integer nextPageOffset;
 
-  /**
-   * The more available.
-   */
-  private boolean moreAvailable;
+    /**
+     * The more available.
+     */
+    private boolean moreAvailable;
 
-  /**
-   * The item.
-   */
-  private ArrayList<TItem> items = new ArrayList<TItem>();
+    /**
+     * The item.
+     */
+    private final ArrayList<TItem> items = new ArrayList<TItem>();
 
-  /**
-   * Initializes a new instance of the FindItemsResults class.
-   */
-  public FindItemsResults() {
-  }
+    /**
+     * Initializes a new instance of the FindItemsResults class.
+     */
+    public FindItemsResults() {
+    }
 
-  /**
-   * Gets the total number of item matching the search criteria available in
-   * the searched folder.
-   *
-   * @return the total count
-   */
-  public int getTotalCount() {
-    return this.totalCount;
-  }
+    /**
+     * Gets the total number of item matching the search criteria available in
+     * the searched folder.
+     *
+     * @return the total count
+     */
+    public int getTotalCount() {
+        return this.totalCount;
+    }
 
-  /**
-   * Sets the total number of item matching the search criteria available in
-   * the searched folder.
-   *
-   * @param totalCount the new total count
-   */
-  public void setTotalCount(int totalCount) {
-    this.totalCount = totalCount;
-  }
+    /**
+     * Sets the total number of item matching the search criteria available in
+     * the searched folder.
+     *
+     * @param totalCount the new total count
+     */
+    public void setTotalCount(int totalCount) {
+        this.totalCount = totalCount;
+    }
 
-  /**
-   * Gets the offset that should be used with ItemView to retrieve the next
-   * page of item in a FindItems operation.
-   *
-   * @return the next page offset
-   */
-  public Integer getNextPageOffset() {
-    return nextPageOffset;
-  }
+    /**
+     * Gets the offset that should be used with ItemView to retrieve the next
+     * page of item in a FindItems operation.
+     *
+     * @return the next page offset
+     */
+    public Integer getNextPageOffset() {
+        return nextPageOffset;
+    }
 
-  /**
-   * Sets the offset that should be used with ItemView to retrieve the next
-   * page of item in a FindItems operation.
-   *
-   * @param nextPageOffset the new next page offset
-   */
-  public void setNextPageOffset(Integer nextPageOffset) {
-    this.nextPageOffset = nextPageOffset;
-  }
+    /**
+     * Sets the offset that should be used with ItemView to retrieve the next
+     * page of item in a FindItems operation.
+     *
+     * @param nextPageOffset the new next page offset
+     */
+    public void setNextPageOffset(Integer nextPageOffset) {
+        this.nextPageOffset = nextPageOffset;
+    }
 
-  /**
-   * Gets a value indicating whether more item matching the search criteria
-   * are available in the searched folder.
-   *
-   * @return true, if is more available
-   */
-  public boolean isMoreAvailable() {
-    return moreAvailable;
-  }
+    /**
+     * Gets a value indicating whether more item matching the search criteria
+     * are available in the searched folder.
+     *
+     * @return true, if is more available
+     */
+    public boolean isMoreAvailable() {
+        return moreAvailable;
+    }
 
-  /**
-   * Sets a value indicating whether more item matching the search criteria
-   * are available in the searched folder.
-   *
-   * @param moreAvailable the new more available
-   */
-  public void setMoreAvailable(boolean moreAvailable) {
-    this.moreAvailable = moreAvailable;
-  }
+    /**
+     * Sets a value indicating whether more item matching the search criteria
+     * are available in the searched folder.
+     *
+     * @param moreAvailable the new more available
+     */
+    public void setMoreAvailable(boolean moreAvailable) {
+        this.moreAvailable = moreAvailable;
+    }
 
-  /**
-   * Gets a collection containing the item that were found by the search
-   * operation.
-   *
-   * @return the item
-   */
-  public ArrayList<TItem> getItems() {
-    return this.items;
-  }
+    /**
+     * Gets a collection containing the item that were found by the search
+     * operation.
+     *
+     * @return the item
+     */
+    public ArrayList<TItem> getItems() {
+        return this.items;
+    }
 
-  /**
-   * Returns an iterator that iterates through the collection.
-   *
-   * @return the iterator
-   */
-  @Override
-  public Iterator<TItem> iterator() {
-    return items.iterator();
-  }
+    /**
+     * Returns an iterator that iterates through the collection.
+     *
+     * @return the iterator
+     */
+    @Override
+    public Iterator<TItem> iterator() {
+        return items.iterator();
+    }
 
 }

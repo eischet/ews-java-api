@@ -29,12 +29,12 @@ package microsoft.exchange.webservices.data.property.complex;
  * @param <TComplexProperty> Type that extends ComplexProperty
  */
 public interface ICreateComplexPropertyDelegate
-    <TComplexProperty extends ComplexProperty> {
+        <TComplexProperty extends ComplexProperty> {
 
-  /**
-   * used to create instances of ComplexProperty.
-   *
-   * @return Complex property instance
-   */
-  TComplexProperty createComplexProperty();
+    /**
+     * used to create instances of ComplexProperty.
+     *
+     * @return Complex property instance
+     */
+    TComplexProperty createComplexProperty();
 }

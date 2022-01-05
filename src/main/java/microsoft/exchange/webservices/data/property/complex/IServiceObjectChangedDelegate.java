@@ -30,11 +30,11 @@ import microsoft.exchange.webservices.data.core.service.ServiceObject;
  */
 public interface IServiceObjectChangedDelegate {
 
-  /**
-   * Service object changed.
-   *
-   * @param serviceObject the service object
-   */
-  void serviceObjectChanged(ServiceObject serviceObject);
+    /**
+     * Service object changed.
+     *
+     * @param serviceObject the service object
+     */
+    void serviceObjectChanged(ServiceObject serviceObject);
 
 }

@@ -35,70 +35,71 @@ import javax.xml.stream.XMLStreamException;
  * Represents an operation to delete an existing rule.
  */
 public final class DeleteRuleOperation extends RuleOperation {
-  /**
-   * Id of the inbox rule to delete.
-   */
-  private String ruleId;
+    /**
+     * Id of the inbox rule to delete.
+     */
+    private String ruleId;
 
-  /**
-   * Initializes a new instance of the
-   * <see cref="DeleteRuleOperation"/> class.
-   */
-  public DeleteRuleOperation() {
-    super();
-  }
-
-  /**
-   * Initializes a new instance of the
-   * <see cref="DeleteRuleOperation"/> class.
-   *
-   * @param ruleId The Id of the inbox rule to delete.
-   */
-  public DeleteRuleOperation(String ruleId) {
-    super();
-    this.ruleId = ruleId;
-  }
-
-  /**
-   * Gets or sets the Id of the rule to delete.
-   */
-  public String getRuleId() {
-    return this.ruleId;
-  }
-
-  public void setRuleId(String value) {
-    if (this.canSetFieldValue(this.ruleId, value)) {
-      this.ruleId = value;
-      this.changed();
+    /**
+     * Initializes a new instance of the
+     * <see cref="DeleteRuleOperation"/> class.
+     */
+    public DeleteRuleOperation() {
+        super();
     }
-  }
 
-  /**
-   * Writes elements to XML.
-   *
-   * @param writer the writer
-   * @throws XMLStreamException the XML stream exception
-   */
-  @Override
-  public void writeElementsToXml(EwsServiceXmlWriter writer)
-      throws ServiceXmlSerializationException, XMLStreamException {
-    writer.writeElementValue(XmlNamespace.Types,
-        XmlElementNames.RuleId, this.getRuleId());
-  }
+    /**
+     * Initializes a new instance of the
+     * <see cref="DeleteRuleOperation"/> class.
+     *
+     * @param ruleId The Id of the inbox rule to delete.
+     */
+    public DeleteRuleOperation(String ruleId) {
+        super();
+        this.ruleId = ruleId;
+    }
 
-  /**
-   * Validates this instance.
-   */
-  @Override
-  protected void internalValidate() throws Exception {
-    EwsUtilities.validateParam(this.ruleId, "RuleId");
-  }
+    /**
+     * Gets or sets the Id of the rule to delete.
+     */
+    public String getRuleId() {
+        return this.ruleId;
+    }
 
-  /**
-   * Gets the Xml element name of the DeleteRuleOperation object.
-   */
-  @Override public String getXmlElementName() {
-    return XmlElementNames.DeleteRuleOperation;
+    public void setRuleId(String value) {
+        if (this.canSetFieldValue(this.ruleId, value)) {
+            this.ruleId = value;
+            this.changed();
+        }
+    }
 
-  }
+    /**
+     * Writes elements to XML.
+     *
+     * @param writer the writer
+     * @throws XMLStreamException the XML stream exception
+     */
+    @Override
+    public void writeElementsToXml(EwsServiceXmlWriter writer)
+            throws ServiceXmlSerializationException, XMLStreamException {
+        writer.writeElementValue(XmlNamespace.Types,
+                XmlElementNames.RuleId, this.getRuleId());
+    }
+
+    /**
+     * Validates this instance.
+     */
+    @Override
+    protected void internalValidate() throws Exception {
+        EwsUtilities.validateParam(this.ruleId, "RuleId");
+    }
+
+    /**
+     * Gets the Xml element name of the DeleteRuleOperation object.
+     */
+    @Override
+    public String getXmlElementName() {
+        return XmlElementNames.DeleteRuleOperation;
+
+    }
 }

@@ -28,52 +28,52 @@ package microsoft.exchange.webservices.data.core.enumeration.property;
  */
 public enum LegacyFreeBusyStatus {
 
-  // The time slot associated with the appointment appears as free.
-  /**
-   * The Free.
-   */
-  Free(0),
+    // The time slot associated with the appointment appears as free.
+    /**
+     * The Free.
+     */
+    Free(0),
 
-  // The time slot associated with the appointment appears as tentative.
-  /**
-   * The Tentative.
-   */
-  Tentative(1),
+    // The time slot associated with the appointment appears as tentative.
+    /**
+     * The Tentative.
+     */
+    Tentative(1),
 
-  // The time slot associated with the appointment appears as busy.
-  /**
-   * The Busy.
-   */
-  Busy(2),
+    // The time slot associated with the appointment appears as busy.
+    /**
+     * The Busy.
+     */
+    Busy(2),
 
-  // The time slot associated with the appointment appears as Out of Office.
-  /**
-   * The OOF.
-   */
-  OOF(3),
+    // The time slot associated with the appointment appears as Out of Office.
+    /**
+     * The OOF.
+     */
+    OOF(3),
 
-  // No free/busy status is associated with the appointment.
-  /**
-   * The No data.
-   */
-  NoData(4);
+    // No free/busy status is associated with the appointment.
+    /**
+     * The No data.
+     */
+    NoData(4);
 
-  /**
-   * The busy status.
-   */
-  private final int busyStatus;
+    /**
+     * The busy status.
+     */
+    private final int busyStatus;
 
-  /**
-   * Instantiates a new legacy free busy status.
-   *
-   * @param busyStatus the busy status
-   */
-  LegacyFreeBusyStatus(int busyStatus) {
-    this.busyStatus = busyStatus;
-  }
+    /**
+     * Instantiates a new legacy free busy status.
+     *
+     * @param busyStatus the busy status
+     */
+    LegacyFreeBusyStatus(int busyStatus) {
+        this.busyStatus = busyStatus;
+    }
 
-  public int getBusyStatus() {
-    return busyStatus;
-  }
+    public int getBusyStatus() {
+        return busyStatus;
+    }
 
 }

@@ -31,13 +31,13 @@ import microsoft.exchange.webservices.data.autodiscover.exception.AutodiscoverLo
  */
 public interface IAutodiscoverRedirectionUrl {
 
-  /**
-   * Autodiscover redirection url validation callback.
-   *
-   * @param redirectionUrl the redirection url
-   * @return true, if successful
-   * @throws AutodiscoverLocalException the autodiscover local exception
-   */
-  boolean autodiscoverRedirectionUrlValidationCallback(
-      String redirectionUrl) throws AutodiscoverLocalException;
+    /**
+     * Autodiscover redirection url validation callback.
+     *
+     * @param redirectionUrl the redirection url
+     * @return true, if successful
+     * @throws AutodiscoverLocalException the autodiscover local exception
+     */
+    boolean autodiscoverRedirectionUrlValidationCallback(
+            String redirectionUrl) throws AutodiscoverLocalException;
 }

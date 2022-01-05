@@ -27,11 +27,11 @@ import microsoft.exchange.webservices.data.core.EwsServiceXmlWriter;
 import microsoft.exchange.webservices.data.core.EwsUtilities;
 import microsoft.exchange.webservices.data.core.ExchangeService;
 import microsoft.exchange.webservices.data.core.XmlElementNames;
+import microsoft.exchange.webservices.data.core.enumeration.misc.ExchangeVersion;
+import microsoft.exchange.webservices.data.core.enumeration.misc.XmlNamespace;
+import microsoft.exchange.webservices.data.core.enumeration.service.error.ServiceErrorHandling;
 import microsoft.exchange.webservices.data.core.request.MultiResponseServiceRequest;
 import microsoft.exchange.webservices.data.core.response.ServiceResponse;
-import microsoft.exchange.webservices.data.core.enumeration.misc.ExchangeVersion;
-import microsoft.exchange.webservices.data.core.enumeration.service.error.ServiceErrorHandling;
-import microsoft.exchange.webservices.data.core.enumeration.misc.XmlNamespace;
 import microsoft.exchange.webservices.data.misc.ConversationAction;
 
 import java.util.ArrayList;
@@ -42,120 +42,121 @@ import java.util.List;
  */
 public final class ApplyConversationActionRequest extends MultiResponseServiceRequest<ServiceResponse> {
 
-  private List<ConversationAction> conversationActions =
-      new ArrayList<ConversationAction>();
+    private final List<ConversationAction> conversationActions =
+            new ArrayList<ConversationAction>();
 
-  public List<ConversationAction> getConversationActions() {
-    return this.conversationActions;
-  }
-
-  /**
-   * Initializes a new instance of the ApplyConversationActionRequest class
-   *
-   * @param service           The service
-   * @param errorHandlingMode Indicates how errors should be handled
-   * @throws Exception on error
-   */
-  public ApplyConversationActionRequest(ExchangeService service, ServiceErrorHandling errorHandlingMode) throws Exception {
-    super(service, errorHandlingMode);
-  }
-
-  /**
-   * Creates the service response.
-   *
-   * @param service       The service.
-   * @param responseIndex Index of the response.
-   * @return Service response.
-   */
-  @Override
-  protected ServiceResponse createServiceResponse(ExchangeService service,
-      int responseIndex) {
-    return new ServiceResponse();
-  }
-
-  /**
-   * Gets the expected response message count.
-   *
-   * @return Number of expected response messages.
-   */
-  @Override
-  protected int getExpectedResponseMessageCount() {
-    return this.conversationActions.size();
-  }
-
-  /**
-   * Validate request.
-   *
-   * @throws Exception on validation error
-   */
-  @Override
-  protected void validate() throws Exception {
-    super.validate();
-    EwsUtilities.validateParamCollection(
-      conversationActions.iterator(), "conversationActions"
-    );
-
-    for (int iAction = 0; iAction < this.getConversationActions().size(); iAction++) {
-      this.getConversationActions().get(iAction).validate();
+    public List<ConversationAction> getConversationActions() {
+        return this.conversationActions;
     }
-  }
 
-
-  /**
-   * Writes XML elements.
-   *
-   * @param writer The writer.
-   * @throws Exception on validation error
-   */
-  @Override
-  protected void writeElementsToXml(EwsServiceXmlWriter writer) throws Exception {
-    writer.writeStartElement(
-        XmlNamespace.Messages,
-        XmlElementNames.ConversationActions);
-    for (int iAction = 0; iAction < this.getConversationActions().size(); iAction++) {
-      this.getConversationActions().get(iAction).
-          writeElementsToXml(writer);
+    /**
+     * Initializes a new instance of the ApplyConversationActionRequest class
+     *
+     * @param service           The service
+     * @param errorHandlingMode Indicates how errors should be handled
+     * @throws Exception on error
+     */
+    public ApplyConversationActionRequest(ExchangeService service, ServiceErrorHandling errorHandlingMode) throws Exception {
+        super(service, errorHandlingMode);
     }
-    writer.writeEndElement();
-  }
 
-  /**
-   * Gets the name of the XML element.
-   *
-   * @return XML element name.
-   */
-  @Override public String getXmlElementName() {
-    return XmlElementNames.ApplyConversationAction;
-  }
+    /**
+     * Creates the service response.
+     *
+     * @param service       The service.
+     * @param responseIndex Index of the response.
+     * @return Service response.
+     */
+    @Override
+    protected ServiceResponse createServiceResponse(ExchangeService service,
+                                                    int responseIndex) {
+        return new ServiceResponse();
+    }
 
-  /**
-   * Gets the name of the response XML element.
-   *
-   * @return XML element name.
-   */
-  @Override
-  protected String getResponseXmlElementName() {
-    return XmlElementNames.ApplyConversationActionResponse;
-  }
+    /**
+     * Gets the expected response message count.
+     *
+     * @return Number of expected response messages.
+     */
+    @Override
+    protected int getExpectedResponseMessageCount() {
+        return this.conversationActions.size();
+    }
 
-  /**
-   * Gets the name of the response message XML element.
-   *
-   * @return XML element name.
-   */
-  @Override
-  protected String getResponseMessageXmlElementName() {
-    return XmlElementNames.ApplyConversationActionResponseMessage;
-  }
+    /**
+     * Validate request.
+     *
+     * @throws Exception on validation error
+     */
+    @Override
+    protected void validate() throws Exception {
+        super.validate();
+        EwsUtilities.validateParamCollection(
+                conversationActions.iterator(), "conversationActions"
+        );
 
-  /**
-   * Gets the request version.
-   *
-   * @return Earliest Exchange version in which this request is supported.
-   */
-  @Override
-  protected ExchangeVersion getMinimumRequiredServerVersion() {
-    return ExchangeVersion.Exchange2010_SP1;
-  }
+        for (int iAction = 0; iAction < this.getConversationActions().size(); iAction++) {
+            this.getConversationActions().get(iAction).validate();
+        }
+    }
+
+
+    /**
+     * Writes XML elements.
+     *
+     * @param writer The writer.
+     * @throws Exception on validation error
+     */
+    @Override
+    protected void writeElementsToXml(EwsServiceXmlWriter writer) throws Exception {
+        writer.writeStartElement(
+                XmlNamespace.Messages,
+                XmlElementNames.ConversationActions);
+        for (int iAction = 0; iAction < this.getConversationActions().size(); iAction++) {
+            this.getConversationActions().get(iAction).
+                    writeElementsToXml(writer);
+        }
+        writer.writeEndElement();
+    }
+
+    /**
+     * Gets the name of the XML element.
+     *
+     * @return XML element name.
+     */
+    @Override
+    public String getXmlElementName() {
+        return XmlElementNames.ApplyConversationAction;
+    }
+
+    /**
+     * Gets the name of the response XML element.
+     *
+     * @return XML element name.
+     */
+    @Override
+    protected String getResponseXmlElementName() {
+        return XmlElementNames.ApplyConversationActionResponse;
+    }
+
+    /**
+     * Gets the name of the response message XML element.
+     *
+     * @return XML element name.
+     */
+    @Override
+    protected String getResponseMessageXmlElementName() {
+        return XmlElementNames.ApplyConversationActionResponseMessage;
+    }
+
+    /**
+     * Gets the request version.
+     *
+     * @return Earliest Exchange version in which this request is supported.
+     */
+    @Override
+    protected ExchangeVersion getMinimumRequiredServerVersion() {
+        return ExchangeVersion.Exchange2010_SP1;
+    }
 }
 

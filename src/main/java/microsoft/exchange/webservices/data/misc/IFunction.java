@@ -31,11 +31,11 @@ package microsoft.exchange.webservices.data.misc;
  */
 public interface IFunction<T, TResult> {
 
-  /**
-   * Func.
-   *
-   * @param arg the arg
-   * @return the t result
-   */
-  TResult func(T arg);
+    /**
+     * Func.
+     *
+     * @param arg the arg
+     * @return the t result
+     */
+    TResult func(T arg);
 }

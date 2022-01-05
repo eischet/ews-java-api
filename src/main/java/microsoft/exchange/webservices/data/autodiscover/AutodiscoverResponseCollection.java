@@ -38,127 +38,127 @@ import java.util.List;
  * @param <TResponse> The type of the response in the collection.
  */
 public abstract class AutodiscoverResponseCollection
-    <TResponse extends AutodiscoverResponse>
-    extends AutodiscoverResponse implements Iterable<TResponse> {
+        <TResponse extends AutodiscoverResponse>
+        extends AutodiscoverResponse implements Iterable<TResponse> {
 
-  /**
-   * The response.
-   */
-  private List<TResponse> responses;
+    /**
+     * The response.
+     */
+    private final List<TResponse> responses;
 
-  /**
-   * Initializes a new instance of the AutodiscoverResponseCollection class.
-   */
-  public AutodiscoverResponseCollection() {
-    super();
-    this.responses = new ArrayList<TResponse>();
-  }
-
-  /**
-   * Gets the number of response in the collection.
-   *
-   * @return the count
-   */
-  public int getCount() {
-    return this.responses.size();
-  }
-
-  /**
-   * Gets the response at the specified index.
-   *
-   * @param index the index
-   * @return the t response at index
-   */
-  public TResponse getTResponseAtIndex(int index) {
-    return this.responses.get(index);
-  }
-
-  /**
-   * Gets the response.
-   *
-   * @return the response
-   */
-  public List<TResponse> getResponses() {
-    return responses;
-  }
-
-  /**
-   * Loads response from XML.
-   *
-   * @param reader         the reader
-   * @param endElementName End element name.
-   * @throws Exception the exception
-   */
-  public void loadFromXml(EwsXmlReader reader, String endElementName)
-      throws Exception {
-    do {
-      reader.read();
-
-      if (reader.getNodeType().getNodeType() == XmlNodeType.START_ELEMENT) {
-        if (reader.getLocalName().equals(
-            this.getResponseCollectionXmlElementName())) {
-          this.loadResponseCollectionFromXml(reader);
-        } else {
-          super.loadFromXml(reader, endElementName);
-        }
-      }
-    } while (!reader
-        .isEndElement(XmlNamespace.Autodiscover, endElementName));
-  }
-
-  /**
-   * Loads response from XML.
-   *
-   * @param reader the reader
-   * @throws Exception the exception
-   */
-  private void loadResponseCollectionFromXml(EwsXmlReader reader)
-      throws Exception {
-    if (!reader.isEmptyElement()) {
-      do {
-        reader.read();
-        if ((reader.getNodeType().getNodeType() == XmlNodeType.START_ELEMENT) &&
-            (reader.getLocalName().equals(this
-                .getResponseInstanceXmlElementName()))) {
-          TResponse response = this.createResponseInstance();
-          response.loadFromXml(reader, this
-              .getResponseInstanceXmlElementName());
-          this.responses.add(response);
-        }
-      } while (!reader.isEndElement(XmlNamespace.Autodiscover, this
-          .getResponseCollectionXmlElementName()));
-    } else {
-      reader.read();
+    /**
+     * Initializes a new instance of the AutodiscoverResponseCollection class.
+     */
+    public AutodiscoverResponseCollection() {
+        super();
+        this.responses = new ArrayList<TResponse>();
     }
-  }
 
-  /**
-   * Gets the name of the response collection XML element.
-   *
-   * @return Response collection XMl element name.
-   */
-  protected abstract String getResponseCollectionXmlElementName();
+    /**
+     * Gets the number of response in the collection.
+     *
+     * @return the count
+     */
+    public int getCount() {
+        return this.responses.size();
+    }
 
-  /**
-   * Gets the name of the response instance XML element.
-   *
-   * @return Response collection XMl element name.
-   */
-  protected abstract String getResponseInstanceXmlElementName();
+    /**
+     * Gets the response at the specified index.
+     *
+     * @param index the index
+     * @return the t response at index
+     */
+    public TResponse getTResponseAtIndex(int index) {
+        return this.responses.get(index);
+    }
 
-  /**
-   * Create a response instance.
-   *
-   * @return TResponse.
-   */
-  protected abstract TResponse createResponseInstance();
+    /**
+     * Gets the response.
+     *
+     * @return the response
+     */
+    public List<TResponse> getResponses() {
+        return responses;
+    }
 
-  /**
-   * Gets an Iterator that iterates through the elements of the collection.
-   *
-   * @return An Iterator for the collection.
-   */
-  public Iterator<TResponse> iterator() {
-    return this.responses.iterator();
-  }
+    /**
+     * Loads response from XML.
+     *
+     * @param reader         the reader
+     * @param endElementName End element name.
+     * @throws Exception the exception
+     */
+    public void loadFromXml(EwsXmlReader reader, String endElementName)
+            throws Exception {
+        do {
+            reader.read();
+
+            if (reader.getNodeType().getNodeType() == XmlNodeType.START_ELEMENT) {
+                if (reader.getLocalName().equals(
+                        this.getResponseCollectionXmlElementName())) {
+                    this.loadResponseCollectionFromXml(reader);
+                } else {
+                    super.loadFromXml(reader, endElementName);
+                }
+            }
+        } while (!reader
+                .isEndElement(XmlNamespace.Autodiscover, endElementName));
+    }
+
+    /**
+     * Loads response from XML.
+     *
+     * @param reader the reader
+     * @throws Exception the exception
+     */
+    private void loadResponseCollectionFromXml(EwsXmlReader reader)
+            throws Exception {
+        if (!reader.isEmptyElement()) {
+            do {
+                reader.read();
+                if ((reader.getNodeType().getNodeType() == XmlNodeType.START_ELEMENT) &&
+                        (reader.getLocalName().equals(this
+                                .getResponseInstanceXmlElementName()))) {
+                    TResponse response = this.createResponseInstance();
+                    response.loadFromXml(reader, this
+                            .getResponseInstanceXmlElementName());
+                    this.responses.add(response);
+                }
+            } while (!reader.isEndElement(XmlNamespace.Autodiscover, this
+                    .getResponseCollectionXmlElementName()));
+        } else {
+            reader.read();
+        }
+    }
+
+    /**
+     * Gets the name of the response collection XML element.
+     *
+     * @return Response collection XMl element name.
+     */
+    protected abstract String getResponseCollectionXmlElementName();
+
+    /**
+     * Gets the name of the response instance XML element.
+     *
+     * @return Response collection XMl element name.
+     */
+    protected abstract String getResponseInstanceXmlElementName();
+
+    /**
+     * Create a response instance.
+     *
+     * @return TResponse.
+     */
+    protected abstract TResponse createResponseInstance();
+
+    /**
+     * Gets an Iterator that iterates through the elements of the collection.
+     *
+     * @return An Iterator for the collection.
+     */
+    public Iterator<TResponse> iterator() {
+        return this.responses.iterator();
+    }
 }

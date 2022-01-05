@@ -23,16 +23,12 @@
 
 package microsoft.exchange.webservices.data.core.request;
 
-import microsoft.exchange.webservices.data.core.EwsServiceXmlWriter;
-import microsoft.exchange.webservices.data.core.EwsUtilities;
-import microsoft.exchange.webservices.data.core.ExchangeService;
-import microsoft.exchange.webservices.data.core.XmlAttributeNames;
-import microsoft.exchange.webservices.data.core.XmlElementNames;
-import microsoft.exchange.webservices.data.core.enumeration.service.error.ServiceErrorHandling;
-import microsoft.exchange.webservices.data.core.response.ServiceResponse;
+import microsoft.exchange.webservices.data.core.*;
 import microsoft.exchange.webservices.data.core.enumeration.misc.ExchangeVersion;
 import microsoft.exchange.webservices.data.core.enumeration.misc.XmlNamespace;
+import microsoft.exchange.webservices.data.core.enumeration.service.error.ServiceErrorHandling;
 import microsoft.exchange.webservices.data.core.exception.service.local.ServiceXmlSerializationException;
+import microsoft.exchange.webservices.data.core.response.ServiceResponse;
 import microsoft.exchange.webservices.data.misc.FolderIdWrapperList;
 
 /**
@@ -40,150 +36,151 @@ import microsoft.exchange.webservices.data.misc.FolderIdWrapperList;
  */
 public final class EmptyFolderRequest extends DeleteRequest<ServiceResponse> {
 
-  private FolderIdWrapperList folderIds = new FolderIdWrapperList();
-  private boolean deleteSubFolders;
+    private final FolderIdWrapperList folderIds = new FolderIdWrapperList();
+    private boolean deleteSubFolders;
 
-  /**
-   * Initializes a new instance of the EmptyFolderRequest class.
-   *
-   * @param service           The service.
-   * @param errorHandlingMode Indicates how errors should be handled.
-   * @throws Exception on error
-   */
-  public EmptyFolderRequest(ExchangeService service, ServiceErrorHandling errorHandlingMode)
-      throws Exception {
-    super(service, errorHandlingMode);
-  }
+    /**
+     * Initializes a new instance of the EmptyFolderRequest class.
+     *
+     * @param service           The service.
+     * @param errorHandlingMode Indicates how errors should be handled.
+     * @throws Exception on error
+     */
+    public EmptyFolderRequest(ExchangeService service, ServiceErrorHandling errorHandlingMode)
+            throws Exception {
+        super(service, errorHandlingMode);
+    }
 
-  /**
-   * Validates request.
-   *
-   * @throws Exception on error
-   */
-  @Override
-  protected void validate() throws Exception {
-    super.validate();
-    EwsUtilities.validateParam(this.getFolderIds(), "FolderIds");
-    this.getFolderIds().validate(this.getService().
-        getRequestedServerVersion());
-  }
+    /**
+     * Validates request.
+     *
+     * @throws Exception on error
+     */
+    @Override
+    protected void validate() throws Exception {
+        super.validate();
+        EwsUtilities.validateParam(this.getFolderIds(), "FolderIds");
+        this.getFolderIds().validate(this.getService().
+                getRequestedServerVersion());
+    }
 
-  /**
-   * Gets the expected response message count.
-   *
-   * @return Number of expected response messages.
-   */
-  @Override
-  protected int getExpectedResponseMessageCount() {
-    return this.getFolderIds().getCount();
-  }
+    /**
+     * Gets the expected response message count.
+     *
+     * @return Number of expected response messages.
+     */
+    @Override
+    protected int getExpectedResponseMessageCount() {
+        return this.getFolderIds().getCount();
+    }
 
-  /**
-   * Creates the service response.
-   *
-   * @param service       The service.
-   * @param responseIndex Index of the response.
-   * @return Service object
-   */
-  @Override
-  protected ServiceResponse createServiceResponse(ExchangeService service,
-      int responseIndex) {
-    return new ServiceResponse();
-  }
+    /**
+     * Creates the service response.
+     *
+     * @param service       The service.
+     * @param responseIndex Index of the response.
+     * @return Service object
+     */
+    @Override
+    protected ServiceResponse createServiceResponse(ExchangeService service,
+                                                    int responseIndex) {
+        return new ServiceResponse();
+    }
 
-  /**
-   * Gets the name of the XML element.
-   *
-   * @return XML element name.
-   */
-  @Override public String getXmlElementName() {
-    return XmlElementNames.EmptyFolder;
-  }
+    /**
+     * Gets the name of the XML element.
+     *
+     * @return XML element name.
+     */
+    @Override
+    public String getXmlElementName() {
+        return XmlElementNames.EmptyFolder;
+    }
 
-  /**
-   * Gets the name of the response XML element.
-   *
-   * @return XML element name.
-   */
-  @Override
-  protected String getResponseXmlElementName() {
-    return XmlElementNames.EmptyFolderResponse;
-  }
+    /**
+     * Gets the name of the response XML element.
+     *
+     * @return XML element name.
+     */
+    @Override
+    protected String getResponseXmlElementName() {
+        return XmlElementNames.EmptyFolderResponse;
+    }
 
-  /**
-   * Gets the name of the response message XML element.
-   *
-   * @return XML element name.
-   */
-  @Override
-  protected String getResponseMessageXmlElementName() {
-    return XmlElementNames.EmptyFolderResponseMessage;
-  }
+    /**
+     * Gets the name of the response message XML element.
+     *
+     * @return XML element name.
+     */
+    @Override
+    protected String getResponseMessageXmlElementName() {
+        return XmlElementNames.EmptyFolderResponseMessage;
+    }
 
-  /**
-   * Writes XML elements.
-   *
-   * @param writer The writer.
-   * @throws Exception
-   */
-  @Override
-  protected void writeElementsToXml(EwsServiceXmlWriter writer)
-      throws Exception {
-    this.getFolderIds().writeToXml(
-        writer,
-        XmlNamespace.Messages,
-        XmlElementNames.FolderIds);
-  }
+    /**
+     * Writes XML elements.
+     *
+     * @param writer The writer.
+     * @throws Exception
+     */
+    @Override
+    protected void writeElementsToXml(EwsServiceXmlWriter writer)
+            throws Exception {
+        this.getFolderIds().writeToXml(
+                writer,
+                XmlNamespace.Messages,
+                XmlElementNames.FolderIds);
+    }
 
-  /**
-   * Writes XML attribute.
-   *
-   * @param writer The writer.
-   * @throws ServiceXmlSerializationException
-   */
-  @Override
-  protected void writeAttributesToXml(EwsServiceXmlWriter writer)
-      throws ServiceXmlSerializationException {
-    super.writeAttributesToXml(writer);
-    writer.writeAttributeValue(XmlAttributeNames.DeleteSubFolders,
-        this.deleteSubFolders);
-  }
+    /**
+     * Writes XML attribute.
+     *
+     * @param writer The writer.
+     * @throws ServiceXmlSerializationException
+     */
+    @Override
+    protected void writeAttributesToXml(EwsServiceXmlWriter writer)
+            throws ServiceXmlSerializationException {
+        super.writeAttributesToXml(writer);
+        writer.writeAttributeValue(XmlAttributeNames.DeleteSubFolders,
+                this.deleteSubFolders);
+    }
 
-  /**
-   * Gets the request version.
-   *
-   * @return Earliest Exchange version in which this request is supported.
-   */
-  @Override
-  protected ExchangeVersion getMinimumRequiredServerVersion() {
-    return ExchangeVersion.Exchange2010_SP1;
-  }
+    /**
+     * Gets the request version.
+     *
+     * @return Earliest Exchange version in which this request is supported.
+     */
+    @Override
+    protected ExchangeVersion getMinimumRequiredServerVersion() {
+        return ExchangeVersion.Exchange2010_SP1;
+    }
 
-  /**
-   * Gets the folder ids.
-   *
-   * @return The folder ids.
-   */
-  public FolderIdWrapperList getFolderIds() {
-    return this.folderIds;
-  }
+    /**
+     * Gets the folder ids.
+     *
+     * @return The folder ids.
+     */
+    public FolderIdWrapperList getFolderIds() {
+        return this.folderIds;
+    }
 
-  /**
-   * Gets a value indicating whether empty folder should also delete sub folder.
-   *
-   * @value true if empty folder should also delete sub folder, otherwise false.
-   */
-  protected boolean getDeleteSubFolders() {
-    return deleteSubFolders;
-  }
+    /**
+     * Gets a value indicating whether empty folder should also delete sub folder.
+     *
+     * @value true if empty folder should also delete sub folder, otherwise false.
+     */
+    protected boolean getDeleteSubFolders() {
+        return deleteSubFolders;
+    }
 
-  /**
-   * Sets a value indicating whether empty folder should also delete sub folder.
-   *
-   * @value true if empty folder should also delete sub folder, otherwise false.
-   */
-  public void setDeleteSubFolders(boolean value) {
-    this.deleteSubFolders = value;
-  }
+    /**
+     * Sets a value indicating whether empty folder should also delete sub folder.
+     *
+     * @value true if empty folder should also delete sub folder, otherwise false.
+     */
+    public void setDeleteSubFolders(boolean value) {
+        this.deleteSubFolders = value;
+    }
 
 }

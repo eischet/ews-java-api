@@ -33,11 +33,11 @@ import java.util.concurrent.Future;
 
 public interface IAsyncResult extends Future<Object> {
 
-  public Object getAsyncState();
+    Object getAsyncState();
 
-  public WaitHandle getAsyncWaitHanle();
+    WaitHandle getAsyncWaitHanle();
 
-  public boolean getCompleteSynchronously();
+    boolean getCompleteSynchronously();
 
-  public boolean getIsCompleted();
+    boolean getIsCompleted();
 }

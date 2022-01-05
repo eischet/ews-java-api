@@ -24,8 +24,8 @@
 package microsoft.exchange.webservices.data.notification;
 
 import microsoft.exchange.webservices.data.core.EwsServiceXmlReader;
-import microsoft.exchange.webservices.data.core.enumeration.notification.EventType;
 import microsoft.exchange.webservices.data.core.enumeration.misc.XmlNamespace;
+import microsoft.exchange.webservices.data.core.enumeration.notification.EventType;
 import microsoft.exchange.webservices.data.property.complex.FolderId;
 
 import java.util.Date;
@@ -35,117 +35,117 @@ import java.util.Date;
  */
 public abstract class NotificationEvent {
 
-  /**
-   * Type of this event.
-   */
-  private EventType eventType;
+    /**
+     * Type of this event.
+     */
+    private final EventType eventType;
 
-  /**
-   * Date and time when the event occurred.
-   */
-  private Date timestamp;
+    /**
+     * Date and time when the event occurred.
+     */
+    private final Date timestamp;
 
-  /**
-   * Id of parent folder of the item or folder this event applies to.
-   */
-  private FolderId parentFolderId;
+    /**
+     * Id of parent folder of the item or folder this event applies to.
+     */
+    private FolderId parentFolderId;
 
-  /**
-   * Id of the old parent folder of the item or folder this event applies to.
-   * This property is only meaningful when EventType is equal to either
-   * EventType.Moved or EventType.Copied. For all other event types,
-   * oldParentFolderId will be null
-   */
-  private FolderId oldParentFolderId;
+    /**
+     * Id of the old parent folder of the item or folder this event applies to.
+     * This property is only meaningful when EventType is equal to either
+     * EventType.Moved or EventType.Copied. For all other event types,
+     * oldParentFolderId will be null
+     */
+    private FolderId oldParentFolderId;
 
-  /**
-   * Initializes a new instance.
-   *
-   * @param eventType the event type
-   * @param timestamp the timestamp
-   */
-  protected NotificationEvent(EventType eventType, Date timestamp) {
-    this.eventType = eventType;
-    this.timestamp = timestamp;
-  }
+    /**
+     * Initializes a new instance.
+     *
+     * @param eventType the event type
+     * @param timestamp the timestamp
+     */
+    protected NotificationEvent(EventType eventType, Date timestamp) {
+        this.eventType = eventType;
+        this.timestamp = timestamp;
+    }
 
-  /**
-   * Load from XML.
-   *
-   * @param reader the reader
-   * @throws Exception the exception
-   */
-  protected void internalLoadFromXml(EwsServiceXmlReader reader) throws Exception {
-  }
+    /**
+     * Load from XML.
+     *
+     * @param reader the reader
+     * @throws Exception the exception
+     */
+    protected void internalLoadFromXml(EwsServiceXmlReader reader) throws Exception {
+    }
 
-  /**
-   * Loads this NotificationEvent from XML.
-   *
-   * @param reader         the reader
-   * @param xmlElementName the xml element name
-   * @throws Exception the exception
-   */
-  protected void loadFromXml(EwsServiceXmlReader reader,
-      String xmlElementName)
-      throws Exception {
-    this.internalLoadFromXml(reader);
+    /**
+     * Loads this NotificationEvent from XML.
+     *
+     * @param reader         the reader
+     * @param xmlElementName the xml element name
+     * @throws Exception the exception
+     */
+    protected void loadFromXml(EwsServiceXmlReader reader,
+                               String xmlElementName)
+            throws Exception {
+        this.internalLoadFromXml(reader);
 
-    reader.readEndElementIfNecessary(XmlNamespace.Types, xmlElementName);
-  }
+        reader.readEndElementIfNecessary(XmlNamespace.Types, xmlElementName);
+    }
 
-  /**
-   * gets the eventType.
-   *
-   * @return the eventType.
-   */
-  public EventType getEventType() {
-    return eventType;
-  }
+    /**
+     * gets the eventType.
+     *
+     * @return the eventType.
+     */
+    public EventType getEventType() {
+        return eventType;
+    }
 
-  /**
-   * gets the timestamp.
-   *
-   * @return the timestamp.
-   */
-  public Date getTimestamp() {
-    return timestamp;
-  }
+    /**
+     * gets the timestamp.
+     *
+     * @return the timestamp.
+     */
+    public Date getTimestamp() {
+        return timestamp;
+    }
 
-  /**
-   * gets the parentFolderId.
-   *
-   * @return the parentFolderId.
-   */
-  public FolderId getParentFolderId() {
-    return parentFolderId;
-  }
+    /**
+     * gets the parentFolderId.
+     *
+     * @return the parentFolderId.
+     */
+    public FolderId getParentFolderId() {
+        return parentFolderId;
+    }
 
-  /**
-   * Sets the parentFolderId.
-   *
-   * @param parentFolderId the new parent folder id
-   */
-  protected void setParentFolderId(FolderId parentFolderId) {
-    this.parentFolderId = parentFolderId;
-  }
+    /**
+     * Sets the parentFolderId.
+     *
+     * @param parentFolderId the new parent folder id
+     */
+    protected void setParentFolderId(FolderId parentFolderId) {
+        this.parentFolderId = parentFolderId;
+    }
 
-  /**
-   * gets the oldParentFolderId.
-   *
-   * @return the oldParentFolderId.
-   */
-  public FolderId getOldParentFolderId() {
-    return oldParentFolderId;
-  }
+    /**
+     * gets the oldParentFolderId.
+     *
+     * @return the oldParentFolderId.
+     */
+    public FolderId getOldParentFolderId() {
+        return oldParentFolderId;
+    }
 
-  /**
-   * Sets the oldParentFolderId.
-   *
-   * @param oldParentFolderId the new old parent folder id
-   */
-  protected void setOldParentFolderId(FolderId oldParentFolderId) {
+    /**
+     * Sets the oldParentFolderId.
+     *
+     * @param oldParentFolderId the new old parent folder id
+     */
+    protected void setOldParentFolderId(FolderId oldParentFolderId) {
 
-    this.oldParentFolderId = oldParentFolderId;
-  }
+        this.oldParentFolderId = oldParentFolderId;
+    }
 
 }

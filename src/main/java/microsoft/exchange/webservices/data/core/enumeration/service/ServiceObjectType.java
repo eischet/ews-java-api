@@ -28,21 +28,21 @@ package microsoft.exchange.webservices.data.core.enumeration.service;
  */
 public enum ServiceObjectType {
 
-  // The object is a folder.
-  /**
-   * The Folder.
-   */
-  Folder,
+    // The object is a folder.
+    /**
+     * The Folder.
+     */
+    Folder,
 
-  // The object is an item.
-  /**
-   * The Item.
-   */
-  Item,
+    // The object is an item.
+    /**
+     * The Item.
+     */
+    Item,
 
-  /// Data represents a conversation
-  /**
-   * The Conversation.
-   */
-  Conversation
+    /// Data represents a conversation
+    /**
+     * The Conversation.
+     */
+    Conversation
 }

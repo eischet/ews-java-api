@@ -32,55 +32,55 @@ import microsoft.exchange.webservices.data.core.enumeration.misc.HangingRequestD
  */
 public final class HangingRequestDisconnectEventArgs {
 
-  /**
-   * Initializes a new instance of the
-   * HangingRequestDisconnectEventArgs class.
-   *
-   * @param reason    The reason.
-   * @param exception The exception.
-   */
-  public HangingRequestDisconnectEventArgs(HangingRequestDisconnectReason reason, Exception exception) {
-    this.reason = reason;
-    this.exception = exception;
-  }
+    /**
+     * Initializes a new instance of the
+     * HangingRequestDisconnectEventArgs class.
+     *
+     * @param reason    The reason.
+     * @param exception The exception.
+     */
+    public HangingRequestDisconnectEventArgs(HangingRequestDisconnectReason reason, Exception exception) {
+        this.reason = reason;
+        this.exception = exception;
+    }
 
-  private HangingRequestDisconnectReason reason;
+    private HangingRequestDisconnectReason reason;
 
-  /**
-   * Gets the reason that the user was disconnected.
-   *
-   * @return reason The reason.
-   */
-  public HangingRequestDisconnectReason getReason() {
-    return reason;
-  }
+    /**
+     * Gets the reason that the user was disconnected.
+     *
+     * @return reason The reason.
+     */
+    public HangingRequestDisconnectReason getReason() {
+        return reason;
+    }
 
-  /**
-   * Sets the reason that the user was disconnected.
-   *
-   * @param value The reason.
-   */
-  protected void setReason(HangingRequestDisconnectReason value) {
-    reason = value;
-  }
+    /**
+     * Sets the reason that the user was disconnected.
+     *
+     * @param value The reason.
+     */
+    protected void setReason(HangingRequestDisconnectReason value) {
+        reason = value;
+    }
 
-  private Exception exception;
+    private Exception exception;
 
-  /**
-   * Gets the exception that caused the disconnection. Can be null.
-   *
-   * @return exception The Exception.
-   */
-  public Exception getException() {
-    return exception;
-  }
+    /**
+     * Gets the exception that caused the disconnection. Can be null.
+     *
+     * @return exception The Exception.
+     */
+    public Exception getException() {
+        return exception;
+    }
 
-  /**
-   * Sets the exception that caused the disconnection. Can be null.
-   *
-   * @param value The Exception.
-   */
-  protected void setException(Exception value) {
-    exception = value;
-  }
+    /**
+     * Sets the exception that caused the disconnection. Can be null.
+     *
+     * @param value The Exception.
+     */
+    protected void setException(Exception value) {
+        exception = value;
+    }
 }

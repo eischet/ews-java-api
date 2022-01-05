@@ -31,33 +31,33 @@ import microsoft.exchange.webservices.data.core.exception.service.remote.Service
  */
 public class AutodiscoverResponseException extends ServiceRemoteException {
 
-  /**
-   * Constant serialized ID used for compatibility.
-   */
-  private static final long serialVersionUID = 1L;
+    /**
+     * Constant serialized ID used for compatibility.
+     */
+    private static final long serialVersionUID = 1L;
 
-  /**
-   * Error code when Autodiscover service operation failed remotely.
-   */
-  private AutodiscoverErrorCode errorCode;
+    /**
+     * Error code when Autodiscover service operation failed remotely.
+     */
+    private final AutodiscoverErrorCode errorCode;
 
-  /**
-   * Initializes a new instance of the class.
-   *
-   * @param errorCode the error code
-   * @param message   the message
-   */
-  public AutodiscoverResponseException(AutodiscoverErrorCode errorCode, String message) {
-    super(message);
-    this.errorCode = errorCode;
-  }
+    /**
+     * Initializes a new instance of the class.
+     *
+     * @param errorCode the error code
+     * @param message   the message
+     */
+    public AutodiscoverResponseException(AutodiscoverErrorCode errorCode, String message) {
+        super(message);
+        this.errorCode = errorCode;
+    }
 
-  /**
-   * Gets the ErrorCode for the exception.
-   *
-   * @return the error code
-   */
-  public AutodiscoverErrorCode getErrorCode() {
-    return this.errorCode;
-  }
+    /**
+     * Gets the ErrorCode for the exception.
+     *
+     * @return the error code
+     */
+    public AutodiscoverErrorCode getErrorCode() {
+        return this.errorCode;
+    }
 }

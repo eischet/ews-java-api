@@ -37,60 +37,60 @@ import java.util.List;
  */
 public final class ItemGroup<TItem extends Item> {
 
-  /**
-   * The group index.
-   */
-  private String groupIndex;
+    /**
+     * The group index.
+     */
+    private String groupIndex;
 
-  /**
-   * The item.
-   */
-  private Collection<TItem> items;
+    /**
+     * The item.
+     */
+    private Collection<TItem> items;
 
-  /**
-   * Initializes a new instance of the class.
-   *
-   * @param groupIndex the group index
-   * @param items      the item
-   */
-  public ItemGroup(String groupIndex, List<TItem> items) {
-    EwsUtilities.ewsAssert(groupIndex != null, "ItemGroup.ctor", "groupIndex is null");
-    EwsUtilities
-        .ewsAssert(items != null, "ItemGroup.ctor", "item is null");
+    /**
+     * Initializes a new instance of the class.
+     *
+     * @param groupIndex the group index
+     * @param items      the item
+     */
+    public ItemGroup(String groupIndex, List<TItem> items) {
+        EwsUtilities.ewsAssert(groupIndex != null, "ItemGroup.ctor", "groupIndex is null");
+        EwsUtilities
+                .ewsAssert(items != null, "ItemGroup.ctor", "item is null");
 
-    this.groupIndex = groupIndex;
-    this.items = new ArrayList<TItem>(items);
-  }
+        this.groupIndex = groupIndex;
+        this.items = new ArrayList<TItem>(items);
+    }
 
-  /**
-   * Gets an index identifying the group.
-   *
-   * @return the group index
-   */
-  public String getGroupIndex() {
-    return this.groupIndex;
-  }
+    /**
+     * Gets an index identifying the group.
+     *
+     * @return the group index
+     */
+    public String getGroupIndex() {
+        return this.groupIndex;
+    }
 
-  /**
-   * Sets an index identifying the group.
-   */
-  private void setGroupIndex(String value) {
-    this.groupIndex = value;
-  }
+    /**
+     * Sets an index identifying the group.
+     */
+    private void setGroupIndex(String value) {
+        this.groupIndex = value;
+    }
 
-  /**
-   * Gets a collection of the item in this group.
-   *
-   * @return the item
-   */
-  public Collection<TItem> getItems() {
-    return this.items;
-  }
+    /**
+     * Gets a collection of the item in this group.
+     *
+     * @return the item
+     */
+    public Collection<TItem> getItems() {
+        return this.items;
+    }
 
-  /**
-   * Sets a collection of the item in this group.
-   */
-  private void setItems(Collection<TItem> value) {
-    this.items = value;
-  }
+    /**
+     * Sets a collection of the item in this group.
+     */
+    private void setItems(Collection<TItem> value) {
+        this.items = value;
+    }
 }

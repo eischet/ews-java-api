@@ -23,12 +23,12 @@
 
 package microsoft.exchange.webservices.data.autodiscover.response;
 
+import microsoft.exchange.webservices.data.autodiscover.enumeration.DomainSettingName;
 import microsoft.exchange.webservices.data.autodiscover.exception.error.DomainSettingError;
 import microsoft.exchange.webservices.data.core.EwsUtilities;
 import microsoft.exchange.webservices.data.core.EwsXmlReader;
 import microsoft.exchange.webservices.data.core.XmlAttributeNames;
 import microsoft.exchange.webservices.data.core.XmlElementNames;
-import microsoft.exchange.webservices.data.autodiscover.enumeration.DomainSettingName;
 import microsoft.exchange.webservices.data.core.enumeration.misc.XmlNamespace;
 import microsoft.exchange.webservices.data.security.XmlNodeType;
 
@@ -44,208 +44,209 @@ import java.util.logging.Logger;
  */
 public final class GetDomainSettingsResponse extends AutodiscoverResponse {
 
-  private static final Logger LOG = Logger.getLogger(GetDomainSettingsResponse.class.getCanonicalName());
+    private static final Logger LOG = Logger.getLogger(GetDomainSettingsResponse.class.getCanonicalName());
 
-  /**
-   * The domain.
-   */
-  private String domain;
+    /**
+     * The domain.
+     */
+    private String domain;
 
-  /**
-   * The redirect target.
-   */
-  private String redirectTarget;
+    /**
+     * The redirect target.
+     */
+    private String redirectTarget;
 
-  /**
-   * The settings.
-   */
-  private Map<DomainSettingName, Object> settings;
+    /**
+     * The settings.
+     */
+    private final Map<DomainSettingName, Object> settings;
 
-  /**
-   * The domain setting errors.
-   */
-  private Collection<DomainSettingError> domainSettingErrors;
+    /**
+     * The domain setting errors.
+     */
+    private final Collection<DomainSettingError> domainSettingErrors;
 
-  /**
-   * Initializes a new instance of the {@link GetDomainSettingsResponse} class.
-   */
-  public GetDomainSettingsResponse() {
-    super();
-    this.domain = "";
-    this.settings = new HashMap<DomainSettingName, Object>();
-    this.domainSettingErrors = new ArrayList<DomainSettingError>();
-  }
+    /**
+     * Initializes a new instance of the {@link GetDomainSettingsResponse} class.
+     */
+    public GetDomainSettingsResponse() {
+        super();
+        this.domain = "";
+        this.settings = new HashMap<DomainSettingName, Object>();
+        this.domainSettingErrors = new ArrayList<DomainSettingError>();
+    }
 
-  /**
-   * Gets the domain this response applies to.
-   *
-   * @return the domain
-   */
-  public String getDomain() {
-    return this.domain;
-  }
+    /**
+     * Gets the domain this response applies to.
+     *
+     * @return the domain
+     */
+    public String getDomain() {
+        return this.domain;
+    }
 
-  /**
-   * Sets the domain.
-   *
-   * @param value the new domain
-   */
-  public void setDomain(String value) {
-    this.domain = value;
-  }
+    /**
+     * Sets the domain.
+     *
+     * @param value the new domain
+     */
+    public void setDomain(String value) {
+        this.domain = value;
+    }
 
-  /**
-   * Gets the redirectionTarget (URL or email address).
-   *
-   * @return the redirect target
-   */
-  public String getRedirectTarget() {
-    return this.redirectTarget;
-  }
+    /**
+     * Gets the redirectionTarget (URL or email address).
+     *
+     * @return the redirect target
+     */
+    public String getRedirectTarget() {
+        return this.redirectTarget;
+    }
 
-  /**
-   * Gets the requested settings for the domain.
-   *
-   * @return the settings
-   */
-  public Map<DomainSettingName, Object> getSettings() {
-    return this.settings;
-  }
+    /**
+     * Gets the requested settings for the domain.
+     *
+     * @return the settings
+     */
+    public Map<DomainSettingName, Object> getSettings() {
+        return this.settings;
+    }
 
-  /**
-   * Gets error information for settings that could not be returned.
-   *
-   * @return the domain setting errors
-   */
-  public Collection<DomainSettingError> getDomainSettingErrors() {
-    return this.domainSettingErrors;
-  }
+    /**
+     * Gets error information for settings that could not be returned.
+     *
+     * @return the domain setting errors
+     */
+    public Collection<DomainSettingError> getDomainSettingErrors() {
+        return this.domainSettingErrors;
+    }
 
-  /**
-   * Loads response from XML.
-   *
-   * @param reader         The reader.
-   * @param endElementName End element name.
-   * @throws Exception the exception
-   */
-  @Override public void loadFromXml(EwsXmlReader reader, String endElementName)
-      throws Exception {
-    do {
-      reader.read();
+    /**
+     * Loads response from XML.
+     *
+     * @param reader         The reader.
+     * @param endElementName End element name.
+     * @throws Exception the exception
+     */
+    @Override
+    public void loadFromXml(EwsXmlReader reader, String endElementName)
+            throws Exception {
+        do {
+            reader.read();
 
-      if (reader.getNodeType().nodeType == XmlNodeType.START_ELEMENT) {
-        if (reader.getLocalName()
-            .equals(XmlElementNames.RedirectTarget)) {
-          this.redirectTarget = reader.readElementValue();
-        } else if (reader.getLocalName().equals(
-            XmlElementNames.DomainSettingErrors)) {
-          this.loadDomainSettingErrorsFromXml(reader);
-        } else if (reader.getLocalName().equals(
-            XmlElementNames.DomainSettings)) {
-          try {
-            this.loadDomainSettingsFromXml(reader);
-          } catch (Exception e) {
-            LOG.log(Level.SEVERE, "error loading domain settings from XML", e);
-          }
+            if (reader.getNodeType().nodeType == XmlNodeType.START_ELEMENT) {
+                if (reader.getLocalName()
+                        .equals(XmlElementNames.RedirectTarget)) {
+                    this.redirectTarget = reader.readElementValue();
+                } else if (reader.getLocalName().equals(
+                        XmlElementNames.DomainSettingErrors)) {
+                    this.loadDomainSettingErrorsFromXml(reader);
+                } else if (reader.getLocalName().equals(
+                        XmlElementNames.DomainSettings)) {
+                    try {
+                        this.loadDomainSettingsFromXml(reader);
+                    } catch (Exception e) {
+                        LOG.log(Level.SEVERE, "error loading domain settings from XML", e);
+                    }
+                } else {
+                    super.loadFromXml(reader, endElementName);
+                    break;
+                }
+            }
+        } while (!reader
+                .isEndElement(XmlNamespace.Autodiscover, endElementName));
+    }
+
+    /**
+     * Loads from XML.
+     *
+     * @param reader The reader.
+     * @throws Exception the exception
+     */
+    protected void loadDomainSettingsFromXml(EwsXmlReader reader)
+            throws Exception {
+        if (!reader.isEmptyElement()) {
+            do {
+                reader.read();
+
+                if ((reader.getNodeType().nodeType == XmlNodeType.START_ELEMENT) &&
+                        (reader.getLocalName()
+                                .equals(XmlElementNames.DomainSetting))) {
+                    String settingClass = reader.readAttributeValue(
+                            XmlNamespace.XmlSchemaInstance,
+                            XmlAttributeNames.Type);
+
+                    if (settingClass
+                            .equals(XmlElementNames.DomainStringSetting)) {
+
+                        this.readSettingFromXml(reader);
+                    } else {
+                        EwsUtilities
+                                .ewsAssert(false, "GetDomainSettingsResponse." + "LoadDomainSettingsFromXml",
+                                        String.format("%s,%s", "Invalid setting " + "class '%s' returned", settingClass));
+                        break;
+                    }
+                }
+            } while (!reader.isEndElement(XmlNamespace.Autodiscover,
+                    XmlElementNames.DomainSettings));
         } else {
-          super.loadFromXml(reader, endElementName);
-          break;
+            reader.read();
         }
-      }
-    } while (!reader
-        .isEndElement(XmlNamespace.Autodiscover, endElementName));
-  }
-
-  /**
-   * Loads from XML.
-   *
-   * @param reader The reader.
-   * @throws Exception the exception
-   */
-  protected void loadDomainSettingsFromXml(EwsXmlReader reader)
-      throws Exception {
-    if (!reader.isEmptyElement()) {
-      do {
-        reader.read();
-
-        if ((reader.getNodeType().nodeType == XmlNodeType.START_ELEMENT) &&
-            (reader.getLocalName()
-                .equals(XmlElementNames.DomainSetting))) {
-          String settingClass = reader.readAttributeValue(
-              XmlNamespace.XmlSchemaInstance,
-              XmlAttributeNames.Type);
-
-          if (settingClass
-              .equals(XmlElementNames.DomainStringSetting)) {
-
-            this.readSettingFromXml(reader);
-          } else {
-            EwsUtilities
-                .ewsAssert(false, "GetDomainSettingsResponse." + "LoadDomainSettingsFromXml",
-                           String.format("%s,%s", "Invalid setting " + "class '%s' returned", settingClass));
-            break;
-          }
-        }
-      } while (!reader.isEndElement(XmlNamespace.Autodiscover,
-          XmlElementNames.DomainSettings));
-    } else {
-      reader.read();
     }
-  }
 
-  /**
-   * Reads domain setting from XML.
-   *
-   * @param reader The reader.
-   * @throws Exception the exception
-   */
-  private void readSettingFromXml(EwsXmlReader reader) throws Exception {
-    DomainSettingName name = null;
-    Object value = null;
+    /**
+     * Reads domain setting from XML.
+     *
+     * @param reader The reader.
+     * @throws Exception the exception
+     */
+    private void readSettingFromXml(EwsXmlReader reader) throws Exception {
+        DomainSettingName name = null;
+        Object value = null;
 
-    do {
-      reader.read();
+        do {
+            reader.read();
 
-      if (reader.getNodeType().nodeType == XmlNodeType.START_ELEMENT) {
-        if (reader.getLocalName().equals(
-            XmlElementNames.DomainStringSetting)) {
-          name = reader.readElementValue(DomainSettingName.class);
-        } else if (reader.getLocalName().equals(XmlElementNames.Value)) {
-          value = reader.readElementValue();
-        }
-      }
-    } while (!reader.isEndElement(XmlNamespace.Autodiscover,
-        XmlElementNames.DomainSetting));
+            if (reader.getNodeType().nodeType == XmlNodeType.START_ELEMENT) {
+                if (reader.getLocalName().equals(
+                        XmlElementNames.DomainStringSetting)) {
+                    name = reader.readElementValue(DomainSettingName.class);
+                } else if (reader.getLocalName().equals(XmlElementNames.Value)) {
+                    value = reader.readElementValue();
+                }
+            }
+        } while (!reader.isEndElement(XmlNamespace.Autodiscover,
+                XmlElementNames.DomainSetting));
 
-    EwsUtilities.ewsAssert(name != null, "GetDomainSettingsResponse.ReadSettingFromXml",
-                           "Missing name element in domain setting");
+        EwsUtilities.ewsAssert(name != null, "GetDomainSettingsResponse.ReadSettingFromXml",
+                "Missing name element in domain setting");
 
-    this.settings.put(name, value);
-  }
-
-  /**
-   * Loads the domain setting errors.
-   *
-   * @param reader The reader.
-   * @throws Exception the exception
-   */
-  private void loadDomainSettingErrorsFromXml(EwsXmlReader reader)
-      throws Exception {
-    if (!reader.isEmptyElement()) {
-      do {
-        reader.read();
-
-        if ((reader.getNodeType().nodeType == XmlNodeType.START_ELEMENT) &&
-            (reader.getLocalName()
-                .equals(XmlElementNames.DomainSettingError))) {
-          DomainSettingError error = new DomainSettingError();
-          error.loadFromXml(reader);
-          domainSettingErrors.add(error);
-        }
-      } while (!reader.isEndElement(XmlNamespace.Autodiscover,
-          XmlElementNames.DomainSettingErrors));
-    } else {
-      reader.read();
+        this.settings.put(name, value);
     }
-  }
+
+    /**
+     * Loads the domain setting errors.
+     *
+     * @param reader The reader.
+     * @throws Exception the exception
+     */
+    private void loadDomainSettingErrorsFromXml(EwsXmlReader reader)
+            throws Exception {
+        if (!reader.isEmptyElement()) {
+            do {
+                reader.read();
+
+                if ((reader.getNodeType().nodeType == XmlNodeType.START_ELEMENT) &&
+                        (reader.getLocalName()
+                                .equals(XmlElementNames.DomainSettingError))) {
+                    DomainSettingError error = new DomainSettingError();
+                    error.loadFromXml(reader);
+                    domainSettingErrors.add(error);
+                }
+            } while (!reader.isEndElement(XmlNamespace.Autodiscover,
+                    XmlElementNames.DomainSettingErrors));
+        } else {
+            reader.read();
+        }
+    }
 }

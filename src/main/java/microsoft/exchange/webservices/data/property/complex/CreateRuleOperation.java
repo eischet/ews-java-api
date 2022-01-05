@@ -33,75 +33,76 @@ import microsoft.exchange.webservices.data.core.XmlElementNames;
 public final class CreateRuleOperation extends RuleOperation {
 
 
-  /**
-   * Inbox rule to be created.
-   */
-  private Rule rule;
+    /**
+     * Inbox rule to be created.
+     */
+    private Rule rule;
 
-  /**
-   * Initializes a new instance of the
-   * <see cref="CreateRuleOperation"/> class.
-   */
-  public CreateRuleOperation() {
-    super();
-  }
-
-  /**
-   * Initializes a new instance of the
-   * <see cref="CreateRuleOperation"/> class.
-   *
-   * @param rule The inbox rule to create.
-   */
-  public CreateRuleOperation(Rule rule) {
-    super();
-    this.rule = rule;
-  }
-
-  /**
-   * Gets or sets the rule to be created.
-   */
-  public Rule getRule() {
-
-    return this.rule;
-  }
-
-  public void setRule(Rule value) {
-
-    if (this.canSetFieldValue(this.rule, value)) {
-      this.rule = value;
-      this.changed();
-
+    /**
+     * Initializes a new instance of the
+     * <see cref="CreateRuleOperation"/> class.
+     */
+    public CreateRuleOperation() {
+        super();
     }
-  }
 
-  /**
-   * Writes elements to XML.
-   *
-   * @param writer The writer.
-   * @throws Exception
-   */
-  @Override
-  public void writeElementsToXml(EwsServiceXmlWriter writer)
-      throws Exception {
-    this.getRule().writeToXml(writer, XmlElementNames.Rule);
-  }
+    /**
+     * Initializes a new instance of the
+     * <see cref="CreateRuleOperation"/> class.
+     *
+     * @param rule The inbox rule to create.
+     */
+    public CreateRuleOperation(Rule rule) {
+        super();
+        this.rule = rule;
+    }
 
-  /**
-   * Validates this instance.
-   *
-   * @throws Exception
-   */
-  @Override
-  protected void internalValidate() throws Exception {
-    EwsUtilities.validateParam(this.rule, "Rule");
-  }
+    /**
+     * Gets or sets the rule to be created.
+     */
+    public Rule getRule() {
 
-  /**
-   * Gets the Xml element name of the CreateRuleOperation object.
-   */
-  @Override public String getXmlElementName() {
+        return this.rule;
+    }
 
-    return XmlElementNames.CreateRuleOperation;
-  }
+    public void setRule(Rule value) {
+
+        if (this.canSetFieldValue(this.rule, value)) {
+            this.rule = value;
+            this.changed();
+
+        }
+    }
+
+    /**
+     * Writes elements to XML.
+     *
+     * @param writer The writer.
+     * @throws Exception
+     */
+    @Override
+    public void writeElementsToXml(EwsServiceXmlWriter writer)
+            throws Exception {
+        this.getRule().writeToXml(writer, XmlElementNames.Rule);
+    }
+
+    /**
+     * Validates this instance.
+     *
+     * @throws Exception
+     */
+    @Override
+    protected void internalValidate() throws Exception {
+        EwsUtilities.validateParam(this.rule, "Rule");
+    }
+
+    /**
+     * Gets the Xml element name of the CreateRuleOperation object.
+     */
+    @Override
+    public String getXmlElementName() {
+
+        return XmlElementNames.CreateRuleOperation;
+    }
 
 }

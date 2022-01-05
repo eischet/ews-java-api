@@ -28,15 +28,15 @@ package microsoft.exchange.webservices.data.core.enumeration.service.error;
  */
 public enum ServiceErrorHandling {
 
-  // Service method should return the error(s).
-  /**
-   * The Return errors.
-   */
-  ReturnErrors,
+    // Service method should return the error(s).
+    /**
+     * The Return errors.
+     */
+    ReturnErrors,
 
-  // Service method should throw exception when error occurs.
-  /**
-   * The Throw on error.
-   */
-  ThrowOnError
+    // Service method should throw exception when error occurs.
+    /**
+     * The Throw on error.
+     */
+    ThrowOnError
 }

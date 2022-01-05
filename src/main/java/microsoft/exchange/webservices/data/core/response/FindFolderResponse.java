@@ -23,13 +23,9 @@
 
 package microsoft.exchange.webservices.data.core.response;
 
-import microsoft.exchange.webservices.data.core.EwsServiceXmlReader;
-import microsoft.exchange.webservices.data.core.EwsUtilities;
-import microsoft.exchange.webservices.data.core.PropertySet;
-import microsoft.exchange.webservices.data.core.XmlAttributeNames;
-import microsoft.exchange.webservices.data.core.XmlElementNames;
-import microsoft.exchange.webservices.data.core.service.folder.Folder;
+import microsoft.exchange.webservices.data.core.*;
 import microsoft.exchange.webservices.data.core.enumeration.misc.XmlNamespace;
+import microsoft.exchange.webservices.data.core.service.folder.Folder;
 import microsoft.exchange.webservices.data.search.FindFoldersResults;
 import microsoft.exchange.webservices.data.security.XmlNodeType;
 
@@ -38,87 +34,87 @@ import microsoft.exchange.webservices.data.security.XmlNodeType;
  */
 public final class FindFolderResponse extends ServiceResponse {
 
-  /**
-   * The results.
-   */
-  private FindFoldersResults results = new FindFoldersResults();
+    /**
+     * The results.
+     */
+    private final FindFoldersResults results = new FindFoldersResults();
 
-  /**
-   * The property set.
-   */
-  private PropertySet propertySet;
+    /**
+     * The property set.
+     */
+    private final PropertySet propertySet;
 
-  /**
-   * Reads response elements from XML.
-   *
-   * @param reader The reader
-   * @throws Exception the exception
-   */
-  @Override
-  protected void readElementsFromXml(EwsServiceXmlReader reader)
-      throws Exception {
-    reader.readStartElement(XmlNamespace.Messages,
-        XmlElementNames.RootFolder);
+    /**
+     * Reads response elements from XML.
+     *
+     * @param reader The reader
+     * @throws Exception the exception
+     */
+    @Override
+    protected void readElementsFromXml(EwsServiceXmlReader reader)
+            throws Exception {
+        reader.readStartElement(XmlNamespace.Messages,
+                XmlElementNames.RootFolder);
 
-    this.results.setTotalCount(reader.readAttributeValue(Integer.class,
-        XmlAttributeNames.TotalItemsInView));
-    this.results.setMoreAvailable(!reader.readAttributeValue(Boolean.class,
-        XmlAttributeNames.IncludesLastItemInRange));
+        this.results.setTotalCount(reader.readAttributeValue(Integer.class,
+                XmlAttributeNames.TotalItemsInView));
+        this.results.setMoreAvailable(!reader.readAttributeValue(Boolean.class,
+                XmlAttributeNames.IncludesLastItemInRange));
 
-    // Ignore IndexedPagingOffset attribute if MoreAvailable is false.
-    this.results.setNextPageOffset(results.isMoreAvailable() ? reader
-        .readNullableAttributeValue(Integer.class,
-            XmlAttributeNames.IndexedPagingOffset) : null);
+        // Ignore IndexedPagingOffset attribute if MoreAvailable is false.
+        this.results.setNextPageOffset(results.isMoreAvailable() ? reader
+                .readNullableAttributeValue(Integer.class,
+                        XmlAttributeNames.IndexedPagingOffset) : null);
 
-    reader.readStartElement(XmlNamespace.Types, XmlElementNames.Folders);
-    if (!reader.isEmptyElement()) {
-      do {
-        reader.read();
+        reader.readStartElement(XmlNamespace.Types, XmlElementNames.Folders);
+        if (!reader.isEmptyElement()) {
+            do {
+                reader.read();
 
-        if (reader.getNodeType().nodeType == XmlNodeType.START_ELEMENT) {
-          Folder folder = EwsUtilities
-              .createEwsObjectFromXmlElementName(Folder.class, reader.getService(), reader.getLocalName());
+                if (reader.getNodeType().nodeType == XmlNodeType.START_ELEMENT) {
+                    Folder folder = EwsUtilities
+                            .createEwsObjectFromXmlElementName(Folder.class, reader.getService(), reader.getLocalName());
 
-          if (folder == null) {
-            reader.skipCurrentElement();
-          } else {
-            folder.loadFromXml(reader, true, /* clearPropertyBag */
-                this.propertySet, true /* summaryPropertiesOnly */);
+                    if (folder == null) {
+                        reader.skipCurrentElement();
+                    } else {
+                        folder.loadFromXml(reader, true, /* clearPropertyBag */
+                                this.propertySet, true /* summaryPropertiesOnly */);
 
-            this.results.getFolders().add(folder);
-          }
+                        this.results.getFolders().add(folder);
+                    }
+                }
+            } while (!reader.isEndElement(XmlNamespace.Types,
+                    XmlElementNames.Folders));
+        } else {
+            reader.read();
         }
-      } while (!reader.isEndElement(XmlNamespace.Types,
-          XmlElementNames.Folders));
-    } else {
-      reader.read();
+
+        reader
+                .readEndElement(XmlNamespace.Messages,
+                        XmlElementNames.RootFolder);
     }
 
-    reader
-        .readEndElement(XmlNamespace.Messages,
-            XmlElementNames.RootFolder);
-  }
+    /**
+     * Initializes a new instance of the FindFolderResponse class.
+     *
+     * @param propertySet The property set from, the request.
+     */
+    public FindFolderResponse(PropertySet propertySet) {
+        super();
+        this.propertySet = propertySet;
 
-  /**
-   * Initializes a new instance of the FindFolderResponse class.
-   *
-   * @param propertySet The property set from, the request.
-   */
-  public FindFolderResponse(PropertySet propertySet) {
-    super();
-    this.propertySet = propertySet;
+        EwsUtilities.ewsAssert(this.propertySet != null, "FindFolderResponse.ctor",
+                "PropertySet should not be null");
+    }
 
-    EwsUtilities.ewsAssert(this.propertySet != null, "FindFolderResponse.ctor",
-                           "PropertySet should not be null");
-  }
-
-  /**
-   * Gets the results of the search operation.
-   *
-   * @return the results
-   */
-  public FindFoldersResults getResults() {
-    return this.results;
-  }
+    /**
+     * Gets the results of the search operation.
+     *
+     * @return the results
+     */
+    public FindFoldersResults getResults() {
+        return this.results;
+    }
 
 }

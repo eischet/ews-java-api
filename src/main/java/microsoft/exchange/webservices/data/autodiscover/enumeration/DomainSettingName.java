@@ -28,18 +28,18 @@ package microsoft.exchange.webservices.data.autodiscover.enumeration;
  */
 public enum DomainSettingName {
 
-  // The external URL of the Exchange Web Services.
-  /**
-   * The External ews url.
-   */
-  ExternalEwsUrl,
+    // The external URL of the Exchange Web Services.
+    /**
+     * The External ews url.
+     */
+    ExternalEwsUrl,
 
-  /// The version of the Exchange server hosting
-  /// the URL of the Exchange Web Services.
-  /**
-   * The External ews version.
-   */
-  ExternalEwsVersion,
+    /// The version of the Exchange server hosting
+    /// the URL of the Exchange Web Services.
+    /**
+     * The External ews version.
+     */
+    ExternalEwsVersion,
 
 
 }

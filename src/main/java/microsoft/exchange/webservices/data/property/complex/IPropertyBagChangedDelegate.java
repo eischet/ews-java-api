@@ -32,10 +32,10 @@ import microsoft.exchange.webservices.data.core.SimplePropertyBag;
  */
 
 public interface IPropertyBagChangedDelegate<TKey> {
-  /**
-   * Property bag changed.
-   *
-   * @param simplePropertyBag the simple property bag
-   */
-  void propertyBagChanged(SimplePropertyBag<TKey> simplePropertyBag);
+    /**
+     * Property bag changed.
+     *
+     * @param simplePropertyBag the simple property bag
+     */
+    void propertyBagChanged(SimplePropertyBag<TKey> simplePropertyBag);
 }

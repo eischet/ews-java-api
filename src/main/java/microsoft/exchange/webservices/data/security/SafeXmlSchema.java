@@ -29,7 +29,6 @@ import javax.xml.stream.XMLStreamReader;
 import javax.xml.validation.Schema;
 import javax.xml.validation.Validator;
 import javax.xml.validation.ValidatorHandler;
-
 import java.io.InputStream;
 
 /**
@@ -37,41 +36,41 @@ import java.io.InputStream;
  */
 public class SafeXmlSchema extends Schema {
 
-  @Override
-  public Validator newValidator() {
-    // TODO Auto-generated method stub
-    return null;
-  }
+    @Override
+    public Validator newValidator() {
+        // TODO Auto-generated method stub
+        return null;
+    }
 
-  @Override
-  public ValidatorHandler newValidatorHandler() {
-    // TODO Auto-generated method stub
-    return null;
-  }
+    @Override
+    public ValidatorHandler newValidatorHandler() {
+        // TODO Auto-generated method stub
+        return null;
+    }
 
-  /**
-   * Reads an XML Schema from the supplied stream.
-   *
-   * @param stream The supplied data stream.
-   * @return The XmlSchema object representing the XML Schema.
-   * @throws javax.xml.stream.XMLStreamException
-   */
-  public static Schema read(final InputStream stream) throws XMLStreamException {
-    final XMLInputFactory inputFactory = XMLInputFactory.newInstance();
-    return (Schema) inputFactory.createXMLEventReader(stream);
-  }
+    /**
+     * Reads an XML Schema from the supplied stream.
+     *
+     * @param stream The supplied data stream.
+     * @return The XmlSchema object representing the XML Schema.
+     * @throws javax.xml.stream.XMLStreamException
+     */
+    public static Schema read(final InputStream stream) throws XMLStreamException {
+        final XMLInputFactory inputFactory = XMLInputFactory.newInstance();
+        return (Schema) inputFactory.createXMLEventReader(stream);
+    }
 
-  /**
-   * Reads an XML Schema from the supplied TextReader.
-   *
-   * @param reader The TextReader containing the XML Schema to read
-   * @return The XmlSchema object representing the XML Schema.
-   * @throws javax.xml.stream.XMLStreamException
-   */
+    /**
+     * Reads an XML Schema from the supplied TextReader.
+     *
+     * @param reader The TextReader containing the XML Schema to read
+     * @return The XmlSchema object representing the XML Schema.
+     * @throws javax.xml.stream.XMLStreamException
+     */
 
-  public static Schema read(XMLStreamReader reader) throws XMLStreamException {
-    final XMLInputFactory inputFactory = XMLInputFactory.newInstance();
-    return (Schema) inputFactory.createXMLEventReader(reader);
-  }
+    public static Schema read(XMLStreamReader reader) throws XMLStreamException {
+        final XMLInputFactory inputFactory = XMLInputFactory.newInstance();
+        return (Schema) inputFactory.createXMLEventReader(reader);
+    }
 
 }

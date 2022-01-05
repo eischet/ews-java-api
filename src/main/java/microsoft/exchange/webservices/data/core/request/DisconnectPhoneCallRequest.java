@@ -27,9 +27,9 @@ import microsoft.exchange.webservices.data.core.EwsServiceXmlReader;
 import microsoft.exchange.webservices.data.core.EwsServiceXmlWriter;
 import microsoft.exchange.webservices.data.core.ExchangeService;
 import microsoft.exchange.webservices.data.core.XmlElementNames;
-import microsoft.exchange.webservices.data.core.response.ServiceResponse;
 import microsoft.exchange.webservices.data.core.enumeration.misc.ExchangeVersion;
 import microsoft.exchange.webservices.data.core.enumeration.misc.XmlNamespace;
+import microsoft.exchange.webservices.data.core.response.ServiceResponse;
 import microsoft.exchange.webservices.data.messaging.PhoneCallId;
 
 /**
@@ -37,104 +37,105 @@ import microsoft.exchange.webservices.data.messaging.PhoneCallId;
  */
 public final class DisconnectPhoneCallRequest extends SimpleServiceRequestBase<ServiceResponse> {
 
-  /**
-   * The id.
-   */
-  private PhoneCallId id;
+    /**
+     * The id.
+     */
+    private PhoneCallId id;
 
-  /**
-   * Initializes a new instance of the DisconnectPhoneCallRequest class.
-   *
-   * @param service the service
-   * @throws Exception
-   */
-  public DisconnectPhoneCallRequest(ExchangeService service)
-      throws Exception {
-    super(service);
-  }
+    /**
+     * Initializes a new instance of the DisconnectPhoneCallRequest class.
+     *
+     * @param service the service
+     * @throws Exception
+     */
+    public DisconnectPhoneCallRequest(ExchangeService service)
+            throws Exception {
+        super(service);
+    }
 
-  /**
-   * Gets the name of the XML element.
-   *
-   * @return XML element name.
-   */
-  @Override public String getXmlElementName() {
-    return XmlElementNames.DisconnectPhoneCall;
-  }
+    /**
+     * Gets the name of the XML element.
+     *
+     * @return XML element name.
+     */
+    @Override
+    public String getXmlElementName() {
+        return XmlElementNames.DisconnectPhoneCall;
+    }
 
-  /**
-   * Writes XML elements.
-   *
-   * @param writer the writer
-   * @throws Exception the exception
-   */
-  @Override
-  protected void writeElementsToXml(EwsServiceXmlWriter writer)
-      throws Exception {
-    this.id.writeToXml(writer, XmlNamespace.Messages,
-        XmlElementNames.PhoneCallId);
-  }
+    /**
+     * Writes XML elements.
+     *
+     * @param writer the writer
+     * @throws Exception the exception
+     */
+    @Override
+    protected void writeElementsToXml(EwsServiceXmlWriter writer)
+            throws Exception {
+        this.id.writeToXml(writer, XmlNamespace.Messages,
+                XmlElementNames.PhoneCallId);
+    }
 
-  /**
-   * Gets the name of the response XML element.
-   *
-   * @return XML element name.
-   */
-  @Override
-  protected String getResponseXmlElementName() {
-    return XmlElementNames.DisconnectPhoneCallResponse;
-  }
+    /**
+     * Gets the name of the response XML element.
+     *
+     * @return XML element name.
+     */
+    @Override
+    protected String getResponseXmlElementName() {
+        return XmlElementNames.DisconnectPhoneCallResponse;
+    }
 
-  /**
-   * {@inheritDoc}
-   */
-  @Override
-  protected ServiceResponse parseResponse(EwsServiceXmlReader reader)
-      throws Exception {
-    ServiceResponse serviceResponse = new ServiceResponse();
-    serviceResponse.loadFromXml(reader,
-        XmlElementNames.DisconnectPhoneCallResponse);
-    return serviceResponse;
-  }
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected ServiceResponse parseResponse(EwsServiceXmlReader reader)
+            throws Exception {
+        ServiceResponse serviceResponse = new ServiceResponse();
+        serviceResponse.loadFromXml(reader,
+                XmlElementNames.DisconnectPhoneCallResponse);
+        return serviceResponse;
+    }
 
-  /**
-   * Gets the request version.
-   *
-   * @return Earliest Exchange version in which this request is supported.
-   */
-  @Override
-  protected ExchangeVersion getMinimumRequiredServerVersion() {
-    return ExchangeVersion.Exchange2010;
-  }
+    /**
+     * Gets the request version.
+     *
+     * @return Earliest Exchange version in which this request is supported.
+     */
+    @Override
+    protected ExchangeVersion getMinimumRequiredServerVersion() {
+        return ExchangeVersion.Exchange2010;
+    }
 
-  /**
-   * Executes this request.
-   *
-   * @return Service response.
-   * @throws Exception the exception
-   */
-  public ServiceResponse execute() throws Exception {
-    ServiceResponse serviceResponse = internalExecute();
-    serviceResponse.throwIfNecessary();
-    return serviceResponse;
-  }
+    /**
+     * Executes this request.
+     *
+     * @return Service response.
+     * @throws Exception the exception
+     */
+    public ServiceResponse execute() throws Exception {
+        ServiceResponse serviceResponse = internalExecute();
+        serviceResponse.throwIfNecessary();
+        return serviceResponse;
+    }
 
-  /**
-   * Gets  the Id of the phone call.
-   *
-   * @return the id
-   */
-  protected PhoneCallId getId() {
-    return this.id;
-  }
+    /**
+     * Gets  the Id of the phone call.
+     *
+     * @return the id
+     */
+    protected PhoneCallId getId() {
+        return this.id;
+    }
 
-  /**
-   * Sets the id.
-   *
-   * @param id the new id
-   */
-  public void setId(PhoneCallId id) {
-    this.id = id;
-  }
+    /**
+     * Sets the id.
+     *
+     * @param id the new id
+     */
+    public void setId(PhoneCallId id) {
+        this.id = id;
+    }
 
 }

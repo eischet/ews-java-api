@@ -27,15 +27,14 @@ import microsoft.exchange.webservices.data.core.EwsServiceXmlWriter;
 import microsoft.exchange.webservices.data.core.ExchangeService;
 import microsoft.exchange.webservices.data.core.PropertyBag;
 import microsoft.exchange.webservices.data.core.XmlElementNames;
-import microsoft.exchange.webservices.data.core.service.schema.AppointmentSchema;
 import microsoft.exchange.webservices.data.core.enumeration.misc.ExchangeVersion;
 import microsoft.exchange.webservices.data.core.enumeration.property.PropertyDefinitionFlags;
 import microsoft.exchange.webservices.data.core.exception.service.local.ServiceXmlSerializationException;
+import microsoft.exchange.webservices.data.core.service.schema.AppointmentSchema;
 import microsoft.exchange.webservices.data.property.complex.MeetingTimeZone;
 import microsoft.exchange.webservices.data.property.complex.time.TimeZoneDefinition;
 
 import javax.xml.stream.XMLStreamException;
-
 import java.util.EnumSet;
 import java.util.List;
 
@@ -44,88 +43,89 @@ import java.util.List;
  */
 public class StartTimeZonePropertyDefinition extends TimeZonePropertyDefinition {
 
-  /**
-   * Initializes a new instance of the StartTimeZonePropertyDefinition
-   * class.
-   *
-   * @param xmlElementName the xml element name
-   * @param uri            the uri
-   * @param flags          the flags
-   * @param version        the version
-   */
-  public StartTimeZonePropertyDefinition(String xmlElementName, String uri,
-      EnumSet<PropertyDefinitionFlags> flags, ExchangeVersion version) {
-    super(xmlElementName, uri, flags, version);
-  }
+    /**
+     * Initializes a new instance of the StartTimeZonePropertyDefinition
+     * class.
+     *
+     * @param xmlElementName the xml element name
+     * @param uri            the uri
+     * @param flags          the flags
+     * @param version        the version
+     */
+    public StartTimeZonePropertyDefinition(String xmlElementName, String uri,
+                                           EnumSet<PropertyDefinitionFlags> flags, ExchangeVersion version) {
+        super(xmlElementName, uri, flags, version);
+    }
 
-  /**
-   * Registers associated internal property.
-   *
-   * @param properties the property
-   */
-  protected void registerAssociatedInternalProperties(
-      List<PropertyDefinition> properties) {
-    super.registerAssociatedInternalProperties(properties);
+    /**
+     * Registers associated internal property.
+     *
+     * @param properties the property
+     */
+    protected void registerAssociatedInternalProperties(
+            List<PropertyDefinition> properties) {
+        super.registerAssociatedInternalProperties(properties);
 
-    properties.add(AppointmentSchema.MeetingTimeZone);
-  }
+        properties.add(AppointmentSchema.MeetingTimeZone);
+    }
 
-  /**
-   * Writes to XML.
-   *
-   * @param writer            the writer
-   * @param propertyBag       the property bag
-   * @param isUpdateOperation the is update operation
-   * @throws Exception the exception
-   */
-  public void writePropertyValueToXml(EwsServiceXmlWriter writer, PropertyBag propertyBag,
-      boolean isUpdateOperation)
-      throws Exception {
-    Object value = propertyBag.getObjectFromPropertyDefinition(this);
+    /**
+     * Writes to XML.
+     *
+     * @param writer            the writer
+     * @param propertyBag       the property bag
+     * @param isUpdateOperation the is update operation
+     * @throws Exception the exception
+     */
+    public void writePropertyValueToXml(EwsServiceXmlWriter writer, PropertyBag propertyBag,
+                                        boolean isUpdateOperation)
+            throws Exception {
+        Object value = propertyBag.getObjectFromPropertyDefinition(this);
 
-    if (value != null) {
-      final ExchangeService service = (ExchangeService) writer.getService();
-      if (service.getRequestedServerVersion() == ExchangeVersion.Exchange2007_SP1) {
-        if (!service.getExchange2007CompatibilityMode()) {
-          MeetingTimeZone meetingTimeZone = new MeetingTimeZone((TimeZoneDefinition) value);
-          meetingTimeZone.writeToXml(writer, XmlElementNames.MeetingTimeZone);
+        if (value != null) {
+            final ExchangeService service = (ExchangeService) writer.getService();
+            if (service.getRequestedServerVersion() == ExchangeVersion.Exchange2007_SP1) {
+                if (!service.getExchange2007CompatibilityMode()) {
+                    MeetingTimeZone meetingTimeZone = new MeetingTimeZone((TimeZoneDefinition) value);
+                    meetingTimeZone.writeToXml(writer, XmlElementNames.MeetingTimeZone);
+                }
+            } else {
+                super.writePropertyValueToXml(writer, propertyBag, isUpdateOperation);
+            }
         }
-      } else {
-        super.writePropertyValueToXml(writer, propertyBag, isUpdateOperation);
-      }
     }
-  }
 
-  /**
-   * Writes to XML.
-   *
-   * @param writer the writer
-   * @throws XMLStreamException the XML stream exception
-   * @throws ServiceXmlSerializationException the service xml serialization exception
-   */
-  public void writeToXml(EwsServiceXmlWriter writer)
-      throws XMLStreamException, ServiceXmlSerializationException {
-    if (writer.getService().getRequestedServerVersion() == ExchangeVersion.Exchange2007_SP1) {
-      AppointmentSchema.MeetingTimeZone.writeToXml(writer);
-    } else {
-      super.writeToXml(writer);
+    /**
+     * Writes to XML.
+     *
+     * @param writer the writer
+     * @throws XMLStreamException               the XML stream exception
+     * @throws ServiceXmlSerializationException the service xml serialization exception
+     */
+    public void writeToXml(EwsServiceXmlWriter writer)
+            throws XMLStreamException, ServiceXmlSerializationException {
+        if (writer.getService().getRequestedServerVersion() == ExchangeVersion.Exchange2007_SP1) {
+            AppointmentSchema.MeetingTimeZone.writeToXml(writer);
+        } else {
+            super.writeToXml(writer);
+        }
     }
-  }
 
-  /**
-   * Determines whether the specified flag is set.
-   *
-   * @param flag    The flag.
-   * @param version Requested version.
-   * @return <c>true</c> if the specified
-   * flag is set; otherwise, <c>false</c>.
-   */
-  @Override public boolean hasFlag(PropertyDefinitionFlags flag, ExchangeVersion version) {
-    if (version != null && (version == ExchangeVersion.Exchange2007_SP1)) {
-      return AppointmentSchema.MeetingTimeZone.hasFlag(flag, version);
-    } else {
-      return super.hasFlag(flag, version);
+    /**
+     * Determines whether the specified flag is set.
+     *
+     * @param flag    The flag.
+     * @param version Requested version.
+     * @return <c>true</c> if the specified
+     * flag is set; otherwise, <c>false</c>.
+     */
+    @Override
+    public boolean hasFlag(PropertyDefinitionFlags flag, ExchangeVersion version) {
+        if (version != null && (version == ExchangeVersion.Exchange2007_SP1)) {
+            return AppointmentSchema.MeetingTimeZone.hasFlag(flag, version);
+        } else {
+            return super.hasFlag(flag, version);
+        }
     }
-  }
 
 }

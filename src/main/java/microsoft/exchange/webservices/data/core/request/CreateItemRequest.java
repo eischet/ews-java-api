@@ -25,70 +25,70 @@ package microsoft.exchange.webservices.data.core.request;
 
 import microsoft.exchange.webservices.data.core.EwsUtilities;
 import microsoft.exchange.webservices.data.core.ExchangeService;
+import microsoft.exchange.webservices.data.core.enumeration.misc.ExchangeVersion;
 import microsoft.exchange.webservices.data.core.enumeration.service.error.ServiceErrorHandling;
+import microsoft.exchange.webservices.data.core.exception.service.local.ServiceLocalException;
 import microsoft.exchange.webservices.data.core.response.CreateItemResponse;
 import microsoft.exchange.webservices.data.core.response.ServiceResponse;
 import microsoft.exchange.webservices.data.core.service.item.Item;
-import microsoft.exchange.webservices.data.core.enumeration.misc.ExchangeVersion;
-import microsoft.exchange.webservices.data.core.exception.service.local.ServiceLocalException;
 
 /**
  * Represents a CreateItem request.
  */
 public final class CreateItemRequest extends
-    CreateItemRequestBase<Item, ServiceResponse> {
+        CreateItemRequestBase<Item, ServiceResponse> {
 
-  /**
-   * Initializes a new instance.
-   *
-   * @param service           The service.
-   * @param errorHandlingMode Indicates how errors should be handled.
-   * @throws Exception
-   */
-  public CreateItemRequest(ExchangeService service, ServiceErrorHandling errorHandlingMode)
-      throws Exception {
-    super(service, errorHandlingMode);
-  }
-
-  /**
-   * Creates the service response.
-   *
-   * @param service       the service
-   * @param responseIndex the response index
-   * @return the service response
-   */
-  @Override
-  protected ServiceResponse createServiceResponse(ExchangeService service,
-      int responseIndex) {
-    return new CreateItemResponse((Item) EwsUtilities
-        .getEnumeratedObjectAt(this.getItems(), responseIndex));
-  }
-
-  /**
-   * Validate request..
-   *
-   * @throws ServiceLocalException the service local exception
-   * @throws Exception             the exception
-   */
-  @Override
-  protected void validate() throws ServiceLocalException, Exception {
-    super.validate();
-    //	Iterable<Item> item = this.getItems();
-    // Validate each item.
-    for (Item item : this.getItems()) {
-      item.validate();
+    /**
+     * Initializes a new instance.
+     *
+     * @param service           The service.
+     * @param errorHandlingMode Indicates how errors should be handled.
+     * @throws Exception
+     */
+    public CreateItemRequest(ExchangeService service, ServiceErrorHandling errorHandlingMode)
+            throws Exception {
+        super(service, errorHandlingMode);
     }
-  }
 
-  /**
-   * Gets the request version. Returns earliest Exchange version in which
-   * this request is supported.
-   *
-   * @return the minimum required server version
-   */
-  @Override
-  protected ExchangeVersion getMinimumRequiredServerVersion() {
-    return ExchangeVersion.Exchange2007_SP1;
-  }
+    /**
+     * Creates the service response.
+     *
+     * @param service       the service
+     * @param responseIndex the response index
+     * @return the service response
+     */
+    @Override
+    protected ServiceResponse createServiceResponse(ExchangeService service,
+                                                    int responseIndex) {
+        return new CreateItemResponse((Item) EwsUtilities
+                .getEnumeratedObjectAt(this.getItems(), responseIndex));
+    }
+
+    /**
+     * Validate request..
+     *
+     * @throws ServiceLocalException the service local exception
+     * @throws Exception             the exception
+     */
+    @Override
+    protected void validate() throws ServiceLocalException, Exception {
+        super.validate();
+        //	Iterable<Item> item = this.getItems();
+        // Validate each item.
+        for (Item item : this.getItems()) {
+            item.validate();
+        }
+    }
+
+    /**
+     * Gets the request version. Returns earliest Exchange version in which
+     * this request is supported.
+     *
+     * @return the minimum required server version
+     */
+    @Override
+    protected ExchangeVersion getMinimumRequiredServerVersion() {
+        return ExchangeVersion.Exchange2007_SP1;
+    }
 
 }

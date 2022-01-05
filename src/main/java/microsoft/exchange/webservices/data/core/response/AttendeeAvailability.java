@@ -26,8 +26,8 @@ package microsoft.exchange.webservices.data.core.response;
 import microsoft.exchange.webservices.data.core.EwsServiceXmlReader;
 import microsoft.exchange.webservices.data.core.XmlElementNames;
 import microsoft.exchange.webservices.data.core.enumeration.availability.FreeBusyViewType;
-import microsoft.exchange.webservices.data.core.enumeration.property.LegacyFreeBusyStatus;
 import microsoft.exchange.webservices.data.core.enumeration.misc.XmlNamespace;
+import microsoft.exchange.webservices.data.core.enumeration.property.LegacyFreeBusyStatus;
 import microsoft.exchange.webservices.data.property.complex.availability.CalendarEvent;
 import microsoft.exchange.webservices.data.property.complex.availability.WorkingHours;
 
@@ -39,139 +39,139 @@ import java.util.Collection;
  */
 public final class AttendeeAvailability extends ServiceResponse {
 
-  /**
-   * The calendar events.
-   */
-  private Collection<CalendarEvent> calendarEvents =
-      new ArrayList<CalendarEvent>();
+    /**
+     * The calendar events.
+     */
+    private final Collection<CalendarEvent> calendarEvents =
+            new ArrayList<CalendarEvent>();
 
-  /**
-   * The merged free busy status.
-   */
-  private Collection<LegacyFreeBusyStatus> mergedFreeBusyStatus =
-      new ArrayList<LegacyFreeBusyStatus>();
+    /**
+     * The merged free busy status.
+     */
+    private final Collection<LegacyFreeBusyStatus> mergedFreeBusyStatus =
+            new ArrayList<LegacyFreeBusyStatus>();
 
-  /**
-   * The view type.
-   */
-  private FreeBusyViewType viewType;
+    /**
+     * The view type.
+     */
+    private FreeBusyViewType viewType;
 
-  /**
-   * The working hours.
-   */
-  private WorkingHours workingHours;
+    /**
+     * The working hours.
+     */
+    private WorkingHours workingHours;
 
-  /**
-   * Initializes a new instance of the AttendeeAvailability class.
-   */
-  public AttendeeAvailability() {
-    super();
-  }
-
-  /**
-   * Loads the free busy view from XML.
-   *
-   * @param reader   the reader
-   * @param viewType the view type
-   * @throws Exception the exception
-   */
-  public void loadFreeBusyViewFromXml(EwsServiceXmlReader reader, FreeBusyViewType viewType) throws Exception {
-    reader.readStartElement(XmlNamespace.Messages,
-        XmlElementNames.FreeBusyView);
-
-    String viewTypeString = reader.readElementValue(XmlNamespace.Types,
-        XmlElementNames.FreeBusyViewType);
-
-    for (Object o : FreeBusyViewType.class.getEnumConstants()) {
-      if (o.toString().equals(viewTypeString)) {
-        this.viewType = (FreeBusyViewType) o;
-        break;
-      }
+    /**
+     * Initializes a new instance of the AttendeeAvailability class.
+     */
+    public AttendeeAvailability() {
+        super();
     }
-    do {
-      reader.read();
 
-      if (reader.isStartElement()) {
-        if (reader.getLocalName()
-            .equals(XmlElementNames.MergedFreeBusy)) {
-          String mergedFreeBusy = reader.readElementValue();
+    /**
+     * Loads the free busy view from XML.
+     *
+     * @param reader   the reader
+     * @param viewType the view type
+     * @throws Exception the exception
+     */
+    public void loadFreeBusyViewFromXml(EwsServiceXmlReader reader, FreeBusyViewType viewType) throws Exception {
+        reader.readStartElement(XmlNamespace.Messages,
+                XmlElementNames.FreeBusyView);
 
-          for (int i = 0; i < mergedFreeBusy.length(); i++) {
+        String viewTypeString = reader.readElementValue(XmlNamespace.Types,
+                XmlElementNames.FreeBusyViewType);
 
-            Byte b = Byte.parseByte(mergedFreeBusy.charAt(i) + "");
-            for (LegacyFreeBusyStatus legacyStatus : LegacyFreeBusyStatus.values()) {
-              if (b == legacyStatus.getBusyStatus()) {
-                this.mergedFreeBusyStatus.add(legacyStatus);
+        for (Object o : FreeBusyViewType.class.getEnumConstants()) {
+            if (o.toString().equals(viewTypeString)) {
+                this.viewType = (FreeBusyViewType) o;
                 break;
-              }
             }
-
-          }
-
-        } else if (reader.getLocalName().equals(
-            XmlElementNames.CalendarEventArray)) {
-          do {
+        }
+        do {
             reader.read();
 
-            if (reader.isStartElement(XmlNamespace.Types,
-                XmlElementNames.CalendarEvent)) {
-              CalendarEvent calendarEvent = new CalendarEvent();
+            if (reader.isStartElement()) {
+                if (reader.getLocalName()
+                        .equals(XmlElementNames.MergedFreeBusy)) {
+                    String mergedFreeBusy = reader.readElementValue();
 
-              calendarEvent.loadFromXml(reader,
-                  XmlElementNames.CalendarEvent);
+                    for (int i = 0; i < mergedFreeBusy.length(); i++) {
 
-              this.calendarEvents.add(calendarEvent);
+                        Byte b = Byte.parseByte(mergedFreeBusy.charAt(i) + "");
+                        for (LegacyFreeBusyStatus legacyStatus : LegacyFreeBusyStatus.values()) {
+                            if (b == legacyStatus.getBusyStatus()) {
+                                this.mergedFreeBusyStatus.add(legacyStatus);
+                                break;
+                            }
+                        }
+
+                    }
+
+                } else if (reader.getLocalName().equals(
+                        XmlElementNames.CalendarEventArray)) {
+                    do {
+                        reader.read();
+
+                        if (reader.isStartElement(XmlNamespace.Types,
+                                XmlElementNames.CalendarEvent)) {
+                            CalendarEvent calendarEvent = new CalendarEvent();
+
+                            calendarEvent.loadFromXml(reader,
+                                    XmlElementNames.CalendarEvent);
+
+                            this.calendarEvents.add(calendarEvent);
+                        }
+                    } while (!reader.isEndElement(XmlNamespace.Types,
+                            XmlElementNames.CalendarEventArray));
+
+                } else if (reader.getLocalName().equals(
+                        XmlElementNames.WorkingHours)) {
+                    this.workingHours = new WorkingHours();
+                    this.workingHours
+                            .loadFromXml(reader, reader.getLocalName());
+
+                    break;
+                }
             }
-          } while (!reader.isEndElement(XmlNamespace.Types,
-              XmlElementNames.CalendarEventArray));
+        } while (!reader.isEndElement(XmlNamespace.Messages,
+                XmlElementNames.FreeBusyView));
+    }
 
-        } else if (reader.getLocalName().equals(
-            XmlElementNames.WorkingHours)) {
-          this.workingHours = new WorkingHours();
-          this.workingHours
-              .loadFromXml(reader, reader.getLocalName());
+    /**
+     * Gets a collection of calendar events for the attendee.
+     *
+     * @return the calendar events
+     */
+    public Collection<CalendarEvent> getCalendarEvents() {
+        return this.calendarEvents;
+    }
 
-          break;
-        }
-      }
-    } while (!reader.isEndElement(XmlNamespace.Messages,
-        XmlElementNames.FreeBusyView));
-  }
+    /**
+     * Gets a collection of merged free/busy status for the attendee.
+     *
+     * @return the merged free busy status
+     */
+    public Collection<LegacyFreeBusyStatus> getMergedFreeBusyStatus() {
+        return mergedFreeBusyStatus;
+    }
 
-  /**
-   * Gets a collection of calendar events for the attendee.
-   *
-   * @return the calendar events
-   */
-  public Collection<CalendarEvent> getCalendarEvents() {
-    return this.calendarEvents;
-  }
+    /**
+     * Gets the free/busy view type that wes retrieved for the attendee.
+     *
+     * @return the view type
+     */
+    public FreeBusyViewType getViewType() {
+        return viewType;
+    }
 
-  /**
-   * Gets a collection of merged free/busy status for the attendee.
-   *
-   * @return the merged free busy status
-   */
-  public Collection<LegacyFreeBusyStatus> getMergedFreeBusyStatus() {
-    return mergedFreeBusyStatus;
-  }
-
-  /**
-   * Gets the free/busy view type that wes retrieved for the attendee.
-   *
-   * @return the view type
-   */
-  public FreeBusyViewType getViewType() {
-    return viewType;
-  }
-
-  /**
-   * Gets the working hours of the attendee.
-   *
-   * @return the working hours
-   */
-  public WorkingHours getWorkingHours() {
-    return workingHours;
-  }
+    /**
+     * Gets the working hours of the attendee.
+     *
+     * @return the working hours
+     */
+    public WorkingHours getWorkingHours() {
+        return workingHours;
+    }
 
 }

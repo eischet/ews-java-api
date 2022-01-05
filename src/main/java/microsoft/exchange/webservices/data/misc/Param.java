@@ -30,27 +30,27 @@ package microsoft.exchange.webservices.data.misc;
  */
 abstract class Param<T> {
 
-  /**
-   * The param.
-   */
-  private T param;
+    /**
+     * The param.
+     */
+    private T param;
 
-  /**
-   * Gets the param.
-   *
-   * @return the param
-   */
-  public T getParam() {
-    return param;
-  }
+    /**
+     * Gets the param.
+     *
+     * @return the param
+     */
+    public T getParam() {
+        return param;
+    }
 
-  /**
-   * Sets the param.
-   *
-   * @param param the new param
-   */
-  public void setParam(T param) {
-    this.param = param;
-  }
+    /**
+     * Sets the param.
+     *
+     * @param param the new param
+     */
+    public void setParam(T param) {
+        this.param = param;
+    }
 
 }

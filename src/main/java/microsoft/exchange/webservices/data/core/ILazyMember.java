@@ -30,10 +30,10 @@ package microsoft.exchange.webservices.data.core;
  */
 public interface ILazyMember<T> {
 
-  /**
-   * Creates the instance.
-   *
-   * @return the t
-   */
-  T createInstance();
+    /**
+     * Creates the instance.
+     *
+     * @return the t
+     */
+    T createInstance();
 }

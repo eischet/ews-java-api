@@ -36,106 +36,106 @@ import java.util.List;
  * @param <TChange> the generic type
  */
 public final class ChangeCollection<TChange extends Change> implements
-    Iterable<TChange> {
+        Iterable<TChange> {
 
-  /**
-   * The changes.
-   */
-  private List<TChange> changes = new ArrayList<TChange>();
+    /**
+     * The changes.
+     */
+    private final List<TChange> changes = new ArrayList<TChange>();
 
-  /**
-   * The sync state.
-   */
-  private String syncState;
+    /**
+     * The sync state.
+     */
+    private String syncState;
 
-  /**
-   * The more changes available.
-   */
-  private boolean moreChangesAvailable;
+    /**
+     * The more changes available.
+     */
+    private boolean moreChangesAvailable;
 
-  /**
-   * Initializes a new instance of the class.
-   */
-  public ChangeCollection() {
-  }
-
-  /**
-   * Adds the specified change.
-   *
-   * @param change the change
-   */
-  public void add(TChange change) {
-    EwsUtilities.ewsAssert(change != null, "ChangeList.Add", "change is null");
-    this.changes.add(change);
-  }
-
-  /**
-   * Gets the number of changes in the collection.
-   *
-   * @return the count
-   */
-  public int getCount() {
-    return this.changes.size();
-  }
-
-  /**
-   * Gets an individual change from the change collection.
-   *
-   * @param index the index
-   * @return An single change
-   */
-  public TChange getChangeAtIndex(int index) {
-    if (index < 0 || index >= this.getCount()) {
-      throw new IndexOutOfBoundsException(
-          String.format("index %d is out of range [0..%d[.", index, this.getCount()));
+    /**
+     * Initializes a new instance of the class.
+     */
+    public ChangeCollection() {
     }
-    return this.changes.get(index);
-  }
 
-  /**
-   * Gets the SyncState blob returned by a synchronization operation.
-   *
-   * @return the sync state
-   */
-  public String getSyncState() {
-    return this.syncState;
-  }
+    /**
+     * Adds the specified change.
+     *
+     * @param change the change
+     */
+    public void add(TChange change) {
+        EwsUtilities.ewsAssert(change != null, "ChangeList.Add", "change is null");
+        this.changes.add(change);
+    }
 
-  /**
-   * Sets the sync state.
-   *
-   * @param syncState the new sync state
-   */
-  public void setSyncState(String syncState) {
-    this.syncState = syncState;
-  }
+    /**
+     * Gets the number of changes in the collection.
+     *
+     * @return the count
+     */
+    public int getCount() {
+        return this.changes.size();
+    }
 
-  /**
-   * Gets the SyncState blob returned by a synchronization operation.
-   *
-   * @return the more changes available
-   */
-  public boolean getMoreChangesAvailable() {
-    return this.moreChangesAvailable;
-  }
+    /**
+     * Gets an individual change from the change collection.
+     *
+     * @param index the index
+     * @return An single change
+     */
+    public TChange getChangeAtIndex(int index) {
+        if (index < 0 || index >= this.getCount()) {
+            throw new IndexOutOfBoundsException(
+                    String.format("index %d is out of range [0..%d[.", index, this.getCount()));
+        }
+        return this.changes.get(index);
+    }
 
-  /**
-   * Sets the more changes available.
-   *
-   * @param moreChangesAvailable the new more changes available
-   */
-  public void setMoreChangesAvailable(boolean moreChangesAvailable) {
-    this.moreChangesAvailable = moreChangesAvailable;
-  }
+    /**
+     * Gets the SyncState blob returned by a synchronization operation.
+     *
+     * @return the sync state
+     */
+    public String getSyncState() {
+        return this.syncState;
+    }
 
-  /**
-   * Returns an iterator over a set of elements of type T.
-   *
-   * @return an Iterator.
-   */
-  @Override
-  public Iterator<TChange> iterator() {
-    return this.changes.iterator();
-  }
+    /**
+     * Sets the sync state.
+     *
+     * @param syncState the new sync state
+     */
+    public void setSyncState(String syncState) {
+        this.syncState = syncState;
+    }
+
+    /**
+     * Gets the SyncState blob returned by a synchronization operation.
+     *
+     * @return the more changes available
+     */
+    public boolean getMoreChangesAvailable() {
+        return this.moreChangesAvailable;
+    }
+
+    /**
+     * Sets the more changes available.
+     *
+     * @param moreChangesAvailable the new more changes available
+     */
+    public void setMoreChangesAvailable(boolean moreChangesAvailable) {
+        this.moreChangesAvailable = moreChangesAvailable;
+    }
+
+    /**
+     * Returns an iterator over a set of elements of type T.
+     *
+     * @return an Iterator.
+     */
+    @Override
+    public Iterator<TChange> iterator() {
+        return this.changes.iterator();
+    }
 
 }

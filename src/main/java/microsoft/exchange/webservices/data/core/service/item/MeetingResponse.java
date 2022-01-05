@@ -41,70 +41,71 @@ import java.util.logging.Logger;
 @ServiceObjectDefinition(xmlElementName = XmlElementNames.MeetingResponse)
 public class MeetingResponse extends MeetingMessage {
 
-  private static final Logger LOG = Logger.getLogger(MeetingResponse.class.getCanonicalName());
+    private static final Logger LOG = Logger.getLogger(MeetingResponse.class.getCanonicalName());
 
-  /**
-   * Initializes a new instance of the class.
-   *
-   * @param parentAttachment The parentAttachment
-   * @throws Exception the exception
-   */
-  public MeetingResponse(ItemAttachment parentAttachment)
-      throws Exception {
-    super(parentAttachment);
-  }
-
-  /**
-   * Initializes a new instance of the class.
-   *
-   * @param service EWS service to which this object belongs.
-   * @throws Exception the exception
-   */
-  public MeetingResponse(ExchangeService service) throws Exception {
-    super(service);
-  }
-
-  /**
-   * Binds to an existing meeting response and loads the specified set of
-   * property. Calling this method results in a call to EWS.
-   *
-   * @param service     The service to use to bind to the meeting response.
-   * @param id          The Id of the meeting response to bind to.
-   * @param propertySet The set of property to load.
-   * @return A MeetingResponse instance representing the meeting response
-   * corresponding to the specified Id.
-   */
-  public static MeetingResponse bind(ExchangeService service, ItemId id,
-      PropertySet propertySet) {
-    try {
-      return service.bindToItem(MeetingResponse.class, id, propertySet);
-    } catch (Exception e) {
-      LOG.log(Level.SEVERE, "error binding meeting response", e);
-      return null;
+    /**
+     * Initializes a new instance of the class.
+     *
+     * @param parentAttachment The parentAttachment
+     * @throws Exception the exception
+     */
+    public MeetingResponse(ItemAttachment parentAttachment)
+            throws Exception {
+        super(parentAttachment);
     }
-  }
 
-  /**
-   * Binds to an existing meeting response and loads the specified set of
-   * property. Calling this method results in a call to EWS.
-   *
-   * @param service The service to use to bind to the meeting response.
-   * @param id      The Id of the meeting response to bind to.
-   * @return A MeetingResponse instance representing the meeting response
-   * corresponding to the specified Id.
-   */
-  public static MeetingResponse bind(ExchangeService service, ItemId id) {
-    return MeetingResponse.bind(service, id, PropertySet
-        .getFirstClassProperties());
-  }
+    /**
+     * Initializes a new instance of the class.
+     *
+     * @param service EWS service to which this object belongs.
+     * @throws Exception the exception
+     */
+    public MeetingResponse(ExchangeService service) throws Exception {
+        super(service);
+    }
 
-  /**
-   * Gets the minimum required server version.
-   *
-   * @return Earliest Exchange version in which this service object type is
-   * supported.
-   */
-  @Override public ExchangeVersion getMinimumRequiredServerVersion() {
-    return ExchangeVersion.Exchange2007_SP1;
-  }
+    /**
+     * Binds to an existing meeting response and loads the specified set of
+     * property. Calling this method results in a call to EWS.
+     *
+     * @param service     The service to use to bind to the meeting response.
+     * @param id          The Id of the meeting response to bind to.
+     * @param propertySet The set of property to load.
+     * @return A MeetingResponse instance representing the meeting response
+     * corresponding to the specified Id.
+     */
+    public static MeetingResponse bind(ExchangeService service, ItemId id,
+                                       PropertySet propertySet) {
+        try {
+            return service.bindToItem(MeetingResponse.class, id, propertySet);
+        } catch (Exception e) {
+            LOG.log(Level.SEVERE, "error binding meeting response", e);
+            return null;
+        }
+    }
+
+    /**
+     * Binds to an existing meeting response and loads the specified set of
+     * property. Calling this method results in a call to EWS.
+     *
+     * @param service The service to use to bind to the meeting response.
+     * @param id      The Id of the meeting response to bind to.
+     * @return A MeetingResponse instance representing the meeting response
+     * corresponding to the specified Id.
+     */
+    public static MeetingResponse bind(ExchangeService service, ItemId id) {
+        return MeetingResponse.bind(service, id, PropertySet
+                .getFirstClassProperties());
+    }
+
+    /**
+     * Gets the minimum required server version.
+     *
+     * @return Earliest Exchange version in which this service object type is
+     * supported.
+     */
+    @Override
+    public ExchangeVersion getMinimumRequiredServerVersion() {
+        return ExchangeVersion.Exchange2007_SP1;
+    }
 }
