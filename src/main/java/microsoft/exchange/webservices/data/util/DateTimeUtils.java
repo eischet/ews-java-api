@@ -24,9 +24,13 @@
 package microsoft.exchange.webservices.data.util;
 
 import org.apache.commons.lang3.StringUtils;
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
+// replaced with java.time: import org.joda.time.format.DateTimeFormat;
+// replaced with java.time: import org.joda.time.format.DateTimeFormatter;
 
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.TemporalAccessor;
 import java.util.Date;
 
 public final class DateTimeUtils {
@@ -84,7 +88,9 @@ public final class DateTimeUtils {
       final DateTimeFormatter[] formats = dateOnly ? DATE_FORMATS : DATE_TIME_FORMATS;
       for (final DateTimeFormatter format : formats) {
         try {
-          return format.parseDateTime(value).toDate();
+          final LocalDateTime retval = format.parse(value, LocalDateTime::from);
+          return Date.from(retval.toInstant(ZoneOffset.UTC));
+          // joda: return format.parseDateTime(value).toDate();
         } catch (IllegalArgumentException e) {
           // Ignore and try the next pattern.
         }
@@ -97,21 +103,22 @@ public final class DateTimeUtils {
 
   private static DateTimeFormatter[] createDateTimeFormats() {
     return new DateTimeFormatter[] {
-        DateTimeFormat.forPattern("yyyy-MM-dd'T'HH:mm:ssZ").withZoneUTC(),
-        DateTimeFormat.forPattern("yyyy-MM-dd'T'HH:mm:ss.SSSZ").withZoneUTC(),
-        DateTimeFormat.forPattern("yyyy-MM-dd'T'HH:mm:ss.SSSSSSSZ").withZoneUTC(),
-        DateTimeFormat.forPattern("yyyy-MM-dd'T'HH:mm:ss").withZoneUTC(),
-        DateTimeFormat.forPattern("yyyy-MM-dd'T'HH:mm:ss.SSS").withZoneUTC(),
-        DateTimeFormat.forPattern("yyyy-MM-dd'T'HH:mm:ss.SSSSSSS").withZoneUTC(),
-        DateTimeFormat.forPattern("yyyy-MM-ddZ").withZoneUTC(),
-        DateTimeFormat.forPattern("yyyy-MM-dd").withZoneUTC()
+
+        DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ssZ").withZone(ZoneOffset.UTC),
+        DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSZ").withZone(ZoneOffset.UTC),
+        DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSSSSSZ").withZone(ZoneOffset.UTC),
+        DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss").withZone(ZoneOffset.UTC),
+        DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS").withZone(ZoneOffset.UTC),
+        DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSSSSS").withZone(ZoneOffset.UTC),
+        DateTimeFormatter.ofPattern("yyyy-MM-ddZ").withZone(ZoneOffset.UTC),
+        DateTimeFormatter.ofPattern("yyyy-MM-dd").withZone(ZoneOffset.UTC)
     };
   }
 
   private static DateTimeFormatter[] createDateFormats() {
     return new DateTimeFormatter[] {
-        DateTimeFormat.forPattern("yyyy-MM-ddZ").withZoneUTC(),
-        DateTimeFormat.forPattern("yyyy-MM-dd").withZoneUTC()
+        DateTimeFormatter.ofPattern("yyyy-MM-ddZ").withZone(ZoneOffset.UTC),
+        DateTimeFormatter.ofPattern("yyyy-MM-dd").withZone(ZoneOffset.UTC)
     };
   }
 

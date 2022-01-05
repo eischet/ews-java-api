@@ -53,8 +53,8 @@ import microsoft.exchange.webservices.data.property.complex.ItemAttachment;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.joda.time.Period;
-import org.joda.time.format.ISOPeriodFormat;
+// replaced with java.time: import org.joda.time.Period;
+// replaced with java.time: import org.joda.time.format.ISOPeriodFormat;
 
 import javax.xml.stream.XMLOutputFactory;
 import javax.xml.stream.XMLStreamException;
@@ -70,6 +70,7 @@ import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.Duration;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -883,9 +884,12 @@ public final class EwsUtilities {
       xsDuration = xsDuration.replace("-P", "P");
     }
 
-    Period period = Period.parse(xsDuration, ISOPeriodFormat.standard());
-      
-    long retval = period.toStandardDuration().getMillis();
+    Duration duration = Duration.parse(xsDuration);
+    long retval = duration.toMillis();
+
+    // Joda Time:
+    // Period period = Period.parse(xsDuration, ISOPeriodFormat.standard());
+    // long retval = period.toStandardDuration().getMillis();
     
     if (negative) {
       retval = -retval;
