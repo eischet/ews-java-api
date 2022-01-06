@@ -15,6 +15,12 @@ and the EWS API pulls in quite a few old packages... that's why I'm putting in s
 
 Thanks to Microsoft for releasing this code under the MIT license!
 
+Issues and contributions are welcome.
+
+No packages are provided right now, but I'm thinking about it. 
+If you want to use the code at the moment, simply run `mvn install` locally.
+
+
 S.E.
 
 ## Changed from the original code:
@@ -30,10 +36,6 @@ S.E.
   My goal is to have a minimal set of dependencies in the end.
 * The build now uses Java 11 instead of 7/8 (we're on 17 LTS right now, so that's still old, but not ancient).
 
-## Issues
-
-* Moving from java.util.Date to LocalDateTime/LocalDate opened up a whole can of worms that are still crawling around.
-  You will get problems with Date/DateTime fields currently, and with naked Times.
 
 
 # OLD INFO:
