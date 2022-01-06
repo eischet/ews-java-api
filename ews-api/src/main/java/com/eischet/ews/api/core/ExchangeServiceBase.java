@@ -47,6 +47,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.logging.Logger;
 
@@ -381,9 +382,13 @@ public abstract class ExchangeServiceBase implements Closeable {
      */
     public String convertDateTimeToUniversalDateTimeString(LocalDateTime dt) {
         String utcPattern = "yyyy-MM-dd'T'HH:mm:ss'Z'";
+        DateTimeFormatter fmt = DateTimeFormatter.ofPattern(utcPattern);
+        return fmt.format(dt);
+        /*
         DateFormat utcFormatter = new SimpleDateFormat(utcPattern);
         utcFormatter.setTimeZone(TimeZone.getTimeZone("UTC"));
         return utcFormatter.format(dt);
+         */
     }
 
     /**
