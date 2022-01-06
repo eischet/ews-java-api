@@ -39,8 +39,7 @@ import java.util.Collection;
  * @param <TServiceObject> The type of the service object.
  * @param <TResponse>      The type of the response.
  */
-abstract class CreateItemRequestBase<TServiceObject extends ServiceObject,
-        TResponse extends ServiceResponse>
+abstract class CreateItemRequestBase<TServiceObject extends ServiceObject, TResponse extends ServiceResponse>
         extends CreateRequest<TServiceObject, TResponse> {
 
     /**

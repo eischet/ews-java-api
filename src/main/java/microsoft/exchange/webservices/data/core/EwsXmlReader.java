@@ -27,7 +27,6 @@ import microsoft.exchange.webservices.data.core.enumeration.misc.XmlNamespace;
 import microsoft.exchange.webservices.data.core.exception.service.local.ServiceXmlDeserializationException;
 import microsoft.exchange.webservices.data.misc.OutParam;
 import microsoft.exchange.webservices.data.security.XmlNodeType;
-import org.apache.commons.codec.binary.Base64;
 
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLEventReader;
@@ -37,6 +36,7 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.*;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
+import java.util.Base64;
 import java.util.Objects;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -556,7 +556,7 @@ public class EwsXmlReader {
 
         ByteArrayOutputStream byteArrayStream = new ByteArrayOutputStream();
 
-        buffer = Base64.decodeBase64(this.xmlReader.getElementText());
+        buffer = Base64.getMimeDecoder().decode(this.xmlReader.getElementText());
         byteArrayStream.write(buffer);
 
         return byteArrayStream.toByteArray();
@@ -574,7 +574,7 @@ public class EwsXmlReader {
         this.ensureCurrentNodeIsStartElement();
 
         byte[] buffer = null;
-        buffer = Base64.decodeBase64(this.xmlReader.getElementText());
+        buffer = Base64.getMimeDecoder().decode(this.xmlReader.getElementText());
         outputStream.write(buffer);
         outputStream.flush();
     }
@@ -853,12 +853,10 @@ public class EwsXmlReader {
      * @throws ServiceXmlDeserializationException the service xml deserialization exception
      * @throws XMLStreamException                 the XML stream exception
      */
-    public String readOuterXml() throws ServiceXmlDeserializationException,
-            XMLStreamException {
+    public String readOuterXml() throws ServiceXmlDeserializationException, XMLStreamException {
         if (!this.isStartElement()) {
             throw new ServiceXmlDeserializationException("The current position is not the start of an element.");
         }
-
         XMLEvent startEvent = this.presentEvent;
         XMLEvent event;
         StringBuilder str = new StringBuilder();
@@ -931,8 +929,7 @@ public class EwsXmlReader {
         return readSubtree();
     }
 
-    public XMLEventReader readSubtree()
-            throws XMLStreamException, FileNotFoundException, ServiceXmlDeserializationException {
+    public XMLEventReader readSubtree() throws XMLStreamException, FileNotFoundException, ServiceXmlDeserializationException {
 
         if (!this.isStartElement()) {
             throw new ServiceXmlDeserializationException("The current position is not the start of an element.");

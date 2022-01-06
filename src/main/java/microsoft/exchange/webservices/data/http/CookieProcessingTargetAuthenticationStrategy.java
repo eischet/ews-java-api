@@ -21,7 +21,7 @@
  * THE SOFTWARE.
  */
 
-package microsoft.exchange.webservices.data.core;
+package microsoft.exchange.webservices.data.http;
 
 import org.apache.http.*;
 import org.apache.http.auth.MalformedChallengeException;

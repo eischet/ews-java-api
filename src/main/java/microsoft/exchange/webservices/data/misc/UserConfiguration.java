@@ -36,9 +36,9 @@ import microsoft.exchange.webservices.data.property.complex.FolderId;
 import microsoft.exchange.webservices.data.property.complex.ItemId;
 import microsoft.exchange.webservices.data.property.complex.UserConfigurationDictionary;
 import microsoft.exchange.webservices.data.security.XmlNodeType;
-import org.apache.commons.codec.binary.Base64;
 
 import javax.xml.stream.XMLStreamException;
+import java.util.Base64;
 import java.util.EnumSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -56,10 +56,11 @@ public class UserConfiguration {
      */
     private static final ExchangeVersion ObjectVersion = ExchangeVersion.Exchange2010;
 
-    /**
+    /*
      * For consistency with ServiceObject behavior, access to ItemId is
      * permitted for a new object.
      */
+
     /**
      * The Constant PropertiesAvailableForNewObject.
      */
@@ -153,7 +154,7 @@ public class UserConfiguration {
         writer.writeStartElement(XmlNamespace.Types, xmlElementName);
 
         if (byteArray != null && byteArray.length > 0) {
-            writer.writeValue(Base64.encodeBase64String(byteArray), xmlElementName);
+            writer.writeValue(Base64.getMimeEncoder().encodeToString(byteArray), xmlElementName);
         }
 
         writer.writeEndElement();
@@ -596,12 +597,10 @@ public class UserConfiguration {
                         XmlElementNames.Dictionary)) {
                     this.dictionary.loadFromXml(reader,
                             XmlElementNames.Dictionary);
-                } else if (reader.getLocalName()
-                        .equals(XmlElementNames.XmlData)) {
-                    this.xmlData = Base64.decodeBase64(reader.readElementValue());
-                } else if (reader.getLocalName().equals(
-                        XmlElementNames.BinaryData)) {
-                    this.binaryData = Base64.decodeBase64(reader.readElementValue());
+                } else if (reader.getLocalName().equals(XmlElementNames.XmlData)) {
+                    this.xmlData = Base64.getMimeDecoder().decode(reader.readElementValue());
+                } else if (reader.getLocalName().equals(XmlElementNames.BinaryData)) {
+                    this.binaryData = Base64.getMimeDecoder().decode(reader.readElementValue());
                 } else {
                     EwsUtilities.ewsAssert(false, "UserConfiguration.loadFromXml",
                             "Xml element not supported: " + reader.getLocalName());

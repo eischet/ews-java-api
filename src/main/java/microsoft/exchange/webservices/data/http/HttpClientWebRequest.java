@@ -21,10 +21,12 @@
  * THE SOFTWARE.
  */
 
-package microsoft.exchange.webservices.data.core.request;
+package microsoft.exchange.webservices.data.http;
 
 import microsoft.exchange.webservices.data.core.WebProxy;
 import microsoft.exchange.webservices.data.core.exception.http.EWSHttpException;
+import microsoft.exchange.webservices.data.core.request.ByteArrayOSRequestEntity;
+import microsoft.exchange.webservices.data.core.request.HttpWebRequest;
 import org.apache.http.Header;
 import org.apache.http.HttpHost;
 import org.apache.http.auth.AuthScope;

@@ -28,9 +28,9 @@ import microsoft.exchange.webservices.data.core.EwsServiceXmlWriter;
 import microsoft.exchange.webservices.data.core.XmlAttributeNames;
 import microsoft.exchange.webservices.data.core.exception.service.local.ServiceXmlDeserializationException;
 import microsoft.exchange.webservices.data.core.exception.service.local.ServiceXmlSerializationException;
-import org.apache.commons.codec.binary.Base64;
 
 import javax.xml.stream.XMLStreamException;
+import java.util.Base64;
 
 /**
  * Represents the MIME content of an item.
@@ -88,7 +88,7 @@ public final class MimeContent extends ComplexProperty {
     @Override
     public void readTextValueFromXml(EwsServiceXmlReader reader)
             throws XMLStreamException, ServiceXmlDeserializationException {
-        this.content = Base64.decodeBase64(reader.readValue());
+        this.content = Base64.getMimeDecoder().decode(reader.readValue());
     }
 
     /**
@@ -176,7 +176,7 @@ public final class MimeContent extends ComplexProperty {
                         "UTF-8" : this.getCharacterSet();
                 return new String(this.getContent(), charSet);
             } catch (Exception e) {
-                return Base64.encodeBase64String(this.getContent());
+                return Base64.getMimeEncoder().encodeToString(this.getContent());
             }
         }
     }

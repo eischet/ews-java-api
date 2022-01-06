@@ -21,7 +21,7 @@
  * THE SOFTWARE.
  */
 
-package microsoft.exchange.webservices.data.core;
+package microsoft.exchange.webservices.data.http;
 
 /**
  * EwsX509TrustManager is used for SSL handshake.
