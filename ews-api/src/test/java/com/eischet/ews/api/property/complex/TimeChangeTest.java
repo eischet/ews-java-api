@@ -51,13 +51,12 @@ public class TimeChangeTest {
 
   private String testDate(String value) {
     final LocalDateTime cal = DateTimeUtils.parseDateTime(value);
-    String XSDate = EwsUtilities.dateTimeToXSDate(cal);
     /*
     Calendar cal = DatatypeConverter.parseDate(value);
     cal.setTimeZone(TimeZone.getTimeZone("UTC"));
     String XSDate = EwsUtilities.dateTimeToXSDate(cal.getTime());
      */
-    return XSDate;
+    return EwsUtilities.dateTimeToXSDate(cal);
   }
 
   @Test(expected = IllegalArgumentException.class)

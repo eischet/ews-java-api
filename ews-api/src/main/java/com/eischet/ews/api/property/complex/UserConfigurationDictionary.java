@@ -702,7 +702,8 @@ public final class UserConfigurationDictionary extends ComplexProperty
                     theObject instanceof Boolean ||
                     theObject instanceof Byte ||
                     theObject instanceof Long ||
-                    theObject instanceof Date ||
+                    theObject instanceof LocalDateTime ||
+                    theObject instanceof LocalDate ||
                     theObject instanceof Integer) {
                 isValidType = true;
             }
@@ -711,7 +712,7 @@ public final class UserConfigurationDictionary extends ComplexProperty
         if (!isValidType) {
             throw new ServiceLocalException(
                     String.format(
-                            "Objects of type %s can't be added to the dictionary. The following types are supported: string array, byte array, boolean, byte, DateTime, integer, long, string, unsigned integer, and unsigned long.", (theObject != null ?
+                            "Objects of type %s can't be added to the dictionary. The following types are supported: String, Boolean, Byte, Long, LocalDateTime, LocalDate, Integer.", (theObject != null ?
                                     theObject.getClass().toString() : "null")));
         }
     }
