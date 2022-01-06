@@ -33,6 +33,7 @@ import microsoft.exchange.webservices.data.core.enumeration.service.error.Servic
 import microsoft.exchange.webservices.data.core.exception.service.local.ServiceLocalException;
 import microsoft.exchange.webservices.data.core.exception.service.local.ServiceXmlSerializationException;
 import microsoft.exchange.webservices.data.core.response.ServiceResponse;
+import microsoft.exchange.webservices.data.http.ExchangeHttpClient;
 
 import javax.xml.stream.XMLStreamException;
 
@@ -167,7 +168,7 @@ public class UnsubscribeRequest extends MultiResponseServiceRequest<ServiceRespo
     }
 
     @Override
-    protected HttpWebRequest buildEwsHttpWebRequest() throws Exception {
+    protected ExchangeHttpClient.Request buildEwsHttpWebRequest() throws Exception {
         return super.buildEwsHttpPoolingWebRequest();
     }
 }

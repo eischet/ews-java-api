@@ -42,12 +42,12 @@ import microsoft.exchange.webservices.data.core.exception.misc.FormatException;
 import microsoft.exchange.webservices.data.core.exception.service.local.ServiceLocalException;
 import microsoft.exchange.webservices.data.core.exception.service.local.ServiceValidationException;
 import microsoft.exchange.webservices.data.core.exception.service.local.ServiceVersionException;
-import microsoft.exchange.webservices.data.core.request.HttpWebRequest;
 import microsoft.exchange.webservices.data.core.service.ICreateServiceObjectWithAttachmentParam;
 import microsoft.exchange.webservices.data.core.service.ICreateServiceObjectWithServiceParam;
 import microsoft.exchange.webservices.data.core.service.ServiceObject;
 import microsoft.exchange.webservices.data.core.service.ServiceObjectInfo;
 import microsoft.exchange.webservices.data.core.service.item.Item;
+import microsoft.exchange.webservices.data.http.ExchangeHttpClient;
 import microsoft.exchange.webservices.data.misc.TimeSpan;
 import microsoft.exchange.webservices.data.property.complex.ItemAttachment;
 
@@ -570,7 +570,7 @@ public final class EwsUtilities {
      * @return the string
      * @throws EWSHttpException the EWS http exception
      */
-    public static String formatHttpResponseHeaders(HttpWebRequest response)
+    public static String formatHttpResponseHeaders(ExchangeHttpClient.Request response)
             throws EWSHttpException {
         final int code = response.getResponseCode();
         final String contentType = response.getResponseContentType();
@@ -585,7 +585,7 @@ public final class EwsUtilities {
      *
      * @param request The HTTP request.
      */
-    public static String formatHttpRequestHeaders(HttpWebRequest request)
+    public static String formatHttpRequestHeaders(ExchangeHttpClient.Request request)
             throws URISyntaxException, EWSHttpException {
         final String method = request.getRequestMethod().toUpperCase();
         final String path = request.getUrl().toURI().getPath();

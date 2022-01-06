@@ -51,6 +51,7 @@ import microsoft.exchange.webservices.data.core.service.folder.Folder;
 import microsoft.exchange.webservices.data.core.service.item.Appointment;
 import microsoft.exchange.webservices.data.core.service.item.Conversation;
 import microsoft.exchange.webservices.data.core.service.item.Item;
+import microsoft.exchange.webservices.data.http.ExchangeHttpClient;
 import microsoft.exchange.webservices.data.messaging.UnifiedMessaging;
 import microsoft.exchange.webservices.data.misc.*;
 import microsoft.exchange.webservices.data.misc.availability.AttendeeInfo;
@@ -3490,11 +3491,9 @@ public class ExchangeService extends ExchangeServiceBase implements IAutodiscove
             throws Exception {
 
         AutodiscoverService autodiscoverService = new AutodiscoverService(this, requestedServerVersion);
-        autodiscoverService.setWebProxy(getWebProxy());
         autodiscoverService.setTimeout(getTimeout());
 
-        autodiscoverService
-                .setRedirectionUrlValidationCallback(validateRedirectionUrlCallback);
+        autodiscoverService.setRedirectionUrlValidationCallback(validateRedirectionUrlCallback);
         autodiscoverService.setEnableScpLookup(this.getEnableScpLookup());
 
         GetUserSettingsResponse response = autodiscoverService.getUserSettings(
@@ -3600,8 +3599,8 @@ public class ExchangeService extends ExchangeServiceBase implements IAutodiscove
      * targeting the specified version of EWS and scoped to the to the system's
      * current time zone.
      */
-    public ExchangeService() {
-        super();
+    public ExchangeService(ExchangeHttpClient client) {
+        super(client);
     }
 
     /**
@@ -3611,8 +3610,8 @@ public class ExchangeService extends ExchangeServiceBase implements IAutodiscove
      *
      * @param requestedServerVersion the requested server version
      */
-    public ExchangeService(ExchangeVersion requestedServerVersion) {
-        super(requestedServerVersion);
+    public ExchangeService(ExchangeHttpClient client, ExchangeVersion requestedServerVersion) {
+        super(requestedServerVersion, client);
     }
 
     // Utilities
@@ -3624,7 +3623,7 @@ public class ExchangeService extends ExchangeServiceBase implements IAutodiscove
      * @throws ServiceLocalException       the service local exception
      * @throws java.net.URISyntaxException the uRI syntax exception
      */
-    public HttpWebRequest prepareHttpWebRequest()
+    public ExchangeHttpClient.Request prepareHttpWebRequest()
             throws ServiceLocalException, URISyntaxException {
         try {
             this.url = this.adjustServiceUriFromCredentials(this.getUrl());
@@ -3642,26 +3641,20 @@ public class ExchangeService extends ExchangeServiceBase implements IAutodiscove
      * @throws ServiceLocalException       The service local exception
      * @throws java.net.URISyntaxException the uRI syntax exception
      */
-    public HttpWebRequest prepareHttpPoolingWebRequest()
-            throws ServiceLocalException, URISyntaxException {
+    public ExchangeHttpClient.Request prepareHttpPoolingWebRequest() throws ServiceLocalException, URISyntaxException {
         try {
             this.url = this.adjustServiceUriFromCredentials(this.getUrl());
         } catch (Exception e) {
             LOG.log(Level.SEVERE, "error preparing pooling HTTP request", e);
         }
-        return this.prepareHttpPoolingWebRequestForUrl(url, this
-                .getAcceptGzipEncoding(), true);
+        return this.prepareHttpPoolingWebRequestForUrl(url, this.getAcceptGzipEncoding(), true);
     }
 
     /**
      * Processes an HTTP error response.
-     *
-     * @param httpWebResponse The HTTP web response.
-     * @param webException    The web exception
-     * @throws Exception
      */
     @Override
-    public void processHttpErrorResponse(HttpWebRequest httpWebResponse, Exception webException) throws Exception {
+    public void processHttpErrorResponse(ExchangeHttpClient.Request httpWebResponse, Exception webException) throws Exception {
         this.internalProcessHttpErrorResponse(httpWebResponse, webException,
                 TraceFlags.EwsResponseHttpHeaders, TraceFlags.EwsResponse);
     }

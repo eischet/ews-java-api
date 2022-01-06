@@ -37,8 +37,8 @@ import microsoft.exchange.webservices.data.core.exception.service.local.ServiceX
 import microsoft.exchange.webservices.data.core.exception.service.remote.ServiceRemoteException;
 import microsoft.exchange.webservices.data.core.exception.service.remote.ServiceRequestException;
 import microsoft.exchange.webservices.data.core.exception.service.remote.ServiceResponseException;
-import microsoft.exchange.webservices.data.core.request.HttpWebRequest;
 import microsoft.exchange.webservices.data.core.response.ServiceResponse;
+import microsoft.exchange.webservices.data.http.ExchangeHttpClient;
 import microsoft.exchange.webservices.data.misc.SoapFaultDetails;
 import microsoft.exchange.webservices.data.security.XmlNodeType;
 
@@ -86,7 +86,7 @@ public abstract class AutodiscoverRequest {
      * @return True if redirection response.
      * @throws EWSHttpException the EWS http exception
      */
-    public static boolean isRedirectionResponse(HttpWebRequest request)
+    public static boolean isRedirectionResponse(ExchangeHttpClient.Request request)
             throws EWSHttpException {
         return ((request.getResponseCode() == 301)
                 || (request.getResponseCode() == 302)
@@ -111,7 +111,7 @@ public abstract class AutodiscoverRequest {
      */
     protected AutodiscoverResponse internalExecute() throws Exception {
         this.validate();
-        HttpWebRequest request = null;
+        ExchangeHttpClient.Request request = null;
         try {
             request = this.service.prepareHttpWebRequestForUrl(this.url);
             this.service.traceHttpRequestHeaders(
@@ -254,11 +254,10 @@ public abstract class AutodiscoverRequest {
 
     /**
      * Processes the web exception.
-     *
-     * @param exception WebException
+     *  @param exception WebException
      * @param req       HttpWebRequest
      */
-    private void processWebException(Exception exception, HttpWebRequest req) {
+    private void processWebException(Exception exception, ExchangeHttpClient.Request req) {
         if (null != req) {
             try {
                 if (500 == req.getResponseCode()) {
@@ -318,7 +317,7 @@ public abstract class AutodiscoverRequest {
      * @throws EWSHttpException   the EWS http exception
      */
     private AutodiscoverResponse createRedirectionResponse(
-            HttpWebRequest httpWebResponse) throws XMLStreamException,
+            ExchangeHttpClient.Request httpWebResponse) throws XMLStreamException,
             IOException, EWSHttpException {
         String location = httpWebResponse.getResponseHeaderField("Location");
         if (!(location == null || location.isEmpty())) {
@@ -553,7 +552,7 @@ public abstract class AutodiscoverRequest {
      * @throws EWSHttpException the EWS http exception
      * @throws IOException      signals that an I/O exception has occurred.
      */
-    protected static InputStream getResponseStream(HttpWebRequest request)
+    protected static InputStream getResponseStream(ExchangeHttpClient.Request request)
             throws EWSHttpException, IOException {
         String contentEncoding = "";
 

@@ -24,7 +24,7 @@
 package microsoft.exchange.webservices.data.credential;
 
 import microsoft.exchange.webservices.data.core.exception.misc.InvalidOperationException;
-import microsoft.exchange.webservices.data.core.request.HttpWebRequest;
+import microsoft.exchange.webservices.data.http.ExchangeHttpClient;
 
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
@@ -89,8 +89,7 @@ public abstract class ExchangeCredentials {
      * @param client The request.
      * @throws java.net.URISyntaxException the uRI syntax exception
      */
-    public void prepareWebRequest(HttpWebRequest client)
-            throws URISyntaxException {
+    public void prepareWebRequest(ExchangeHttpClient.Request client) throws URISyntaxException {
         // do nothing by default.
     }
 

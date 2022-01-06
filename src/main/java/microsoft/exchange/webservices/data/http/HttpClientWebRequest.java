@@ -25,7 +25,6 @@ package microsoft.exchange.webservices.data.http;
 
 import microsoft.exchange.webservices.data.core.WebProxy;
 import microsoft.exchange.webservices.data.core.exception.http.EWSHttpException;
-import microsoft.exchange.webservices.data.core.request.ByteArrayOSRequestEntity;
 import microsoft.exchange.webservices.data.core.request.HttpWebRequest;
 import org.apache.http.Header;
 import org.apache.http.HttpHost;
@@ -52,6 +51,8 @@ import java.util.Map;
  * HttpClient 3.1 and JCIFS Library.
  */
 public class HttpClientWebRequest extends HttpWebRequest {
+
+    // TODO: LOL, I'd thought this one was from Apache HTTP Client; turns out it's another layer to remove/refactor
 
     /**
      * The Http Method.

@@ -25,32 +25,29 @@ package microsoft.exchange.webservices.data.misc;
 
 import microsoft.exchange.webservices.data.core.exception.http.EWSHttpException;
 import microsoft.exchange.webservices.data.core.exception.http.HttpErrorException;
-import microsoft.exchange.webservices.data.http.HttpClientWebRequest;
-import microsoft.exchange.webservices.data.core.request.HttpWebRequest;
+import microsoft.exchange.webservices.data.http.ExchangeHttpClient;
 
 import java.io.IOException;
 import java.util.concurrent.Callable;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class CallableMethod implements Callable<Object> {
+public class CallableMethod implements Callable<ExchangeHttpClient.Request> {
 
     private static final Logger LOG = Logger.getLogger(CallableMethod.class.getCanonicalName());
 
-    HttpWebRequest request;
+    ExchangeHttpClient.Request request;
 
-    public CallableMethod(HttpWebRequest request) {
+    public CallableMethod(ExchangeHttpClient.Request request) {
         this.request = request;
     }
 
-    protected HttpClientWebRequest executeMethod() throws EWSHttpException, HttpErrorException, IOException {
-
+    protected ExchangeHttpClient.Request executeMethod() throws EWSHttpException, HttpErrorException, IOException {
         request.executeRequest();
-        return (HttpClientWebRequest) request;
+        return request;
     }
 
-    public HttpWebRequest call() {
-
+    public ExchangeHttpClient.Request call() {
         try {
             return executeMethod();
         } catch (EWSHttpException | IOException | HttpErrorException e) {

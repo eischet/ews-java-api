@@ -26,6 +26,7 @@ package microsoft.exchange.webservices.data.core.request;
 import microsoft.exchange.webservices.data.core.ExchangeService;
 import microsoft.exchange.webservices.data.core.enumeration.misc.TraceFlags;
 import microsoft.exchange.webservices.data.core.exception.service.remote.ServiceRequestException;
+import microsoft.exchange.webservices.data.http.ExchangeHttpClient;
 import microsoft.exchange.webservices.data.misc.*;
 
 import java.io.IOException;
@@ -52,7 +53,7 @@ public abstract class SimpleServiceRequestBase<T> extends ServiceRequestBase<T> 
      * @throws Exception on error
      */
     protected T internalExecute() throws Exception {
-        HttpWebRequest response = null;
+        ExchangeHttpClient.Request response = null;
 
         try {
             response = this.validateAndEmitRequest();
@@ -79,7 +80,7 @@ public abstract class SimpleServiceRequestBase<T> extends ServiceRequestBase<T> 
      * @throws Exception on error
      */
     protected T endInternalExecute(IAsyncResult asyncResult) throws Exception {
-        HttpWebRequest response = (HttpWebRequest) asyncResult.get();
+        ExchangeHttpClient.Request response = (ExchangeHttpClient.Request) asyncResult.get();
         return this.readResponse(response);
     }
 
@@ -93,7 +94,7 @@ public abstract class SimpleServiceRequestBase<T> extends ServiceRequestBase<T> 
     public AsyncRequestResult beginExecute(AsyncCallback callback) throws Exception {
         this.validate();
 
-        HttpWebRequest request = this.buildEwsHttpWebRequest();
+        ExchangeHttpClient.Request request = this.buildEwsHttpWebRequest();
         AsyncExecutor es = new AsyncExecutor();
         Callable<?> cl = new CallableMethod(request);
         Future<?> task = es.submit(cl, callback);

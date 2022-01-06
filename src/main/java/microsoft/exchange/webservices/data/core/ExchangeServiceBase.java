@@ -29,27 +29,10 @@ import microsoft.exchange.webservices.data.core.enumeration.misc.TraceFlags;
 import microsoft.exchange.webservices.data.core.exception.http.EWSHttpException;
 import microsoft.exchange.webservices.data.core.exception.service.local.ServiceLocalException;
 import microsoft.exchange.webservices.data.core.exception.service.remote.AccountIsLockedException;
-import microsoft.exchange.webservices.data.http.EwsSSLProtocolSocketFactory;
-import microsoft.exchange.webservices.data.http.HttpClientWebRequest;
-import microsoft.exchange.webservices.data.core.request.HttpWebRequest;
 import microsoft.exchange.webservices.data.credential.ExchangeCredentials;
-import microsoft.exchange.webservices.data.http.CookieProcessingTargetAuthenticationStrategy;
+import microsoft.exchange.webservices.data.http.ExchangeHttpClient;
 import microsoft.exchange.webservices.data.misc.EwsTraceListener;
 import microsoft.exchange.webservices.data.misc.ITraceListener;
-import microsoft.exchange.webservices.data.util.IOUtils;
-import org.apache.http.client.AuthenticationStrategy;
-import org.apache.http.client.CookieStore;
-import org.apache.http.client.protocol.HttpClientContext;
-import org.apache.http.config.Registry;
-import org.apache.http.config.RegistryBuilder;
-import org.apache.http.conn.HttpClientConnectionManager;
-import org.apache.http.conn.socket.ConnectionSocketFactory;
-import org.apache.http.conn.socket.PlainConnectionSocketFactory;
-import org.apache.http.impl.client.BasicCookieStore;
-import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClients;
-import org.apache.http.impl.conn.BasicHttpClientConnectionManager;
-import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
@@ -60,7 +43,6 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.security.GeneralSecurityException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -75,80 +57,27 @@ public abstract class ExchangeServiceBase implements Closeable {
 
     private static final Logger LOG = Logger.getLogger(ExchangeService.class.getCanonicalName());
 
-    /**
-     * The credential.
-     */
     private ExchangeCredentials credentials;
-
-    /**
-     * The use default credential.
-     */
     private boolean useDefaultCredentials;
-
-    /**
-     * The binary secret.
-     */
     private static byte[] binarySecret;
-
-    /**
-     * The timeout.
-     */
     private int timeout = 100000;
-
-    /**
-     * The trace enabled.
-     */
     private boolean traceEnabled;
-
-    /**
-     * The trace flags.
-     */
     private EnumSet<TraceFlags> traceFlags = EnumSet.allOf(TraceFlags.class);
-
-    /**
-     * The trace listener.
-     */
     private ITraceListener traceListener = new EwsTraceListener();
-
-    /**
-     * The pre authenticate.
-     */
     private boolean preAuthenticate;
-
-    /**
-     * The user agent.
-     */
     private String userAgent = ExchangeServiceBase.defaultUserAgent;
-
-    /**
-     * The accept gzip encoding.
-     */
     private boolean acceptGzipEncoding = true;
-
-    /**
-     * The requested server version.
-     */
     private ExchangeVersion requestedServerVersion = ExchangeVersion.Exchange2010_SP2;
-
-    /**
-     * The server info.
-     */
     private ExchangeServerInfo serverInfo;
-
     private Map<String, String> httpHeaders = new HashMap<>();
-
     private final Map<String, String> httpResponseHeaders = new HashMap<String, String>();
 
-    private WebProxy webProxy;
+    protected ExchangeHttpClient httpClient;
 
-    protected CloseableHttpClient httpClient;
-
-    protected HttpClientContext httpContext;
-
-    protected CloseableHttpClient httpPoolingClient;
-
-    private int maximumPoolingConnections = 10;
-
+    @Override
+    public void close() throws IOException {
+        httpClient.close();
+    }
 
 //  protected HttpClientWebRequest request = null;
 
@@ -165,19 +94,18 @@ public abstract class ExchangeServiceBase implements Closeable {
      * This constructor performs the initialization of the HTTP connection manager, so it should be called by
      * every other constructor.
      */
-    protected ExchangeServiceBase() {
+    protected ExchangeServiceBase(final ExchangeHttpClient exchangeHttpClient) {
         setUseDefaultCredentials(true);
-        initializeHttpClient();
-        initializeHttpContext();
+        this.httpClient = exchangeHttpClient;
     }
 
-    protected ExchangeServiceBase(ExchangeVersion requestedServerVersion) {
-        this();
+    protected ExchangeServiceBase(ExchangeVersion requestedServerVersion, final ExchangeHttpClient exchangeHttpClient) {
+        this(exchangeHttpClient);
         this.requestedServerVersion = requestedServerVersion;
     }
 
     protected ExchangeServiceBase(ExchangeServiceBase service, ExchangeVersion requestedServerVersion) {
-        this(requestedServerVersion);
+        this(requestedServerVersion, service.httpClient);
         this.useDefaultCredentials = service.getUseDefaultCredentials();
         this.credentials = service.getCredentials();
         this.traceEnabled = service.isTraceEnabled();
@@ -190,79 +118,7 @@ public abstract class ExchangeServiceBase implements Closeable {
         this.httpHeaders = service.getHttpHeaders();
     }
 
-    private void initializeHttpClient() {
-        Registry<ConnectionSocketFactory> registry = createConnectionSocketFactoryRegistry();
-        HttpClientConnectionManager httpConnectionManager = new BasicHttpClientConnectionManager(registry);
-        AuthenticationStrategy authStrategy = new CookieProcessingTargetAuthenticationStrategy();
 
-        httpClient = HttpClients.custom()
-                .setConnectionManager(httpConnectionManager)
-                .setTargetAuthenticationStrategy(authStrategy)
-                .build();
-    }
-
-    private void initializeHttpPoolingClient() {
-        Registry<ConnectionSocketFactory> registry = createConnectionSocketFactoryRegistry();
-        PoolingHttpClientConnectionManager httpConnectionManager = new PoolingHttpClientConnectionManager(registry);
-        httpConnectionManager.setMaxTotal(maximumPoolingConnections);
-        httpConnectionManager.setDefaultMaxPerRoute(maximumPoolingConnections);
-        AuthenticationStrategy authStrategy = new CookieProcessingTargetAuthenticationStrategy();
-
-        httpPoolingClient = HttpClients.custom()
-                .setConnectionManager(httpConnectionManager)
-                .setTargetAuthenticationStrategy(authStrategy)
-                .build();
-    }
-
-    /**
-     * Sets the maximum number of connections for the pooling connection manager which is used for
-     * subscriptions.
-     * <p>
-     * Default is 10.
-     * </p>
-     *
-     * @param maximumPoolingConnections Maximum number of pooling connections
-     */
-    public void setMaximumPoolingConnections(int maximumPoolingConnections) {
-        if (maximumPoolingConnections < 1)
-            throw new IllegalArgumentException("maximumPoolingConnections must be 1 or greater");
-        this.maximumPoolingConnections = maximumPoolingConnections;
-    }
-
-    /**
-     * Create registry with configured {@link ConnectionSocketFactory} instances.
-     * Override this method to change how to work with different schemas.
-     *
-     * @return registry object
-     */
-    protected Registry<ConnectionSocketFactory> createConnectionSocketFactoryRegistry() {
-        try {
-            return RegistryBuilder.<ConnectionSocketFactory>create()
-                    .register(EWSConstants.HTTP_SCHEME, new PlainConnectionSocketFactory())
-                    .register(EWSConstants.HTTPS_SCHEME, EwsSSLProtocolSocketFactory.build(null))
-                    .build();
-        } catch (GeneralSecurityException e) {
-            throw new RuntimeException(
-                    "Could not initialize ConnectionSocketFactory instances for HttpClientConnectionManager", e
-            );
-        }
-    }
-
-    /**
-     * (Re)initializes the HttpContext object. This removes any existing state (mainly cookies). Use an own
-     * cookie store, instead of the httpClient's global store, so cookies get reset on reinitialization
-     */
-    private void initializeHttpContext() {
-        CookieStore cookieStore = new BasicCookieStore();
-        httpContext = HttpClientContext.create();
-        httpContext.setCookieStore(cookieStore);
-    }
-
-    @Override
-    public void close() {
-        IOUtils.closeQuietly(httpClient);
-        IOUtils.closeQuietly(httpPoolingClient);
-    }
 
     // Event handlers
 
@@ -297,7 +153,7 @@ public abstract class ExchangeServiceBase implements Closeable {
      * @throws ServiceLocalException       the service local exception
      * @throws java.net.URISyntaxException the uRI syntax exception
      */
-    protected HttpWebRequest prepareHttpWebRequestForUrl(URI url, boolean acceptGzipEncoding,
+    protected ExchangeHttpClient.Request prepareHttpWebRequestForUrl(URI url, boolean acceptGzipEncoding,
                                                          boolean allowAutoRedirect) throws ServiceLocalException, URISyntaxException {
         // Verify that the protocol is something that we can handle
         String scheme = url.getScheme();
@@ -307,7 +163,8 @@ public abstract class ExchangeServiceBase implements Closeable {
             throw new ServiceLocalException(strErr);
         }
 
-        HttpClientWebRequest request = new HttpClientWebRequest(httpClient, httpContext);
+        final ExchangeHttpClient.Request request = httpClient.createRequest();
+        // HttpClientWebRequest request = new HttpClientWebRequest(httpClient, httpContext);
         prepareHttpWebRequestForUrl(url, acceptGzipEncoding, allowAutoRedirect, request);
 
         return request;
@@ -327,8 +184,8 @@ public abstract class ExchangeServiceBase implements Closeable {
      * @throws ServiceLocalException       the service local exception
      * @throws java.net.URISyntaxException the uRI syntax exception
      */
-    protected HttpWebRequest prepareHttpPoolingWebRequestForUrl(URI url, boolean acceptGzipEncoding,
-                                                                boolean allowAutoRedirect) throws ServiceLocalException, URISyntaxException {
+    protected ExchangeHttpClient.Request prepareHttpPoolingWebRequestForUrl(URI url, boolean acceptGzipEncoding,
+                                                                            boolean allowAutoRedirect) throws ServiceLocalException, URISyntaxException {
         // Verify that the protocol is something that we can handle
         String scheme = url.getScheme();
         if (!scheme.equalsIgnoreCase(EWSConstants.HTTP_SCHEME)
@@ -337,18 +194,14 @@ public abstract class ExchangeServiceBase implements Closeable {
             throw new ServiceLocalException(strErr);
         }
 
-        if (httpPoolingClient == null) {
-            initializeHttpPoolingClient();
-        }
-
-        HttpClientWebRequest request = new HttpClientWebRequest(httpPoolingClient, httpContext);
+        final ExchangeHttpClient.Request request = httpClient.createPoolingRequest();
         prepareHttpWebRequestForUrl(url, acceptGzipEncoding, allowAutoRedirect, request);
 
         return request;
     }
 
     private void prepareHttpWebRequestForUrl(URI url, boolean acceptGzipEncoding, boolean allowAutoRedirect,
-                                             HttpClientWebRequest request) throws ServiceLocalException, URISyntaxException {
+                                             ExchangeHttpClient.Request request) throws ServiceLocalException, URISyntaxException {
         try {
             request.setUrl(url.toURL());
         } catch (MalformedURLException e) {
@@ -364,7 +217,6 @@ public abstract class ExchangeServiceBase implements Closeable {
         request.setAllowAutoRedirect(allowAutoRedirect);
         request.setAcceptGzipEncoding(acceptGzipEncoding);
         request.setHeaders(getHttpHeaders());
-        request.setProxy(getWebProxy());
         prepareCredentials(request);
 
         request.prepareConnection();
@@ -372,7 +224,7 @@ public abstract class ExchangeServiceBase implements Closeable {
         httpResponseHeaders.clear();
     }
 
-    protected void prepareCredentials(HttpWebRequest request) throws ServiceLocalException, URISyntaxException {
+    protected void prepareCredentials(ExchangeHttpClient.Request request) throws ServiceLocalException, URISyntaxException {
         request.setUseDefaultCredentials(useDefaultCredentials);
         if (!useDefaultCredentials) {
             if (credentials == null) {
@@ -398,7 +250,7 @@ public abstract class ExchangeServiceBase implements Closeable {
      * @param responseTraceFlag        trace flag for respone
      * @throws Exception on error
      */
-    protected void internalProcessHttpErrorResponse(HttpWebRequest httpWebResponse, Exception webException,
+    protected void internalProcessHttpErrorResponse(ExchangeHttpClient.Request httpWebResponse, Exception webException,
                                                     TraceFlags responseHeadersTraceFlag, TraceFlags responseTraceFlag) throws Exception {
         EwsUtilities.ewsAssert(500 != httpWebResponse.getResponseCode(),
                 "ExchangeServiceBase.InternalProcessHttpErrorResponse",
@@ -439,7 +291,7 @@ public abstract class ExchangeServiceBase implements Closeable {
      * @param webException    web exception
      * @throws Exception on error
      */
-    protected abstract void processHttpErrorResponse(HttpWebRequest httpWebResponse, Exception webException)
+    protected abstract void processHttpErrorResponse(ExchangeHttpClient.Request httpWebResponse, Exception webException)
             throws Exception;
 
     /**
@@ -492,7 +344,7 @@ public abstract class ExchangeServiceBase implements Closeable {
      * @throws IOException        signals that an I/O exception has occurred
      * @throws XMLStreamException the XML stream exception
      */
-    public void traceHttpRequestHeaders(TraceFlags traceType, HttpWebRequest request)
+    public void traceHttpRequestHeaders(TraceFlags traceType, ExchangeHttpClient.Request request)
             throws URISyntaxException, EWSHttpException, XMLStreamException, IOException {
         if (this.isTraceEnabledFor(traceType)) {
             String traceTypeStr = traceType.toString();
@@ -511,7 +363,7 @@ public abstract class ExchangeServiceBase implements Closeable {
      * @throws IOException        signals that an I/O exception has occurred
      * @throws EWSHttpException   the EWS http exception
      */
-    private void traceHttpResponseHeaders(TraceFlags traceType, HttpWebRequest request)
+    private void traceHttpResponseHeaders(TraceFlags traceType, ExchangeHttpClient.Request request)
             throws XMLStreamException, IOException, EWSHttpException {
         if (this.isTraceEnabledFor(traceType)) {
             String traceTypeStr = traceType.toString();
@@ -644,7 +496,7 @@ public abstract class ExchangeServiceBase implements Closeable {
         this.useDefaultCredentials = false;
 
         // Reset the httpContext, to remove any existing authentication cookies from subsequent request
-        initializeHttpContext();
+        // TODO: restore this and/or move into the new Http Client: initializeHttpContext();
     }
 
     /**
@@ -673,7 +525,7 @@ public abstract class ExchangeServiceBase implements Closeable {
         }
 
         // Reset the httpContext, to remove any existing authentication cookies from subsequent request
-        initializeHttpContext();
+        // TODO: restore/move:  initializeHttpContext();
     }
 
     /**
@@ -790,25 +642,6 @@ public abstract class ExchangeServiceBase implements Closeable {
         this.serverInfo = serverInfo;
     }
 
-    /**
-     * Gets the web proxy that should be used when sending request to EWS.
-     *
-     * @return Proxy
-     * the Proxy Information
-     */
-    public WebProxy getWebProxy() {
-        return this.webProxy;
-    }
-
-    /**
-     * Sets the web proxy that should be used when sending request to EWS.
-     * Set this property to null to use the default web proxy.
-     *
-     * @param value the Proxy Information
-     */
-    public void setWebProxy(WebProxy value) {
-        this.webProxy = value;
-    }
 
     /**
      * Gets a collection of HTTP headers that will be sent with each request to
@@ -855,7 +688,7 @@ public abstract class ExchangeServiceBase implements Closeable {
      * @throws IOException        signals that an I/O exception has occurred
      * @throws XMLStreamException the XML stream exception
      */
-    public void processHttpResponseHeaders(TraceFlags traceType, HttpWebRequest request)
+    public void processHttpResponseHeaders(TraceFlags traceType, ExchangeHttpClient.Request request)
             throws XMLStreamException, IOException, EWSHttpException {
         this.traceHttpResponseHeaders(traceType, request);
         this.saveHttpResponseHeaders(request.getResponseHeaders());
@@ -901,7 +734,4 @@ public abstract class ExchangeServiceBase implements Closeable {
         }
     }
 
-    public int getMaximumPoolingConnections() {
-        return maximumPoolingConnections;
-    }
 }

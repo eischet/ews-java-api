@@ -21,7 +21,7 @@
  * THE SOFTWARE.
  */
 
-package microsoft.exchange.webservices.data.core.request;
+package microsoft.exchange.webservices.data.http;
 
 import org.apache.http.Header;
 import org.apache.http.entity.BasicHttpEntity;

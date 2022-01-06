@@ -38,9 +38,9 @@ import microsoft.exchange.webservices.data.core.exception.service.remote.Service
 import microsoft.exchange.webservices.data.core.exception.service.remote.ServiceResponseException;
 import microsoft.exchange.webservices.data.core.exception.xml.XmlException;
 import microsoft.exchange.webservices.data.core.response.ServiceResponse;
+import microsoft.exchange.webservices.data.http.ExchangeHttpClient;
 import microsoft.exchange.webservices.data.misc.SoapFaultDetails;
 import microsoft.exchange.webservices.data.security.XmlNodeType;
-import microsoft.exchange.webservices.data.util.IOUtils;
 
 import javax.xml.stream.XMLStreamException;
 import javax.xml.ws.http.HTTPException;
@@ -227,7 +227,7 @@ public abstract class ServiceRequestBase<T> {
                     this.service.getPreferredCulture().getDisplayName());
         }
 
-        /** Emit the DateTimePrecision header */
+        /* Emit the DateTimePrecision header */
 
         if (this.getService().getDateTimePrecision().ordinal() != DateTimePrecision.Default.ordinal()) {
             writer.writeElementValue(XmlNamespace.Types, XmlElementNames.DateTimePrecision,
@@ -278,8 +278,7 @@ public abstract class ServiceRequestBase<T> {
      * @throws java.io.IOException Signals that an I/O exception has occurred.
      * @throws EWSHttpException    the EWS http exception
      */
-    protected static InputStream getResponseStream(HttpWebRequest request)
-            throws IOException, EWSHttpException {
+    protected static InputStream getResponseStream(ExchangeHttpClient.Request request) throws IOException, EWSHttpException {
         String contentEncoding = "";
 
         if (null != request.getContentEncoding()) {
@@ -307,7 +306,7 @@ public abstract class ServiceRequestBase<T> {
      * @throws IOException        signals that an I/O exception has occurred
      * @throws EWSHttpException   the EWS http exception
      */
-    protected void traceResponse(HttpWebRequest request, ByteArrayOutputStream memoryStream)
+    protected void traceResponse(ExchangeHttpClient.Request request, ByteArrayOutputStream memoryStream)
             throws XMLStreamException, IOException, EWSHttpException {
 
         this.service.processHttpResponseHeaders(TraceFlags.EwsResponseHttpHeaders, request);
@@ -330,7 +329,7 @@ public abstract class ServiceRequestBase<T> {
      * @throws EWSHttpException    the EWS http exception
      * @throws java.io.IOException Signals that an I/O exception has occurred.
      */
-    private static InputStream getResponseErrorStream(HttpWebRequest request)
+    private static InputStream getResponseErrorStream(ExchangeHttpClient.Request request)
             throws EWSHttpException, IOException {
         String contentEncoding = "";
 
@@ -357,7 +356,7 @@ public abstract class ServiceRequestBase<T> {
      * @return response response object
      * @throws Exception on error
      */
-    protected T readResponse(HttpWebRequest response) throws Exception {
+    protected T readResponse(ExchangeHttpClient.Request response) throws Exception {
         T serviceResponse;
 
         if (!response.getResponseContentType().startsWith("text/xml")) {
@@ -470,7 +469,7 @@ public abstract class ServiceRequestBase<T> {
      * @param req          HTTP Request object used to send the http request
      * @throws Exception on error
      */
-    protected void processWebException(Exception webException, HttpWebRequest req) throws Exception {
+    protected void processWebException(Exception webException, ExchangeHttpClient.Request req) throws Exception {
         SoapFaultDetails soapFaultDetails;
         if (null != req) {
             this.getService().processHttpResponseHeaders(TraceFlags.EwsResponseHttpHeaders, req);
@@ -623,16 +622,21 @@ public abstract class ServiceRequestBase<T> {
      * @return The response returned by the server.
      * @throws Exception on error
      */
-    protected HttpWebRequest validateAndEmitRequest() throws Exception {
+    protected ExchangeHttpClient.Request validateAndEmitRequest() throws Exception {
         this.validate();
 
-        HttpWebRequest request;
+        ExchangeHttpClient.Request request;
 
+
+        /* TODO: find out where the pooling logic should go, probably move into httpClient...
         if (service.getMaximumPoolingConnections() > 1) {
             request = buildEwsHttpPoolingWebRequest();
         } else {
             request = buildEwsHttpWebRequest();
         }
+
+         */
+        request = buildEwsHttpWebRequest();
 
         try {
             try {
@@ -644,7 +648,7 @@ public abstract class ServiceRequestBase<T> {
                 throw new ServiceRequestException(String.format("The request failed. %s", e.getMessage()), e);
             }
         } catch (Exception e) {
-            IOUtils.closeQuietly(request);
+            request.close();
             throw e;
         }
     }
@@ -655,8 +659,8 @@ public abstract class ServiceRequestBase<T> {
      * @return An HttpWebRequest instance
      * @throws Exception on error
      */
-    protected HttpWebRequest buildEwsHttpWebRequest() throws Exception {
-        HttpWebRequest request = service.prepareHttpWebRequest();
+    protected ExchangeHttpClient.Request buildEwsHttpWebRequest() throws Exception {
+        ExchangeHttpClient.Request request = service.prepareHttpWebRequest();
         return buildEwsHttpWebRequest(request);
     }
 
@@ -670,12 +674,12 @@ public abstract class ServiceRequestBase<T> {
      * @return A HttpWebRequest instance
      * @throws Exception on error
      */
-    protected HttpWebRequest buildEwsHttpPoolingWebRequest() throws Exception {
-        HttpWebRequest request = service.prepareHttpPoolingWebRequest();
+    protected ExchangeHttpClient.Request buildEwsHttpPoolingWebRequest() throws Exception {
+        ExchangeHttpClient.Request request = service.prepareHttpPoolingWebRequest();
         return buildEwsHttpWebRequest(request);
     }
 
-    private HttpWebRequest buildEwsHttpWebRequest(HttpWebRequest request) throws Exception {
+    private ExchangeHttpClient.Request buildEwsHttpWebRequest(ExchangeHttpClient.Request request) throws Exception {
         try {
 
             service.traceHttpRequestHeaders(TraceFlags.EwsRequestHttpHeaders, request);
@@ -710,7 +714,7 @@ public abstract class ServiceRequestBase<T> {
      * @return An HttpWebResponse instance
      * @throws Exception on error
      */
-    protected HttpWebRequest getEwsHttpWebResponse(HttpWebRequest request) throws Exception {
+    protected ExchangeHttpClient.Request getEwsHttpWebResponse(ExchangeHttpClient.Request request) throws Exception {
         try {
             request.executeRequest();
 

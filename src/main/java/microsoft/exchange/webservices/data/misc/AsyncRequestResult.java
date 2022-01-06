@@ -26,17 +26,17 @@ package microsoft.exchange.webservices.data.misc;
 import microsoft.exchange.webservices.data.core.EwsUtilities;
 import microsoft.exchange.webservices.data.core.ExchangeService;
 import microsoft.exchange.webservices.data.core.exception.misc.ArgumentException;
-import microsoft.exchange.webservices.data.core.request.HttpWebRequest;
 import microsoft.exchange.webservices.data.core.request.ServiceRequestBase;
 import microsoft.exchange.webservices.data.core.request.SimpleServiceRequestBase;
 import microsoft.exchange.webservices.data.core.request.WaitHandle;
+import microsoft.exchange.webservices.data.http.ExchangeHttpClient;
 
 import java.util.concurrent.*;
 
 public class AsyncRequestResult implements IAsyncResult {
 
     ServiceRequestBase serviceRequest;
-    HttpWebRequest webRequest;
+    ExchangeHttpClient.Request webRequest;
     AsyncCallback wasasyncCallback;
     IAsyncResult webAsyncResult;
     Object asyncState;
@@ -48,7 +48,7 @@ public class AsyncRequestResult implements IAsyncResult {
 
 
     public AsyncRequestResult(ServiceRequestBase serviceRequest,
-                              HttpWebRequest webRequest, Future<?> task,
+                              ExchangeHttpClient.Request webRequest, Future<?> task,
                               Object asyncState) throws Exception {
         EwsUtilities.validateParam(serviceRequest, "serviceRequest");
         EwsUtilities.validateParam(webRequest, "webRequest");
@@ -68,11 +68,11 @@ public class AsyncRequestResult implements IAsyncResult {
         return this.serviceRequest;
     }
 
-    public void setHttpWebRequest(HttpWebRequest webRequest) {
+    public void setHttpWebRequest(ExchangeHttpClient.Request webRequest) {
         this.webRequest = webRequest;
     }
 
-    public HttpWebRequest getHttpWebRequest() {
+    public ExchangeHttpClient.Request getHttpWebRequest() {
         return this.webRequest;
     }
 

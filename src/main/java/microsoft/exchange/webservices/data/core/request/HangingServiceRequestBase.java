@@ -34,6 +34,7 @@ import microsoft.exchange.webservices.data.core.exception.service.local.ServiceV
 import microsoft.exchange.webservices.data.core.exception.service.local.ServiceXmlDeserializationException;
 import microsoft.exchange.webservices.data.core.exception.service.remote.ServiceRequestException;
 import microsoft.exchange.webservices.data.core.exception.xml.XmlException;
+import microsoft.exchange.webservices.data.http.ExchangeHttpClient;
 import microsoft.exchange.webservices.data.misc.HangingTraceStream;
 import microsoft.exchange.webservices.data.security.XmlNodeType;
 import microsoft.exchange.webservices.data.util.IOUtils;
@@ -90,7 +91,7 @@ public abstract class HangingServiceRequestBase<T> extends ServiceRequestBase<T>
     /**
      * Response from the server.
      */
-    private HttpWebRequest response;
+    private ExchangeHttpClient.Request response;
 
     /**
      * Expected minimum frequency in response, in milliseconds.
@@ -264,7 +265,7 @@ public abstract class HangingServiceRequestBase<T> extends ServiceRequestBase<T>
      */
     public void disconnect() {
         synchronized (this) {
-            IOUtils.closeQuietly(this.response);
+            response.close();
             this.disconnect(HangingRequestDisconnectReason.UserInitiated, null);
         }
     }
@@ -277,7 +278,7 @@ public abstract class HangingServiceRequestBase<T> extends ServiceRequestBase<T>
      */
     public void disconnect(HangingRequestDisconnectReason reason, Exception exception) {
         if (this.isConnected()) {
-            IOUtils.closeQuietly(this.response);
+            response.close();
             this.internalOnDisconnect(reason, exception);
         }
     }
@@ -304,17 +305,11 @@ public abstract class HangingServiceRequestBase<T> extends ServiceRequestBase<T>
 
             long keepAliveTime = 10;
 
-            final ArrayBlockingQueue<Runnable> queue =
-                    new ArrayBlockingQueue<Runnable>(
-                            1);
+            final ArrayBlockingQueue<Runnable> queue = new ArrayBlockingQueue<>(1);
             ThreadPoolExecutor threadPool = new ThreadPoolExecutor(poolSize,
                     maxPoolSize,
                     keepAliveTime, TimeUnit.SECONDS, queue);
-            threadPool.execute(new Runnable() {
-                public void run() {
-                    parseResponses();
-                }
-            });
+            threadPool.execute(this::parseResponses);
             threadPool.shutdown();
         }
     }
@@ -340,7 +335,7 @@ public abstract class HangingServiceRequestBase<T> extends ServiceRequestBase<T>
      * Reads any preamble data not part of the core response.
      *
      * @param ewsXmlReader The EwsServiceXmlReader.
-     * @throws Exception
+     * @throws Exception on various occasions
      */
     @Override
     protected void readPreamble(EwsServiceXmlReader ewsXmlReader)

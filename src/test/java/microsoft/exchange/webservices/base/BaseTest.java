@@ -25,7 +25,7 @@ package microsoft.exchange.webservices.base;
 
 import microsoft.exchange.webservices.data.core.ExchangeService;
 import microsoft.exchange.webservices.data.core.ExchangeServiceBase;
-import microsoft.exchange.webservices.data.core.request.HttpWebRequest;
+import microsoft.exchange.webservices.data.http.ExchangeHttpClient;
 import org.junit.BeforeClass;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
@@ -36,31 +36,22 @@ import org.junit.runners.JUnit4;
 @RunWith(JUnit4.class)
 public abstract class BaseTest {
 
-  /**
-   * Mock for the ExchangeServiceBase
-   */
-  protected static ExchangeServiceBase exchangeServiceBaseMock;
+    protected static ExchangeServiceBase exchangeServiceBaseMock;
+    protected static ExchangeService exchangeServiceMock;
 
-  /**
-   * Mock for the ExchangeService
-   */
-  protected static ExchangeService exchangeServiceMock;
-
-  /**
-   * Setup Mocks
-   *
-   * @throws Exception
-   */
-  @BeforeClass
-  public static final void setUpBaseClass() throws Exception {
-    // Mock up ExchangeServiceBase
-    exchangeServiceBaseMock = new ExchangeServiceBase() {
-      @Override
-      protected void processHttpErrorResponse(HttpWebRequest httpWebResponse, Exception webException)
-          throws Exception {
-        throw webException;
-      }
-    };
-    exchangeServiceMock = new ExchangeService();
-  }
+    /**
+     * Setup Mocks
+     */
+    @BeforeClass
+    public static final void setUpBaseClass() throws Exception {
+        // Mock up ExchangeServiceBase
+        exchangeServiceBaseMock = new ExchangeServiceBase(null) {
+            @Override
+            protected void processHttpErrorResponse(ExchangeHttpClient.Request httpWebResponse, Exception webException)
+                    throws Exception {
+                throw webException;
+            }
+        };
+        exchangeServiceMock = new ExchangeService(null);
+    }
 }

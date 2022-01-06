@@ -30,6 +30,7 @@ import microsoft.exchange.webservices.data.core.enumeration.service.error.Servic
 import microsoft.exchange.webservices.data.core.exception.service.local.ServiceValidationException;
 import microsoft.exchange.webservices.data.core.exception.service.local.ServiceXmlSerializationException;
 import microsoft.exchange.webservices.data.core.response.SubscribeResponse;
+import microsoft.exchange.webservices.data.http.ExchangeHttpClient;
 import microsoft.exchange.webservices.data.misc.FolderIdWrapperList;
 import microsoft.exchange.webservices.data.notification.SubscriptionBase;
 
@@ -253,7 +254,7 @@ abstract class SubscribeRequest<TSubscription extends SubscriptionBase> extends
     }
 
     @Override
-    protected HttpWebRequest buildEwsHttpWebRequest() throws Exception {
+    protected ExchangeHttpClient.Request buildEwsHttpWebRequest() throws Exception {
         return super.buildEwsHttpPoolingWebRequest();
     }
 }

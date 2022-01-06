@@ -32,6 +32,7 @@ import microsoft.exchange.webservices.data.core.enumeration.misc.XmlNamespace;
 import microsoft.exchange.webservices.data.core.exception.service.local.ServiceVersionException;
 import microsoft.exchange.webservices.data.core.exception.service.local.ServiceXmlSerializationException;
 import microsoft.exchange.webservices.data.core.response.GetStreamingEventsResponse;
+import microsoft.exchange.webservices.data.http.ExchangeHttpClient;
 
 import javax.xml.stream.XMLStreamException;
 
@@ -151,7 +152,7 @@ public class GetStreamingEventsRequest extends HangingServiceRequestBase<GetStre
     }
 
     @Override
-    protected HttpWebRequest buildEwsHttpWebRequest() throws Exception {
+    protected ExchangeHttpClient.Request buildEwsHttpWebRequest() throws Exception {
         return super.buildEwsHttpPoolingWebRequest();
     }
 }

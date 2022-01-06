@@ -23,7 +23,7 @@
 
 package microsoft.exchange.webservices.data.credential;
 
-import microsoft.exchange.webservices.data.core.request.HttpWebRequest;
+import microsoft.exchange.webservices.data.http.ExchangeHttpClient;
 
 /**
  * WebCredentials is used for password-based authentication schemes such as
@@ -133,7 +133,7 @@ public final class WebCredentials extends ExchangeCredentials {
      * @param request The request.
      */
     @Override
-    public void prepareWebRequest(HttpWebRequest request) {
+    public void prepareWebRequest(ExchangeHttpClient.Request request) {
         if (useDefaultCredentials) {
             request.setUseDefaultCredentials(true);
         } else {
