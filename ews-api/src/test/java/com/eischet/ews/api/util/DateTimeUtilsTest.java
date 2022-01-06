@@ -169,7 +169,7 @@ public class DateTimeUtilsTest {
         String dateString = "2015-01-08z";
         LocalDate parsed = DateTimeUtils.parseDateOnly(dateString);
         assertEquals(2015, parsed.getYear());
-        assertEquals(1, parsed.getMonth());
+        assertEquals(1, parsed.getMonthValue());
         assertEquals(8, parsed.getDayOfMonth());
         //assertEquals(0, calendar.get(Calendar.HOUR_OF_DAY));
         //assertEquals(0, calendar.get(Calendar.MINUTE));

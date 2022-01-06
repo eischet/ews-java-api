@@ -23,10 +23,9 @@
 
 package com.eischet.ews.api.util;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
+import java.time.*;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.logging.Logger;
 
 public final class DateTimeUtils {
@@ -64,7 +63,8 @@ public final class DateTimeUtils {
         if (value == null || value.isBlank()) {
             return null;
         }
-        if (value.endsWith("Z")) {
+        if (value.endsWith("z") || value.endsWith("Z")) {
+            // REMOVE z suffix.
             value = value.substring(0, value.length() - 1);
         }
         for (final Formatter dateTimeFormat : DATE_TIME_FORMATS) {
@@ -73,21 +73,32 @@ public final class DateTimeUtils {
                 return result;
             }
         }
-        return null;
+        throw new IllegalArgumentException("cannot parse as date: '" + value + "'");
     }
 
     public static LocalDateTime parseDateTime(final String value) {
+        if (value == null || value.isBlank()) {
+            return null;
+        }
         for (final Formatter dateTimeFormat : DATE_TIME_FORMATS) {
             LocalDateTime result = dateTimeFormat.parseLocalDateTime(value);
             if (result != null) {
                 return result;
             }
         }
-        return null;
+        throw new IllegalArgumentException("cannot parse as datetime: '" + value + "'");
     }
 
     public static LocalTime parseTime(final String value) {
-        return null; // TODO: parse it
+        //if (value == null || value.isBlank()) {
+        //    return null;
+        //}
+        try {
+            return LocalTime.parse(value);
+        } catch (DateTimeParseException e) {
+            throw new IllegalArgumentException("cannot parse '" + value + "' as a LocalTime", e);
+        }
+        // return null; // TODO: parse it
     }
 
     private static class Formatter {
@@ -166,6 +177,17 @@ public final class DateTimeUtils {
 
 
         public LocalDateTime parseLocalDateTime(final String value) {
+            try {
+                final ZonedDateTime zoned = wrapped.parse(value, ZonedDateTime::from);
+                if (zoned != null) {
+                    return zoned.toOffsetDateTime().atZoneSameInstant(ZoneOffset.UTC).toLocalDateTime();
+                }
+            } catch (RuntimeException e) {
+                log.warning(() -> String.format("cannot parse value '%s' with pattern '%s' (%s) as ZonedDateTime", value, pattern, e.getMessage()));
+                // return null;
+            }
+
+
             try {
                 return wrapped.parse(value, LocalDateTime::from);
             } catch (RuntimeException e) {
