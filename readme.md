@@ -30,6 +30,11 @@ S.E.
   My goal is to have a minimal set of dependencies in the end.
 * The build now uses Java 11 instead of 7/8 (we're on 17 LTS right now, so that's still old, but not ancient).
 
+## Issues
+
+* Moving from java.util.Date to LocalDateTime/LocalDate opened up a whole can of worms that are still crawling around.
+  You will get problems with Date/DateTime fields currently, and with naked Times.
+
 
 # OLD INFO:
 
