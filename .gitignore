@@ -5,6 +5,8 @@
 *.war
 *.ear
 /target
+ews-api/target/
+ews-client-apache4/target/
 
 # Eclipse project files
 .settings
@@ -29,3 +31,6 @@
 .idea/sqlDataSources.xml
 .idea/dynamic.xml
 .idea/uiDesigner.xml
+
+# Mac OS:
+.DS_Store

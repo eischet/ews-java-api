@@ -1,21 +1,37 @@
 # UNOFFICAL FORK
 
-I'm still using this API, but the original code is showing its age. This is an attempt to remove some outdated or 
-unnecessary dependencies and to upgrade this to Java 11 (LTS) level. 
+## Why:
+
+Microsoft has stopped working on the EWS-Java-API, as announced July 19th 2018. There's a new "Graph" API to replace it.
+But you have to meet some very specific criteria to be able to use these new APIs: 
+see https://docs.microsoft.com/en-us/graph/hybrid-rest-support for what's available right now.
+
+Here's the end of support statement: https://developer.microsoft.com/en-us/graph/blogs/upcoming-changes-to-exchange-web-services-ews-api-for-office-365/
+
+My problem is, my software needs to read and manipulate Exchange mails *today*, and so I'm kind of stuck with EWS for now.
+
+Triggered by last year's "Log4Shell" issues, I've started hunting down old and superfluous dependencies in my software, 
+and the EWS API pulls in quite a few old packages... that's why I'm putting in some effort to modernize the old code now.
 
 Thanks to Microsoft for releasing this code under the MIT license!
-  
+
 S.E.
 
-# Getting Started with the EWS Java API
+## Changed from the original code:
 
-The Exchange Web Services (EWS) Java API provides a managed interface for developing Java applications that use EWS.
-By using the EWS Java API, you can access almost all the information stored in an Office 365, Exchange Online, or Exchange Server mailbox. However, this API is in sustaining mode, the recommended access pattern for Office 365 and Exchange online data is [Microsoft Graph](https://graph.microsoft.com)
+* The library has been split into ews-client-apache4 and ews-api and moved to a new package namespace.
+  There's an actual use case for this: it enables me to package the original AND this one into my software at the same time,
+  meaning we can run tests with both clients in parallel. I'll then remove the old client once I'm sure this one works for
+  my customers.
+* ews-client-apache4, like the original library, depends on Apache HTTP Components 4.
+  By using that dependency, you get the "classic" EWS-Java-API, but have to create the HTTP client first.
+  I plan to write an alternative client soon that uses standard Java (9+) facilities to talk to Exchange.
+* ews-api only depends on JAX-WS; I'm still looking into the proper (api) dependencies to use so that it pulls in less stuff.
+  My goal is to have a minimal set of dependencies in the end.
+* The build now uses Java 11 instead of 7/8 (we're on 17 LTS right now, so that's still old, but not ancient).
 
-## Support statement
 
-Starting July 19th 2018, Exchange Web Services (EWS) will no longer receive feature updates. While the service will continue to receive security updates and certain non-security updates, product design and features will remain unchanged. This change also applies to the EWS SDKs for Java and .NET. More information here: https://developer.microsoft.com/en-us/graph/blogs/upcoming-changes-to-exchange-web-services-ews-api-for-office-365/
-
+# OLD INFO:
 
 ## Getting started resources
 
