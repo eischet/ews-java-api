@@ -43,7 +43,6 @@ import com.eischet.ews.api.misc.SoapFaultDetails;
 import com.eischet.ews.api.security.XmlNodeType;
 
 import javax.xml.stream.XMLStreamException;
-import javax.xml.ws.http.HTTPException;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -363,7 +362,7 @@ public abstract class ServiceRequestBase<T> {
             throw new ServiceRequestException("The response received from the service didn't contain valid XML.");
         }
 
-        /**
+        /*
          * If tracing is enabled, we read the entire response into a
          * MemoryStream so that we can pass it along to the ITraceListener. Then
          * we parse the response from the MemoryStream.
@@ -395,11 +394,14 @@ public abstract class ServiceRequestBase<T> {
             }
 
             return serviceResponse;
-        } catch (HTTPException e) {
-            if (e.getMessage() != null) {
-                this.getService().processHttpResponseHeaders(TraceFlags.EwsResponseHttpHeaders, response);
-            }
-            throw new ServiceRequestException(String.format("The request failed. %s", e.getMessage()), e);
+            //
+            // Used to import: import javax.xml.ws.http.HTTPException;
+            // I have no Idea why this was thrown here or where the class is supposed to be right now.
+            //} catch (HTTPException e) {
+            //    if (e.getMessage() != null) {
+            //        this.getService().processHttpResponseHeaders(TraceFlags.EwsResponseHttpHeaders, response);
+            //    }
+            //    throw new ServiceRequestException(String.format("The request failed. %s", e.getMessage()), e);
         } catch (IOException e) {
             throw new ServiceRequestException(String.format("The request failed. %s", e.getMessage()), e);
         } finally { // close the underlying response
