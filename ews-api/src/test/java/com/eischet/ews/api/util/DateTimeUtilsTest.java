@@ -207,7 +207,7 @@ public class DateTimeUtilsTest {
         String dateString = "2015-01-08";
         LocalDate parsed = DateTimeUtils.parseDateOnly(dateString);
         assertEquals(2015, parsed.getYear());
-        assertEquals(1, parsed.getMonth());
+        assertEquals(1, parsed.getMonthValue());
         assertEquals(8, parsed.getDayOfMonth());
     }
 
