@@ -29,6 +29,8 @@ import org.junit.runners.JUnit4;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
@@ -193,13 +195,16 @@ public class DateTimeUtilsTest {
     @Test
     public void testDateOnlyWithTimeZoneWithColon() {
         String dateString = "2015-01-08-02:00";
-        LocalDateTime parsed = DateTimeUtils.parseDateTime(dateString);
+        LocalDate parsed = DateTimeUtils.parseDateOnly(dateString);
         assertEquals(2015, parsed.getYear());
         assertEquals(1, parsed.getMonthValue());
         assertEquals(8, parsed.getDayOfMonth());
-        assertEquals(2, parsed.getHour());
-        assertEquals(0, parsed.getMinute());
-        assertEquals(0, parsed.getSecond());
+
+        // I'm still wondering if that's the right way to do it:
+        final LocalDateTime parsed2 = parsed.atStartOfDay().atZone(ZoneOffset.UTC).toLocalDateTime();
+        assertEquals(2, parsed2.getHour());
+        assertEquals(0, parsed2.getMinute());
+        assertEquals(0, parsed2.getSecond());
     }
 
     @Test

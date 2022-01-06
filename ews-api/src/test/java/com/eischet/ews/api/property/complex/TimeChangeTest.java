@@ -28,6 +28,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 
@@ -50,13 +51,13 @@ public class TimeChangeTest {
     }
 
     private String testDate(String value) {
-        final LocalDateTime cal = DateTimeUtils.parseDateTime(value);
+        final LocalDate cal = DateTimeUtils.parseDateOnly(value);
     /*
     Calendar cal = DatatypeConverter.parseDate(value);
     cal.setTimeZone(TimeZone.getTimeZone("UTC"));
     String XSDate = EwsUtilities.dateTimeToXSDate(cal.getTime());
      */
-        return EwsUtilities.dateTimeToXSDate(cal);
+        return EwsUtilities.dateToXSDate(cal);
     }
 
     @Test(expected = IllegalArgumentException.class)

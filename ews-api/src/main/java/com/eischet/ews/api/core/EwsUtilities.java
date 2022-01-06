@@ -813,6 +813,10 @@ public final class EwsUtilities {
         return formatDate(date, XML_SCHEMA_DATE_FORMAT);
     }
 
+    public static String dateToXSDate(LocalDate date) {
+        return formatDate(date, XML_SCHEMA_DATE_FORMAT);
+    }
+
     /**
      * Dates the DateTime into an XML schema date time.
      *
