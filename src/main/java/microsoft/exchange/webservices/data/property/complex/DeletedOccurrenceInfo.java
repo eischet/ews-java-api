@@ -28,7 +28,7 @@ import microsoft.exchange.webservices.data.core.XmlElementNames;
 import microsoft.exchange.webservices.data.core.exception.service.local.ServiceXmlDeserializationException;
 
 import javax.xml.stream.XMLStreamException;
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -45,7 +45,7 @@ public class DeletedOccurrenceInfo extends ComplexProperty {
      * schema contains a Start property for deleted occurrences but it's really
      * the original start date and time of the occurrence.
      */
-    private Date originalStart;
+    private LocalDateTime originalStart;
 
     /**
      * Initializes a new instance of the "DeletedOccurrenceInfo" class.
@@ -80,7 +80,7 @@ public class DeletedOccurrenceInfo extends ComplexProperty {
      *
      * @return the original start
      */
-    public Date getOriginalStart() {
+    public LocalDateTime getOriginalStart() {
         return this.originalStart;
     }
 

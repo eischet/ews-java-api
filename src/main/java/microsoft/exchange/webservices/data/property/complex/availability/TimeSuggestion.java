@@ -31,9 +31,9 @@ import microsoft.exchange.webservices.data.core.enumeration.misc.XmlNamespace;
 import microsoft.exchange.webservices.data.core.enumeration.property.ConflictType;
 import microsoft.exchange.webservices.data.property.complex.ComplexProperty;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Date;
 
 /**
  * Represents an availability time suggestion.
@@ -43,7 +43,7 @@ public final class TimeSuggestion extends ComplexProperty {
     /**
      * The meeting time.
      */
-    private Date meetingTime;
+    private LocalDateTime meetingTime;
 
     /**
      * The is work time.
@@ -146,7 +146,7 @@ public final class TimeSuggestion extends ComplexProperty {
      *
      * @return the meeting time
      */
-    public Date getMeetingTime() {
+    public LocalDateTime getMeetingTime() {
         return meetingTime;
     }
 

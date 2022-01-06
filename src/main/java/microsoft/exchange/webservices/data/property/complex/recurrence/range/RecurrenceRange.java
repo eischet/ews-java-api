@@ -34,7 +34,7 @@ import microsoft.exchange.webservices.data.property.complex.recurrence.pattern.R
 import javax.xml.stream.XMLStreamException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.time.LocalDate;
 
 /**
  * Represents recurrence range with start and end dates.
@@ -44,7 +44,7 @@ public abstract class RecurrenceRange extends ComplexProperty {
     /**
      * The start date.
      */
-    private Date startDate;
+    private LocalDate startDate;
 
     /**
      * The recurrence.
@@ -63,7 +63,7 @@ public abstract class RecurrenceRange extends ComplexProperty {
      *
      * @param startDate the start date
      */
-    protected RecurrenceRange(Date startDate) {
+    protected RecurrenceRange(LocalDate startDate) {
         this();
         this.startDate = startDate;
     }
@@ -96,12 +96,10 @@ public abstract class RecurrenceRange extends ComplexProperty {
      */
     public void writeElementsToXml(EwsServiceXmlWriter writer)
             throws XMLStreamException, ServiceXmlSerializationException {
-        Date d = this.startDate;
+        LocalDate d = this.startDate;
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
         String formattedString = df.format(d);
-
-        writer.writeElementValue(XmlNamespace.Types, XmlElementNames.StartDate,
-                formattedString);
+        writer.writeElementValue(XmlNamespace.Types, XmlElementNames.StartDate, formattedString);
     }
 
     /**
@@ -115,7 +113,7 @@ public abstract class RecurrenceRange extends ComplexProperty {
             throws Exception {
         if (reader.getLocalName().equals(XmlElementNames.StartDate)) {
             //this.startDate = reader.readElementValueAsDateTime();
-            Date startDate = reader.readElementValueAsUnspecifiedDate();
+            LocalDate startDate = reader.readElementValueAsUnspecifiedDate();
             if (startDate != null) {
                 this.startDate = startDate;
                 return true;
@@ -156,7 +154,7 @@ public abstract class RecurrenceRange extends ComplexProperty {
      *
      * @return startDate
      */
-    protected Date getStartDate() {
+    protected LocalDate getStartDate() {
         return this.startDate;
 
     }
@@ -166,7 +164,7 @@ public abstract class RecurrenceRange extends ComplexProperty {
      *
      * @param value the new start date
      */
-    protected void setStartDate(Date value) {
+    protected void setStartDate(LocalDate value) {
         this.canSetFieldValue(this.startDate, value);
     }
 

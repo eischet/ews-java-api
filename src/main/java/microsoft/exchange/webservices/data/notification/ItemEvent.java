@@ -29,7 +29,7 @@ import microsoft.exchange.webservices.data.core.enumeration.notification.EventTy
 import microsoft.exchange.webservices.data.property.complex.FolderId;
 import microsoft.exchange.webservices.data.property.complex.ItemId;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 /**
  * Represents an event that applies to an item.
@@ -54,7 +54,7 @@ public final class ItemEvent extends NotificationEvent {
      * @param eventType the event type
      * @param timestamp the timestamp
      */
-    protected ItemEvent(EventType eventType, Date timestamp) {
+    protected ItemEvent(EventType eventType, LocalDateTime timestamp) {
         super(eventType, timestamp);
     }
 

@@ -46,8 +46,8 @@ import microsoft.exchange.webservices.data.property.complex.*;
 import microsoft.exchange.webservices.data.property.definition.ExtendedPropertyDefinition;
 import microsoft.exchange.webservices.data.property.definition.PropertyDefinition;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.EnumSet;
 import java.util.ListIterator;
 
@@ -650,9 +650,8 @@ public class Item extends ServiceObject {
      * @return the date time received
      * @throws ServiceLocalException the service local exception
      */
-    public Date getDateTimeReceived() throws ServiceLocalException {
-        return getPropertyBag().getObjectFromPropertyDefinition(
-                ItemSchema.DateTimeReceived);
+    public LocalDateTime getDateTimeReceived() throws ServiceLocalException {
+        return getPropertyBag().getObjectFromPropertyDefinition(ItemSchema.DateTimeReceived);
     }
 
     /**
@@ -841,7 +840,7 @@ public class Item extends ServiceObject {
      * @return the date time sent
      * @throws ServiceLocalException the service local exception
      */
-    public Date getDateTimeSent() throws ServiceLocalException {
+    public LocalDateTime getDateTimeSent() throws ServiceLocalException {
         return getPropertyBag().getObjectFromPropertyDefinition(
                 ItemSchema.DateTimeSent);
     }
@@ -852,7 +851,7 @@ public class Item extends ServiceObject {
      * @return the date time created
      * @throws ServiceLocalException the service local exception
      */
-    public Date getDateTimeCreated() throws ServiceLocalException {
+    public LocalDateTime getDateTimeCreated() throws ServiceLocalException {
         return getPropertyBag().getObjectFromPropertyDefinition(
                 ItemSchema.DateTimeCreated);
     }
@@ -876,7 +875,7 @@ public class Item extends ServiceObject {
      * @return the reminder due by
      * @throws ServiceLocalException the service local exception
      */
-    public Date getReminderDueBy() throws ServiceLocalException {
+    public LocalDateTime getReminderDueBy() throws ServiceLocalException {
         return getPropertyBag().getObjectFromPropertyDefinition(
                 ItemSchema.ReminderDueBy);
     }
@@ -887,7 +886,7 @@ public class Item extends ServiceObject {
      * @param value the new reminder due by
      * @throws Exception the exception
      */
-    public void setReminderDueBy(Date value) throws Exception {
+    public void setReminderDueBy(LocalDateTime value) throws Exception {
         this.getPropertyBag().setObjectFromPropertyDefinition(
                 ItemSchema.ReminderDueBy, value);
     }
@@ -1104,7 +1103,7 @@ public class Item extends ServiceObject {
      * @return the last modified time
      * @throws ServiceLocalException the service local exception
      */
-    public Date getLastModifiedTime() throws ServiceLocalException {
+    public LocalDateTime getLastModifiedTime() throws ServiceLocalException {
         return getPropertyBag().getObjectFromPropertyDefinition(
                 ItemSchema.LastModifiedTime);
     }

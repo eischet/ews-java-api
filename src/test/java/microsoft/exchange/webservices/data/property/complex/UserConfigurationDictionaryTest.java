@@ -34,7 +34,7 @@ import org.junit.runners.JUnit4;
 
 import java.io.ByteArrayOutputStream;
 import java.io.OutputStream;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 /**
  * Testclass for methods of UserConfigurationDictionary
@@ -84,7 +84,7 @@ public class UserConfigurationDictionaryTest extends BaseTest {
     final long testLong = 1l;
     final String testString = "someVal";
     final String[] testStringArray = new String[] {"test1", "test2", "test3"};
-    final Date testDate = new Date();
+    final LocalDateTime testDate = LocalDateTime.now();
     final boolean testBoolean = true;
     final byte testByte = Byte.decode("0x10");
     final byte[] testByteArray = testString.getBytes();
@@ -118,7 +118,7 @@ public class UserConfigurationDictionaryTest extends BaseTest {
     this.userConfigurationDictionary.addElement("someDate", testDate);
     Assert.assertTrue(this.userConfigurationDictionary.containsKey("someDate"));
     Assert.assertEquals(testDate, this.userConfigurationDictionary.getElements("someDate"));
-    Assert.assertTrue(this.userConfigurationDictionary.getElements("someDate") instanceof Date);
+    Assert.assertTrue(this.userConfigurationDictionary.getElements("someDate") instanceof LocalDateTime);
 
     this.userConfigurationDictionary.addElement("someBoolean", testBoolean);
     Assert.assertTrue(this.userConfigurationDictionary.containsKey("someBoolean"));

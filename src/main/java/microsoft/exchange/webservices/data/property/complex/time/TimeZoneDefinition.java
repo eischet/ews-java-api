@@ -34,6 +34,7 @@ import microsoft.exchange.webservices.data.core.exception.service.local.ServiceL
 import microsoft.exchange.webservices.data.core.exception.service.local.ServiceXmlSerializationException;
 import microsoft.exchange.webservices.data.property.complex.ComplexProperty;
 
+import java.time.LocalDateTime;
 import java.util.*;
 
 /**
@@ -111,8 +112,8 @@ public class TimeZoneDefinition extends ComplexProperty implements Comparator<Ti
                 final AbsoluteDateTransition firstTransition = (AbsoluteDateTransition) x;
                 final AbsoluteDateTransition secondTransition = (AbsoluteDateTransition) y;
 
-                final Date firstDateTime = firstTransition.getDateTime();
-                final Date secondDateTime = secondTransition.getDateTime();
+                final LocalDateTime firstDateTime = firstTransition.getDateTime();
+                final LocalDateTime secondDateTime = secondTransition.getDateTime();
 
                 return firstDateTime.compareTo(secondDateTime);
 

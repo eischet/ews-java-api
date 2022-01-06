@@ -20,18 +20,16 @@
 
 package microsoft.exchange.webservices.data.property.complex;
 
-import java.util.Calendar;
-import java.util.TimeZone;
-
-import javax.xml.bind.DatatypeConverter;
-
 import microsoft.exchange.webservices.data.core.EwsUtilities;
 import microsoft.exchange.webservices.data.misc.Time;
-
+import microsoft.exchange.webservices.data.util.DateTimeUtils;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
+
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 @RunWith(JUnit4.class)
 public class TimeChangeTest {
@@ -52,9 +50,13 @@ public class TimeChangeTest {
   }
 
   private String testDate(String value) {
+    final LocalDateTime cal = DateTimeUtils.parseDateTime(value);
+    String XSDate = EwsUtilities.dateTimeToXSDate(cal);
+    /*
     Calendar cal = DatatypeConverter.parseDate(value);
     cal.setTimeZone(TimeZone.getTimeZone("UTC"));
     String XSDate = EwsUtilities.dateTimeToXSDate(cal.getTime());
+     */
     return XSDate;
   }
 
@@ -74,8 +76,10 @@ public class TimeChangeTest {
   }
 
   private String testTime(String value) {
-    Calendar cal = DatatypeConverter.parseTime(value);
-    Time time = new Time(cal.getTime());
+    // Calendar cal = DatatypeConverter.parseTime(value);
+    // Time time = new Time(cal.getTime());
+    final LocalTime parsedTime = DateTimeUtils.parseTime(value);
+    final Time time = new Time(parsedTime);
     return time.toXSTime();
   }
 

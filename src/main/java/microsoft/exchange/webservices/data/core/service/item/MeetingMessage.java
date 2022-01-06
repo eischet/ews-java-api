@@ -37,7 +37,8 @@ import microsoft.exchange.webservices.data.core.service.schema.ServiceObjectSche
 import microsoft.exchange.webservices.data.property.complex.ItemAttachment;
 import microsoft.exchange.webservices.data.property.complex.ItemId;
 
-import java.util.Date;
+import java.time.LocalDateTime;
+
 
 /**
  * Represents a meeting-related message. Properties available on meeting
@@ -174,9 +175,8 @@ public class MeetingMessage extends EmailMessage {
      * @return the ical recurrence id
      * @throws ServiceLocalException the service local exception
      */
-    public Date getICalRecurrenceId() throws ServiceLocalException {
-        return getPropertyBag().getObjectFromPropertyDefinition(
-                MeetingMessageSchema.ICalRecurrenceId);
+    public LocalDateTime getICalRecurrenceId() throws ServiceLocalException {
+        return getPropertyBag().getObjectFromPropertyDefinition(MeetingMessageSchema.ICalRecurrenceId);
     }
 
     /**
@@ -185,9 +185,8 @@ public class MeetingMessage extends EmailMessage {
      * @return the ical date time stamp
      * @throws ServiceLocalException the service local exception
      */
-    public Date getICalDateTimeStamp() throws ServiceLocalException {
-        return getPropertyBag().getObjectFromPropertyDefinition(
-                MeetingMessageSchema.ICalDateTimeStamp);
+    public LocalDateTime getICalDateTimeStamp() throws ServiceLocalException {
+        return getPropertyBag().getObjectFromPropertyDefinition(MeetingMessageSchema.ICalDateTimeStamp);
     }
 
     /**
@@ -197,8 +196,7 @@ public class MeetingMessage extends EmailMessage {
      * @throws ServiceLocalException the service local exception
      */
     public Boolean getIsDelegated() throws ServiceLocalException {
-        return getPropertyBag().getObjectFromPropertyDefinition(
-                MeetingMessageSchema.IsDelegated);
+        return getPropertyBag().getObjectFromPropertyDefinition(MeetingMessageSchema.IsDelegated);
     }
 
     /**
@@ -208,8 +206,7 @@ public class MeetingMessage extends EmailMessage {
      * @throws ServiceLocalException the service local exception
      */
     public Boolean getIsOutOfDate() throws ServiceLocalException {
-        return getPropertyBag().getObjectFromPropertyDefinition(
-                MeetingMessageSchema.IsOutOfDate);
+        return getPropertyBag().getObjectFromPropertyDefinition(MeetingMessageSchema.IsOutOfDate);
     }
 
 }

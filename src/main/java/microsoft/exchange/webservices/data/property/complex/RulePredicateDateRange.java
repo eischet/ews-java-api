@@ -31,7 +31,7 @@ import microsoft.exchange.webservices.data.core.exception.service.local.ServiceV
 import microsoft.exchange.webservices.data.core.exception.service.local.ServiceXmlSerializationException;
 
 import javax.xml.stream.XMLStreamException;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 /**
  * Represents the date and time range within which messages have been received.
@@ -41,12 +41,12 @@ public final class RulePredicateDateRange extends ComplexProperty {
     /**
      * The end DateTime.
      */
-    private Date start;
+    private LocalDateTime start;
 
     /**
      * The end DateTime.
      */
-    private Date end;
+    private LocalDateTime end;
 
     /**
      * Initializes a new instance of the RulePredicateDateRange class.
@@ -59,11 +59,11 @@ public final class RulePredicateDateRange extends ComplexProperty {
      * Gets or sets the range start date and time.
      * If Start is set to null, no start date applies.
      */
-    public Date getStart() {
+    public LocalDateTime getStart() {
         return this.start;
     }
 
-    public void setStart(Date value) {
+    public void setStart(LocalDateTime value) {
         if (this.canSetFieldValue(this.start, value)) {
             this.start = value;
             this.changed();
@@ -74,11 +74,11 @@ public final class RulePredicateDateRange extends ComplexProperty {
      * Gets or sets the range end date and time.
      * If End is set to null, no end date applies.
      */
-    public Date getEnd() {
+    public LocalDateTime getEnd() {
         return this.end;
     }
 
-    public void setEnd(Date value) {
+    public void setEnd(LocalDateTime value) {
         if (this.canSetFieldValue(this.end, value)) {
             this.end = value;
             this.changed();
@@ -92,8 +92,7 @@ public final class RulePredicateDateRange extends ComplexProperty {
      * @return True if element was read.
      */
     @Override
-    public boolean tryReadElementFromXml(EwsServiceXmlReader
-                                                 reader) throws Exception {
+    public boolean tryReadElementFromXml(EwsServiceXmlReader reader) throws Exception {
         if (reader.getLocalName().equalsIgnoreCase(XmlElementNames.StartDateTime)) {
             this.start = reader.readElementValueAsDateTime();
             return true;
@@ -128,14 +127,10 @@ public final class RulePredicateDateRange extends ComplexProperty {
      * Validates this instance.
      */
     @Override
-    protected void internalValidate()
-            throws Exception {
+    protected void internalValidate() throws Exception {
         super.internalValidate();
-        if (this.start != null &&
-                this.end != null &&
-                this.start.after(this.end)) {
-            throw new ServiceValidationException(
-                    "Start date time cannot be bigger than end date time.");
+        if (this.start != null && this.end != null && this.start.isAfter(this.end)) {
+            throw new ServiceValidationException("Start date time cannot be bigger than end date time.");
         }
     }
 }

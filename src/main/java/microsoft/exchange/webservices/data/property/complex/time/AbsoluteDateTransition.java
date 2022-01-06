@@ -28,11 +28,12 @@ import microsoft.exchange.webservices.data.core.EwsServiceXmlWriter;
 import microsoft.exchange.webservices.data.core.XmlElementNames;
 import microsoft.exchange.webservices.data.core.enumeration.misc.XmlNamespace;
 import microsoft.exchange.webservices.data.core.exception.service.local.ServiceXmlSerializationException;
+import microsoft.exchange.webservices.data.util.DateTimeUtils;
 
 import javax.xml.stream.XMLStreamException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 /**
  * Represents a time zone period transition that occurs on a fixed (absolute)
@@ -43,7 +44,7 @@ public class AbsoluteDateTransition extends TimeZoneTransition {
     /**
      * The date time.
      */
-    private Date dateTime;
+    private LocalDateTime dateTime;
 
     /**
      * Gets the XML element name associated with the transition.
@@ -67,17 +68,12 @@ public class AbsoluteDateTransition extends TimeZoneTransition {
     public boolean tryReadElementFromXml(EwsServiceXmlReader reader)
             throws ParseException, Exception {
         boolean result = super.tryReadElementFromXml(reader);
-
         if (!result) {
             if (reader.getLocalName().equals(XmlElementNames.DateTime)) {
-                SimpleDateFormat sdfin = new SimpleDateFormat(
-                        "yyyy-MM-dd'T'HH:mm:ss");
-                this.dateTime = sdfin.parse(reader.readElementValue());
-
+                this.dateTime = DateTimeUtils.parseDateTime(reader.readElementValue());
                 result = true;
             }
         }
-
         return result;
     }
 
@@ -122,7 +118,7 @@ public class AbsoluteDateTransition extends TimeZoneTransition {
      *
      * @return the date time
      */
-    public Date getDateTime() {
+    public LocalDateTime getDateTime() {
         return dateTime;
     }
 
@@ -131,7 +127,7 @@ public class AbsoluteDateTransition extends TimeZoneTransition {
      *
      * @param dateTime the new date time
      */
-    protected void setDateTime(Date dateTime) {
+    protected void setDateTime(LocalDateTime dateTime) {
         this.dateTime = dateTime;
     }
 }

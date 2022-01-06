@@ -33,7 +33,7 @@ import microsoft.exchange.webservices.data.property.complex.recurrence.pattern.R
 import javax.xml.stream.XMLStreamException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.time.LocalDate;
 
 /**
  * Represents recurrent range with an end date.
@@ -43,7 +43,7 @@ public final class EndDateRecurrenceRange extends RecurrenceRange {
     /**
      * The end date.
      */
-    private Date endDate;
+    private LocalDate endDate;
 
     /**
      * Initializes a new instance.
@@ -58,7 +58,7 @@ public final class EndDateRecurrenceRange extends RecurrenceRange {
      * @param startDate the start date
      * @param endDate   the end date
      */
-    public EndDateRecurrenceRange(Date startDate, Date endDate) {
+    public EndDateRecurrenceRange(LocalDate startDate, LocalDate endDate) {
         super(startDate);
         this.endDate = endDate;
     }
@@ -92,7 +92,7 @@ public final class EndDateRecurrenceRange extends RecurrenceRange {
      */
     public void writeElementsToXml(EwsServiceXmlWriter writer)
             throws XMLStreamException, ServiceXmlSerializationException {
-        Date d = this.endDate;
+        LocalDate d = this.endDate;
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
         String formattedString = df.format(d);
 
@@ -116,7 +116,7 @@ public final class EndDateRecurrenceRange extends RecurrenceRange {
         } else {
             if (reader.getLocalName().equals(XmlElementNames.EndDate)) {
 
-                Date temp = reader.readElementValueAsUnspecifiedDate();
+                LocalDate temp = reader.readElementValueAsUnspecifiedDate();
 
                 if (temp != null) {
                     this.endDate = temp;
@@ -133,7 +133,7 @@ public final class EndDateRecurrenceRange extends RecurrenceRange {
      *
      * @return endDate
      */
-    public Date getEndDate() {
+    public LocalDate getEndDate() {
         return this.endDate;
     }
 
@@ -142,7 +142,7 @@ public final class EndDateRecurrenceRange extends RecurrenceRange {
      *
      * @param value the new end date
      */
-    public void setEndDate(Date value) {
+    public void setEndDate(LocalDate value) {
         this.canSetFieldValue(this.endDate, value);
     }
 

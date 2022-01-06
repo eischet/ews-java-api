@@ -48,8 +48,8 @@ import microsoft.exchange.webservices.data.property.complex.*;
 import microsoft.exchange.webservices.data.property.complex.recurrence.pattern.Recurrence;
 import microsoft.exchange.webservices.data.property.complex.time.TimeZoneDefinition;
 
+import java.time.LocalDateTime;
 import java.util.Arrays;
-import java.util.Date;
 
 /**
  * Represents an appointment or a meeting. Properties available on appointments
@@ -78,8 +78,7 @@ public class Appointment extends Item implements ICalendarActionProvider {
      * @param isNew            If true, attachment is new.
      * @throws Exception the exception
      */
-    public Appointment(ItemAttachment parentAttachment, boolean isNew)
-            throws Exception {
+    public Appointment(ItemAttachment parentAttachment, boolean isNew) throws Exception {
         // If we're running against Exchange 2007, we need to explicitly preset
         // the StartTimeZone property since Exchange 2007 will otherwise scope
         // start and end to UTC.
@@ -595,7 +594,7 @@ public class Appointment extends Item implements ICalendarActionProvider {
      * @return the start
      * @throws ServiceLocalException the service local exception
      */
-    public Date getStart() throws ServiceLocalException {
+    public LocalDateTime getStart() throws ServiceLocalException {
         return getPropertyBag().getObjectFromPropertyDefinition(
                 AppointmentSchema.Start);
     }
@@ -606,7 +605,7 @@ public class Appointment extends Item implements ICalendarActionProvider {
      * @param value the new start
      * @throws Exception the exception
      */
-    public void setStart(Date value) throws Exception {
+    public void setStart(LocalDateTime value) throws Exception {
         this.getPropertyBag().setObjectFromPropertyDefinition(
                 AppointmentSchema.Start, value);
     }
@@ -617,7 +616,7 @@ public class Appointment extends Item implements ICalendarActionProvider {
      * @return the end
      * @throws ServiceLocalException the service local exception
      */
-    public Date getEnd() throws ServiceLocalException {
+    public LocalDateTime getEnd() throws ServiceLocalException {
         return getPropertyBag().getObjectFromPropertyDefinition(
                 AppointmentSchema.End);
     }
@@ -628,7 +627,7 @@ public class Appointment extends Item implements ICalendarActionProvider {
      * @param value the new end
      * @throws Exception the exception
      */
-    public void setEnd(Date value) throws Exception {
+    public void setEnd(LocalDateTime value) throws Exception {
         this.getPropertyBag().setObjectFromPropertyDefinition(
                 AppointmentSchema.End, value);
     }
@@ -639,7 +638,7 @@ public class Appointment extends Item implements ICalendarActionProvider {
      * @return the original start
      * @throws ServiceLocalException the service local exception
      */
-    public Date getOriginalStart() throws ServiceLocalException {
+    public LocalDateTime getOriginalStart() throws ServiceLocalException {
         return getPropertyBag().getObjectFromPropertyDefinition(
                 AppointmentSchema.OriginalStart);
     }
@@ -946,7 +945,7 @@ public class Appointment extends Item implements ICalendarActionProvider {
      * @return the appointment reply time
      * @throws ServiceLocalException the service local exception
      */
-    public Date getAppointmentReplyTime() throws ServiceLocalException {
+    public LocalDateTime getAppointmentReplyTime() throws ServiceLocalException {
         return getPropertyBag().getObjectFromPropertyDefinition(
                 AppointmentSchema.AppointmentReplyTime);
     }
@@ -1235,7 +1234,7 @@ public class Appointment extends Item implements ICalendarActionProvider {
      * @return the i cal recurrence id
      * @throws ServiceLocalException the service local exception
      */
-    public Date getICalRecurrenceId() throws ServiceLocalException {
+    public LocalDateTime getICalRecurrenceId() throws ServiceLocalException {
         return getPropertyBag().getObjectFromPropertyDefinition(
                 AppointmentSchema.ICalRecurrenceId);
     }
@@ -1246,7 +1245,7 @@ public class Appointment extends Item implements ICalendarActionProvider {
      * @return the i cal date time stamp
      * @throws ServiceLocalException the service local exception
      */
-    public Date getICalDateTimeStamp() throws ServiceLocalException {
+    public LocalDateTime getICalDateTimeStamp() throws ServiceLocalException {
         return getPropertyBag().getObjectFromPropertyDefinition(
                 AppointmentSchema.ICalDateTimeStamp);
     }

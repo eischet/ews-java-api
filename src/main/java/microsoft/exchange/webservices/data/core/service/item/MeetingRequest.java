@@ -44,7 +44,7 @@ import microsoft.exchange.webservices.data.property.complex.*;
 import microsoft.exchange.webservices.data.property.complex.recurrence.pattern.Recurrence;
 import microsoft.exchange.webservices.data.property.complex.time.TimeZoneDefinition;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -241,10 +241,8 @@ public class MeetingRequest extends MeetingMessage implements ICalendarActionPro
      * @return the meeting request type
      * @throws ServiceLocalException the service local exception
      */
-    public MeetingRequestType getMeetingRequestType()
-            throws ServiceLocalException {
-        return getPropertyBag().getObjectFromPropertyDefinition(
-                MeetingRequestSchema.MeetingRequestType);
+    public MeetingRequestType getMeetingRequestType() throws ServiceLocalException {
+        return getPropertyBag().getObjectFromPropertyDefinition(MeetingRequestSchema.MeetingRequestType);
     }
 
     /**
@@ -254,10 +252,8 @@ public class MeetingRequest extends MeetingMessage implements ICalendarActionPro
      * @return the intended free busy status
      * @throws ServiceLocalException the service local exception
      */
-    public LegacyFreeBusyStatus getIntendedFreeBusyStatus()
-            throws ServiceLocalException {
-        return getPropertyBag().getObjectFromPropertyDefinition(
-                MeetingRequestSchema.IntendedFreeBusyStatus);
+    public LegacyFreeBusyStatus getIntendedFreeBusyStatus() throws ServiceLocalException {
+        return getPropertyBag().getObjectFromPropertyDefinition(MeetingRequestSchema.IntendedFreeBusyStatus);
     }
 
     /**
@@ -266,9 +262,8 @@ public class MeetingRequest extends MeetingMessage implements ICalendarActionPro
      * @return the start
      * @throws ServiceLocalException the service local exception
      */
-    public Date getStart() throws ServiceLocalException {
-        return getPropertyBag().getObjectFromPropertyDefinition(
-                AppointmentSchema.Start);
+    public LocalDateTime getStart() throws ServiceLocalException {
+        return getPropertyBag().getObjectFromPropertyDefinition(AppointmentSchema.Start);
     }
 
     /**
@@ -277,9 +272,8 @@ public class MeetingRequest extends MeetingMessage implements ICalendarActionPro
      * @return the end
      * @throws ServiceLocalException the service local exception
      */
-    public Date getEnd() throws ServiceLocalException {
-        return getPropertyBag().getObjectFromPropertyDefinition(
-                AppointmentSchema.End);
+    public LocalDateTime getEnd() throws ServiceLocalException {
+        return getPropertyBag().getObjectFromPropertyDefinition(AppointmentSchema.End);
     }
 
     /**
@@ -288,9 +282,8 @@ public class MeetingRequest extends MeetingMessage implements ICalendarActionPro
      * @return the original start
      * @throws ServiceLocalException the service local exception
      */
-    public Date getOriginalStart() throws ServiceLocalException {
-        return getPropertyBag().getObjectFromPropertyDefinition(
-                AppointmentSchema.OriginalStart);
+    public LocalDateTime getOriginalStart() throws ServiceLocalException {
+        return getPropertyBag().getObjectFromPropertyDefinition(AppointmentSchema.OriginalStart);
     }
 
     /**
@@ -541,9 +534,8 @@ public class MeetingRequest extends MeetingMessage implements ICalendarActionPro
      * @return the appointment reply time
      * @throws ServiceLocalException the service local exception
      */
-    public Date getAppointmentReplyTime() throws ServiceLocalException {
-        return getPropertyBag().getObjectFromPropertyDefinition(
-                AppointmentSchema.AppointmentReplyTime);
+    public LocalDateTime getAppointmentReplyTime() throws ServiceLocalException {
+        return getPropertyBag().getObjectFromPropertyDefinition(AppointmentSchema.AppointmentReplyTime);
     }
 
     /**

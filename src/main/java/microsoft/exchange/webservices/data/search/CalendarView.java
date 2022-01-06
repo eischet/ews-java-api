@@ -34,7 +34,8 @@ import microsoft.exchange.webservices.data.core.exception.service.local.ServiceV
 import microsoft.exchange.webservices.data.core.exception.service.local.ServiceXmlSerializationException;
 import microsoft.exchange.webservices.data.core.request.ServiceRequestBase;
 
-import java.util.Date;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 /**
  * Represents a date range view of appointments in calendar folder search
@@ -55,12 +56,12 @@ public final class CalendarView extends ViewBase {
     /**
      * The start date.
      */
-    private Date startDate;
+    private LocalDateTime startDate;
 
     /**
      * The end date.
      */
-    private Date endDate;
+    private LocalDateTime endDate;
 
     /**
      * Writes the attribute to XML.
@@ -109,7 +110,7 @@ public final class CalendarView extends ViewBase {
      * @param startDate the start date
      * @param endDate   the end date
      */
-    public CalendarView(Date startDate, Date endDate) {
+    public CalendarView(LocalDateTime startDate, LocalDateTime endDate) {
         super();
         this.startDate = startDate;
         this.endDate = endDate;
@@ -122,7 +123,7 @@ public final class CalendarView extends ViewBase {
      * @param endDate          the end date
      * @param maxItemsReturned the max item returned
      */
-    public CalendarView(Date startDate, Date endDate, int maxItemsReturned) {
+    public CalendarView(LocalDateTime startDate, LocalDateTime endDate, int maxItemsReturned) {
         this(startDate, endDate);
         this.maxItemsReturned = maxItemsReturned;
     }
@@ -181,7 +182,7 @@ public final class CalendarView extends ViewBase {
      *
      * @return the start date
      */
-    public Date getStartDate() {
+    public LocalDateTime getStartDate() {
         return this.startDate;
     }
 
@@ -190,7 +191,7 @@ public final class CalendarView extends ViewBase {
      *
      * @param startDate the new start date
      */
-    public void setStartDate(Date startDate) {
+    public void setStartDate(LocalDateTime startDate) {
         this.startDate = startDate;
     }
 
@@ -199,7 +200,7 @@ public final class CalendarView extends ViewBase {
      *
      * @return the end date
      */
-    public Date getEndDate() {
+    public LocalDateTime getEndDate() {
         return this.endDate;
     }
 
@@ -208,7 +209,7 @@ public final class CalendarView extends ViewBase {
      *
      * @param endDate the new end date
      */
-    public void setEndDate(Date endDate) {
+    public void setEndDate(LocalDateTime endDate) {
         this.endDate = endDate;
     }
 

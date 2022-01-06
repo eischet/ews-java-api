@@ -29,7 +29,8 @@ import microsoft.exchange.webservices.data.core.enumeration.misc.XmlNamespace;
 import microsoft.exchange.webservices.data.core.enumeration.notification.EventType;
 import microsoft.exchange.webservices.data.property.complex.FolderId;
 
-import java.util.Date;
+import java.time.LocalDateTime;
+
 
 /**
  * Represents an event that applies to a folder.
@@ -59,7 +60,7 @@ public class FolderEvent extends NotificationEvent {
      * @param eventType the event type
      * @param timestamp the timestamp
      */
-    protected FolderEvent(EventType eventType, Date timestamp) {
+    protected FolderEvent(EventType eventType, LocalDateTime timestamp) {
         super(eventType, timestamp);
     }
 

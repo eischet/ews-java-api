@@ -42,6 +42,7 @@ import microsoft.exchange.webservices.data.property.complex.recurrence.range.NoE
 import microsoft.exchange.webservices.data.property.complex.recurrence.range.NumberedRecurrenceRange;
 import microsoft.exchange.webservices.data.property.complex.recurrence.range.RecurrenceRange;
 
+import java.time.LocalDate;
 import java.util.*;
 
 /**
@@ -52,7 +53,7 @@ public abstract class Recurrence extends ComplexProperty {
     /**
      * The start date.
      */
-    private Date startDate;
+    private LocalDate startDate;
 
     /**
      * The number of occurrences.
@@ -62,7 +63,7 @@ public abstract class Recurrence extends ComplexProperty {
     /**
      * The end date.
      */
-    private Date endDate;
+    private LocalDate endDate;
 
     /**
      * Initializes a new instance.
@@ -76,7 +77,7 @@ public abstract class Recurrence extends ComplexProperty {
      *
      * @param startDate the start date
      */
-    public Recurrence(Date startDate) {
+    public Recurrence(LocalDate startDate) {
         this();
         this.startDate = startDate;
     }
@@ -165,8 +166,8 @@ public abstract class Recurrence extends ComplexProperty {
      * @return Date
      * @throws ServiceValidationException the service validation exception
      */
-    public Date getStartDate() throws ServiceValidationException {
-        return this.getFieldValueOrThrowIfNull(Date.class, this.startDate,
+    public LocalDate getStartDate() throws ServiceValidationException {
+        return this.getFieldValueOrThrowIfNull(LocalDate.class, this.startDate,
                 "StartDate");
 
     }
@@ -176,7 +177,7 @@ public abstract class Recurrence extends ComplexProperty {
      *
      * @param value the new start date
      */
-    public void setStartDate(Date value) {
+    public void setStartDate(LocalDate value) {
         this.startDate = value;
     }
 
@@ -253,7 +254,7 @@ public abstract class Recurrence extends ComplexProperty {
      *
      * @return the end date
      */
-    public Date getEndDate() {
+    public LocalDate getEndDate() {
 
         return this.endDate;
     }
@@ -264,7 +265,7 @@ public abstract class Recurrence extends ComplexProperty {
      *
      * @param value the new end date
      */
-    public void setEndDate(Date value) {
+    public void setEndDate(LocalDate value) {
 
         if (this.canSetFieldValue(this.endDate, value)) {
             this.endDate = value;
@@ -306,7 +307,7 @@ public abstract class Recurrence extends ComplexProperty {
          * @param interval  The number of days between each occurrence.
          * @throws ArgumentOutOfRangeException the argument out of range exception
          */
-        public DailyPattern(Date startDate, int interval)
+        public DailyPattern(LocalDate startDate, int interval)
                 throws ArgumentOutOfRangeException {
             super(startDate, interval);
         }
@@ -336,7 +337,7 @@ public abstract class Recurrence extends ComplexProperty {
          * @param interval  The number of days between each occurrence.
          * @throws ArgumentOutOfRangeException the argument out of range exception
          */
-        public DailyRegenerationPattern(Date startDate, int interval)
+        public DailyRegenerationPattern(LocalDate startDate, int interval)
                 throws ArgumentOutOfRangeException {
             super(startDate, interval);
 
@@ -391,7 +392,7 @@ public abstract class Recurrence extends ComplexProperty {
          * @param interval  The number of days between each occurrence.
          * @throws ArgumentOutOfRangeException the argument out of range exception
          */
-        public IntervalPattern(Date startDate, int interval)
+        public IntervalPattern(LocalDate startDate, int interval)
                 throws ArgumentOutOfRangeException {
 
             super(startDate);
@@ -498,7 +499,7 @@ public abstract class Recurrence extends ComplexProperty {
          * @param dayOfMonth the day of month
          * @throws ArgumentOutOfRangeException the argument out of range exception
          */
-        public MonthlyPattern(Date startDate, int interval, int dayOfMonth)
+        public MonthlyPattern(LocalDate startDate, int interval, int dayOfMonth)
                 throws ArgumentOutOfRangeException {
             super(startDate, interval);
 
@@ -623,7 +624,7 @@ public abstract class Recurrence extends ComplexProperty {
          * @param interval  the interval
          * @throws ArgumentOutOfRangeException the argument out of range exception
          */
-        public MonthlyRegenerationPattern(Date startDate, int interval)
+        public MonthlyRegenerationPattern(LocalDate startDate, int interval)
                 throws ArgumentOutOfRangeException {
             super(startDate, interval);
 
@@ -688,7 +689,7 @@ public abstract class Recurrence extends ComplexProperty {
          * @param dayOfTheWeekIndex the day of the week index
          * @throws ArgumentOutOfRangeException the argument out of range exception
          */
-        public RelativeMonthlyPattern(Date startDate, int interval,
+        public RelativeMonthlyPattern(LocalDate startDate, int interval,
                                       DayOfTheWeek dayOfTheWeek, DayOfTheWeekIndex dayOfTheWeekIndex)
                 throws ArgumentOutOfRangeException {
             super(startDate, interval);
@@ -934,7 +935,7 @@ public abstract class Recurrence extends ComplexProperty {
          * @param dayOfTheWeek      the day of the week
          * @param dayOfTheWeekIndex the day of the week index
          */
-        public RelativeYearlyPattern(Date startDate, Month month,
+        public RelativeYearlyPattern(LocalDate startDate, Month month,
                                      DayOfTheWeek dayOfTheWeek,
                                      DayOfTheWeekIndex dayOfTheWeekIndex) {
             super(startDate);
@@ -1082,7 +1083,7 @@ public abstract class Recurrence extends ComplexProperty {
          * @param daysOfTheWeek the days of the week
          * @throws ArgumentOutOfRangeException the argument out of range exception
          */
-        public WeeklyPattern(Date startDate, int interval,
+        public WeeklyPattern(LocalDate startDate, int interval,
                              DayOfTheWeek... daysOfTheWeek)
                 throws ArgumentOutOfRangeException {
             super(startDate, interval);
@@ -1247,7 +1248,7 @@ public abstract class Recurrence extends ComplexProperty {
          * @param interval  the interval
          * @throws ArgumentOutOfRangeException the argument out of range exception
          */
-        public WeeklyRegenerationPattern(Date startDate, int interval)
+        public WeeklyRegenerationPattern(LocalDate startDate, int interval)
                 throws ArgumentOutOfRangeException {
             super(startDate, interval);
 
@@ -1308,7 +1309,7 @@ public abstract class Recurrence extends ComplexProperty {
          * @param month      the month
          * @param dayOfMonth the day of month
          */
-        public YearlyPattern(Date startDate, Month month, int dayOfMonth) {
+        public YearlyPattern(LocalDate startDate, Month month, int dayOfMonth) {
             super(startDate);
 
             this.month = month;
@@ -1495,7 +1496,7 @@ public abstract class Recurrence extends ComplexProperty {
          * @param interval  the interval
          * @throws ArgumentOutOfRangeException the argument out of range exception
          */
-        public YearlyRegenerationPattern(Date startDate, int interval)
+        public YearlyRegenerationPattern(LocalDate startDate, int interval)
                 throws ArgumentOutOfRangeException {
             super(startDate, interval);
 

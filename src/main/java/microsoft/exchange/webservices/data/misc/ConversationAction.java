@@ -33,7 +33,7 @@ import microsoft.exchange.webservices.data.core.exception.misc.ArgumentException
 import microsoft.exchange.webservices.data.property.complex.ConversationId;
 import microsoft.exchange.webservices.data.property.complex.StringList;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -58,7 +58,7 @@ public class ConversationAction {
     private FolderIdWrapper contextFolderId;
     private DeleteMode deleteType;
     private Boolean isRead;
-    private Date conversationLastSyncTime;
+    private LocalDateTime conversationLastSyncTime;
 
     /**
      * Gets conversation action
@@ -180,7 +180,7 @@ public class ConversationAction {
      *
      * @return conversationLastSyncTime
      */
-    protected Date getConversationLastSyncTime() {
+    protected LocalDateTime getConversationLastSyncTime() {
         return this.conversationLastSyncTime;
     }
 
@@ -189,7 +189,7 @@ public class ConversationAction {
      * one time action to determine the item
      * on which to take the action.
      */
-    public void setConversationLastSyncTime(Date value) {
+    public void setConversationLastSyncTime(LocalDateTime value) {
         this.conversationLastSyncTime = value;
     }
 
@@ -236,8 +236,6 @@ public class ConversationAction {
 
     /**
      * Validate request.
-     *
-     * @throws Exception
      */
     public void validate() throws Exception {
         EwsUtilities.validateParam(this.conversationId, "conversationId");
@@ -247,7 +245,6 @@ public class ConversationAction {
      * Writes XML elements.
      *
      * @param writer The writer.
-     * @throws Exception
      */
     public void writeElementsToXml(EwsServiceXmlWriter writer)
             throws Exception {

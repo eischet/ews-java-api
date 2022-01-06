@@ -27,10 +27,10 @@ import microsoft.exchange.webservices.data.core.EwsServiceXmlReader;
 import microsoft.exchange.webservices.data.core.XmlElementNames;
 import microsoft.exchange.webservices.data.core.enumeration.misc.XmlNamespace;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 public class GetPasswordExpirationDateResponse extends ServiceResponse {
-    private Date passwordExpirationDate;
+    private LocalDateTime passwordExpirationDate;
 
     /**
      * Initializes a new instance of the GetPasswordExpirationDateResponse class.
@@ -57,7 +57,7 @@ public class GetPasswordExpirationDateResponse extends ServiceResponse {
      *
      * @return Password expiration date.
      */
-    public Date getPasswordExpirationDate() {
+    public LocalDateTime getPasswordExpirationDate() {
         return this.passwordExpirationDate;
     }
 }

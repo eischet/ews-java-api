@@ -25,8 +25,7 @@ package microsoft.exchange.webservices.data.misc;
 
 import microsoft.exchange.webservices.data.core.exception.misc.ArgumentException;
 
-import java.util.Calendar;
-import java.util.Date;
+import java.time.LocalTime;
 
 /**
  * Represents time.
@@ -78,13 +77,11 @@ public final class Time {
      * @param dateTime the date time
      * @throws ArgumentException the argument exception
      */
-    public Time(Date dateTime) throws ArgumentException {
+    public Time(LocalTime dateTime) throws ArgumentException {
         if (dateTime != null) {
-            Calendar cal = Calendar.getInstance();
-            cal.setTime(dateTime);
-            this.setHours(cal.get(Calendar.HOUR));
-            this.setMinutes(cal.get(Calendar.MINUTE));
-            this.setSeconds(cal.get(Calendar.SECOND));
+            setHours(dateTime.getHour());
+            setMinutes(dateTime.getMinute());
+            setSeconds(dateTime.getSecond());
         }
     }
 

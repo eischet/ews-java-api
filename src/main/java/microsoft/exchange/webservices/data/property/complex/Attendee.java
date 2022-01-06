@@ -29,7 +29,7 @@ import microsoft.exchange.webservices.data.core.EwsUtilities;
 import microsoft.exchange.webservices.data.core.XmlElementNames;
 import microsoft.exchange.webservices.data.core.enumeration.property.MeetingResponseType;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 /**
  * Represents an attendee to a meeting.
@@ -45,7 +45,7 @@ public final class Attendee extends EmailAddress {
     /**
      * The last response time.
      */
-    private Date lastResponseTime;
+    private LocalDateTime lastResponseTime;
 
     /**
      * Initializes a new instance of the Attendee class.
@@ -111,7 +111,7 @@ public final class Attendee extends EmailAddress {
      *
      * @return the last response time
      */
-    public Date getLastResponseTime() {
+    public LocalDateTime getLastResponseTime() {
         return lastResponseTime;
     }
 

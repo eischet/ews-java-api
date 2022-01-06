@@ -36,6 +36,8 @@ import org.apache.commons.codec.binary.Base64;
 
 import javax.xml.stream.XMLStreamException;
 import java.lang.reflect.Array;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.Map.Entry;
 
@@ -235,12 +237,9 @@ public final class UserConfigurationDictionary extends ComplexProperty
                 .iterator();
         while (it.hasNext()) {
             Entry<Object, Object> dictionaryEntry = it.next();
-            writer.writeStartElement(XmlNamespace.Types,
-                    XmlElementNames.DictionaryEntry);
-            this.writeObjectToXml(writer, XmlElementNames.DictionaryKey,
-                    dictionaryEntry.getKey());
-            this.writeObjectToXml(writer, XmlElementNames.DictionaryValue,
-                    dictionaryEntry.getValue());
+            writer.writeStartElement(XmlNamespace.Types, XmlElementNames.DictionaryEntry);
+            this.writeObjectToXml(writer, XmlElementNames.DictionaryKey, dictionaryEntry.getKey());
+            this.writeObjectToXml(writer, XmlElementNames.DictionaryValue, dictionaryEntry.getValue());
             writer.writeEndElement();
         }
     }
@@ -321,11 +320,16 @@ public final class UserConfigurationDictionary extends ComplexProperty
             } else if (dictionaryObject instanceof Byte) {
                 dictionaryObjectType = UserConfigurationDictionaryObjectType.Byte;
                 valueAsString = String.valueOf(dictionaryObject);
-            } else if (dictionaryObject instanceof Date) {
+            } else if (dictionaryObject instanceof LocalDateTime) {
                 dictionaryObjectType = UserConfigurationDictionaryObjectType.DateTime;
                 valueAsString = writer.getService()
                         .convertDateTimeToUniversalDateTimeString(
-                                (Date) dictionaryObject);
+                                (LocalDateTime) dictionaryObject);
+            } else if (dictionaryObject instanceof LocalDate) {
+                dictionaryObjectType = UserConfigurationDictionaryObjectType.DateTime;
+                valueAsString = writer.getService()
+                        .convertDateTimeToUniversalDateTimeString(
+                                (LocalDate) dictionaryObject);
             } else if (dictionaryObject instanceof Integer) {
                 // removed unsigned integer because in Java, all types are
                 // signed, there are no unsigned versions
@@ -583,7 +587,7 @@ public final class UserConfigurationDictionary extends ComplexProperty
         } else if (type.equals(UserConfigurationDictionaryObjectType.ByteArray)) {
             dictionaryObject = Base64.decodeBase64(value.get(0));
         } else if (type.equals(UserConfigurationDictionaryObjectType.DateTime)) {
-            Date dateTime = DateTimeUtils.convertDateTimeStringToDate(value.get(0));
+            LocalDateTime dateTime = DateTimeUtils.convertDateTimeStringToDate(value.get(0));
             if (dateTime != null) {
                 dictionaryObject = dateTime;
             } else {

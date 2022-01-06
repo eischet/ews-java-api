@@ -25,8 +25,8 @@ package microsoft.exchange.webservices.data.misc;
 
 import microsoft.exchange.webservices.data.core.EwsUtilities;
 
+import java.time.LocalDateTime;
 import java.util.Base64;
-import java.util.Date;
 import java.util.UUID;
 
 /**
@@ -99,7 +99,7 @@ public final class IFunctions {
         public static final DateTimeToXSDateTime INSTANCE = new DateTimeToXSDateTime();
 
         public String func(final Object o) {
-            return EwsUtilities.dateTimeToXSDateTime((Date) o);
+            return EwsUtilities.dateTimeToXSDateTime((LocalDateTime) o);
         }
     }
 

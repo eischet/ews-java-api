@@ -26,7 +26,7 @@ package microsoft.exchange.webservices.data.property.complex;
 import microsoft.exchange.webservices.data.core.EwsServiceXmlReader;
 import microsoft.exchange.webservices.data.core.XmlElementNames;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 /**
  * Encapsulates information on the occurrence of a recurring appointment.
@@ -41,17 +41,17 @@ public final class OccurrenceInfo extends ComplexProperty {
     /**
      * The start.
      */
-    private Date start;
+    private LocalDateTime start;
 
     /**
      * The end.
      */
-    private Date end;
+    private LocalDateTime end;
 
     /**
      * The original start.
      */
-    private Date originalStart;
+    private LocalDateTime originalStart;
 
     /**
      * Initializes a new instance of the OccurrenceInfo class.
@@ -105,7 +105,7 @@ public final class OccurrenceInfo extends ComplexProperty {
      *
      * @return the start
      */
-    public Date getStart() {
+    public LocalDateTime getStart() {
         return start;
     }
 
@@ -114,7 +114,7 @@ public final class OccurrenceInfo extends ComplexProperty {
      *
      * @return the end
      */
-    public Date getEnd() {
+    public LocalDateTime getEnd() {
         return end;
     }
 
@@ -123,7 +123,7 @@ public final class OccurrenceInfo extends ComplexProperty {
      *
      * @return the original start
      */
-    public Date getOriginalStart() {
+    public LocalDateTime getOriginalStart() {
         return originalStart;
     }
 

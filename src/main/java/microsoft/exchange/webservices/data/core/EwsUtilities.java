@@ -65,6 +65,8 @@ import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.Duration;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeParseException;
 import java.util.*;
 import java.util.regex.Matcher;
@@ -331,9 +333,7 @@ public final class EwsUtilities {
      * @param caller    The caller.
      * @param message   The message to use if assertion fails.
      */
-    public static void ewsAssert(
-            final boolean condition, final String caller, final String message
-    ) {
+    public static void ewsAssert(final boolean condition, final String caller, final String message) {
         if (!condition) {
             throw new RuntimeException(String.format("[%s] %s", caller, message));
         }
@@ -808,7 +808,7 @@ public final class EwsUtilities {
      * @param date the date
      * @return String representation of DateTime.
      */
-    public static String dateTimeToXSDate(Date date) {
+    public static String dateTimeToXSDate(LocalDateTime date) {
         return formatDate(date, XML_SCHEMA_DATE_FORMAT);
     }
 
@@ -818,7 +818,7 @@ public final class EwsUtilities {
      * @param date the date
      * @return String representation of DateTime.
      */
-    public static String dateTimeToXSDateTime(Date date) {
+    public static String dateTimeToXSDateTime(LocalDateTime date) {
         return formatDate(date, XML_SCHEMA_DATE_TIME_FORMAT);
     }
 
@@ -1322,8 +1322,13 @@ public final class EwsUtilities {
         }
     }
 
+    private static String formatDate(LocalDateTime date, String format) {
+        final DateFormat utcFormatter = createDateFormat(format);
+        return utcFormatter.format(date);
+    }
 
-    private static String formatDate(Date date, String format) {
+
+    private static String formatDate(LocalDate date, String format) {
         final DateFormat utcFormatter = createDateFormat(format);
         return utcFormatter.format(date);
     }

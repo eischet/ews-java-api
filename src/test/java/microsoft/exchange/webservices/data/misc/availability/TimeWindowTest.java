@@ -35,16 +35,16 @@ import org.junit.Test;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 public class TimeWindowTest extends BaseTest {
 
     @Test
     public void testWriteToXmlUnscopedDatesOnlyUsesUTC() throws Exception {
         // Thu, 01 Jan 2015 0:0:00 UTC
-        final Date midnight = new Date(1420070400000l);
+        final LocalDateTime midnight = LocalDateTime.of(2015, 1, 1, 0, 0, 0); //  new Date(1420070400000l);
         // Thu, 01 Jan 2015 23:59:59 GMT
-        final Date just_before_midnight = new Date(1420156799000l);
+        final LocalDateTime just_before_midnight = LocalDateTime.of(2015, 1, 1, 23, 59, 49); // new Date(1420156799000l);
 
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         EwsServiceXmlWriter writer;

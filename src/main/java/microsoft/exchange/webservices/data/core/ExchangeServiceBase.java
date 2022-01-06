@@ -61,6 +61,8 @@ import java.net.URISyntaxException;
 import java.security.GeneralSecurityException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.logging.Logger;
 
@@ -523,12 +525,26 @@ public abstract class ExchangeServiceBase implements Closeable {
      * @param dt the date
      * @return String representation of DateTime in yyyy-MM-ddTHH:mm:ssZ format.
      */
-    public String convertDateTimeToUniversalDateTimeString(Date dt) {
+    public String convertDateTimeToUniversalDateTimeString(LocalDateTime dt) {
         String utcPattern = "yyyy-MM-dd'T'HH:mm:ss'Z'";
         DateFormat utcFormatter = new SimpleDateFormat(utcPattern);
         utcFormatter.setTimeZone(TimeZone.getTimeZone("UTC"));
         return utcFormatter.format(dt);
     }
+
+    /**
+     * Converts the DATE to universal date time string.
+     *
+     * @param dt the date
+     * @return String representation of DateTime in yyyy-MM-ddTHH:mm:ssZ format.
+     */
+    public String convertDateTimeToUniversalDateTimeString(LocalDate dt) {
+        String utcPattern = "yyyy-MM-dd'T'HH:mm:ss'Z'";
+        DateFormat utcFormatter = new SimpleDateFormat(utcPattern);
+        utcFormatter.setTimeZone(TimeZone.getTimeZone("UTC"));
+        return utcFormatter.format(dt);
+    }
+
 
     /**
      * Sets the user agent to a custom value

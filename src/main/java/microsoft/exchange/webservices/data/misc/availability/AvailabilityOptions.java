@@ -31,7 +31,8 @@ import microsoft.exchange.webservices.data.core.enumeration.availability.Suggest
 import microsoft.exchange.webservices.data.core.enumeration.misc.XmlNamespace;
 import microsoft.exchange.webservices.data.core.request.GetUserAvailabilityRequest;
 
-import java.util.Date;
+import java.time.LocalDateTime;
+
 
 /**
  * Represents the options of a GetAvailability request.
@@ -81,7 +82,7 @@ public final class AvailabilityOptions {
     /**
      * The current meeting time.
      */
-    private Date currentMeetingTime;
+    private LocalDateTime currentMeetingTime;
 
     /**
      * The global object id.
@@ -369,7 +370,7 @@ public final class AvailabilityOptions {
      *
      * @return the current meeting time
      */
-    public Date getCurrentMeetingTime() {
+    public LocalDateTime getCurrentMeetingTime() {
         return this.currentMeetingTime;
     }
 
@@ -378,7 +379,7 @@ public final class AvailabilityOptions {
      *
      * @param value the new current meeting time
      */
-    public void setCurrentMeetingTime(Date value) {
+    public void setCurrentMeetingTime(LocalDateTime value) {
         this.currentMeetingTime = value;
     }
 

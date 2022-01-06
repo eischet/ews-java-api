@@ -76,7 +76,16 @@ import org.w3c.dom.Node;
 
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.*;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.EnumSet;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -139,7 +148,7 @@ public class ExchangeService extends ExchangeServiceBase implements IAutodiscove
                                                    MessageDisposition messageDisposition) throws Exception {
         CreateResponseObjectRequest request = new CreateResponseObjectRequest(
                 this, ServiceErrorHandling.ThrowOnError);
-        Collection<ServiceObject> serviceList = new ArrayList<ServiceObject>();
+        Collection<ServiceObject> serviceList = new ArrayList<>();
         serviceList.add(responseObject);
         request.setParentFolderId(parentFolderId);
         request.setItems(serviceList);
@@ -1650,7 +1659,7 @@ public class ExchangeService extends ExchangeServiceBase implements IAutodiscove
      * @return The password expiration date
      * @throws Exception on error
      */
-    public Date getPasswordExpirationDate(String mailboxSmtpAddress) throws Exception {
+    public LocalDateTime getPasswordExpirationDate(String mailboxSmtpAddress) throws Exception {
         GetPasswordExpirationDateRequest request = new GetPasswordExpirationDateRequest(this);
         request.setMailboxSmtpAddress(mailboxSmtpAddress);
 
@@ -2685,7 +2694,7 @@ public class ExchangeService extends ExchangeServiceBase implements IAutodiscove
      */
     private ServiceResponseCollection<ServiceResponse> applyConversationOneTimeAction(
             ConversationActionType actionType,
-            Iterable<HashMap<ConversationId, Date>> idTimePairs,
+            Iterable<Map<ConversationId, LocalDateTime>> idTimePairs,
             FolderId contextFolderId, FolderId destinationFolderId,
             DeleteMode deleteType, Boolean isRead,
             ServiceErrorHandling errorHandlingMode) throws Exception {
@@ -2702,7 +2711,7 @@ public class ExchangeService extends ExchangeServiceBase implements IAutodiscove
         ApplyConversationActionRequest request = new ApplyConversationActionRequest(
                 this, errorHandlingMode);
 
-        for (HashMap<ConversationId, Date> idTimePair : idTimePairs) {
+        for (Map<ConversationId, LocalDateTime> idTimePair : idTimePairs) {
             ConversationAction action = new ConversationAction();
 
             action.setAction(actionType);
@@ -2715,8 +2724,7 @@ public class ExchangeService extends ExchangeServiceBase implements IAutodiscove
                     .setDestinationFolderId(destinationFolderId != null ? new FolderIdWrapper(
                             destinationFolderId)
                             : null);
-            action.setConversationLastSyncTime(idTimePair.values().iterator()
-                    .next());
+            action.setConversationLastSyncTime(idTimePair.values().iterator().next());
             action.setIsRead(isRead);
             action.setDeleteType(deleteType);
 
@@ -2868,7 +2876,7 @@ public class ExchangeService extends ExchangeServiceBase implements IAutodiscove
      * @throws Exception
      */
     public ServiceResponseCollection<ServiceResponse> moveItemsInConversations(
-            Iterable<HashMap<ConversationId, Date>> idLastSyncTimePairs,
+            Iterable<Map<ConversationId, LocalDateTime>> idLastSyncTimePairs,
             FolderId contextFolderId, FolderId destinationFolderId)
             throws Exception {
         EwsUtilities.validateParam(destinationFolderId, "destinationFolderId");
@@ -2889,7 +2897,7 @@ public class ExchangeService extends ExchangeServiceBase implements IAutodiscove
      * @throws Exception
      */
     public ServiceResponseCollection<ServiceResponse> copyItemsInConversations(
-            Iterable<HashMap<ConversationId, Date>> idLastSyncTimePairs,
+            Iterable<Map<ConversationId, LocalDateTime>> idLastSyncTimePairs,
             FolderId contextFolderId, FolderId destinationFolderId)
             throws Exception {
         EwsUtilities.validateParam(destinationFolderId, "destinationFolderId");
@@ -2912,7 +2920,7 @@ public class ExchangeService extends ExchangeServiceBase implements IAutodiscove
      * @throws Exception
      */
     public ServiceResponseCollection<ServiceResponse> deleteItemsInConversations(
-            Iterable<HashMap<ConversationId, Date>> idLastSyncTimePairs,
+            Iterable<Map<ConversationId, LocalDateTime>> idLastSyncTimePairs,
             FolderId contextFolderId, DeleteMode deleteMode) throws Exception {
         return this.applyConversationOneTimeAction(
                 ConversationActionType.Delete, idLastSyncTimePairs,
@@ -2936,7 +2944,7 @@ public class ExchangeService extends ExchangeServiceBase implements IAutodiscove
      * @throws Exception
      */
     public ServiceResponseCollection<ServiceResponse> setReadStateForItemsInConversations(
-            Iterable<HashMap<ConversationId, Date>> idLastSyncTimePairs,
+            Iterable<Map<ConversationId, LocalDateTime>> idLastSyncTimePairs,
             FolderId contextFolderId, boolean isRead) throws Exception {
         return this.applyConversationOneTimeAction(
                 ConversationActionType.SetReadState, idLastSyncTimePairs,
@@ -3001,7 +3009,7 @@ public class ExchangeService extends ExchangeServiceBase implements IAutodiscove
                                      IdFormat destinationFormat) throws Exception {
         EwsUtilities.validateParam(id, "id");
 
-        List<AlternateIdBase> alternateIdBaseArray = new ArrayList<AlternateIdBase>();
+        List<AlternateIdBase> alternateIdBaseArray = new ArrayList<>();
         alternateIdBaseArray.add(id);
 
         ServiceResponseCollection<ConvertIdResponse> responses = this

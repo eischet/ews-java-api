@@ -28,9 +28,9 @@ import microsoft.exchange.webservices.data.core.XmlElementNames;
 import microsoft.exchange.webservices.data.core.enumeration.misc.XmlNamespace;
 import microsoft.exchange.webservices.data.core.enumeration.notification.EventType;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Date;
 
 /**
  * Represents a collection of notification events.
@@ -135,8 +135,7 @@ public final class GetStreamingEventsResults {
             String eventElementName,
             EventType eventType,
             NotificationGroup notifications) throws Exception {
-        Date timestamp = reader.readElementValue(Date.class, XmlNamespace.Types,
-                XmlElementNames.TimeStamp);
+        LocalDateTime timestamp = reader.readElementValue(LocalDateTime.class, XmlNamespace.Types, XmlElementNames.TimeStamp);
 
         NotificationEvent notificationEvent;
 

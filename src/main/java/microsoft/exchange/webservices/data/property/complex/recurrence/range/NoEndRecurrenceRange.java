@@ -26,7 +26,7 @@ package microsoft.exchange.webservices.data.property.complex.recurrence.range;
 import microsoft.exchange.webservices.data.core.XmlElementNames;
 import microsoft.exchange.webservices.data.property.complex.recurrence.pattern.Recurrence;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 /**
  * Represents recurrence range with no end date.
@@ -45,7 +45,7 @@ public final class NoEndRecurrenceRange extends RecurrenceRange {
      *
      * @param startDate the start date
      */
-    public NoEndRecurrenceRange(Date startDate) {
+    public NoEndRecurrenceRange(LocalDate startDate) {
         super(startDate);
     }
 

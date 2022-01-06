@@ -28,11 +28,11 @@ import microsoft.exchange.webservices.data.core.XmlElementNames;
 import microsoft.exchange.webservices.data.core.enumeration.availability.SuggestionQuality;
 import microsoft.exchange.webservices.data.core.enumeration.misc.XmlNamespace;
 import microsoft.exchange.webservices.data.property.complex.ComplexProperty;
+import microsoft.exchange.webservices.data.util.DateTimeUtils;
 
-import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Date;
 
 /**
  * Represents a suggestion for a specific date.
@@ -42,7 +42,7 @@ public final class Suggestion extends ComplexProperty {
     /**
      * The date.
      */
-    private Date date;
+    private LocalDateTime date;
 
     /**
      * The quality.
@@ -52,8 +52,7 @@ public final class Suggestion extends ComplexProperty {
     /**
      * The time suggestions.
      */
-    private final Collection<TimeSuggestion> timeSuggestions =
-            new ArrayList<TimeSuggestion>();
+    private final Collection<TimeSuggestion> timeSuggestions = new ArrayList<>();
 
     /**
      * Initializes a new instance of the Suggestion class.
@@ -72,9 +71,7 @@ public final class Suggestion extends ComplexProperty {
     @Override
     public boolean tryReadElementFromXml(EwsServiceXmlReader reader) throws Exception {
         if (reader.getLocalName().equals(XmlElementNames.Date)) {
-            SimpleDateFormat sdfin = new SimpleDateFormat(
-                    "yyyy-MM-dd'T'HH:mm:ss");
-            this.date = sdfin.parse(reader.readElementValue());
+            this.date = DateTimeUtils.parseDateTime(reader.readElementValue());
             return true;
         } else if (reader.getLocalName().equals(XmlElementNames.DayQuality)) {
             this.quality = reader.readElementValue(SuggestionQuality.class);
@@ -110,7 +107,7 @@ public final class Suggestion extends ComplexProperty {
      *
      * @return the date
      */
-    public Date getDate() {
+    public LocalDateTime getDate() {
         return date;
     }
 

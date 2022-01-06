@@ -30,12 +30,10 @@ import microsoft.exchange.webservices.data.core.service.ServiceObject;
 import microsoft.exchange.webservices.data.util.DateTimeUtils;
 
 import java.io.InputStream;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.TimeZone;
 
 /**
  * XML reader.
@@ -66,8 +64,8 @@ public class EwsServiceXmlReader extends EwsXmlReader {
      * @return Element value
      * @throws Exception the exception
      */
-    public Date readElementValueAsDateTime() throws Exception {
-        return DateTimeUtils.convertDateTimeStringToDate(readElementValue());
+    public LocalDateTime readElementValueAsDateTime() throws Exception {
+        return DateTimeUtils.parseDateTime(readElementValue());
     }
 
     /**
@@ -76,8 +74,8 @@ public class EwsServiceXmlReader extends EwsXmlReader {
      * @return element value
      * @throws Exception on error
      */
-    public Date readElementValueAsUnspecifiedDate() throws Exception {
-        return DateTimeUtils.convertDateStringToDate(readElementValue());
+    public LocalDate readElementValueAsUnspecifiedDate() throws Exception {
+        return DateTimeUtils.parseDateOnly(readElementValue());
     }
 
     /**
@@ -87,22 +85,9 @@ public class EwsServiceXmlReader extends EwsXmlReader {
      * @return Date
      * @throws Exception the exception
      */
-    public Date readElementValueAsUnbiasedDateTimeScopedToServiceTimeZone()
+    public LocalDateTime readElementValueAsUnbiasedDateTimeScopedToServiceTimeZone()
             throws Exception {
-        // Convert the element's value to a DateTime with no adjustment.
-        String date = this.readElementValue();
-
-        try {
-            DateFormat formatter =
-                    new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-            formatter.setTimeZone(TimeZone.getTimeZone("UTC"));
-            return formatter.parse(date);
-        } catch (Exception e) {
-            DateFormat formatter = new SimpleDateFormat(
-                    "yyyy-MM-dd'T'HH:mm:ss.SSS");
-            formatter.setTimeZone(TimeZone.getTimeZone("UTC"));
-            return formatter.parse(date);
-        }
+        return DateTimeUtils.parseDateTime(this.readElementValue());
     }
 
     /**
@@ -113,8 +98,8 @@ public class EwsServiceXmlReader extends EwsXmlReader {
      * @return the date
      * @throws Exception the exception
      */
-    public Date readElementValueAsDateTime(XmlNamespace xmlNamespace, String localName) throws Exception {
-        return DateTimeUtils.convertDateTimeStringToDate(readElementValue(xmlNamespace, localName));
+    public LocalDateTime readElementValueAsDateTime(XmlNamespace xmlNamespace, String localName) throws Exception {
+        return DateTimeUtils.parseDateTime(readElementValue(xmlNamespace, localName));
     }
 
     /**
@@ -137,7 +122,7 @@ public class EwsServiceXmlReader extends EwsXmlReader {
             boolean clearPropertyBag, PropertySet requestedPropertySet,
             boolean summaryPropertiesOnly) throws Exception {
 
-        List<TServiceObject> serviceObjects = new ArrayList<TServiceObject>();
+        List<TServiceObject> serviceObjects = new ArrayList<>();
         TServiceObject serviceObject;
 
         this.readStartElement(XmlNamespace.Messages, collectionXmlElementName);

@@ -36,8 +36,9 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Base64;
-import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -110,11 +111,16 @@ public class EwsServiceXmlWriter implements IDisposable {
                 str.setParam(EwsUtilities.serializeEnum(value));
             } else if (value.getClass().equals(Boolean.class)) {
                 str.setParam(EwsUtilities.boolToXSBool((Boolean) value));
-            } else if (value instanceof Date) {
+            } else if (value instanceof LocalDateTime) {
                 str
                         .setParam(this.service
                                 .convertDateTimeToUniversalDateTimeString(
-                                        (Date) value));
+                                        (LocalDateTime) value));
+            } else if (value instanceof LocalDate) {
+                str
+                        .setParam(this.service
+                                .convertDateTimeToUniversalDateTimeString(
+                                        (LocalDate) value));
             } else if (value.getClass().isPrimitive()) {
                 str.setParam(value.toString());
             } else if (value instanceof String) {
@@ -471,8 +477,7 @@ public class EwsServiceXmlWriter implements IDisposable {
      * @throws XMLStreamException               the XML stream exception
      * @throws ServiceXmlSerializationException the service xml serialization exception
      */
-    public void writeElementValue(XmlNamespace xmlNamespace, String localName,
-                                  Object value) throws XMLStreamException,
+    public void writeElementValue(XmlNamespace xmlNamespace, String localName, Object value) throws XMLStreamException,
             ServiceXmlSerializationException {
         this.writeElementValue(xmlNamespace, localName, localName, value);
     }

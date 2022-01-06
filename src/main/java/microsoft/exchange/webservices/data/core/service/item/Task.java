@@ -41,7 +41,8 @@ import microsoft.exchange.webservices.data.property.complex.ItemId;
 import microsoft.exchange.webservices.data.property.complex.StringList;
 import microsoft.exchange.webservices.data.property.complex.recurrence.pattern.Recurrence;
 
-import java.util.Date;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 /**
  * Represents a Task item. Properties available on tasks are defined in the
@@ -207,7 +208,7 @@ public class Task extends Item {
      * @return the assigned time
      * @throws ServiceLocalException the service local exception
      */
-    public Date getAssignedTime() throws ServiceLocalException {
+    public LocalDateTime getAssignedTime() throws ServiceLocalException {
         return getPropertyBag().getObjectFromPropertyDefinition(
                 TaskSchema.AssignedTime);
     }
@@ -273,7 +274,7 @@ public class Task extends Item {
      * @return the complete date
      * @throws ServiceLocalException the service local exception
      */
-    public Date getCompleteDate() throws ServiceLocalException {
+    public LocalDateTime getCompleteDate() throws ServiceLocalException {
         return getPropertyBag().getObjectFromPropertyDefinition(
                 TaskSchema.CompleteDate);
     }
@@ -284,7 +285,7 @@ public class Task extends Item {
      * @param value the new complete date
      * @throws Exception the exception
      */
-    public void setCompleteDate(Date value) throws Exception {
+    public void setCompleteDate(LocalDateTime value) throws Exception {
         this.getPropertyBag().setObjectFromPropertyDefinition(
                 TaskSchema.CompleteDate, value);
     }
@@ -340,7 +341,7 @@ public class Task extends Item {
      * @return the due date
      * @throws ServiceLocalException the service local exception
      */
-    public Date getDueDate() throws ServiceLocalException {
+    public LocalDateTime getDueDate() throws ServiceLocalException {
         return getPropertyBag().getObjectFromPropertyDefinition(
                 TaskSchema.DueDate);
     }
@@ -351,7 +352,7 @@ public class Task extends Item {
      * @param value the new due date
      * @throws Exception the exception
      */
-    public void setDueDate(Date value) throws Exception {
+    public void setDueDate(LocalDateTime value) throws Exception {
         this.getPropertyBag().setObjectFromPropertyDefinition(
                 TaskSchema.DueDate, value);
     }
@@ -507,7 +508,7 @@ public class Task extends Item {
      * @return the start date
      * @throws ServiceLocalException the service local exception
      */
-    public Date getStartDate() throws ServiceLocalException {
+    public LocalDateTime getStartDate() throws ServiceLocalException {
         return getPropertyBag().getObjectFromPropertyDefinition(
                 TaskSchema.StartDate);
     }
@@ -518,7 +519,7 @@ public class Task extends Item {
      * @param value the new start date
      * @throws Exception the exception
      */
-    public void setStartDate(Date value) throws Exception {
+    public void setStartDate(LocalDateTime value) throws Exception {
         this.getPropertyBag().setObjectFromPropertyDefinition(
                 TaskSchema.StartDate, value);
     }

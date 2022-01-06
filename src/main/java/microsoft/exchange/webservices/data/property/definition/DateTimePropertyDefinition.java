@@ -32,7 +32,7 @@ import microsoft.exchange.webservices.data.core.enumeration.misc.XmlNamespace;
 import microsoft.exchange.webservices.data.core.enumeration.property.PropertyDefinitionFlags;
 import microsoft.exchange.webservices.data.util.DateTimeUtils;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.EnumSet;
 
 /**
@@ -115,7 +115,7 @@ public class DateTimePropertyDefinition extends PropertyDefinition {
             writer.writeStartElement(XmlNamespace.Types, getXmlElement());
             // No need of changing the date time zone to UTC as Java takes
             // default timezone as UTC
-            Date dateTime = (Date) value;
+            LocalDateTime dateTime = (LocalDateTime) value;
             writer.writeValue(EwsUtilities.dateTimeToXSDateTime(dateTime),
                     getName());
 
@@ -137,8 +137,8 @@ public class DateTimePropertyDefinition extends PropertyDefinition {
      * Gets the property type.
      */
     @Override
-    public Class<Date> getType() {
-        return Date.class;
+    public Class<LocalDateTime> getType() {
+        return LocalDateTime.class;
 
     }
 }

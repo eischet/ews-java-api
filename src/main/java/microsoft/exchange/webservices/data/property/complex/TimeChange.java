@@ -28,11 +28,9 @@ import microsoft.exchange.webservices.data.core.enumeration.misc.XmlNamespace;
 import microsoft.exchange.webservices.data.core.exception.service.local.ServiceXmlSerializationException;
 import microsoft.exchange.webservices.data.misc.Time;
 import microsoft.exchange.webservices.data.misc.TimeSpan;
+import microsoft.exchange.webservices.data.util.DateTimeUtils;
 
-import javax.xml.bind.DatatypeConverter;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.TimeZone;
+import java.time.LocalDateTime;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -61,7 +59,7 @@ public final class TimeChange extends ComplexProperty {
     /**
      * The absolute date.
      */
-    private Date absoluteDate;
+    private LocalDateTime absoluteDate;
 
     /**
      * The recurrence.
@@ -157,7 +155,7 @@ public final class TimeChange extends ComplexProperty {
      *
      * @return the absoluteDate
      */
-    public Date getAbsoluteDate() {
+    public LocalDateTime getAbsoluteDate() {
         return absoluteDate;
     }
 
@@ -166,7 +164,7 @@ public final class TimeChange extends ComplexProperty {
      *
      * @param absoluteDate the absoluteDate to set
      */
-    public void setAbsoluteDate(Date absoluteDate) {
+    public void setAbsoluteDate(LocalDateTime absoluteDate) {
         this.absoluteDate = absoluteDate;
         if (absoluteDate != null) {
             this.recurrence = null;
@@ -213,15 +211,13 @@ public final class TimeChange extends ComplexProperty {
             this.recurrence = new TimeChangeRecurrence();
             this.recurrence.loadFromXml(reader, reader.getLocalName());
             return true;
-        } else if (reader.getLocalName().equalsIgnoreCase(
-                XmlElementNames.AbsoluteDate)) {
-            Calendar cal = DatatypeConverter.parseDate(reader.readElementValue());
-            cal.setTimeZone(TimeZone.getTimeZone("UTC"));
-            this.absoluteDate = cal.getTime();
+        } else if (reader.getLocalName().equalsIgnoreCase(XmlElementNames.AbsoluteDate)) {
+            this.absoluteDate = DateTimeUtils.parseDateTime(reader.readElementValue());
             return true;
         } else if (reader.getLocalName().equalsIgnoreCase(XmlElementNames.Time)) {
-            Calendar cal = DatatypeConverter.parseTime(reader.readElementValue());
-            this.time = new Time(cal.getTime());
+            this.time = new Time(DateTimeUtils.parseTime(reader.readElementValue()));
+            // Calendar cal = DatatypeConverter.parseTime(reader.readElementValue());
+            // this.time = new Time(cal.getTime());
             return true;
         } else {
             return false;

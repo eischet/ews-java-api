@@ -30,7 +30,11 @@ import microsoft.exchange.webservices.data.core.XmlElementNames;
 import microsoft.exchange.webservices.data.core.enumeration.misc.XmlNamespace;
 import microsoft.exchange.webservices.data.core.enumeration.notification.EventType;
 
-import java.util.*;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Represents a collection of notification events.
@@ -161,8 +165,7 @@ public final class GetEventsResults {
      */
     private void loadNotificationEventFromXml(EwsServiceXmlReader reader,
                                               String eventElementName, EventType eventType) throws Exception {
-        Date date = reader.readElementValue(Date.class, XmlNamespace.Types,
-                XmlElementNames.TimeStamp);
+        LocalDateTime date = reader.readElementValue(LocalDateTime.class, XmlNamespace.Types, XmlElementNames.TimeStamp);
 
         NotificationEvent notificationEvent;
 

@@ -25,19 +25,15 @@ package microsoft.exchange.webservices.data.util;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.ZoneOffset;
-import java.time.ZonedDateTime;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
-import java.util.Date;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public final class DateTimeUtils {
 
     private static final Logger log = Logger.getLogger(DateTimeUtils.class.getCanonicalName());
-    private static final DateTimeFormatter[] DATE_TIME_FORMATS = createDateTimeFormats();
-    private static final DateTimeFormatter[] DATE_FORMATS = createDateFormats();
+    private static final Formatter[] DATE_TIME_FORMATS = createDateTimeFormats();
+
 
 
     private DateTimeUtils() {
@@ -52,11 +48,11 @@ public final class DateTimeUtils {
      * supplied timezone. UTC timezone will be assumed if no timezone is supplied.
      *
      * @param value The string value to parse.
-     * @return The parsed {@link Date}.
+     * @return The parsed {@link LocalDateTime}.
      * @throws java.lang.IllegalArgumentException If string can not be parsed.
      */
-    public static Date convertDateTimeStringToDate(String value) {
-        return parseInternal(value, false);
+    public static LocalDateTime convertDateTimeStringToDate(String value) {
+        return parseDateTime(value);
     }
 
     /**
@@ -65,72 +61,126 @@ public final class DateTimeUtils {
      * UTC timezone will be assumed if no timezone is supplied.
      *
      * @param value The string value to parse.
-     * @return The parsed {@link Date}.
+     * @return The parsed {@link LocalDate}.
      * @throws java.lang.IllegalArgumentException If string can not be parsed.
      */
-    public static Date convertDateStringToDate(String value) {
-        return parseInternal(value, true);
+    public static LocalDate convertDateStringToDate(String value) {
+        return parseDateOnly(value);
     }
 
-
+/*
     private static Date parseInternal(String value, boolean dateOnly) {
         String originalValue = value;
-
         if (value == null || value.isEmpty()) {
             return null;
-        } else {
-            if (value.endsWith("z") || value.endsWith("Z")) {
-                // This seems to be an edge case. Let's remove the Z to be sure.
-                value = value.substring(0, value.length() - 1); // + "Z";
-            }
+        }
+        // This seems to be an edge case. Let's upper-case the Z to be sure.
+        if (value.endsWith("z")) {
+            value = value.substring(0, value.length() - 1) + "Z";
+        }
 
-            if (dateOnly) {
-                for (final DateTimeFormatter dateFormat : DATE_FORMATS) {
-                    try {
-                        final LocalDate retval = dateFormat.parse(value, LocalDate::from);
-                        return Date.from(retval.atStartOfDay().toInstant(ZoneOffset.UTC));
-                        // joda: return format.parseDateTime(value).toDate();
-                    } catch (IllegalArgumentException | DateTimeParseException e) {
-                        log.log(Level.WARNING, String.format("cannot parse '%s' (as '%s') via format %s", originalValue, value, dateFormat), e);
-                        // Ignore and try the next pattern.
-                    }
-                }
-            } else {
-                for (final DateTimeFormatter format : DATE_TIME_FORMATS) {
-                    try {
-                        final ZonedDateTime retval = format.parse(value, ZonedDateTime::from);
-                        return Date.from(retval.toInstant());
-                        // joda: return format.parseDateTime(value).toDate();
-                    } catch (IllegalArgumentException | DateTimeParseException e) {
-                        log.log(Level.WARNING, String.format("cannot parse '%s' (as '%s') via format %s", originalValue, value, format), e);
-                        // Ignore and try the next pattern.
-                    }
-                }
+        for (final Formatter dateTimeFormat : DATE_TIME_FORMATS) {
+            final Date parsed = dateTimeFormat.parseDate(value, dateOnly);
+            if (parsed != null) {
+                return parsed;
             }
         }
 
-        throw new IllegalArgumentException(
-                String.format("Date String %s not in valid UTC/local format", originalValue));
+
+        throw new IllegalArgumentException(String.format("Date String %s not in valid UTC/local format for %s", originalValue, dateOnly ? "date" : "datetime"));
     }
 
-    private static DateTimeFormatter[] createDateTimeFormats() {
-        return new DateTimeFormatter[]{
-                DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ssZ").withZone(ZoneOffset.UTC),
-                DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSZ").withZone(ZoneOffset.UTC),
-                DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSSSSSZ").withZone(ZoneOffset.UTC),
-                DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss").withZone(ZoneOffset.UTC),
-                DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS").withZone(ZoneOffset.UTC),
-                DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSSSSS").withZone(ZoneOffset.UTC),
-                DateTimeFormatter.ofPattern("yyyy-MM-ddZ").withZone(ZoneOffset.UTC),
-                DateTimeFormatter.ofPattern("yyyy-MM-dd").withZone(ZoneOffset.UTC)
+
+ */
+    private static Formatter[] createDateTimeFormats() {
+        return new Formatter[]{
+                Formatter.of(DateTimeFormatter.ISO_LOCAL_DATE_TIME),
+                Formatter.of(DateTimeFormatter.ISO_OFFSET_DATE_TIME),
+                Formatter.of(DateTimeFormatter.ISO_ZONED_DATE_TIME),
+
+                Formatter.datetime("yyyy-MM-dd'T'HH:mm:ssZ"),
+                Formatter.datetime("yyyy-MM-dd'T'HH:mm:ss.SSSZ"),
+                Formatter.datetime("yyyy-MM-dd'T'HH:mm:ss.SSSSSSSZ"),
+                Formatter.datetime("yyyy-MM-dd'T'HH:mm:ss"),
+                Formatter.datetime("yyyy-MM-dd'T'HH:mm:ss.SSS"),
+                Formatter.datetime("yyyy-MM-dd'T'HH:mm:ss.SSSSSSS"),
+                Formatter.date("yyyy-MM-ddZ"),
+                Formatter.date("yyyy-MM-dd")
         };
     }
 
-    private static DateTimeFormatter[] createDateFormats() {
-        return new DateTimeFormatter[]{
-                DateTimeFormatter.ofPattern("yyyy-MM-ddZ").withZone(ZoneOffset.UTC),
-                DateTimeFormatter.ofPattern("yyyy-MM-dd").withZone(ZoneOffset.UTC)
-        };
+    public static LocalDate parseDateOnly(final String readElementValue) {
+        return null; // TODO: parse it
+    }
+
+    public static LocalDateTime parseDateTime(final String value) {
+        return null; // TODO: actually parse it
+    }
+
+    public static LocalTime parseTime(final String value) {
+        return null; // TODO: parse it
+    }
+
+    private static class Formatter {
+        private final String pattern;
+        private final DateTimeFormatter wrapped;
+        private final boolean dateOnly;
+
+        private Formatter(final String pattern, final boolean dateOnly) {
+            this.pattern = pattern;
+            this.wrapped = DateTimeFormatter.ofPattern(pattern); // .withZone(ZoneOffset.UTC);
+            this.dateOnly = dateOnly;
+        }
+
+        public Formatter(final DateTimeFormatter wrapped, final boolean dateOnly) {
+            this.pattern = wrapped.toString();
+            this.wrapped = wrapped;
+            this.dateOnly = dateOnly;
+        }
+
+        public static Formatter datetime(final String pattern) {
+            return new Formatter(pattern, false);
+        }
+
+        public static Formatter date(final String pattern) {
+            return new Formatter(pattern, true);
+        }
+
+        public static Formatter of(final DateTimeFormatter wrapped) {
+            return new Formatter(wrapped, false);
+        }
+/*
+        public Date parseDate(final String value, final boolean returnDateOnly) {
+            if (dateOnly) {
+                try {
+                    final LocalDate retval = wrapped.parse(value, LocalDate::from);
+                    return Date.from(retval.atStartOfDay().toInstant(ZoneOffset.UTC));
+                    // joda: return format.parseDateTime(value).toDate();
+                } catch (IllegalArgumentException | DateTimeParseException e) {
+                    log.log(Level.WARNING, String.format("cannot parse '%s' via format %s (date only=%s)", value, pattern, returnDateOnly), e);
+                }
+            } else {
+                try {
+                    final LocalDateTime retval = wrapped.parse(value, LocalDateTime::from);
+                    return Date.from(retval.toInstant(ZoneOffset.UTC));
+                } catch (IllegalArgumentException | DateTimeParseException e) {
+                    log.log(Level.WARNING, String.format("cannot parse '%s' via format %s (date only=%s)", value, pattern, returnDateOnly), e);
+                }
+                try {
+                    final ZonedDateTime retval = wrapped.parse(value, ZonedDateTime::from);
+                    return Date.from(retval.toInstant());
+                    // joda: return format.parseDateTime(value).toDate();
+                } catch (IllegalArgumentException | DateTimeParseException e) {
+                    log.log(Level.WARNING, String.format("cannot parse '%s' via format %s (date only=%s)", value, pattern, returnDateOnly), e);
+                }
+            }
+            return null;
+        }
+*/
+        @Override
+        public String toString() {
+            return pattern;
+        }
     }
 
 }

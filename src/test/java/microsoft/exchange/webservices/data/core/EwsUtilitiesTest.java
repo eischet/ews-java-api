@@ -146,7 +146,7 @@ public class EwsUtilitiesTest {
     Long input = Long.MAX_VALUE;
     assertEquals(input, EwsUtilities.parse(input.getClass(), input.toString()));
 
-    input = 0l;
+    input = 0L;
     assertEquals(input, EwsUtilities.parse(input.getClass(), input.toString()));
 
     input = Long.MIN_VALUE;

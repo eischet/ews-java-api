@@ -31,7 +31,7 @@ import microsoft.exchange.webservices.data.core.exception.service.local.ServiceX
 import microsoft.exchange.webservices.data.property.complex.recurrence.pattern.Recurrence;
 
 import javax.xml.stream.XMLStreamException;
-import java.util.Date;
+import java.time.LocalDate;
 
 /**
  * The Class NumberedRecurrenceRange.
@@ -56,7 +56,7 @@ public final class NumberedRecurrenceRange extends RecurrenceRange {
      * @param startDate           the start date
      * @param numberOfOccurrences the number of occurrences
      */
-    public NumberedRecurrenceRange(Date startDate,
+    public NumberedRecurrenceRange(LocalDate startDate,
                                    Integer numberOfOccurrences) {
         super(startDate);
         this.numberOfOccurrences = numberOfOccurrences;

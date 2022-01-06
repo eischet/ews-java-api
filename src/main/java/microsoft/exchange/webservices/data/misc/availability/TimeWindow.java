@@ -31,10 +31,9 @@ import microsoft.exchange.webservices.data.core.enumeration.misc.XmlNamespace;
 import microsoft.exchange.webservices.data.core.exception.service.local.ServiceXmlSerializationException;
 
 import javax.xml.stream.XMLStreamException;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.TimeZone;
+import java.time.Duration;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 /**
  * Represents a time period.
@@ -44,12 +43,12 @@ public class TimeWindow implements ISelfValidate {
     /**
      * The start time.
      */
-    private Date startTime;
+    private LocalDateTime startTime;
 
     /**
      * The end time.
      */
-    private Date endTime;
+    private LocalDateTime endTime;
 
     /**
      * Initializes a new instance of the "TimeWindow" class.
@@ -63,7 +62,7 @@ public class TimeWindow implements ISelfValidate {
      * @param startTime the start time
      * @param endTime   the end time
      */
-    public TimeWindow(Date startTime, Date endTime) {
+    public TimeWindow(LocalDateTime startTime, LocalDateTime endTime) {
         this();
         this.startTime = startTime;
         this.endTime = endTime;
@@ -74,7 +73,7 @@ public class TimeWindow implements ISelfValidate {
      *
      * @return the start time
      */
-    public Date getStartTime() {
+    public LocalDateTime getStartTime() {
         return startTime;
     }
 
@@ -83,7 +82,7 @@ public class TimeWindow implements ISelfValidate {
      *
      * @param startTime the new start time
      */
-    public void setStartTime(Date startTime) {
+    public void setStartTime(LocalDateTime startTime) {
         this.startTime = startTime;
     }
 
@@ -92,7 +91,7 @@ public class TimeWindow implements ISelfValidate {
      *
      * @return the end time
      */
-    public Date getEndTime() {
+    public LocalDateTime getEndTime() {
         return endTime;
     }
 
@@ -101,7 +100,7 @@ public class TimeWindow implements ISelfValidate {
      *
      * @param endTime the new end time
      */
-    public void setEndTime(Date endTime) {
+    public void setEndTime(LocalDateTime endTime) {
         this.endTime = endTime;
     }
 
@@ -159,8 +158,10 @@ public class TimeWindow implements ISelfValidate {
                                                String xmlElementName) throws XMLStreamException, ServiceXmlSerializationException {
         final String DateOnlyFormat = "yyyy-MM-dd'T'00:00:00";
 
-        DateFormat formatter = new SimpleDateFormat(DateOnlyFormat);
-        formatter.setTimeZone(TimeZone.getTimeZone("UTC"));
+        final DateTimeFormatter formatter = DateTimeFormatter.ofPattern(DateOnlyFormat);
+
+        //DateFormat formatter = new SimpleDateFormat(DateOnlyFormat);
+        //formatter.setTimeZone(TimeZone.getTimeZone("UTC"));
 
         String start = formatter.format(this.startTime);
         String end = formatter.format(this.endTime);
@@ -186,7 +187,7 @@ public class TimeWindow implements ISelfValidate {
      * @return the duration
      */
     public long getDuration() {
-        return this.endTime.getTime() - this.startTime.getTime();
+        return Duration.between(startTime, endTime).toMillis();
     }
 
     /**

@@ -28,7 +28,8 @@ import microsoft.exchange.webservices.data.core.XmlElementNames;
 import microsoft.exchange.webservices.data.core.enumeration.property.LegacyFreeBusyStatus;
 import microsoft.exchange.webservices.data.property.complex.ComplexProperty;
 
-import java.util.Date;
+import java.time.LocalDateTime;
+
 
 /**
  * Represents an event in a calendar.
@@ -38,12 +39,12 @@ public final class CalendarEvent extends ComplexProperty {
     /**
      * The start time.
      */
-    private Date startTime;
+    private LocalDateTime startTime;
 
     /**
      * The end time.
      */
-    private Date endTime;
+    private LocalDateTime endTime;
 
     /**
      * The free busy status.
@@ -67,7 +68,7 @@ public final class CalendarEvent extends ComplexProperty {
      *
      * @return the start time
      */
-    public Date getStartTime() {
+    public LocalDateTime getStartTime() {
         return startTime;
     }
 
@@ -76,7 +77,7 @@ public final class CalendarEvent extends ComplexProperty {
      *
      * @return the end time
      */
-    public Date getEndTime() {
+    public LocalDateTime getEndTime() {
         return endTime;
     }
 

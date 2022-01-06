@@ -32,7 +32,7 @@ import microsoft.exchange.webservices.data.core.exception.service.local.ServiceV
 import microsoft.exchange.webservices.data.core.service.item.Item;
 import microsoft.exchange.webservices.data.property.definition.PropertyDefinitionBase;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -81,7 +81,7 @@ public abstract class Attachment extends ComplexProperty {
     /**
      * The last modified time.
      */
-    private Date lastModifiedTime;
+    private LocalDateTime lastModifiedTime;
 
     /**
      * The is inline.
@@ -236,13 +236,9 @@ public abstract class Attachment extends ComplexProperty {
      * @return the last modified time
      * @throws ServiceVersionException the service version exception
      */
-    public Date getLastModifiedTime() throws ServiceVersionException {
-
-        EwsUtilities.validatePropertyVersion(this.getOwner().getService(),
-                ExchangeVersion.Exchange2010, "LastModifiedTime");
-
+    public LocalDateTime getLastModifiedTime() throws ServiceVersionException {
+        EwsUtilities.validatePropertyVersion(this.getOwner().getService(), ExchangeVersion.Exchange2010, "LastModifiedTime");
         return this.lastModifiedTime;
-
     }
 
     /**
@@ -253,10 +249,8 @@ public abstract class Attachment extends ComplexProperty {
      * @throws ServiceVersionException the service version exception
      */
     public boolean getIsInline() throws ServiceVersionException {
-        EwsUtilities.validatePropertyVersion(this.getOwner().getService(),
-                ExchangeVersion.Exchange2010, "IsInline");
+        EwsUtilities.validatePropertyVersion(this.getOwner().getService(), ExchangeVersion.Exchange2010, "IsInline");
         return this.isInline;
-
     }
 
     /**

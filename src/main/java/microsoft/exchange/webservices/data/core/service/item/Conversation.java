@@ -43,10 +43,11 @@ import microsoft.exchange.webservices.data.misc.OutParam;
 import microsoft.exchange.webservices.data.property.complex.*;
 import microsoft.exchange.webservices.data.property.definition.PropertyDefinition;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Represents a collection of Conversation related property.
@@ -343,16 +344,13 @@ public class Conversation extends ServiceObject {
      */
     public void deleteItems(FolderId contextFolderId, DeleteMode deleteMode)
             throws ServiceResponseException, IndexOutOfBoundsException, Exception {
-        HashMap<ConversationId, Date> m = new HashMap<ConversationId, Date>();
+        Map<ConversationId, LocalDateTime> m = new HashMap<>();
         m.put(this.getId(), this.getGlobalLastDeliveryTime());
 
-        List<HashMap<ConversationId, Date>> f = new ArrayList<HashMap<ConversationId, Date>>();
+        List<Map<ConversationId, LocalDateTime>> f = new ArrayList<>();
         f.add(m);
 
-        this.getService().deleteItemsInConversations(
-                f,
-                contextFolderId,
-                deleteMode).getResponseAtIndex(0).throwIfNecessary();
+        this.getService().deleteItemsInConversations(f, contextFolderId, deleteMode).getResponseAtIndex(0).throwIfNecessary();
     }
 
 
@@ -372,15 +370,13 @@ public class Conversation extends ServiceObject {
             FolderId contextFolderId,
             FolderId destinationFolderId) throws ServiceResponseException,
             IndexOutOfBoundsException, Exception {
-        HashMap<ConversationId, Date> m = new HashMap<ConversationId, Date>();
+        Map<ConversationId, LocalDateTime> m = new HashMap<>();
         m.put(this.getId(), this.getGlobalLastDeliveryTime());
 
-        List<HashMap<ConversationId, Date>> f = new ArrayList<HashMap<ConversationId, Date>>();
+        List<Map<ConversationId, LocalDateTime>> f = new ArrayList<>();
         f.add(m);
 
-        this.getService().moveItemsInConversations(
-                        f, contextFolderId, destinationFolderId).
-                getResponseAtIndex(0).throwIfNecessary();
+        this.getService().moveItemsInConversations(f, contextFolderId, destinationFolderId).getResponseAtIndex(0).throwIfNecessary();
     }
 
     /**
@@ -399,15 +395,13 @@ public class Conversation extends ServiceObject {
             FolderId contextFolderId,
             FolderId destinationFolderId) throws ServiceResponseException,
             IndexOutOfBoundsException, Exception {
-        HashMap<ConversationId, Date> m = new HashMap<ConversationId, Date>();
+        Map<ConversationId, LocalDateTime> m = new HashMap<>();
         m.put(this.getId(), this.getGlobalLastDeliveryTime());
 
-        List<HashMap<ConversationId, Date>> f = new ArrayList<HashMap<ConversationId, Date>>();
+        List<Map<ConversationId, LocalDateTime>> f = new ArrayList<>();
         f.add(m);
 
-        this.getService().copyItemsInConversations(
-                        f, contextFolderId, destinationFolderId).
-                getResponseAtIndex(0).throwIfNecessary();
+        this.getService().copyItemsInConversations(f, contextFolderId, destinationFolderId).getResponseAtIndex(0).throwIfNecessary();
     }
 
     /**
@@ -428,10 +422,10 @@ public class Conversation extends ServiceObject {
             FolderId contextFolderId,
             boolean isRead) throws ServiceResponseException,
             IndexOutOfBoundsException, Exception {
-        HashMap<ConversationId, Date> m = new HashMap<ConversationId, Date>();
+        Map<ConversationId, LocalDateTime> m = new HashMap<>();
         m.put(this.getId(), this.getGlobalLastDeliveryTime());
 
-        List<HashMap<ConversationId, Date>> f = new ArrayList<HashMap<ConversationId, Date>>();
+        List<Map<ConversationId, LocalDateTime>> f = new ArrayList<>();
         f.add(m);
 
         this.getService().setReadStateForItemsInConversations(
@@ -581,7 +575,7 @@ public class Conversation extends ServiceObject {
      * @return Date
      * @throws Exception
      */
-    public Date getLastDeliveryTime() throws Exception {
+    public LocalDateTime getLastDeliveryTime() throws Exception {
         return getPropertyBag().getObjectFromPropertyDefinition(
                 ConversationSchema.LastDeliveryTime);
     }
@@ -593,9 +587,8 @@ public class Conversation extends ServiceObject {
      * @return Date
      * @throws Exception
      */
-    public Date getGlobalLastDeliveryTime() throws Exception {
-        return getPropertyBag().getObjectFromPropertyDefinition(
-                ConversationSchema.GlobalLastDeliveryTime);
+    public LocalDateTime getGlobalLastDeliveryTime() throws Exception {
+        return getPropertyBag().getObjectFromPropertyDefinition(ConversationSchema.GlobalLastDeliveryTime);
     }
 
     /**

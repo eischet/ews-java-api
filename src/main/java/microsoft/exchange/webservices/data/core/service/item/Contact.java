@@ -43,7 +43,8 @@ import microsoft.exchange.webservices.data.property.complex.*;
 
 import java.io.File;
 import java.io.InputStream;
-import java.util.Date;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 /**
  * Represents a contact. Properties available on contacts are defined in the
@@ -519,7 +520,7 @@ public class Contact extends Item {
      * @return the birthday
      * @throws ServiceLocalException the service local exception
      */
-    public Date getBirthday() throws ServiceLocalException {
+    public LocalDate getBirthday() throws ServiceLocalException {
         return getPropertyBag().getObjectFromPropertyDefinition(
                 ContactSchema.Birthday);
 
@@ -531,7 +532,7 @@ public class Contact extends Item {
      * @param value the new birthday
      * @throws Exception the exception
      */
-    public void setBirthday(Date value) throws Exception {
+    public void setBirthday(LocalDate value) throws Exception {
         this.getPropertyBag().setObjectFromPropertyDefinition(
                 ContactSchema.Birthday, value);
     }
@@ -856,7 +857,7 @@ public class Contact extends Item {
      * @return the wedding anniversary
      * @throws ServiceLocalException the service local exception
      */
-    public Date getWeddingAnniversary() throws ServiceLocalException {
+    public LocalDate getWeddingAnniversary() throws ServiceLocalException {
         return getPropertyBag().getObjectFromPropertyDefinition(
                 ContactSchema.WeddingAnniversary);
     }
@@ -867,7 +868,7 @@ public class Contact extends Item {
      * @param value the new wedding anniversary
      * @throws Exception the exception
      */
-    public void setWeddingAnniversary(Date value) throws Exception {
+    public void setWeddingAnniversary(LocalDate value) throws Exception {
         this.getPropertyBag().setObjectFromPropertyDefinition(
                 ContactSchema.WeddingAnniversary, value);
     }

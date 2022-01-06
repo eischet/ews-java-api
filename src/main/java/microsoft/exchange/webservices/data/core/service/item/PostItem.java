@@ -41,8 +41,8 @@ import microsoft.exchange.webservices.data.property.complex.ItemAttachment;
 import microsoft.exchange.webservices.data.property.complex.ItemId;
 import microsoft.exchange.webservices.data.property.complex.MessageBody;
 
+import java.time.LocalDateTime;
 import java.util.Arrays;
-import java.util.Date;
 
 /**
  * Represents a post item. Properties available on post item are defined in the
@@ -304,9 +304,8 @@ public final class PostItem extends Item {
      * @return the posted time
      * @throws ServiceLocalException the service local exception
      */
-    public Date getPostedTime() throws ServiceLocalException {
-        return getPropertyBag().getObjectFromPropertyDefinition(
-                PostItemSchema.PostedTime);
+    public LocalDateTime getPostedTime() throws ServiceLocalException {
+        return getPropertyBag().getObjectFromPropertyDefinition(PostItemSchema.PostedTime);
     }
 
     /**
@@ -316,8 +315,7 @@ public final class PostItem extends Item {
      * @throws ServiceLocalException the service local exception
      */
     public String getReferences() throws ServiceLocalException {
-        return getPropertyBag().getObjectFromPropertyDefinition(
-                EmailMessageSchema.References);
+        return getPropertyBag().getObjectFromPropertyDefinition(EmailMessageSchema.References);
     }
 
     /**

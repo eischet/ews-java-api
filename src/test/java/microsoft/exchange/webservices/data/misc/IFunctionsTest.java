@@ -31,8 +31,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
+import java.time.LocalDateTime;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.UUID;
 
 @RunWith(JUnit4.class)
@@ -103,7 +103,7 @@ public class IFunctionsTest {
   @Test
   public void testDateTimeToXSDateTime() {
     final IFunctions.DateTimeToXSDateTime f = IFunctions.DateTimeToXSDateTime.INSTANCE;
-    final Date value = new Date();
+    final LocalDateTime value = LocalDateTime.now();
     Assert.assertEquals(EwsUtilities.dateTimeToXSDateTime(value), f.func(value));
   }
 
