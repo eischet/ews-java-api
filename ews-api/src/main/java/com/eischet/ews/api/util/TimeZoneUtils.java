@@ -52,14 +52,25 @@ public final class TimeZoneUtils {
         if (timeZone == null) {
             throw new IllegalArgumentException("Parameter \"timeZone\" must be defined");
         }
-
         final String id = timeZone.getID();
         return olsonTimeZoneToMs.get(id);
     }
 
-    // TODO: Missing Europe/Saratov, Europe/Astrakhan, Europe/Kirov, America/Nuuk, Europe/Ulyanovsk, America/Punta_Arenas
+    // TODO: Still Missing Europe/Kirov, America/Nuuk, Europe/Ulyanovsk,
     public static Map<String, String> createOlsonTimeZoneToMsMap() {
         final Map<String, String> map = new HashMap<String, String>();
+
+        // --- new timezones appeared in Java 9+, added in manually from tzutil /l on a win10 machine:
+        map.put("Europe/Saratov", "Saratov Standard Time");
+        map.put("Europe/Astrakhan", "Astrakhan Standard Time");
+        map.put("America/Punta_Arenas", "Magallanes Standard Time");
+
+        map.put("Europe/Kirov", "W. Europe Standard Time"); // TODO: this is just a guess. I have no idea what this should actually be.
+        map.put("Europe/Ulyanovsk", "W. Europe Standard Time"); // TODO: this is just a guess. I have no idea what this should actually be.
+        map.put("America/Nuuk", "Alaskan Standard Time");  // TODO: this is just a wild guess. I have no idea what this should actually be.
+
+        // ---- old ones:
+
         map.put("Africa/Abidjan", "Greenwich Standard Time");
         map.put("Africa/Accra", "Greenwich Standard Time");
         map.put("Africa/Addis_Ababa", "E. Africa Standard Time");
