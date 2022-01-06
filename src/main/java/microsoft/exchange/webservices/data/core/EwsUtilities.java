@@ -67,6 +67,7 @@ import java.text.SimpleDateFormat;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.*;
 import java.util.regex.Matcher;
@@ -1323,13 +1324,15 @@ public final class EwsUtilities {
     }
 
     private static String formatDate(LocalDateTime date, String format) {
-        final DateFormat utcFormatter = createDateFormat(format);
+        final DateTimeFormatter utcFormatter = DateTimeFormatter.ofPattern(format);
+        // final DateFormat utcFormatter = createDateFormat(format);
         return utcFormatter.format(date);
     }
 
 
     private static String formatDate(LocalDate date, String format) {
-        final DateFormat utcFormatter = createDateFormat(format);
+        final DateTimeFormatter utcFormatter = DateTimeFormatter.ofPattern(format);
+        // final DateFormat utcFormatter = createDateFormat(format);
         return utcFormatter.format(date);
     }
 

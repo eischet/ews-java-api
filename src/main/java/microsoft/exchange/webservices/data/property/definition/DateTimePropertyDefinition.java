@@ -94,7 +94,7 @@ public class DateTimePropertyDefinition extends PropertyDefinition {
     public void loadPropertyValueFromXml(EwsServiceXmlReader reader, PropertyBag propertyBag)
             throws Exception {
         String value = reader.readElementValue(XmlNamespace.Types, getXmlElement());
-        propertyBag.setObjectFromPropertyDefinition(this, DateTimeUtils.convertDateTimeStringToDate(value));
+        propertyBag.setObjectFromPropertyDefinition(this, DateTimeUtils.parseDateTime(value));
     }
 
 

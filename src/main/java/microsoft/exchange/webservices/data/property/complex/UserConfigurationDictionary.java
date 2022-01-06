@@ -587,7 +587,7 @@ public final class UserConfigurationDictionary extends ComplexProperty
         } else if (type.equals(UserConfigurationDictionaryObjectType.ByteArray)) {
             dictionaryObject = Base64.decodeBase64(value.get(0));
         } else if (type.equals(UserConfigurationDictionaryObjectType.DateTime)) {
-            LocalDateTime dateTime = DateTimeUtils.convertDateTimeStringToDate(value.get(0));
+            LocalDateTime dateTime = DateTimeUtils.parseDateTime(value.get(0));
             if (dateTime != null) {
                 dictionaryObject = dateTime;
             } else {

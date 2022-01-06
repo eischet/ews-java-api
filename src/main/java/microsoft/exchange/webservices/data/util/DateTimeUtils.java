@@ -41,62 +41,13 @@ public final class DateTimeUtils {
     }
 
 
-    /**
-     * Converts a date time string to local date time.
-     * <p>
-     * Note: this method also allows dates without times, in which case the time will be 00:00:00 in the
-     * supplied timezone. UTC timezone will be assumed if no timezone is supplied.
-     *
-     * @param value The string value to parse.
-     * @return The parsed {@link LocalDateTime}.
-     * @throws java.lang.IllegalArgumentException If string can not be parsed.
-     */
-    public static LocalDateTime convertDateTimeStringToDate(String value) {
-        return parseDateTime(value);
-    }
-
-    /**
-     * Converts a date string to local date time.
-     * <p>
-     * UTC timezone will be assumed if no timezone is supplied.
-     *
-     * @param value The string value to parse.
-     * @return The parsed {@link LocalDate}.
-     * @throws java.lang.IllegalArgumentException If string can not be parsed.
-     */
-    public static LocalDate convertDateStringToDate(String value) {
-        return parseDateOnly(value);
-    }
-
-/*
-    private static Date parseInternal(String value, boolean dateOnly) {
-        String originalValue = value;
-        if (value == null || value.isEmpty()) {
-            return null;
-        }
-        // This seems to be an edge case. Let's upper-case the Z to be sure.
-        if (value.endsWith("z")) {
-            value = value.substring(0, value.length() - 1) + "Z";
-        }
-
-        for (final Formatter dateTimeFormat : DATE_TIME_FORMATS) {
-            final Date parsed = dateTimeFormat.parseDate(value, dateOnly);
-            if (parsed != null) {
-                return parsed;
-            }
-        }
-
-
-        throw new IllegalArgumentException(String.format("Date String %s not in valid UTC/local format for %s", originalValue, dateOnly ? "date" : "datetime"));
-    }
-
-
- */
     private static Formatter[] createDateTimeFormats() {
         return new Formatter[]{
                 Formatter.of(DateTimeFormatter.ISO_LOCAL_DATE_TIME),
                 Formatter.of(DateTimeFormatter.ISO_OFFSET_DATE_TIME),
                 Formatter.of(DateTimeFormatter.ISO_ZONED_DATE_TIME),
+                Formatter.of(DateTimeFormatter.ISO_LOCAL_DATE),
+                Formatter.of(DateTimeFormatter.ISO_DATE),
 
                 Formatter.datetime("yyyy-MM-dd'T'HH:mm:ssZ"),
                 Formatter.datetime("yyyy-MM-dd'T'HH:mm:ss.SSSZ"),
@@ -109,12 +60,30 @@ public final class DateTimeUtils {
         };
     }
 
-    public static LocalDate parseDateOnly(final String readElementValue) {
-        return null; // TODO: parse it
+    public static LocalDate parseDateOnly(String value) {
+        if (value == null || value.isBlank()) {
+            return null;
+        }
+        if (value.endsWith("Z")) {
+            value = value.substring(0, value.length() - 1);
+        }
+        for (final Formatter dateTimeFormat : DATE_TIME_FORMATS) {
+            LocalDate result = dateTimeFormat.parseLocalDate(value);
+            if (result != null) {
+                return result;
+            }
+        }
+        return null;
     }
 
     public static LocalDateTime parseDateTime(final String value) {
-        return null; // TODO: actually parse it
+        for (final Formatter dateTimeFormat : DATE_TIME_FORMATS) {
+            LocalDateTime result = dateTimeFormat.parseLocalDateTime(value);
+            if (result != null) {
+                return result;
+            }
+        }
+        return null;
     }
 
     public static LocalTime parseTime(final String value) {
@@ -180,6 +149,29 @@ public final class DateTimeUtils {
         @Override
         public String toString() {
             return pattern;
+        }
+
+        public LocalDate parseLocalDate(final String value) {
+            if (dateOnly) {
+                try {
+                    return wrapped.parse(value, LocalDate::from);
+                } catch (RuntimeException e) {
+                    log.warning(() -> String.format("cannot parse value '%s' with pattern '%s' (%s) as LocalDate", value, pattern, e.getMessage()));
+                    return null;
+                }
+            } else {
+                return null;
+            }
+        }
+
+
+        public LocalDateTime parseLocalDateTime(final String value) {
+            try {
+                return wrapped.parse(value, LocalDateTime::from);
+            } catch (RuntimeException e) {
+                log.warning(() -> String.format("cannot parse value '%s' with pattern '%s' (%s) as LocalDate", value, pattern, e.getMessage()));
+                return null;
+            }
         }
     }
 

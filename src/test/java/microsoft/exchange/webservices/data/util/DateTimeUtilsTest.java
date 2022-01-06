@@ -41,14 +41,14 @@ public class DateTimeUtilsTest {
 
     @Test
     public void testDateTimeEmpty() {
-        assertNull(DateTimeUtils.convertDateTimeStringToDate(null));
-        assertNull(DateTimeUtils.convertDateTimeStringToDate(""));
+        assertNull(DateTimeUtils.parseDateTime(null));
+        assertNull(DateTimeUtils.parseDateTime(""));
     }
 
     @Test
     public void testDateTimeZulu() {
         String dateString = "2015-01-08T10:11:12Z";
-        LocalDateTime parsed = DateTimeUtils.convertDateTimeStringToDate(dateString);
+        LocalDateTime parsed = DateTimeUtils.parseDateTime(dateString);
         assertEquals(2015, parsed.getYear());
         assertEquals(1, parsed.getMonthValue());
         assertEquals(8, parsed.getDayOfMonth());
@@ -60,9 +60,9 @@ public class DateTimeUtilsTest {
     @Test
     public void testDateTimeZuluLowerZ() {
         String dateString = "2015-01-08T10:11:12z";
-        LocalDateTime parsed = DateTimeUtils.convertDateTimeStringToDate(dateString);
+        LocalDateTime parsed = DateTimeUtils.parseDateTime(dateString);
         assertEquals(2015, parsed.getYear());
-        assertEquals(1, parsed.getMonth());
+        assertEquals(1, parsed.getMonthValue());
         assertEquals(8, parsed.getDayOfMonth());
         assertEquals(10, parsed.getHour());
         assertEquals(11, parsed.getMinute());
@@ -72,7 +72,7 @@ public class DateTimeUtilsTest {
     @Test
     public void testDateTimeZuluWithPrecision() {
         String dateString = "2015-01-08T10:11:12.123Z";
-        LocalDateTime parsed = DateTimeUtils.convertDateTimeStringToDate(dateString);
+        LocalDateTime parsed = DateTimeUtils.parseDateTime(dateString);
         assertEquals(2015, parsed.getYear());
         assertEquals(1, parsed.getMonthValue());
         assertEquals(8, parsed.getDayOfMonth());
@@ -84,7 +84,7 @@ public class DateTimeUtilsTest {
     @Test
     public void testDateTimeZuluWithMilliseconds() {
         String dateString = "9999-12-30T23:59:59.9999999Z";
-        LocalDateTime parsed = DateTimeUtils.convertDateTimeStringToDate(dateString);
+        LocalDateTime parsed = DateTimeUtils.parseDateTime(dateString);
         assertEquals(9999, parsed.getYear());
         assertEquals(12, parsed.getMonthValue());
         assertEquals(30, parsed.getDayOfMonth());
@@ -96,7 +96,7 @@ public class DateTimeUtilsTest {
     @Test
     public void testDateTimeWithTimeZone() {
         String dateString = "2015-01-08T10:11:12+0200";
-        LocalDateTime parsed = DateTimeUtils.convertDateTimeStringToDate(dateString);
+        LocalDateTime parsed = DateTimeUtils.parseDateTime(dateString);
         assertEquals(2015, parsed.getYear());
         assertEquals(1, parsed.getMonthValue());
         assertEquals(8, parsed.getDayOfMonth());
@@ -108,7 +108,7 @@ public class DateTimeUtilsTest {
     @Test
     public void testDateTimeWithTimeZoneWithColon() {
         String dateString = "2015-01-08T10:11:12-02:00";
-        LocalDateTime parsed = DateTimeUtils.convertDateTimeStringToDate(dateString);
+        LocalDateTime parsed = DateTimeUtils.parseDateTime(dateString);
         assertEquals(2015, parsed.getYear());
         assertEquals(1, parsed.getMonthValue());
         assertEquals(8, parsed.getDayOfMonth());
@@ -120,7 +120,7 @@ public class DateTimeUtilsTest {
     @Test
     public void testDateTime() {
         String dateString = "2015-01-08T10:11:12";
-        LocalDateTime parsed = DateTimeUtils.convertDateTimeStringToDate(dateString);
+        LocalDateTime parsed = DateTimeUtils.parseDateTime(dateString);
         assertEquals(2015, parsed.getYear());
         assertEquals(1, parsed.getMonthValue());
         assertEquals(8, parsed.getDayOfMonth());
@@ -152,8 +152,8 @@ public class DateTimeUtilsTest {
 
     @Test
     public void testDateOnlyEmpty() {
-        assertNull(DateTimeUtils.convertDateStringToDate(null));
-        assertNull(DateTimeUtils.convertDateStringToDate(""));
+        assertNull(DateTimeUtils.parseDateOnly(null));
+        assertNull(DateTimeUtils.parseDateOnly(""));
     }
 
     @Test
@@ -161,7 +161,7 @@ public class DateTimeUtilsTest {
         String dateString = "2015-01-08Z";
         LocalDate parsed = DateTimeUtils.parseDateOnly(dateString);
         assertEquals(2015, parsed.getYear());
-        assertEquals(0, parsed.getMonthValue());
+        assertEquals(1, parsed.getMonthValue());
         assertEquals(8, parsed.getDayOfMonth());
     }
 
@@ -170,7 +170,7 @@ public class DateTimeUtilsTest {
         String dateString = "2015-01-08z";
         LocalDate parsed = DateTimeUtils.parseDateOnly(dateString);
         assertEquals(2015, parsed.getYear());
-        assertEquals(0, parsed.getMonth());
+        assertEquals(1, parsed.getMonth());
         assertEquals(8, parsed.getDayOfMonth());
         //assertEquals(0, calendar.get(Calendar.HOUR_OF_DAY));
         //assertEquals(0, calendar.get(Calendar.MINUTE));
@@ -206,7 +206,7 @@ public class DateTimeUtilsTest {
     @Test
     public void testDateOnlyWithoutTimeZone() {
         String dateString = "2015-01-08";
-        LocalDate parsed = DateTimeUtils.convertDateStringToDate(dateString);
+        LocalDate parsed = DateTimeUtils.parseDateOnly(dateString);
         assertEquals(2015, parsed.getYear());
         assertEquals(1, parsed.getMonth());
         assertEquals(8, parsed.getDayOfMonth());
@@ -214,7 +214,7 @@ public class DateTimeUtilsTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void testConvertDateStringToDateBadFormat() {
-        DateTimeUtils.convertDateStringToDate("Monday, May, 1988");
+        DateTimeUtils.parseDateOnly("Monday, May, 1988");
     }
 
     @Test(expected = UnsupportedOperationException.class)

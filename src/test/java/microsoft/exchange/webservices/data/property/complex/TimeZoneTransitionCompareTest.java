@@ -21,7 +21,7 @@ package microsoft.exchange.webservices.data.property.complex;
 
 import static org.mockito.Mockito.doReturn;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 import microsoft.exchange.webservices.data.property.complex.time.AbsoluteDateTransition;
 import microsoft.exchange.webservices.data.property.complex.time.TimeZoneDefinition;
@@ -40,7 +40,7 @@ public class TimeZoneTransitionCompareTest {
   public void testAbsoluteDateTransitionsEqual() {
     TimeZoneDefinition timeZoneDefinition = new TimeZoneDefinition();
 
-    Date date = new Date();
+    LocalDateTime date = LocalDateTime.now();
 
     AbsoluteDateTransition first = Mockito.mock(AbsoluteDateTransition.class);
     AbsoluteDateTransition second = Mockito.mock(AbsoluteDateTransition.class);
@@ -55,9 +55,9 @@ public class TimeZoneTransitionCompareTest {
   public void testAbsoluteDateTransitionsLess() {
     TimeZoneDefinition timeZoneDefinition = new TimeZoneDefinition();
 
-    Date date1 = new Date();
-    Date date2 = new Date(date1.getTime() + 1);
-    
+    LocalDateTime date1 = LocalDateTime.now();
+    LocalDateTime date2 = date1.plusNanos(1000);
+
     AbsoluteDateTransition first = Mockito.mock(AbsoluteDateTransition.class);
     AbsoluteDateTransition second = Mockito.mock(AbsoluteDateTransition.class);
 
@@ -71,9 +71,9 @@ public class TimeZoneTransitionCompareTest {
   public void testAbsoluteDateTransitionsGreater() {
     TimeZoneDefinition timeZoneDefinition = new TimeZoneDefinition();
 
-    Date date1 = new Date();
-    Date date2 = new Date(date1.getTime() - 1);
-    
+    LocalDateTime date1 = LocalDateTime.now();
+    LocalDateTime date2 = date1.minusNanos(1000);
+
     AbsoluteDateTransition first = Mockito.mock(AbsoluteDateTransition.class);
     AbsoluteDateTransition second = Mockito.mock(AbsoluteDateTransition.class);
 
@@ -87,7 +87,7 @@ public class TimeZoneTransitionCompareTest {
   public void testAbsoluteDateTransitionAndTimeZoneTransition() {
     TimeZoneDefinition timeZoneDefinition = new TimeZoneDefinition();
 
-    Date date1 = new Date();
+    LocalDateTime date1 = LocalDateTime.now();
     
     AbsoluteDateTransition first = Mockito.mock(AbsoluteDateTransition.class);
     TimeZoneTransition second = Mockito.mock(TimeZoneTransition.class);
@@ -100,9 +100,9 @@ public class TimeZoneTransitionCompareTest {
   @Test
   public void testAbsoluteDateTransitionAndNull() {
     TimeZoneDefinition timeZoneDefinition = new TimeZoneDefinition();
-   
-    Date date1 = new Date();   
-    AbsoluteDateTransition first = Mockito.mock(AbsoluteDateTransition.class);  
+
+    LocalDateTime date1 = LocalDateTime.now();
+    AbsoluteDateTransition first = Mockito.mock(AbsoluteDateTransition.class);
     doReturn(date1).when(first).getDateTime();
 
     Assert.assertEquals(1, timeZoneDefinition.compare(first, null));
@@ -111,9 +111,9 @@ public class TimeZoneTransitionCompareTest {
   @Test
   public void testNullAndAbsoluteDateTransition() {
     TimeZoneDefinition timeZoneDefinition = new TimeZoneDefinition();
-    
-    Date date1 = new Date();
-    AbsoluteDateTransition second = Mockito.mock(AbsoluteDateTransition.class);    
+
+    LocalDateTime date1 = LocalDateTime.now();
+    AbsoluteDateTransition second = Mockito.mock(AbsoluteDateTransition.class);
     doReturn(date1).when(second).getDateTime();
 
     Assert.assertEquals(-1, timeZoneDefinition.compare(null, second));
@@ -123,7 +123,7 @@ public class TimeZoneTransitionCompareTest {
   public void testCompareSameObject() {
     TimeZoneDefinition timeZoneDefinition = new TimeZoneDefinition();
 
-    Date date1 = new Date();    
+    LocalDateTime date1 = LocalDateTime.now();
     AbsoluteDateTransition first = Mockito.mock(AbsoluteDateTransition.class);
     doReturn(date1).when(first).getDateTime();
 
