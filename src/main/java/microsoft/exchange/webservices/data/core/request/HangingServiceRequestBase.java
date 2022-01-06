@@ -265,7 +265,10 @@ public abstract class HangingServiceRequestBase<T> extends ServiceRequestBase<T>
      */
     public void disconnect() {
         synchronized (this) {
-            response.close();
+            try {
+                response.close();
+            } catch (IOException ignored) {
+            }
             this.disconnect(HangingRequestDisconnectReason.UserInitiated, null);
         }
     }
@@ -278,7 +281,10 @@ public abstract class HangingServiceRequestBase<T> extends ServiceRequestBase<T>
      */
     public void disconnect(HangingRequestDisconnectReason reason, Exception exception) {
         if (this.isConnected()) {
-            response.close();
+            try {
+                response.close();
+            } catch (IOException ignored) {
+            }
             this.internalOnDisconnect(reason, exception);
         }
     }
@@ -343,9 +349,7 @@ public abstract class HangingServiceRequestBase<T> extends ServiceRequestBase<T>
         // Do nothing.
         try {
             ewsXmlReader.read(new XmlNodeType(XmlNodeType.START_DOCUMENT));
-        } catch (XmlException ex) {
-            throw new ServiceRequestException("The response received from the service didn't contain valid XML.", ex);
-        } catch (ServiceXmlDeserializationException ex) {
+        } catch (XmlException | ServiceXmlDeserializationException ex) {
             throw new ServiceRequestException("The response received from the service didn't contain valid XML.", ex);
         }
     }

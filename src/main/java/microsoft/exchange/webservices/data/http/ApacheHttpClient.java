@@ -3,9 +3,19 @@ package microsoft.exchange.webservices.data.http;
 import microsoft.exchange.webservices.data.EWSConstants;
 import microsoft.exchange.webservices.data.core.WebProxy;
 import microsoft.exchange.webservices.data.core.exception.http.EWSHttpException;
+import microsoft.exchange.webservices.data.core.request.HttpWebRequest;
 import microsoft.exchange.webservices.data.util.IOUtils;
+import org.apache.http.Header;
+import org.apache.http.HttpHost;
+import org.apache.http.auth.AuthScope;
+import org.apache.http.auth.NTCredentials;
 import org.apache.http.client.AuthenticationStrategy;
 import org.apache.http.client.CookieStore;
+import org.apache.http.client.CredentialsProvider;
+import org.apache.http.client.config.AuthSchemes;
+import org.apache.http.client.config.RequestConfig;
+import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.protocol.HttpClientContext;
 import org.apache.http.config.Registry;
 import org.apache.http.config.RegistryBuilder;
@@ -13,16 +23,17 @@ import org.apache.http.conn.HttpClientConnectionManager;
 import org.apache.http.conn.socket.ConnectionSocketFactory;
 import org.apache.http.conn.socket.PlainConnectionSocketFactory;
 import org.apache.http.impl.client.BasicCookieStore;
+import org.apache.http.impl.client.BasicCredentialsProvider;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.impl.conn.BasicHttpClientConnectionManager;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
+import org.apache.http.util.EntityUtils;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.net.URL;
+import java.io.*;
 import java.security.GeneralSecurityException;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Map;
 
 public class ApacheHttpClient implements ExchangeHttpClient {
@@ -145,7 +156,7 @@ public class ApacheHttpClient implements ExchangeHttpClient {
     public Request createRequest() {
         HttpClientWebRequest request = new HttpClientWebRequest(httpClient, httpContext);
         request.setProxy(getWebProxy());
-        return new ApacheRequest(request);
+        return request;
     }
 
     @Override
@@ -156,161 +167,311 @@ public class ApacheHttpClient implements ExchangeHttpClient {
 
         HttpClientWebRequest request = new HttpClientWebRequest(httpPoolingClient, httpContext);
         request.setProxy(getWebProxy());
-        return new ApacheRequest(request);
+        return request;
     }
 
-    private static class ApacheRequest implements Request {
+    /**
+     * HttpClientWebRequest is used for making request to the server through NTLM Authentication by using Apache
+     * HttpClient 3.1 and JCIFS Library.
+     */
+    public static class HttpClientWebRequest extends HttpWebRequest implements Request {
 
-        private final HttpClientWebRequest request;
+        // TODO: LOL, I'd thought this one was from Apache HTTP Client; turns out it's another layer to remove/refactor
 
-        public ApacheRequest(final HttpClientWebRequest request) {
-            this.request = request;
+        /**
+         * The Http Method.
+         */
+        private HttpPost httpPost = null;
+        private CloseableHttpResponse response = null;
+
+        private final CloseableHttpClient httpClient;
+        private final HttpClientContext httpContext;
+
+
+        /**
+         * Instantiates a new http native web request.
+         */
+        public HttpClientWebRequest(CloseableHttpClient httpClient, HttpClientContext httpContext) {
+            this.httpClient = httpClient;
+            this.httpContext = httpContext;
         }
 
+        /**
+         * Releases the connection by Closing.
+         */
         @Override
-        public void setUrl(final URL toURL) {
-            request.setUrl(toURL);
+        public void close() throws IOException {
+            // First check if we can close the response, by consuming the complete response
+            // This releases the connection but keeps it alive for future request
+            // If that is not possible, we simply cleanup the whole connection
+            if (response != null && response.getEntity() != null) {
+                EntityUtils.consume(response.getEntity());
+            } else if (httpPost != null) {
+                httpPost.releaseConnection();
+            }
+
+            // We set httpPost to null to prevent the connection from being closed again by an accidental
+            // second call to close()
+            // The response is kept, in case something in the library still wants to read something from it,
+            // like response code or headers
+            httpPost = null;
         }
 
-        @Override
-        public void setRequestMethod(final String method) {
-            request.setRequestMethod(method);
-        }
-
-        @Override
-        public void setAllowAutoRedirect(final boolean b) {
-            request.setAllowAutoRedirect(b);
-        }
-
-        @Override
-        public void setPreAuthenticate(final boolean preAuthenticate) {
-            request.setPreAuthenticate(preAuthenticate);
-        }
-
-        @Override
-        public void setTimeout(final int timeout) {
-            request.setTimeout(timeout);
-        }
-
-        @Override
-        public void setContentType(final String s) {
-            request.setContentType(s);
-        }
-
-        @Override
-        public void setAccept(final String s) {
-            request.setAccept(s);
-        }
-
-        @Override
-        public void setUserAgent(final String userAgent) {
-            request.setUserAgent(userAgent);
-        }
-
-        @Override
-        public void setAcceptGzipEncoding(final boolean acceptGzipEncoding) {
-            request.setAcceptGzipEncoding(acceptGzipEncoding);
-        }
-
-        @Override
-        public void setHeaders(final Map<String, String> httpHeaders) {
-            request.setHeaders(httpHeaders);
-        }
-
-        @Override
-        public void setUseDefaultCredentials(final boolean useDefaultCredentials) {
-            request.setUseDefaultCredentials(useDefaultCredentials);
-        }
-
+        /**
+         * Prepares the request by setting appropriate headers, authentication, timeouts, etc.
+         */
         @Override
         public void prepareConnection() {
-            request.prepareConnection();
+            httpPost = new HttpPost(getUrl().toString());
+
+            // Populate headers.
+            httpPost.addHeader("Content-type", getContentType());
+            httpPost.addHeader("User-Agent", getUserAgent());
+            httpPost.addHeader("Accept", getAccept());
+            httpPost.addHeader("Keep-Alive", "300");
+            httpPost.addHeader("Connection", "Keep-Alive");
+
+            if (isAcceptGzipEncoding()) {
+                httpPost.addHeader("Accept-Encoding", "gzip,deflate");
+            }
+
+            if (getHeaders() != null) {
+                for (Map.Entry<String, String> httpHeader : getHeaders().entrySet()) {
+                    httpPost.addHeader(httpHeader.getKey(), httpHeader.getValue());
+                }
+            }
+
+            // Build request configuration.
+            // Disable Kerberos in the preferred auth schemes - EWS should usually allow NTLM or Basic auth
+            RequestConfig.Builder
+                    requestConfigBuilder =
+                    RequestConfig.custom().setAuthenticationEnabled(true).setConnectionRequestTimeout(getTimeout())
+                            .setConnectTimeout(getTimeout()).setRedirectsEnabled(isAllowAutoRedirect())
+                            .setSocketTimeout(getTimeout())
+                            .setTargetPreferredAuthSchemes(Arrays.asList(AuthSchemes.NTLM, AuthSchemes.BASIC))
+                            .setProxyPreferredAuthSchemes(Arrays.asList(AuthSchemes.NTLM, AuthSchemes.BASIC));
+
+            CredentialsProvider credentialsProvider = new BasicCredentialsProvider();
+
+            // Add proxy credential if necessary.
+            WebProxy proxy = getProxy();
+            if (proxy != null) {
+                HttpHost proxyHost = new HttpHost(proxy.getHost(), proxy.getPort());
+                requestConfigBuilder.setProxy(proxyHost);
+
+                if (proxy.hasCredentials()) {
+                    NTCredentials
+                            proxyCredentials =
+                            new NTCredentials(proxy.getCredentials().getUsername(), proxy.getCredentials().getPassword(), "",
+                                    proxy.getCredentials().getDomain());
+
+                    credentialsProvider.setCredentials(new AuthScope(proxyHost), proxyCredentials);
+                }
+            }
+
+            // Add web service credential if necessary.
+            if (isAllowAuthentication() && getUsername() != null) {
+                NTCredentials webServiceCredentials = new NTCredentials(getUsername(), getPassword(), "", getDomain());
+                credentialsProvider.setCredentials(new AuthScope(AuthScope.ANY), webServiceCredentials);
+            }
+
+            httpContext.setCredentialsProvider(credentialsProvider);
+
+            httpPost.setConfig(requestConfigBuilder.build());
         }
 
+        /**
+         * Gets the input stream.
+         *
+         * @return the input stream
+         * @throws EWSHttpException the EWS http exception
+         */
         @Override
-        public void close() {
+        public InputStream getInputStream() throws EWSHttpException, IOException {
+            throwIfResponseIsNull();
+            BufferedInputStream bufferedInputStream = null;
             try {
-                request.close();
-            } catch (IOException ignored) {
+                bufferedInputStream = new BufferedInputStream(response.getEntity().getContent());
+            } catch (IOException e) {
+                throw new EWSHttpException("Connection Error " + e);
+            }
+            return bufferedInputStream;
+        }
+
+        /**
+         * Gets the error stream.
+         *
+         * @return the error stream
+         * @throws EWSHttpException the EWS http exception
+         */
+        @Override
+        public InputStream getErrorStream() throws EWSHttpException {
+            throwIfResponseIsNull();
+            BufferedInputStream bufferedInputStream = null;
+            try {
+                bufferedInputStream = new BufferedInputStream(response.getEntity().getContent());
+            } catch (Exception e) {
+                throw new EWSHttpException("Connection Error " + e);
+            }
+            return bufferedInputStream;
+        }
+
+        /**
+         * Gets the output stream.
+         *
+         * @return the output stream
+         * @throws EWSHttpException the EWS http exception
+         */
+        @Override
+        public OutputStream getOutputStream() throws EWSHttpException {
+            OutputStream os = null;
+            throwIfRequestIsNull();
+            os = new ByteArrayOutputStream();
+
+            httpPost.setEntity(new ByteArrayOSRequestEntity(os));
+            return os;
+        }
+
+        /**
+         * Gets the response headers.
+         *
+         * @return the response headers
+         * @throws EWSHttpException the EWS http exception
+         */
+        @Override
+        public Map<String, String> getResponseHeaders() throws EWSHttpException {
+            throwIfResponseIsNull();
+            Map<String, String> map = new HashMap<String, String>();
+
+            Header[] hM = response.getAllHeaders();
+            for (Header header : hM) {
+                // RFC2109: Servers may return multiple Set-Cookie headers
+                // Need to append the cookies before they are added to the map
+                if (header.getName().equals("Set-Cookie")) {
+                    String cookieValue = "";
+                    if (map.containsKey("Set-Cookie")) {
+                        cookieValue += map.get("Set-Cookie");
+                        cookieValue += ",";
+                    }
+                    cookieValue += header.getValue();
+                    map.put("Set-Cookie", cookieValue);
+                } else {
+                    map.put(header.getName(), header.getValue());
+                }
+            }
+
+            return map;
+        }
+
+        /*
+         * (non-Javadoc)
+         *
+         * @see
+         * microsoft.exchange.webservices.HttpWebRequest#getResponseHeaderField(
+         * java.lang.String)
+         */
+        @Override
+        public String getResponseHeaderField(String headerName) throws EWSHttpException {
+            throwIfResponseIsNull();
+            Header hM = response.getFirstHeader(headerName);
+            return hM != null ? hM.getValue() : null;
+        }
+
+        /**
+         * Gets the content encoding.
+         *
+         * @return the content encoding
+         * @throws EWSHttpException the EWS http exception
+         */
+        @Override
+        public String getContentEncoding() throws EWSHttpException {
+            throwIfResponseIsNull();
+            return response.getFirstHeader("content-encoding") != null ? response.getFirstHeader("content-encoding")
+                    .getValue() : null;
+        }
+
+        /**
+         * Gets the response content type.
+         *
+         * @return the response content type
+         * @throws EWSHttpException the EWS http exception
+         */
+        @Override
+        public String getResponseContentType() throws EWSHttpException {
+            throwIfResponseIsNull();
+            return response.getFirstHeader("Content-type") != null ? response.getFirstHeader("Content-type")
+                    .getValue() : null;
+        }
+
+        /**
+         * Executes Request by sending request xml data to server.
+         *
+         * @throws EWSHttpException    the EWS http exception
+         * @throws IOException the IO Exception
+         * @return
+         */
+        @Override
+        public int executeRequest() throws EWSHttpException, IOException {
+            throwIfRequestIsNull();
+            response = httpClient.execute(httpPost, httpContext);
+            return response.getStatusLine().getStatusCode(); // ?? don't know what is wanted in return
+        }
+
+        /**
+         * Gets the response code.
+         *
+         * @return the response code
+         * @throws EWSHttpException the EWS http exception
+         */
+        @Override
+        public int getResponseCode() throws EWSHttpException {
+            throwIfResponseIsNull();
+            return response.getStatusLine().getStatusCode();
+        }
+
+        /**
+         * Gets the response message.
+         *
+         * @return the response message
+         * @throws EWSHttpException the EWS http exception
+         */
+        public String getResponseText() throws EWSHttpException {
+            throwIfResponseIsNull();
+            return response.getStatusLine().getReasonPhrase();
+        }
+
+        /**
+         * Throw if conn is null.
+         *
+         * @throws EWSHttpException the EWS http exception
+         */
+        private void throwIfRequestIsNull() throws EWSHttpException {
+            if (null == httpPost) {
+                throw new EWSHttpException("Connection not established");
             }
         }
 
-        @Override
-        public OutputStream getOutputStream() throws EWSHttpException {
-            return request.getOutputStream();
+        private void throwIfResponseIsNull() throws EWSHttpException {
+            if (null == response) {
+                throw new EWSHttpException("Connection not established");
+            }
         }
 
-        // IntelliJ thinks that EWSHttpException will be thrown because it looks at the CALLERS.
-        // I don't think this is right, but will have to look deeper later.
-
-        @Override
-        public void executeRequest() throws IOException, EWSHttpException {
-            request.executeRequest();
-        }
-
-        @Override
-        public int getResponseCode() throws EWSHttpException {
-            return request.getResponseCode();
-        }
-
-        @Override
-        public InputStream getInputStream() throws EWSHttpException, IOException {
-            return request.getInputStream();
-        }
-
-        @Override
-        public void setAllowAuthentication(final boolean b) {
-            request.setAllowAuthentication(b);
-        }
-
-        @Override
-        public String getResponseHeaderField(final String headerName) throws EWSHttpException {
-            return request.getResponseHeaderField(headerName);
-        }
-
-        @Override
-        public Map<String, String> getResponseHeaders() throws EWSHttpException {
-            return request.getResponseHeaders();
-        }
-
-        @Override
-        public String getResponseContentType() throws EWSHttpException {
-            return request.getResponseContentType();
-        }
-
-        @Override
-        public void setCredentials(final String domain, final String user, final String pwd) {
-            request.setCredentials(domain, user, pwd);
-        }
-
-        @Override
-        public URL getUrl() {
-            return request.getUrl();
-        }
-
-        @Override
-        public String getContentEncoding() throws EWSHttpException {
-            return request.getContentEncoding();
-        }
-
-        @Override
-        public String getRequestMethod() {
-            return request.getRequestMethod();
-        }
-
-        @Override
+        /**
+         * Gets the request property.
+         *
+         * @return the request property
+         * @throws EWSHttpException the EWS http exception
+         */
         public Map<String, String> getRequestProperty() throws EWSHttpException {
-            return request.getRequestProperty();
-        }
+            throwIfRequestIsNull();
+            Map<String, String> map = new HashMap<String, String>();
 
-        @Override
-        public InputStream getErrorStream() throws EWSHttpException {
-            return request.getErrorStream();
-        }
-
-        @Override
-        public String getResponseText() throws EWSHttpException {
-            return request.getResponseText();
+            Header[] hM = httpPost.getAllHeaders();
+            for (Header header : hM) {
+                map.put(header.getName(), header.getValue());
+            }
+            return map;
         }
     }
 }

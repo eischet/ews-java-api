@@ -129,7 +129,6 @@ public class ComplexPropertyDefinition<TComplexProperty extends ComplexProperty>
             ExchangeVersion version,
             EnumSet<PropertyDefinitionFlags> flags,
             ICreateComplexPropertyDelegate<TComplexProperty> propertyCreationDelegate) {
-        // TODO Auto-generated constructor stub
         super(xmlElementName, attachments, flags, version);
         this.propertyCreationDelegate = propertyCreationDelegate;
     }

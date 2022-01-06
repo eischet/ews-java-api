@@ -37,11 +37,11 @@ public interface ExchangeHttpClient extends Closeable {
 
         void prepareConnection();
 
-        void close();
+        void close() throws IOException;
 
         OutputStream getOutputStream() throws EWSHttpException;
 
-        void executeRequest() throws IOException, EWSHttpException;
+        int executeRequest() throws IOException, EWSHttpException;
 
         int getResponseCode() throws EWSHttpException;
 
