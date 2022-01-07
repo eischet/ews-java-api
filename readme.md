@@ -1,4 +1,4 @@
-# This is an unofficial fork of Microsoft's EWS-Java-Api
+# This is an unofficial fork of Microsoft's EWS-Java-API
 
 ## Why:
 
@@ -8,7 +8,8 @@ see https://docs.microsoft.com/en-us/graph/hybrid-rest-support for what's availa
 
 Here's the end of support statement: https://developer.microsoft.com/en-us/graph/blogs/upcoming-changes-to-exchange-web-services-ews-api-for-office-365/
 
-My problem is, my software needs to read and manipulate Exchange mails *today*, and so I'm kind of stuck with EWS for now.
+Unfortunately, it's too early for my own users to use that new API, and I don't know if everybody will really go "hybrid" in the future.
+My software needs to read and manipulate Exchange mails *today*, and so I'm kind of stuck with EWS for now.
 
 Triggered by last year's "Log4Shell" issues, I've started hunting down old and superfluous dependencies in my software, 
 and the EWS API pulls in quite a few old packages... that's why I'm putting in some effort to modernize the old code now.
