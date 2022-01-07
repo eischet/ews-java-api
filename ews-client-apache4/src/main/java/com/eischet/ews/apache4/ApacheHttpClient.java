@@ -245,7 +245,8 @@ public class ApacheHttpClient implements ExchangeHttpClient {
             RequestConfig.Builder
                     requestConfigBuilder =
                     RequestConfig.custom().setAuthenticationEnabled(true).setConnectionRequestTimeout(getTimeout())
-                            .setConnectTimeout(getTimeout()).setRedirectsEnabled(isAllowAutoRedirect())
+                            .setConnectTimeout(getTimeout())
+                            .setRedirectsEnabled(isAllowAutoRedirect())
                             .setSocketTimeout(getTimeout())
                             .setTargetPreferredAuthSchemes(Arrays.asList(AuthSchemes.NTLM, AuthSchemes.BASIC))
                             .setProxyPreferredAuthSchemes(Arrays.asList(AuthSchemes.NTLM, AuthSchemes.BASIC));

@@ -1,7 +1,5 @@
-package cockpit.backend.security.bypass;
+package com.eischet.ews.javaclient;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import javax.net.ssl.*;
 import java.io.IOException;
@@ -12,6 +10,8 @@ import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Put together in trial and error (and with a little help from Google), this class
@@ -33,7 +33,7 @@ import java.security.cert.X509Certificate;
  */
 public class BlindSSLSocketFactory extends SSLSocketFactory {
 
-    private static final Logger log = LoggerFactory.getLogger(BlindSSLSocketFactory.class);
+    private static final Logger log = Logger.getLogger(BlindSSLSocketFactory.class.getCanonicalName());
 
     private static final SSLSocketFactory defaultFactory = new BlindSSLSocketFactory();
 
@@ -95,29 +95,29 @@ public class BlindSSLSocketFactory extends SSLSocketFactory {
             proxiedFactory = sslContext.getSocketFactory();
         }
         catch (final NoSuchAlgorithmException e) {
-            log.error("JVM does not speak SSL, we're screwed", e);
+            log.log(Level.SEVERE, "JVM does not speak SSL, we're screwed", e);
         }
         catch (final KeyManagementException e) {
-            log.error("I don't know why, but we're screwed nevertheless", e);
+            log.log(Level.SEVERE, "I don't know why, but we're screwed nevertheless", e);
         }
     }
 
 
     @Override
     public Socket createSocket(final Socket arg0, final String arg1, final int arg2, final boolean arg3) throws IOException {
-        log.debug( String.format("createSocket(%s,%s,%s,%s)", arg0, arg1, arg2, arg3));
+        log.finer(() -> String.format("createSocket(%s,%s,%s,%s)", arg0, arg1, arg2, arg3));
         return proxiedFactory.createSocket(arg0, arg1, arg2, arg3);
     }
 
     @Override
     public String[] getDefaultCipherSuites() {
-        log.debug( "getDefaultCipherSuites()");
+        log.finer( "getDefaultCipherSuites()");
         return proxiedFactory.getDefaultCipherSuites();
     }
 
     @Override
     public String[] getSupportedCipherSuites() {
-        log.debug( "getSupportedCipherSuites()");
+        log.finer( "getSupportedCipherSuites()");
         return proxiedFactory.getSupportedCipherSuites();
     }
 
