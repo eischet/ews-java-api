@@ -25,17 +25,21 @@ S.E.
 
 ## Changed from the original code:
 
-* The library has been split into ews-client-apache4 and ews-api and moved to a new package namespace.
-  There's an actual use case for this: it enables me to package the original AND this one into my software at the same time,
-  meaning we can run tests with both clients in parallel. I'll then remove the old client once I'm sure this one works for
-  my customers.
-* ews-client-apache4, like the original library, depends on Apache HTTP Components 4.
-  By using that dependency, you get the "classic" EWS-Java-API, but have to create the HTTP client first.
-  I plan to write an alternative client soon that uses standard Java (9+) facilities to talk to Exchange.
-* ews-api only depends on JAX-WS; I'm still looking into the proper (api) dependencies to use so that it pulls in less stuff.
-  My goal is to have a minimal set of dependencies in the end.
-* The build now uses Java 11 instead of 7/8 (we're on 17 LTS right now, so that's still old, but not ancient).
+Split into a number of packages:
 
+* `ews-api` contains most of the original code, but no HTTP client, which needs to be created before using the ExchangeService.
+* `ews-client-apache4` contains the original, Apache HTTP Components 4.x based client only.
+* `ews-client-java` contains a new client based on Java's built-in HTTP client.
+
+Since XML (javax.xml) has been removed from Java, I've added a dependency on `jakarta.xml.bind:jakarta.xml.bind-api:3.0.1`
+with a runtime dependency on `com.sun.xml.bind:jaxb-impl:3.0.1`. If you prefer a different implementation, you should be
+able to override this.
+
+The package names have been changed from `microsoft.*` to `com.eischet.ews.*`. There's an actual use case for this,
+because it allows me to include the old and the new package in my software at the same time, allowing my users to test
+the new code more easily.
+
+The build now uses Java 11.
 
 
 # OLD INFO:
