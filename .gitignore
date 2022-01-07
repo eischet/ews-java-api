@@ -7,6 +7,7 @@
 /target
 ews-api/target/
 ews-client-apache4/target/
+ews-client-java/target/
 
 # Eclipse project files
 .settings
