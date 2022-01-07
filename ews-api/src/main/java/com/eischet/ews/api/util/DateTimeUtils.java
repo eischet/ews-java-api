@@ -47,6 +47,7 @@ public final class DateTimeUtils {
                 Formatter.of(DateTimeFormatter.ISO_ZONED_DATE_TIME),
                 Formatter.of(DateTimeFormatter.ISO_LOCAL_DATE),
                 Formatter.of(DateTimeFormatter.ISO_DATE),
+                Formatter.of(DateTimeFormatter.ISO_OFFSET_DATE),
 
                 Formatter.datetime("yyyy-MM-dd'T'HH:mm:ssZ"),
                 Formatter.datetime("yyyy-MM-dd'T'HH:mm:ss.SSSZ"),
@@ -163,16 +164,27 @@ public final class DateTimeUtils {
         }
 
         public LocalDate parseLocalDate(final String value) {
-            if (dateOnly) {
+            // if (dateOnly) {
+
+            try {
+                final ZonedDateTime zoned = wrapped.parse(value, ZonedDateTime::from);
+                if (zoned != null) {
+                    return zoned.toOffsetDateTime().atZoneSameInstant(ZoneOffset.UTC).toLocalDate();
+                }
+            } catch (RuntimeException e) {
+                log.warning(() -> String.format("cannot parse value '%s' with pattern '%s' (%s) as ZonedDateTime", value, pattern, e.getMessage()));
+                // return null;
+            }
+
                 try {
                     return wrapped.parse(value, LocalDate::from);
                 } catch (RuntimeException e) {
                     log.warning(() -> String.format("cannot parse value '%s' with pattern '%s' (%s) as LocalDate", value, pattern, e.getMessage()));
                     return null;
                 }
-            } else {
-                return null;
-            }
+            // } else {
+            //    return null;
+            //}
         }
 
 

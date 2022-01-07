@@ -181,7 +181,7 @@ public class DateTimeUtilsTest {
     @Test
     public void testDateOnlyWithTimeZone() {
         String dateString = "2015-01-08+0200";
-        LocalDateTime parsed = DateTimeUtils.parseDateTime(dateString);
+        LocalDateTime parsed = DateTimeUtils.parseDateOnly(dateString).atStartOfDay();
         //Calendar calendar = new GregorianCalendar(TimeZone.getTimeZone("UTC"));
         //calendar.setTime(parsed);
         assertEquals(2015, parsed.getYear());
