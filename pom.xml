@@ -34,8 +34,8 @@
 
     <version>2.1-SNAPSHOT</version>
     <modules>
-        <module>ews-client-apache4</module> <!-- old client as built by microsoft, depends on Apache HTTP Client 4.x -->
         <module>ews-api</module>
+        <module>ews-client-apache4</module> <!-- old client as built by microsoft, depends on Apache HTTP Client 4.x -->
         <module>ews-client-java</module> <!-- just the API, without an HTTP Client -->
     </modules>
 
@@ -73,8 +73,18 @@
             </roles>
             <timezone>America/New_York</timezone>
             <properties>
-                 <picUrl>http://www.example.com/jdoe/pic</picUrl>
+                <picUrl>http://www.example.com/jdoe/pic</picUrl>
             </properties>
+        </developer>
+        <developer>
+            <id>se</id>
+            <name>Stefan Eischet</name>
+            <url>https://github.com/eischet/ews-java-api</url>
+            <organization>Eischet Software e.K.</organization>
+            <roles>
+                <role>forker</role>
+            </roles>
+            <timezone>Europe/Berlin</timezone>
         </developer>
     </developers>
 
@@ -102,17 +112,16 @@
         <maven-surefire-report-plugin.version>2.18.1</maven-surefire-report-plugin.version>
         <jacoco-maven-plugin.version>0.8.7</jacoco-maven-plugin.version>
         <!--  Dependencies [COMPILE]:  -->
-        <httpclient.version>4.4.1</httpclient.version>
-        <httpcore.version>4.4.1</httpcore.version>
+        <httpclient.version>4.5.13</httpclient.version>
+        <httpcore.version>4.4.15</httpcore.version>
         <!--  Dependencies [TEST]:  -->
         <junit.version>4.13.2</junit.version>
         <hamcrest-all.version>1.3</hamcrest-all.version>
         <mockito-core.version>4.2.0</mockito-core.version>
-        <slf4j.version>1.7.12</slf4j.version>
-        <logback.version>1.1.3</logback.version>
+        <slf4j.version>1.7.32</slf4j.version>
+        <logback.version>1.2.10</logback.version>
 
-        <skipTests>true</skipTests>
-        <!-- the tests currently fail -->
+        <!-- <skipTests>true</skipTests> -->
     </properties>
 
     <licenses>
