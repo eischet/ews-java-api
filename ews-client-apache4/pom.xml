@@ -12,26 +12,16 @@
     <artifactId>ews-client-apache4</artifactId>
 
     <dependencies>
-
         <dependency>
             <groupId>com.eischet</groupId>
             <artifactId>ews-api</artifactId>
             <version>${project.parent.version}</version>
         </dependency>
-
         <dependency>
             <groupId>org.apache.httpcomponents</groupId>
             <artifactId>httpclient</artifactId>
             <version>${httpclient.version}</version>
         </dependency>
-
-        <dependency>
-            <groupId>org.apache.httpcomponents</groupId>
-            <artifactId>httpcore</artifactId>
-            <version>${httpcore.version}</version>
-        </dependency>
-
     </dependencies>
-
 
 </project>
