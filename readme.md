@@ -1,4 +1,4 @@
-# UNOFFICAL FORK
+# This is an unofficial fork of Microsoft's EWS-Java-Api
 
 ## Why:
 
@@ -13,15 +13,14 @@ My problem is, my software needs to read and manipulate Exchange mails *today*, 
 Triggered by last year's "Log4Shell" issues, I've started hunting down old and superfluous dependencies in my software, 
 and the EWS API pulls in quite a few old packages... that's why I'm putting in some effort to modernize the old code now.
 
-Thanks to Microsoft for releasing this code under the MIT license!
-
 Issues and contributions are welcome.
 
 No packages are provided right now, but I'm thinking about it. 
 If you want to use the code at the moment, simply run `mvn install` locally.
 
+Thanks to Microsoft for releasing this code under the MIT license!
 
-S.E.
+*S.E.*
 
 ## Changed from the original code:
 
@@ -40,22 +39,3 @@ because it allows me to include the old and the new package in my software at th
 the new code more easily.
 
 The build now uses Java 11.
-
-
-# OLD INFO:
-
-## Getting started resources
-
-Please see the [Getting Started Guide](https://github.com/OfficeDev/ews-java-api/wiki/Getting-Started-Guide) on our wiki for an introduction to this library.
-
-## Using the library
-Please see [this wiki-entry](https://github.com/OfficeDev/ews-java-api/wiki/Getting-Started-Guide#using-the-library) on how to include the library in your project
-
-### Maven / Gradle
-For Documentation on how to use _ews-java-api_ with maven or gradle please refer to [this section in our wiki](https://github.com/OfficeDev/ews-java-api/wiki#maven--gradle-integration). 
-
-### Building from source
-To build a JAR from the source yourself, please see [this page](https://github.com/OfficeDev/ews-java-api/wiki/Building-EWS-JAVA-API).
-
-
-This project has adopted the [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/). For more information, see the [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/) or contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additional questions or comments.
