@@ -88,6 +88,7 @@
 
         <maven.compiler.source>11</maven.compiler.source>
         <maven.compiler.target>11</maven.compiler.target>
+        <maven.compiler.release>11</maven.compiler.release>
 
         <!-- TODO: clean up the JavaDocs -->
         <javadoc.doclint.param>-Xdoclint:none</javadoc.doclint.param>
