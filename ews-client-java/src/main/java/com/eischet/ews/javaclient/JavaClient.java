@@ -94,10 +94,16 @@ public class JavaClient implements ExchangeHttpClient {
             setHeader("Content-type", getContentType());
             setHeader("User-Agent", getUserAgent());
             setHeader("Accept", getAccept());
-            setHeader("Keep-Alive", "300");
-            setHeader("Connection", "Keep-Alive");
+            // these are not supported in the Java client and cannot be used like in the Apache client:
+            // setHeader("Keep-Alive", "300");
+            // setHeader("Connection", "Keep-Alive");
+            // See https://stackoverflow.com/questions/53617574/how-to-keep-connection-alive-in-java-11-http-client for workarounds when needed
+
 
             if (isAcceptGzipEncoding()) {
+                // TODO: this will need more work, according to https://stackoverflow.com/questions/53502626/does-java-http-client-handle-compression
+                // I should maybe evaluate Methanol: https://mizosoft.github.io/methanol/enhanced_httpclient/
+
                 setHeader("Accept-Encoding", "gzip,deflate");
             }
 
