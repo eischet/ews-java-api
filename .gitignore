@@ -35,3 +35,4 @@ ews-client-java/target/
 
 # Mac OS:
 .DS_Store
+ews-client-apache5/target

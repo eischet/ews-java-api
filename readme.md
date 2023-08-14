@@ -41,6 +41,11 @@ the new code more easily.
 
 The build now uses Java 11.
 
+Note that the ews-client-java is still incomplete and unlikely to work because plain Java 11 does not support NTML
+authentication, which is by default used by Exchange, at least on version 2016. The Apache 4 client does NTML, but
+is sorely out of date.
+
+
 ## Future Plans
 
 My main goal is to keep this project alive for at least a few years, but not to add significant new features myself.

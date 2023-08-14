@@ -28,6 +28,8 @@ import com.eischet.ews.api.http.ExchangeHttpClient;
 import com.eischet.ews.api.http.RequestFields;
 
 import java.io.*;
+import java.net.InetSocketAddress;
+import java.net.ProxySelector;
 import java.net.URISyntaxException;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
@@ -36,6 +38,7 @@ import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 import java.util.Base64;
+import java.util.Map;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -49,7 +52,11 @@ public class JavaClient implements ExchangeHttpClient {
 
     private static final Logger log = Logger.getLogger(JavaClient.class.getCanonicalName());
 
-    boolean insecure;
+    private boolean insecure;
+    private boolean debugLogging;
+    private String proxyHost;
+    private int proxyPort = 8080;
+
     private CopyOnWriteArrayList<String> cookies = null;
 
     public JavaClient allowCookies() {
@@ -60,6 +67,41 @@ public class JavaClient implements ExchangeHttpClient {
     public JavaClient ignoreSecurityErrors() {
         setInsecure(true);
         return this;
+    }
+
+    public JavaClient enableDebugLogging() {
+        setDebugLogging(true);
+        return this;
+    }
+
+    public JavaClient proxy(final String proxyHost, final int proxyPort) {
+        setProxyHost(proxyHost);
+        setProxyPort(proxyPort);
+        return this;
+    }
+
+    public String getProxyHost() {
+        return proxyHost;
+    }
+
+    public void setProxyHost(final String proxyHost) {
+        this.proxyHost = proxyHost;
+    }
+
+    public int getProxyPort() {
+        return proxyPort;
+    }
+
+    public void setProxyPort(final int proxyPort) {
+        this.proxyPort = proxyPort;
+    }
+
+    public boolean isDebugLogging() {
+        return debugLogging;
+    }
+
+    public void setDebugLogging(final boolean debugLogging) {
+        this.debugLogging = debugLogging;
     }
 
     public void setInsecure(final boolean insecure) {
@@ -136,18 +178,35 @@ public class JavaClient implements ExchangeHttpClient {
 
         @Override
         public int executeRequest() throws IOException, EWSHttpException {
+            if (debugLogging) {
+                log.info("----- POSTing to " + getUrl() + " -----");
+            }
             try {
                 final HttpRequest.Builder builder = HttpRequest
                         .newBuilder(getUrl().toURI())
                         .timeout(Duration.ofMillis(getTimeout()))
                         .POST(HttpRequest.BodyPublishers.ofByteArray(post.toByteArray()));
-                getHttpHeaders().forEach(builder::header);
+                for (Map.Entry<String, String> entry : getHttpHeaders().entrySet()) {
+                    String key = entry.getKey();
+                    String value = entry.getValue();
+                    if (debugLogging) {
+                        log.info("HTTP header: " + key + ": " + value);
+                    }
+                    builder.header(key, value);
+                }
                 if (cookies != null) {
                     for (final String cookie : cookies) {
+                        if (debugLogging) {
+                            log.info("Cookie: " + cookie);
+                        }
                         builder.header("Cookie", cookie);
                     }
                 }
                 final HttpRequest request = builder.build();
+
+                if (debugLogging) {
+                    log.info("POST BODY: " + post);
+                }
                 response = buildClient().send(request, HttpResponse.BodyHandlers.ofString());
                 setResponseCode(response.statusCode());
                 setResponseContentType(response.headers().firstValue("Content-Type").orElse(null));
@@ -156,6 +215,7 @@ public class JavaClient implements ExchangeHttpClient {
                 if (cookies != null) {
                     cookies.addAll(response.headers().allValues("Set-Cookie"));
                 }
+                log.info("Response: " + response.statusCode() + " " + response.body());
                 return response.statusCode();
             } catch (URISyntaxException e) {
                 throw new EWSHttpException("invalid request URI: " + getUrl(), e);
@@ -172,19 +232,12 @@ public class JavaClient implements ExchangeHttpClient {
                     // They'll eventually go around to fixing this in the JDK, I hope...
                     // https://stackoverflow.com/questions/52988677/allow-insecure-https-connection-for-java-jdk-11-httpclient
                     System.setProperty("jdk.internal.httpclient.disableHostnameVerification", "true");
-                    return HttpClient.newBuilder()
-                            .sslContext(BlindSSLSocketFactory.getSSLContext())
-                            .followRedirects(isAllowAutoRedirect() ? HttpClient.Redirect.ALWAYS : HttpClient.Redirect.NEVER)
-                            .connectTimeout(Duration.of(getTimeout(), ChronoUnit.MILLIS))
-                            .build();
+                    return configure(HttpClient.newBuilder().sslContext(BlindSSLSocketFactory.getSSLContext())).build();
                 }
             } catch (Exception e) {
                 log.log(Level.SEVERE, "FAILED to create an 'insecure' HTTP client!", e);
             }
-            return HttpClient.newBuilder()
-                    .followRedirects(isAllowAutoRedirect() ? HttpClient.Redirect.ALWAYS : HttpClient.Redirect.NEVER)
-                    .connectTimeout(Duration.of(getTimeout(), ChronoUnit.MILLIS))
-                    .build();
+            return configure(HttpClient.newBuilder()).build();
         }
 
 
@@ -198,5 +251,15 @@ public class JavaClient implements ExchangeHttpClient {
             return new ByteArrayInputStream(getResponseText().getBytes(StandardCharsets.UTF_8));
         }
 
+        private HttpClient.Builder configure(final HttpClient.Builder builder) {
+            if (proxyHost != null && !proxyHost.isBlank()) {
+                builder.proxy(ProxySelector.of(new InetSocketAddress(getProxyHost(), getProxyPort())));
+            }
+            return builder
+                    .followRedirects(isAllowAutoRedirect() ? HttpClient.Redirect.ALWAYS : HttpClient.Redirect.NEVER)
+                    .connectTimeout(Duration.of(getTimeout(), ChronoUnit.MILLIS));
+        }
+
     }
+
 }

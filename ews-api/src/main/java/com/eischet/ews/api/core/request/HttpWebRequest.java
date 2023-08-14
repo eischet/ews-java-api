@@ -50,7 +50,7 @@ public abstract class HttpWebRequest implements Closeable {
     private boolean preAuthenticate;
 
     /**
-     * The timeout.
+     * The timeout. I guess this is in milliseconds
      */
     private int timeout;
 

@@ -68,6 +68,8 @@ public final class TimeZoneUtils {
         map.put("Europe/Kirov", "W. Europe Standard Time"); // TODO: this is just a guess. I have no idea what this should actually be.
         map.put("Europe/Ulyanovsk", "W. Europe Standard Time"); // TODO: this is just a guess. I have no idea what this should actually be.
         map.put("America/Nuuk", "Alaskan Standard Time");  // TODO: this is just a wild guess. I have no idea what this should actually be.
+        map.put("Europe/Kyiv", "FLE Standard Time"); // educated guess?
+        map.put("America/Ciudad_Juarez", "Mountain Standard Time (Mexico)"); // guessed via wikipedia which mentions MST
 
         // ---- old ones:
 

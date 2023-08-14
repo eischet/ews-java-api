@@ -14,12 +14,14 @@
     <dependencies>
 
         <!-- apache http client 4 is still used by a TEST -->
+        <!--
         <dependency>
             <groupId>org.apache.httpcomponents</groupId>
             <artifactId>httpclient</artifactId>
             <version>${httpclient.version}</version>
             <scope>test</scope>
         </dependency>
+        -->
 
         <dependency>
             <groupId>junit</groupId>
