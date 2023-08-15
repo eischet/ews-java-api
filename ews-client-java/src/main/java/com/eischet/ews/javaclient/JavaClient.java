@@ -26,7 +26,6 @@ package com.eischet.ews.javaclient;
 import com.eischet.ews.api.core.exception.http.EWSHttpException;
 import com.eischet.ews.api.http.ExchangeHttpClient;
 import com.eischet.ews.api.http.RequestFields;
-import jcifs.http.NtlmSsp;
 
 import java.io.*;
 import java.net.*;
