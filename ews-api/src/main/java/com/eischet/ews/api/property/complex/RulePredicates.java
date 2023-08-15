@@ -422,9 +422,10 @@ public final class RulePredicates extends ComplexProperty {
     }
 
     public void setIsMeetingRequest(boolean value) {
-        if (this.canSetFieldValue(this.isEncrypted, value)) {
+        // original pull request for ews-java-api: https://github.com/OfficeDev/ews-java-api/pull/586/commits/1b299312dcdd9adbd9d8af306ea187634476bcb2
+        if (this.canSetFieldValue(this.isMeetingRequest, value)) {
 
-            this.isEncrypted = value;
+            this.isMeetingRequest = value;
             this.changed();
         }
 

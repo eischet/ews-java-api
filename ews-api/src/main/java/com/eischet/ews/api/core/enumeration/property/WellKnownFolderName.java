@@ -195,4 +195,10 @@ public enum WellKnownFolderName {
     ArchiveRecoverableItemsPurges,
 
 
+
+    // Original pull request: https://github.com/OfficeDev/ews-java-api/pull/527/commits/70add8c4a2d910b87e1770cf732b0e079e4800b0
+    SyncIssues, Conflicts, LocalFailures, ServerFailures, RecipientCache, QuickContacts, ConversationHistory, ToDoSearch
+
+
+
 }
