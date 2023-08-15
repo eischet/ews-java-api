@@ -3,13 +3,15 @@
 ## Why:
 
 Microsoft has stopped working on the EWS-Java-API, as announced July 19th 2018. There's a new "Graph" API to replace it.
+
 But you have to meet some very specific criteria to be able to use these new APIs: 
 see https://docs.microsoft.com/en-us/graph/hybrid-rest-support for what's available right now.
 
 Here's the end of support statement: https://developer.microsoft.com/en-us/graph/blogs/upcoming-changes-to-exchange-web-services-ews-api-for-office-365/
 
+However, to use the new Graph API, you need to be in a "hybrid" setup, or in Exchange Online only.
 Unfortunately, it's too early for my own users to use that new API, and I don't know if everybody will really go "hybrid" in the future.
-My software needs to read and manipulate Exchange mails *today*, and so I'm kind of stuck with EWS for now.
+My software needs to read and manipulate on-premise Exchange mails *today*, and so I'm kind of stuck with EWS for now.
 
 Triggered by last year's "Log4Shell" issues, I've started hunting down old and superfluous dependencies in my software, 
 and the EWS API pulls in quite a few old packages... that's why I'm putting in some effort to modernize the old code now.
@@ -29,7 +31,8 @@ Split into a number of packages:
 
 * `ews-api` contains most of the original code, but no HTTP client, which needs to be created before using the ExchangeService.
 * `ews-client-apache4` contains the original, Apache HTTP Components 4.x based client only.
-* `ews-client-java` contains a new client based on Java's built-in HTTP client.
+* `ews-client-apache5` contains a new client based on Apache HTTP Components 5.x.
+* `ews-client-java` contains a new client based on Java's built-in HTTP client (which does not actually work right now because of NTLM issues)
 
 Since XML (javax.xml) has been removed from Java, I've added a dependency on `jakarta.xml.bind:jakarta.xml.bind-api:3.0.1`
 with a runtime dependency on `com.sun.xml.bind:jaxb-impl:3.0.1`. If you prefer a different implementation, you should be
@@ -41,15 +44,33 @@ the new code more easily.
 
 The build now uses Java 11.
 
-Note that the ews-client-java is still incomplete and unlikely to work because plain Java 11 does not support NTML
-authentication, which is by default used by Exchange, at least on version 2016. The Apache 4 client does NTML, but
-is sorely out of date.
+
+## What to use
+
+If your Exchange system does have the Graph API, i.e. you're in a hybrid or cloud-only setup, you might as well use that.
+This is the wrong project in this case, and you'll need a different client, e.g. https://github.com/microsoftgraph/msgraph-sdk-java
+
+If you don't mind using the old Apache HTTP Components 4.x, you can use the original Microsoft package instead of this.
+They do have *known security issues*, though, that the Apache Team has fixed in version 5.x.
+
+Otherwise, use the `ews-client-apache5` package. 
+
+This should get you started, from the original documentation:
+https://github.com/OfficeDev/ews-java-api/wiki/Getting-Started-Guide#using-the-library
+
+Creating the ExchangeService is a bit different, because you need to supply a client:
+
+    final ApacheHttpClient client = new ApacheHttpClient();
+    // configure the client...
+    ExchangeService service = new ExchangeService(client, ExchangeVersion.Exchange2010_SP2);
+
 
 
 ## Future Plans
 
 My main goal is to keep this project alive for at least a few years, but not to add significant new features myself.
-(Pull requests are welcome, though, if there's something you need to have!)
+I'm not going to spend significant amounts of time on this project, though.
+Pull requests are welcome, though, if there's something you need to have.
 
 There are some areas which could be improved, and I'll work on these as time permits:
 
@@ -58,3 +79,5 @@ There are some areas which could be improved, and I'll work on these as time per
   My current favorite is the StringList::toString JavaDoc, which takes quite a lot of words to explain how generic toString works,
   but returns something entirely different.
 * There's quite a lot of unused code, e.g. all methods of IAsyncResult, and some unused type parameters, that could be removed/improved.
+* I'd rather use the new Java HTTP client, minimizing external dependencies, but can't get it to properly authenticate with NTLM.
+  Right now, it's not working, but I'll keep trying.

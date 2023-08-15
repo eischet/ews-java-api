@@ -105,7 +105,7 @@
         <maven-surefire-report-plugin.version>2.18.1</maven-surefire-report-plugin.version>
         <jacoco-maven-plugin.version>0.8.7</jacoco-maven-plugin.version>
         <!--  Dependencies [COMPILE]:  -->
-        <httpclient.version>4.5.13</httpclient.version> <!-- latest, but still outdated, http client v4 -->
+        <httpclient.version>4.5.14</httpclient.version> <!-- latest, but still outdated, http client v4 -->
         <httpclient5.version>5.2.1</httpclient5.version>
         <!--  Dependencies [TEST]:  -->
         <junit.version>4.13.2</junit.version>
