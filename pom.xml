@@ -33,12 +33,6 @@
     <packaging>pom</packaging>
 
     <version>2.1-SNAPSHOT</version>
-    <modules>
-        <module>ews-api</module>
-        <module>ews-client-apache4</module> <!-- old client as built by microsoft, depends on Apache HTTP Client 4.x -->
-        <module>ews-client-java</module>
-        <module>ews-client-apache5</module> <!-- just the API, without an HTTP Client -->
-    </modules>
 
     <name>Exchange Web Services Java API</name>
     <description>Exchange Web Services (EWS) Java API</description>
@@ -263,4 +257,14 @@
 
         </plugins>
     </reporting>
+
+    <modules>
+        <module>ews-api</module>
+        <module>ews-client-apache4</module> <!-- old client as built by microsoft, depends on Apache HTTP Client 4.x -->
+        <module>ews-client-java</module>
+
+        <module>ews-client-apache5</module>
+
+    </modules>
+
 </project>

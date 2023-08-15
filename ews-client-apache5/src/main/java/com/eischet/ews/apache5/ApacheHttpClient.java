@@ -31,8 +31,9 @@ import com.eischet.ews.api.core.exception.http.EWSHttpException;
 import com.eischet.ews.api.core.request.HttpWebRequest;
 import com.eischet.ews.api.http.ExchangeHttpClient;
 import com.eischet.ews.api.util.IOUtils;
-import org.apache.hc.client5.http.AuthenticationStrategy;
-import org.apache.hc.client5.http.auth.*;
+import org.apache.hc.client5.http.auth.AuthScope;
+import org.apache.hc.client5.http.auth.NTCredentials;
+import org.apache.hc.client5.http.auth.StandardAuthScheme;
 import org.apache.hc.client5.http.classic.methods.HttpPost;
 import org.apache.hc.client5.http.config.RequestConfig;
 import org.apache.hc.client5.http.cookie.BasicCookieStore;
@@ -47,39 +48,19 @@ import org.apache.hc.client5.http.io.HttpClientConnectionManager;
 import org.apache.hc.client5.http.protocol.HttpClientContext;
 import org.apache.hc.client5.http.socket.ConnectionSocketFactory;
 import org.apache.hc.client5.http.socket.PlainConnectionSocketFactory;
+import org.apache.hc.client5.http.ssl.NoopHostnameVerifier;
 import org.apache.hc.core5.http.Header;
 import org.apache.hc.core5.http.HttpHost;
 import org.apache.hc.core5.http.config.Registry;
 import org.apache.hc.core5.http.config.RegistryBuilder;
-import org.apache.hc.core5.http.io.entity.BasicHttpEntity;
 import org.apache.hc.core5.http.io.entity.EntityUtils;
-/*
-import org.apache.http.Header;
-import org.apache.http.HttpHost;
-import org.apache.http.auth.AuthScope;
-import org.apache.http.auth.NTCredentials;
-import org.apache.http.client.AuthenticationStrategy;
-import org.apache.http.client.CookieStore;
-import org.apache.http.client.CredentialsProvider;
-import org.apache.http.client.config.AuthSchemes;
-import org.apache.http.client.config.RequestConfig;
-import org.apache.http.client.methods.CloseableHttpResponse;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.client.protocol.HttpClientContext;
-import org.apache.http.config.Registry;
-import org.apache.http.config.RegistryBuilder;
-import org.apache.http.conn.HttpClientConnectionManager;
-import org.apache.http.conn.socket.ConnectionSocketFactory;
-import org.apache.http.conn.socket.PlainConnectionSocketFactory;
-import org.apache.http.impl.client.BasicCookieStore;
-import org.apache.http.impl.client.BasicCredentialsProvider;
-import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClients;
-import org.apache.http.impl.conn.BasicHttpClientConnectionManager;
-import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
-import org.apache.http.util.EntityUtils;
-*/
-import java.io.*;
+import org.apache.hc.core5.util.Timeout;
+
+import java.io.BufferedInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.URISyntaxException;
 import java.security.GeneralSecurityException;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -111,11 +92,19 @@ public class ApacheHttpClient implements ExchangeHttpClient {
     private void initializeHttpClient() {
         Registry<ConnectionSocketFactory> registry = createConnectionSocketFactoryRegistry();
         HttpClientConnectionManager httpConnectionManager = new BasicHttpClientConnectionManager(registry);
-        AuthenticationStrategy authStrategy = new CookieProcessingTargetAuthenticationStrategy();
+
+
+
+        // what do we do with this?
+        // AuthenticationStrategy authStrategy = new CookieProcessingTargetAuthenticationStrategy();
 
         httpClient = HttpClients.custom()
+
                 .setConnectionManager(httpConnectionManager)
-                .setTargetAuthenticationStrategy(authStrategy)
+
+
+                //TODO: seems to be missing .setTargetAuthenticationStrategy(authStrategy)
+                .setDefaultCookieStore(new BasicCookieStore())
                 .build();
     }
 
@@ -131,6 +120,7 @@ public class ApacheHttpClient implements ExchangeHttpClient {
                 .setConnectionManager(httpConnectionManager)
                 // .setTargetAuthenticationStrategy(authStrategy)
                 .setDefaultCookieStore(cookieStore)
+
                 /* maybe adjust timeouts here, too:
                 .setDefaultRequestConfig(RequestConfig.custom()
                         .setCookieSpec(CookieSpecs.STANDARD)
@@ -165,7 +155,8 @@ public class ApacheHttpClient implements ExchangeHttpClient {
         try {
             return RegistryBuilder.<ConnectionSocketFactory>create()
                     .register(EWSConstants.HTTP_SCHEME, new PlainConnectionSocketFactory())
-                    .register(EWSConstants.HTTPS_SCHEME, EwsSSLProtocolSocketFactory.build(null))
+                    // TODO: make this configurable
+                    .register(EWSConstants.HTTPS_SCHEME, EwsSSLProtocolSocketFactory.build(null, new NoopHostnameVerifier()))
                     .build();
         } catch (GeneralSecurityException e) {
             throw new RuntimeException(
@@ -242,6 +233,7 @@ public class ApacheHttpClient implements ExchangeHttpClient {
 
         private final CloseableHttpClient httpClient;
         private final HttpClientContext httpContext;
+        private WrappingOuputStream currentOutputStream;
 
 
         /**
@@ -262,9 +254,12 @@ public class ApacheHttpClient implements ExchangeHttpClient {
             // If that is not possible, we simply cleanup the whole connection
             if (response != null && response.getEntity() != null) {
                 EntityUtils.consume(response.getEntity());
-            } else if (httpPost != null) {
-                httpPost.releaseConnection();
             }
+            // There's no releaseConnection method anymore. Doing nothing here.
+            // else if (httpPost != null) {
+                // should this be response.close(); now?
+                // httpPost.releaseConnection();
+            // }
 
             // We set httpPost to null to prevent the connection from being closed again by an accidental
             // second call to close()
@@ -301,12 +296,13 @@ public class ApacheHttpClient implements ExchangeHttpClient {
             // Disable Kerberos in the preferred auth schemes - EWS should usually allow NTLM or Basic auth
             RequestConfig.Builder
                     requestConfigBuilder =
-                    RequestConfig.custom().setAuthenticationEnabled(true).setConnectionRequestTimeout(getTimeout(), TimeUnit.MILLISECONDS)
+                    RequestConfig.custom()
+                            .setAuthenticationEnabled(true)
                                 // MS is an assumption - they didn't bother to document it in the Apache HTTP client 4
-                            .setConnectTimeout(getTimeout(), TimeUnit.MILLISECONDS)
+                            .setConnectTimeout(Timeout.ofMilliseconds(getTimeout()))
+                            .setConnectionRequestTimeout(getTimeout(), TimeUnit.MILLISECONDS)
                             .setRedirectsEnabled(isAllowAutoRedirect())
                             .setResponseTimeout(getTimeout(), TimeUnit.MILLISECONDS)
-
                             .setTargetPreferredAuthSchemes(Arrays.asList(StandardAuthScheme.NTLM, StandardAuthScheme.BASIC))
                             .setProxyPreferredAuthSchemes(Arrays.asList(StandardAuthScheme.NTLM, StandardAuthScheme.BASIC));
 
@@ -334,7 +330,16 @@ public class ApacheHttpClient implements ExchangeHttpClient {
             // Add web service credential if necessary.
             if (isAllowAuthentication() && getUsername() != null) {
                 NTCredentials webServiceCredentials = new NTCredentials(getUsername(), getPassword().toCharArray(), "", getDomain());
-                credentialsProvider.setCredentials(new AuthScope(AuthScope.ANY), webServiceCredentials);
+                final AuthScope any = new AuthScope(null, null, -1, null, null);
+                credentialsProvider.setCredentials(any, webServiceCredentials);
+
+                //try {
+                    // final HttpHost host = new HttpHost(httpPost.getUri().getHost());
+                    // old: credentialsProvider.setCredentials(new AuthScope(AuthScope.ANY), webServiceCredentials);
+
+                //} catch (URISyntaxException e) {
+                //    throw new RuntimeException("error configuring credentials for this POST request", e);
+                //}
             }
 
             httpContext.setCredentialsProvider(credentialsProvider);
@@ -386,14 +391,9 @@ public class ApacheHttpClient implements ExchangeHttpClient {
          */
         @Override
         public OutputStream getOutputStream() throws EWSHttpException {
-            OutputStream os = null;
             throwIfRequestIsNull();
-            os = new ByteArrayOutputStream();
-
-            // httpPost.setEntity(new BasicHttpEntity());
-
-            httpPost.setEntity(new ByteArrayOSRequestEntity(os));
-            return os;
+            currentOutputStream = new WrappingOuputStream(httpPost);
+            return currentOutputStream;
         }
 
         /**
@@ -477,6 +477,12 @@ public class ApacheHttpClient implements ExchangeHttpClient {
         @Override
         public int executeRequest() throws EWSHttpException, IOException {
             throwIfRequestIsNull();
+
+            if (currentOutputStream == null) {
+                throw new EWSHttpException("the output stream is null, there's no data to send!?");
+            }
+            currentOutputStream.close(); // closing it triggers setting the entity
+
             response = httpClient.execute(httpPost, httpContext);
             return response.getCode(); // ?? don't know what is wanted in return
         }

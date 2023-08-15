@@ -26,11 +26,10 @@ package com.eischet.ews.javaclient;
 import com.eischet.ews.api.core.exception.http.EWSHttpException;
 import com.eischet.ews.api.http.ExchangeHttpClient;
 import com.eischet.ews.api.http.RequestFields;
+import jcifs.http.NtlmSsp;
 
 import java.io.*;
-import java.net.InetSocketAddress;
-import java.net.ProxySelector;
-import java.net.URISyntaxException;
+import java.net.*;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
@@ -122,12 +121,28 @@ public class JavaClient implements ExchangeHttpClient {
     public void close() throws IOException {
     }
 
+    // TODO: this could maybe help --> https://github.com/codelibs/jcifs/blob/master/src/main/java/jcifs/http/NtlmHttpURLConnection.java
+    // yes, it's "broken by design", as they say, but it's our reality, too ;-)
+
     protected class JavaRequest extends RequestFields {
 
         private final ByteArrayOutputStream post = new ByteArrayOutputStream();
         private HttpResponse<String> response;
         private static final String authHeaderName = "Authorization";
         private String authHeaderContents = null;
+        private String username;
+        private String domain;
+        private String password;
+
+        private boolean useNtlm = true;
+
+        public boolean isUseNtlm() {
+            return useNtlm;
+        }
+
+        public void setUseNtlm(final boolean useNtlm) {
+            this.useNtlm = useNtlm;
+        }
 
         @Override
         public void prepareConnection() {
@@ -149,7 +164,7 @@ public class JavaClient implements ExchangeHttpClient {
                 setHeader("Accept-Encoding", "gzip,deflate");
             }
 
-            if (authHeaderContents != null) {
+            if (authHeaderContents != null && !useNtlm) {
                 setHeader(authHeaderName, authHeaderContents);
             }
 
@@ -157,6 +172,9 @@ public class JavaClient implements ExchangeHttpClient {
 
         @Override
         public void setCredentials(final String domain, final String username, final String password) {
+            this.username = username;
+            this.domain = domain;
+            this.password = password;
             // TODO: other modes of Authentication, actually use Cookies, etc.
             if (username == null || username.isEmpty()) {
                 authHeaderContents = null;
@@ -255,6 +273,14 @@ public class JavaClient implements ExchangeHttpClient {
             if (proxyHost != null && !proxyHost.isBlank()) {
                 builder.proxy(ProxySelector.of(new InetSocketAddress(getProxyHost(), getProxyPort())));
             }
+
+
+            builder.authenticator(new Authenticator() {
+                @Override
+                protected PasswordAuthentication getPasswordAuthentication() {
+                    return new PasswordAuthentication(username, password.toCharArray());
+                }
+            });
             return builder
                     .followRedirects(isAllowAutoRedirect() ? HttpClient.Redirect.ALWAYS : HttpClient.Redirect.NEVER)
                     .connectTimeout(Duration.of(getTimeout(), ChronoUnit.MILLIS));

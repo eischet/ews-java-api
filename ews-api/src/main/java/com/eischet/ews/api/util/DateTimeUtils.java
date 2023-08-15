@@ -26,6 +26,8 @@ package com.eischet.ews.api.util;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.logging.Logger;
 
 public final class DateTimeUtils {
@@ -48,6 +50,8 @@ public final class DateTimeUtils {
                 Formatter.of(DateTimeFormatter.ISO_LOCAL_DATE),
                 Formatter.of(DateTimeFormatter.ISO_DATE),
                 Formatter.of(DateTimeFormatter.ISO_OFFSET_DATE),
+
+
 
                 Formatter.datetime("yyyy-MM-dd'T'HH:mm:ssZ"),
                 Formatter.datetime("yyyy-MM-dd'T'HH:mm:ss.SSSZ"),
@@ -164,27 +168,19 @@ public final class DateTimeUtils {
         }
 
         public LocalDate parseLocalDate(final String value) {
-            // if (dateOnly) {
-
             try {
                 final ZonedDateTime zoned = wrapped.parse(value, ZonedDateTime::from);
                 if (zoned != null) {
                     return zoned.toOffsetDateTime().atZoneSameInstant(ZoneOffset.UTC).toLocalDate();
                 }
-            } catch (RuntimeException e) {
-                log.warning(() -> String.format("cannot parse value '%s' with pattern '%s' (%s) as ZonedDateTime", value, pattern, e.getMessage()));
-                // return null;
+            } catch (RuntimeException ignored) {
             }
-
-                try {
-                    return wrapped.parse(value, LocalDate::from);
-                } catch (RuntimeException e) {
-                    log.warning(() -> String.format("cannot parse value '%s' with pattern '%s' (%s) as LocalDate", value, pattern, e.getMessage()));
-                    return null;
-                }
-            // } else {
-            //    return null;
-            //}
+            try {
+                return wrapped.parse(value, LocalDate::from);
+            } catch (RuntimeException e) {
+                log.warning(() -> String.format("cannot parse value '%s' with pattern '%s' (%s) as LocalDate, and all alternative patterns failed, too", value, pattern, e.getMessage()));
+                return null;
+            }
         }
 
 
@@ -194,16 +190,12 @@ public final class DateTimeUtils {
                 if (zoned != null) {
                     return zoned.toOffsetDateTime().atZoneSameInstant(ZoneOffset.UTC).toLocalDateTime();
                 }
-            } catch (RuntimeException e) {
-                log.warning(() -> String.format("cannot parse value '%s' with pattern '%s' (%s) as ZonedDateTime", value, pattern, e.getMessage()));
-                // return null;
+            } catch (RuntimeException ignored) {
             }
-
-
             try {
                 return wrapped.parse(value, LocalDateTime::from);
             } catch (RuntimeException e) {
-                log.warning(() -> String.format("cannot parse value '%s' with pattern '%s' (%s) as LocalDate", value, pattern, e.getMessage()));
+                log.warning(() -> String.format("cannot parse value '%s' with pattern '%s' (%s) as LocalDate, and all alternative patterns failed, too", value, pattern, e.getMessage()));
                 return null;
             }
         }
