@@ -178,7 +178,8 @@ public final class DateTimeUtils {
             try {
                 return wrapped.parse(value, LocalDate::from);
             } catch (RuntimeException e) {
-                log.warning(() -> String.format("cannot parse value '%s' with pattern '%s' (%s) as LocalDate, and all alternative patterns failed, too", value, pattern, e.getMessage()));
+                // the warnings do not really make sense, because upstream code might use multiple different formats in sequence to parse a date... better return null only
+                // log.warning(() -> String.format("parseLocalDate: cannot parse value '%s' with pattern '%s' (%s) as LocalDate, and all alternative patterns failed, too", value, pattern, e.getMessage()));
                 return null;
             }
         }
@@ -195,7 +196,8 @@ public final class DateTimeUtils {
             try {
                 return wrapped.parse(value, LocalDateTime::from);
             } catch (RuntimeException e) {
-                log.warning(() -> String.format("cannot parse value '%s' with pattern '%s' (%s) as LocalDate, and all alternative patterns failed, too", value, pattern, e.getMessage()));
+                // the warnings do not really make sense, because upstream code might use multiple different formats in sequence to parse a date... better return null only
+                // log.warning(() -> String.format("parseLocalDateTime: cannot parse value '%s' with pattern '%s' (%s) as LocalDateTime, and all alternative patterns failed, too", value, pattern, e.getMessage()));
                 return null;
             }
         }

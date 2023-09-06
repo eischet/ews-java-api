@@ -15,6 +15,8 @@ public class DateParsingTestCase {
         final LocalDateTime date = DateTimeUtils.parseDateTime(sample);
         assertNotNull(date);
         System.out.println(date);
+        // TODO: add more checks -> the Z is ignored right now, because my own client does not use any date fields actually (!)
     }
+
 
 }
