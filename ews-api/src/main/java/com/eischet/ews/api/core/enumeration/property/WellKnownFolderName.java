@@ -30,107 +30,91 @@ import com.eischet.ews.api.core.enumeration.misc.ExchangeVersion;
  * Defines well known folder names.
  */
 public enum WellKnownFolderName {
-    // The Calendar folder.
+
     /**
-     * The Calendar.
+     * The Calendar folder.
      */
     Calendar,
 
-    // The Contacts folder.
     /**
-     * The Contacts.
+     * The Contacts folder.
      */
     Contacts,
 
-    // The Deleted Items folder
     /**
-     * The Deleted item.
+     * The Deleted Items folder.
      */
     DeletedItems,
 
-    // The Drafts folder.
     /**
-     * The Drafts.
+     * The Drafts folder.
      */
     Drafts,
 
-    // The Inbox folder.
     /**
-     * The Inbox.
+     * The Inbox folder.
      */
     Inbox,
 
-    // The Journal folder.
     /**
-     * The Journal.
+     * The Journal folder.
      */
     Journal,
 
-    // The Notes folder.
     /**
-     * The Notes.
+     * The Notes folder.
      */
     Notes,
 
-    // The Outbox folder.
     /**
-     * The Outbox.
+     * The Outbox folder.
      */
     Outbox,
 
-    // The Sent Items folder.
     /**
-     * The Sent item.
+     * The Sent Items folder.
      */
     SentItems,
 
-    // The Tasks folder.
     /**
-     * The Tasks.
+     * The Tasks folder.
      */
     Tasks,
 
-    // The message folder root.
     /**
-     * The Msg folder root.
+     * The message folder root.
      */
     MsgFolderRoot,
 
-    // The root of the Public Folders hierarchy.
     /**
-     * The Public folder root.
+     * The root of the Public Folders hierarchy.
      */
     @RequiredServerVersion(version = ExchangeVersion.Exchange2007_SP1)
     PublicFoldersRoot,
 
-    // The root of the mailbox.
     /**
-     * The Root.
+     * The root of the mailbox.
      */
     Root,
 
-    // The Junk E-mail folder.
     /**
-     * The Junk email.
+     * The Junk E-mail folder.
      */
     JunkEmail,
 
-    // The Search Folders folder, also known as the Finder folder.
     /**
-     * The Search folder.
+     * The Search Folders folder, also known as the Finder folder.
      */
     SearchFolders,
 
-    // The Voicemail folder.
     /**
-     * The Voice mail.
+     * The Voicemail folder.
      */
     VoiceMail,
 
     /**
      * The Dumpster 2.0 root folder.
      */
-
     @RequiredServerVersion(version = ExchangeVersion.Exchange2010_SP1)
     RecoverableItemsRoot,
 
@@ -193,7 +177,6 @@ public enum WellKnownFolderName {
      */
     @RequiredServerVersion(version = ExchangeVersion.Exchange2010_SP1)
     ArchiveRecoverableItemsPurges,
-
 
 
     // Original pull request: https://github.com/OfficeDev/ews-java-api/pull/527/commits/70add8c4a2d910b87e1770cf732b0e079e4800b0
