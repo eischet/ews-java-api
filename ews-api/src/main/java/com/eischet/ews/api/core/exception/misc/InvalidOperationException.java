@@ -23,10 +23,12 @@
 
 package com.eischet.ews.api.core.exception.misc;
 
+import com.eischet.ews.api.core.exception.ExchangeException;
+
 /**
  * The Class InvalidOperationException.
  */
-public class InvalidOperationException extends Exception {
+public class InvalidOperationException extends ExchangeException {
 
     /**
      * Constant serialized ID used for compatibility.

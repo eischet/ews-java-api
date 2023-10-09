@@ -23,10 +23,12 @@
 
 package com.eischet.ews.api.core.exception.service.remote;
 
+import com.eischet.ews.api.core.exception.ExchangeException;
+
 /**
  * Represents an error that occurs when a service operation fails remotely.
  */
-public class ServiceRemoteException extends Exception {
+public class ServiceRemoteException extends ExchangeException {
 
     /**
      * Constant serialized ID used for compatibility.

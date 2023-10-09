@@ -23,10 +23,12 @@
 
 package com.eischet.ews.api.core.exception.dns;
 
+import com.eischet.ews.api.core.exception.ExchangeException;
+
 /**
  * Defines DnsException class.
  */
-public class DnsException extends Exception {
+public class DnsException extends ExchangeException {
 
     /**
      * Constant serialized ID used for compatibility.

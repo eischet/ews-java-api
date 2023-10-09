@@ -26,7 +26,7 @@ package com.eischet.ews.api.core.exception.misc;
 /**
  * The Class ArgumentOutOfRangeException.
  */
-public class ArgumentOutOfRangeException extends Exception {
+public class ArgumentOutOfRangeException extends ArgumentException {
 
     /**
      * Constant serialized ID used for compatibility.

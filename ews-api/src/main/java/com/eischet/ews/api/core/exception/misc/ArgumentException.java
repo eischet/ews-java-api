@@ -23,12 +23,14 @@
 
 package com.eischet.ews.api.core.exception.misc;
 
+import com.eischet.ews.api.core.exception.ExchangeException;
+
 import java.security.PrivilegedActionException;
 
 /**
  * The Class ArgumentException.
  */
-public class ArgumentException extends IllegalArgumentException {
+public class ArgumentException extends ExchangeException {
 
     /**
      * Constant serialized ID used for compatibility.

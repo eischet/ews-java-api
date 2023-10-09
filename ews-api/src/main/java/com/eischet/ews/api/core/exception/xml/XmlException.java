@@ -23,7 +23,9 @@
 
 package com.eischet.ews.api.core.exception.xml;
 
-public class XmlException extends Exception {
+import com.eischet.ews.api.core.exception.ExchangeException;
+
+public class XmlException extends ExchangeException {
 
     /**
      * Constant serialized ID used for compatibility.

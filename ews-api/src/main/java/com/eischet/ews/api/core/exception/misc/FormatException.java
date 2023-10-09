@@ -26,7 +26,7 @@ package com.eischet.ews.api.core.exception.misc;
 /**
  * The Class FormatException.
  */
-public class FormatException extends IllegalArgumentException {
+public class FormatException extends ArgumentException {
 
     /**
      * Constant serialized ID used for compatibility.

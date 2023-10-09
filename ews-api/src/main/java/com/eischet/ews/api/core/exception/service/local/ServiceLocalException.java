@@ -23,11 +23,13 @@
 
 package com.eischet.ews.api.core.exception.service.local;
 
+import com.eischet.ews.api.core.exception.ExchangeException;
+
 /**
  * Represents an error that occurs when a service operation fails locally (e.g.
  * validation error).
  */
-public class ServiceLocalException extends Exception {
+public class ServiceLocalException extends ExchangeException {
 
     /**
      * Constant serialized ID used for compatibility.

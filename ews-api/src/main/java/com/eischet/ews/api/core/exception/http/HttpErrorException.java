@@ -24,10 +24,12 @@
 package com.eischet.ews.api.core.exception.http;
 
 
+import com.eischet.ews.api.core.exception.ExchangeException;
+
 /**
  * User: nwoodham Date: 3/8/11 Time: 5:30 PM
  */
-public class HttpErrorException extends Exception {
+public class HttpErrorException extends ExchangeException {
 
     /**
      * Constant serialized ID used for compatibility.
