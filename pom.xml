@@ -100,7 +100,6 @@
         <versions-maven-plugin.version>2.2</versions-maven-plugin.version>
         <maven-jxr-plugin.version>2.5</maven-jxr-plugin.version>
         <maven-surefire-report-plugin.version>2.18.1</maven-surefire-report-plugin.version>
-        <jacoco-maven-plugin.version>0.8.7</jacoco-maven-plugin.version>
         <!--  Dependencies [COMPILE]:  -->
         <httpclient.version>4.5.14</httpclient.version> <!-- latest, but still outdated, http client v4 -->
         <httpclient5.version>5.2.1</httpclient5.version>
@@ -190,26 +189,6 @@
                     </execution>
                 </executions>
             </plugin>
-            <plugin>
-                <groupId>org.jacoco</groupId>
-                <artifactId>jacoco-maven-plugin</artifactId>
-                <version>${jacoco-maven-plugin.version}</version>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>prepare-agent</goal>
-                        </goals>
-                    </execution>
-                    <execution>
-                        <id>report</id>
-                        <phase>test</phase>
-                        <goals>
-                            <goal>report</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-            <!-- Deployment / build plugins END -->
         </plugins>
         <!-- Used to bump all of the various core plugins up to Maven current.
             Use this in conjunction with the versions-maven-plugin to keep your Maven
