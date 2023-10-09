@@ -27,6 +27,7 @@ import com.eischet.ews.api.core.EwsServiceXmlReader;
 import com.eischet.ews.api.core.XmlElementNames;
 import com.eischet.ews.api.core.enumeration.misc.XmlNamespace;
 import com.eischet.ews.api.core.exception.misc.ArgumentOutOfRangeException;
+import com.eischet.ews.api.core.exception.xml.ExchangeXmlException;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -97,11 +98,9 @@ public final class RuleCollection extends ComplexProperty implements Iterable<Ru
      *
      * @param reader The reader.
      * @return True if element was read.
-     * @throws Exception
      */
     @Override
-    public boolean tryReadElementFromXml(EwsServiceXmlReader reader)
-            throws Exception {
+    public boolean tryReadElementFromXml(EwsServiceXmlReader reader) throws ExchangeXmlException {
         if (reader.isStartElement(XmlNamespace.Types, XmlElementNames.Rule)) {
             Rule rule = new Rule();
             rule.loadFromXml(reader, XmlElementNames.Rule);

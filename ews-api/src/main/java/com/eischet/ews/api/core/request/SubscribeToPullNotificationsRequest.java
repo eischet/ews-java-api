@@ -29,11 +29,9 @@ import com.eischet.ews.api.core.XmlElementNames;
 import com.eischet.ews.api.core.enumeration.misc.ExchangeVersion;
 import com.eischet.ews.api.core.enumeration.misc.XmlNamespace;
 import com.eischet.ews.api.core.exception.misc.ArgumentException;
-import com.eischet.ews.api.core.exception.service.local.ServiceXmlSerializationException;
+import com.eischet.ews.api.core.exception.xml.ExchangeXmlException;
 import com.eischet.ews.api.core.response.SubscribeResponse;
 import com.eischet.ews.api.notification.PullSubscription;
-
-import javax.xml.stream.XMLStreamException;
 
 /**
  * Represents a "pull" Subscribe request.
@@ -129,14 +127,10 @@ public class SubscribeToPullNotificationsRequest extends
      * Reads response elements from XML.
      *
      * @param writer the writer
-     * @throws XMLStreamException               the XML stream exception
-     * @throws ServiceXmlSerializationException the service xml serialization exception
      */
     @Override
-    protected void internalWriteElementsToXml(EwsServiceXmlWriter writer)
-            throws XMLStreamException, ServiceXmlSerializationException {
-        writer.writeElementValue(XmlNamespace.Types, XmlElementNames.Timeout,
-                this.getTimeout());
+    protected void internalWriteElementsToXml(EwsServiceXmlWriter writer) throws ExchangeXmlException {
+        writer.writeElementValue(XmlNamespace.Types, XmlElementNames.Timeout, this.getTimeout());
 
     }
 }

@@ -30,8 +30,9 @@ import com.eischet.ews.api.autodiscover.response.AutodiscoverResponse;
 import com.eischet.ews.api.autodiscover.response.GetUserSettingsResponseCollection;
 import com.eischet.ews.api.core.*;
 import com.eischet.ews.api.core.enumeration.misc.XmlNamespace;
-import com.eischet.ews.api.core.exception.service.local.ServiceValidationException;
+import com.eischet.ews.api.core.exception.service.local.ExchangeValidationException;
 import com.eischet.ews.api.core.exception.service.local.ServiceXmlSerializationException;
+import com.eischet.ews.api.core.exception.xml.ExchangeXmlException;
 
 import javax.xml.stream.XMLStreamException;
 import java.net.URI;
@@ -65,9 +66,9 @@ public class GetUserSettingsRequest extends AutodiscoverRequest {
      *
      * @param service the service
      * @param url     the url
-     * @throws ServiceValidationException on validation error
+     * @throws ExchangeValidationException on validation error
      */
-    public GetUserSettingsRequest(AutodiscoverService service, URI url) throws ServiceValidationException {
+    public GetUserSettingsRequest(AutodiscoverService service, URI url) throws ExchangeValidationException {
         this(service, url, false);
     }
 
@@ -77,16 +78,16 @@ public class GetUserSettingsRequest extends AutodiscoverRequest {
      * @param service            autodiscover service associated with this request
      * @param url                URL of Autodiscover service
      * @param expectPartnerToken expect partner token or not
-     * @throws ServiceValidationException on validation error
+     * @throws ExchangeValidationException on validation error
      */
     public GetUserSettingsRequest(AutodiscoverService service, URI url, boolean expectPartnerToken)
-            throws ServiceValidationException {
+            throws ExchangeValidationException {
         super(service, url);
         this.expectPartnerToken = expectPartnerToken;
 
         // make an explicit https check.
         if (expectPartnerToken && !url.getScheme().equalsIgnoreCase("https")) {
-            throw new ServiceValidationException("Https is required.");
+            throw new ExchangeValidationException("Https is required.");
         }
     }
 
@@ -102,17 +103,17 @@ public class GetUserSettingsRequest extends AutodiscoverRequest {
         EwsUtilities.validateParam(this.getSmtpAddresses(), "smtpAddresses");
         EwsUtilities.validateParam(this.getSettings(), "settings");
 
-        if (this.getSettings().size() == 0) {
-            throw new ServiceValidationException("At least one setting must be requested.");
+        if (this.getSettings().isEmpty()) {
+            throw new ExchangeValidationException("At least one setting must be requested.");
         }
 
-        if (this.getSmtpAddresses().size() == 0) {
-            throw new ServiceValidationException("At least one SMTP address must be requested.");
+        if (this.getSmtpAddresses().isEmpty()) {
+            throw new ExchangeValidationException("At least one SMTP address must be requested.");
         }
 
         for (String smtpAddress : this.getSmtpAddresses()) {
             if (smtpAddress == null || smtpAddress.isEmpty()) {
-                throw new ServiceValidationException("A valid SMTP address must be specified.");
+                throw new ExchangeValidationException("A valid SMTP address must be specified.");
             }
         }
     }
@@ -195,21 +196,15 @@ public class GetUserSettingsRequest extends AutodiscoverRequest {
      * @throws ServiceXmlSerializationException the service xml serialization exception
      */
     @Override
-    protected void writeAttributesToXml(EwsServiceXmlWriter writer)
-            throws ServiceXmlSerializationException {
-        writer.writeAttributeValue("xmlns",
-                EwsUtilities.AutodiscoverSoapNamespacePrefix,
-                EwsUtilities.AutodiscoverSoapNamespace);
+    protected void writeAttributesToXml(EwsServiceXmlWriter writer) throws ExchangeXmlException {
+        writer.writeAttributeValue("xmlns", EwsUtilities.AutodiscoverSoapNamespacePrefix, EwsUtilities.AutodiscoverSoapNamespace);
     }
 
     /**
      * @param writer XML writer
-     * @throws XMLStreamException               the XML stream exception
-     * @throws ServiceXmlSerializationException the service xml serialization exception
      */
     @Override
-    public void writeExtraCustomSoapHeadersToXml(EwsServiceXmlWriter writer) throws XMLStreamException,
-            ServiceXmlSerializationException {
+    public void writeExtraCustomSoapHeadersToXml(EwsServiceXmlWriter writer) throws ExchangeXmlException {
         if (this.expectPartnerToken) {
             writer.writeElementValue(XmlNamespace.Autodiscover,
                     XmlElementNames.BinarySecret,
@@ -225,8 +220,7 @@ public class GetUserSettingsRequest extends AutodiscoverRequest {
      * @throws ServiceXmlSerializationException the service xml serialization exception
      */
     @Override
-    protected void writeElementsToXml(EwsServiceXmlWriter writer)
-            throws XMLStreamException, ServiceXmlSerializationException {
+    protected void writeElementsToXml(EwsServiceXmlWriter writer) throws ExchangeXmlException {
         writer.writeStartElement(XmlNamespace.Autodiscover,
                 XmlElementNames.Request);
 

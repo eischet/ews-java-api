@@ -35,14 +35,6 @@ public class ArgumentOutOfRangeException extends ArgumentException {
 
     /**
      * Instantiates a new argument out of range exception.
-     */
-    public ArgumentOutOfRangeException() {
-        super();
-
-    }
-
-    /**
-     * Instantiates a new argument out of range exception.
      *
      * @param arg0 the arg0
      */
@@ -58,6 +50,7 @@ public class ArgumentOutOfRangeException extends ArgumentException {
      * @param arg1 the arg1
      */
     public ArgumentOutOfRangeException(final String arg0, final String arg1) {
+        super(arg0, arg1);
 
     }
 }

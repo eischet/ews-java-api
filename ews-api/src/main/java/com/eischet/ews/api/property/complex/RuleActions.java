@@ -29,6 +29,8 @@ import com.eischet.ews.api.core.EwsUtilities;
 import com.eischet.ews.api.core.XmlElementNames;
 import com.eischet.ews.api.core.enumeration.misc.XmlNamespace;
 import com.eischet.ews.api.core.enumeration.property.Importance;
+import com.eischet.ews.api.core.exception.service.local.ExchangeValidationException;
+import com.eischet.ews.api.core.exception.xml.ExchangeXmlException;
 import com.eischet.ews.api.misc.MobilePhone;
 
 import java.util.ArrayList;
@@ -310,11 +312,10 @@ public final class RuleActions extends ComplexProperty {
      *
      * @param reader The reader.
      * @return True if element was read.
-     * @throws Exception
      */
     @Override
     public boolean tryReadElementFromXml(EwsServiceXmlReader
-                                                 reader) throws Exception {
+                                                 reader) throws ExchangeXmlException {
         if (reader.getLocalName().equals(XmlElementNames.CopyToFolder)) {
             reader.readStartElement(XmlNamespace.NotSpecified,
                     XmlElementNames.FolderId);
@@ -383,11 +384,9 @@ public final class RuleActions extends ComplexProperty {
      * Writes elements to XML.
      *
      * @param writer The writer.
-     * @throws Exception
      */
     @Override
-    public void writeElementsToXml(EwsServiceXmlWriter writer)
-            throws Exception {
+    public void writeElementsToXml(EwsServiceXmlWriter writer) throws ExchangeXmlException {
         if (this.getAssignCategories().getSize() > 0) {
             this.getAssignCategories().writeToXml(writer,
                     XmlElementNames.AssignCategories);
@@ -400,7 +399,7 @@ public final class RuleActions extends ComplexProperty {
             writer.writeEndElement();
         }
 
-        if (this.getDelete() != false) {
+        if (this.getDelete()) {
             writer.writeElementValue(
                     XmlNamespace.Types,
                     XmlElementNames.Delete,
@@ -474,10 +473,9 @@ public final class RuleActions extends ComplexProperty {
     /**
      * Validates this instance.
      *
-     * @throws Exception
      */
     @Override
-    protected void internalValidate() throws Exception {
+    protected void internalValidate() throws ExchangeValidationException {
         super.internalValidate();
         EwsUtilities.validateParam(this.forwardAsAttachmentToRecipients, "ForwardAsAttachmentToRecipients");
         EwsUtilities.validateParam(this.forwardToRecipients,

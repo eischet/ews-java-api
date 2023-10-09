@@ -28,6 +28,7 @@ import com.eischet.ews.api.core.enumeration.misc.ExchangeVersion;
 import com.eischet.ews.api.core.enumeration.misc.XmlNamespace;
 import com.eischet.ews.api.core.exception.service.local.ServiceLocalException;
 import com.eischet.ews.api.core.exception.service.local.ServiceVersionException;
+import com.eischet.ews.api.core.exception.xml.ExchangeXmlException;
 import com.eischet.ews.api.core.service.folder.Folder;
 import com.eischet.ews.api.property.complex.FolderId;
 
@@ -52,7 +53,7 @@ public class FolderIdWrapperList implements Iterable<AbstractFolderIdWrapper> {
      * @param folder the folder
      * @throws ServiceLocalException the service local exception
      */
-    public void add(Folder folder) throws ServiceLocalException {
+    public void add(Folder folder) throws ExchangeXmlException {
         this.ids.add(new FolderWrapper(folder));
     }
 
@@ -60,10 +61,8 @@ public class FolderIdWrapperList implements Iterable<AbstractFolderIdWrapper> {
      * Adds the range.
      *
      * @param folders the folder
-     * @throws ServiceLocalException the service local exception
      */
-    protected void addRangeFolder(Iterable<Folder> folders)
-            throws ServiceLocalException {
+    protected void addRangeFolder(Iterable<Folder> folders) throws ExchangeXmlException {
         if (folders != null) {
             for (Folder folder : folders) {
                 this.add(folder);

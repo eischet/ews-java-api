@@ -25,6 +25,7 @@ package com.eischet.ews.api.property.complex;
 
 import com.eischet.ews.api.core.EwsServiceXmlReader;
 import com.eischet.ews.api.core.XmlElementNames;
+import com.eischet.ews.api.core.exception.xml.ExchangeXmlException;
 import com.eischet.ews.api.misc.OutParam;
 
 /**
@@ -94,10 +95,8 @@ public final class ManagedFolderInformation extends ComplexProperty {
      *
      * @param reader the reader
      * @return True if element was read.
-     * @throws Exception the exception
      */
-    public boolean tryReadElementFromXml(EwsServiceXmlReader reader)
-            throws Exception {
+    public boolean tryReadElementFromXml(EwsServiceXmlReader reader) throws ExchangeXmlException {
         if (reader.getLocalName().equalsIgnoreCase(XmlElementNames.CanDelete)) {
             this.canDelete = reader.readValue(Boolean.class);
             return true;
@@ -123,7 +122,7 @@ public final class ManagedFolderInformation extends ComplexProperty {
             return true;
         } else if (reader.getLocalName().equalsIgnoreCase(
                 XmlElementNames.Comment)) {
-            OutParam<String> value = new OutParam<String>();
+            OutParam<String> value = new OutParam<>();
             reader.tryReadValue(value);
             this.comment = value.getParam();
             return true;
@@ -137,7 +136,7 @@ public final class ManagedFolderInformation extends ComplexProperty {
             return true;
         } else if (reader.getLocalName().equalsIgnoreCase(
                 XmlElementNames.HomePage)) {
-            OutParam<String> value = new OutParam<String>();
+            OutParam<String> value = new OutParam<>();
             reader.tryReadValue(value);
             this.homePage = value.getParam();
             return true;

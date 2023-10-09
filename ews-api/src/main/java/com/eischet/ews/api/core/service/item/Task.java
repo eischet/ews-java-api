@@ -34,6 +34,7 @@ import com.eischet.ews.api.core.enumeration.service.*;
 import com.eischet.ews.api.core.enumeration.service.calendar.AffectedTaskOccurrence;
 import com.eischet.ews.api.core.exception.service.local.ServiceLocalException;
 import com.eischet.ews.api.core.exception.service.remote.ServiceResponseException;
+import com.eischet.ews.api.core.exception.xml.ExchangeXmlException;
 import com.eischet.ews.api.core.service.schema.ServiceObjectSchema;
 import com.eischet.ews.api.core.service.schema.TaskSchema;
 import com.eischet.ews.api.property.complex.ItemAttachment;
@@ -62,7 +63,7 @@ public class Task extends Item {
      * @param service the service
      * @throws Exception the exception
      */
-    public Task(ExchangeService service) throws Exception {
+    public Task(ExchangeService service) throws ExchangeXmlException {
         super(service);
     }
 
@@ -72,7 +73,7 @@ public class Task extends Item {
      * @param parentAttachment the parent attachment
      * @throws Exception the exception
      */
-    public Task(ItemAttachment parentAttachment) throws Exception {
+    public Task(ItemAttachment parentAttachment) throws ExchangeXmlException {
         super(parentAttachment);
     }
 
@@ -171,10 +172,8 @@ public class Task extends Item {
      * @throws ServiceResponseException the service response exception
      * @throws Exception                the exception
      */
-    public Task updateTask(ConflictResolutionMode conflictResolutionMode)
-            throws ServiceResponseException, Exception {
-        return (Task) this.internalUpdate(null /* parentFolder */,
-                conflictResolutionMode, MessageDisposition.SaveOnly, null);
+    public Task updateTask(ConflictResolutionMode conflictResolutionMode) throws ServiceResponseException, Exception {
+        return (Task) this.internalUpdate(null /* parentFolder */, conflictResolutionMode, MessageDisposition.SaveOnly, null);
     }
 
     // Properties
@@ -183,9 +182,8 @@ public class Task extends Item {
      * Gets the actual amount of time that is spent on the task.
      *
      * @return the actual work
-     * @throws ServiceLocalException the service local exception
      */
-    public Integer getActualWork() throws ServiceLocalException {
+    public Integer getActualWork() throws ExchangeXmlException {
         return getPropertyBag().getObjectFromPropertyDefinition(
                 TaskSchema.ActualWork);
     }
@@ -205,9 +203,8 @@ public class Task extends Item {
      * Gets the date and time the task was assigned.
      *
      * @return the assigned time
-     * @throws ServiceLocalException the service local exception
      */
-    public LocalDateTime getAssignedTime() throws ServiceLocalException {
+    public LocalDateTime getAssignedTime() throws ExchangeXmlException {
         return getPropertyBag().getObjectFromPropertyDefinition(
                 TaskSchema.AssignedTime);
     }
@@ -216,9 +213,8 @@ public class Task extends Item {
      * Gets the billing information of the task.
      *
      * @return the billing information
-     * @throws ServiceLocalException the service local exception
      */
-    public String getBillingInformation() throws ServiceLocalException {
+    public String getBillingInformation() throws ExchangeXmlException {
         return getPropertyBag().getObjectFromPropertyDefinition(
                 TaskSchema.BillingInformation);
     }
@@ -240,7 +236,7 @@ public class Task extends Item {
      * @return the change count
      * @throws ServiceLocalException the service local exception
      */
-    public Integer getChangeCount() throws ServiceLocalException {
+    public Integer getChangeCount() throws ServiceLocalException, ExchangeXmlException {
         return getPropertyBag().getObjectFromPropertyDefinition(
                 TaskSchema.ChangeCount);
     }
@@ -251,7 +247,7 @@ public class Task extends Item {
      * @return the companies
      * @throws ServiceLocalException the service local exception
      */
-    public StringList getCompanies() throws ServiceLocalException {
+    public StringList getCompanies() throws ServiceLocalException, ExchangeXmlException {
         return getPropertyBag().getObjectFromPropertyDefinition(
                 TaskSchema.Companies);
     }
@@ -273,7 +269,7 @@ public class Task extends Item {
      * @return the complete date
      * @throws ServiceLocalException the service local exception
      */
-    public LocalDateTime getCompleteDate() throws ServiceLocalException {
+    public LocalDateTime getCompleteDate() throws ServiceLocalException, ExchangeXmlException {
         return getPropertyBag().getObjectFromPropertyDefinition(
                 TaskSchema.CompleteDate);
     }
@@ -295,7 +291,7 @@ public class Task extends Item {
      * @return the contacts
      * @throws ServiceLocalException the service local exception
      */
-    public StringList getContacts() throws ServiceLocalException {
+    public StringList getContacts() throws ServiceLocalException, ExchangeXmlException {
         return getPropertyBag().getObjectFromPropertyDefinition(
                 TaskSchema.Contacts);
     }
@@ -318,7 +314,7 @@ public class Task extends Item {
      * @throws ServiceLocalException the service local exception
      */
     public TaskDelegationState getDelegationState()
-            throws ServiceLocalException {
+            throws ServiceLocalException, ExchangeXmlException {
         return getPropertyBag().getObjectFromPropertyDefinition(
                 TaskSchema.DelegationState);
     }
@@ -329,7 +325,7 @@ public class Task extends Item {
      * @return the delegator
      * @throws ServiceLocalException the service local exception
      */
-    public String getDelegator() throws ServiceLocalException {
+    public String getDelegator() throws ServiceLocalException, ExchangeXmlException {
         return getPropertyBag().getObjectFromPropertyDefinition(
                 TaskSchema.Delegator);
     }
@@ -340,7 +336,7 @@ public class Task extends Item {
      * @return the due date
      * @throws ServiceLocalException the service local exception
      */
-    public LocalDateTime getDueDate() throws ServiceLocalException {
+    public LocalDateTime getDueDate() throws ServiceLocalException, ExchangeXmlException {
         return getPropertyBag().getObjectFromPropertyDefinition(
                 TaskSchema.DueDate);
     }
@@ -362,7 +358,7 @@ public class Task extends Item {
      * @return the mode
      * @throws ServiceLocalException the service local exception
      */
-    public TaskMode getMode() throws ServiceLocalException {
+    public TaskMode getMode() throws ServiceLocalException, ExchangeXmlException {
         return getPropertyBag().getObjectFromPropertyDefinition(TaskSchema.Mode);
     }
 
@@ -372,7 +368,7 @@ public class Task extends Item {
      * @return the checks if is complete
      * @throws ServiceLocalException the service local exception
      */
-    public Boolean getIsComplete() throws ServiceLocalException {
+    public Boolean getIsComplete() throws ServiceLocalException, ExchangeXmlException {
         return getPropertyBag().getObjectFromPropertyDefinition(
                 TaskSchema.IsComplete);
     }
@@ -383,7 +379,7 @@ public class Task extends Item {
      * @return the checks if is recurring
      * @throws ServiceLocalException the service local exception
      */
-    public Boolean getIsRecurring() throws ServiceLocalException {
+    public Boolean getIsRecurring() throws ServiceLocalException, ExchangeXmlException {
         return getPropertyBag().getObjectFromPropertyDefinition(
                 TaskSchema.IsRecurring);
     }
@@ -394,7 +390,7 @@ public class Task extends Item {
      * @return the checks if is team task
      * @throws ServiceLocalException the service local exception
      */
-    public Boolean getIsTeamTask() throws ServiceLocalException {
+    public Boolean getIsTeamTask() throws ServiceLocalException, ExchangeXmlException {
         return getPropertyBag().getObjectFromPropertyDefinition(
                 TaskSchema.IsTeamTask);
     }
@@ -405,7 +401,7 @@ public class Task extends Item {
      * @return the mileage
      * @throws ServiceLocalException the service local exception
      */
-    public String getMileage() throws ServiceLocalException {
+    public String getMileage() throws ServiceLocalException, ExchangeXmlException {
         return getPropertyBag().getObjectFromPropertyDefinition(
                 TaskSchema.Mileage);
     }
@@ -427,7 +423,7 @@ public class Task extends Item {
      * @return the owner
      * @throws ServiceLocalException the service local exception
      */
-    public String getOwner() throws ServiceLocalException {
+    public String getOwner() throws ServiceLocalException, ExchangeXmlException {
         return getPropertyBag().getObjectFromPropertyDefinition(
                 TaskSchema.Owner);
     }
@@ -440,7 +436,7 @@ public class Task extends Item {
      * @return the percent complete
      * @throws ServiceLocalException the service local exception
      */
-    public Double getPercentComplete() throws ServiceLocalException {
+    public Double getPercentComplete() throws ServiceLocalException, ExchangeXmlException {
         return getPropertyBag().getObjectFromPropertyDefinition(
                 TaskSchema.PercentComplete);
     }
@@ -485,7 +481,7 @@ public class Task extends Item {
      * @return the recurrence
      * @throws ServiceLocalException the service local exception
      */
-    public Recurrence getRecurrence() throws ServiceLocalException {
+    public Recurrence getRecurrence() throws ServiceLocalException, ExchangeXmlException {
         return getPropertyBag().getObjectFromPropertyDefinition(
                 TaskSchema.Recurrence);
     }
@@ -507,7 +503,7 @@ public class Task extends Item {
      * @return the start date
      * @throws ServiceLocalException the service local exception
      */
-    public LocalDateTime getStartDate() throws ServiceLocalException {
+    public LocalDateTime getStartDate() throws ServiceLocalException, ExchangeXmlException {
         return getPropertyBag().getObjectFromPropertyDefinition(
                 TaskSchema.StartDate);
     }
@@ -529,7 +525,7 @@ public class Task extends Item {
      * @return the status
      * @throws ServiceLocalException the service local exception
      */
-    public TaskStatus getStatus() throws ServiceLocalException {
+    public TaskStatus getStatus() throws ServiceLocalException, ExchangeXmlException {
         return getPropertyBag().getObjectFromPropertyDefinition(TaskSchema.Status);
     }
 
@@ -550,20 +546,17 @@ public class Task extends Item {
      * bound to.
      *
      * @return the status description
-     * @throws ServiceLocalException the service local exception
      */
-    public String getStatusDescription() throws ServiceLocalException {
-        return getPropertyBag().getObjectFromPropertyDefinition(
-                TaskSchema.StatusDescription);
+    public String getStatusDescription() throws ExchangeXmlException {
+        return getPropertyBag().getObjectFromPropertyDefinition(TaskSchema.StatusDescription);
     }
 
     /**
      * Gets the total amount of work spent on the task.
      *
      * @return the total work
-     * @throws ServiceLocalException the service local exception
      */
-    public Integer getTotalWork() throws ServiceLocalException {
+    public Integer getTotalWork() throws ExchangeXmlException {
         return getPropertyBag().getObjectFromPropertyDefinition(
                 TaskSchema.TotalWork);
     }

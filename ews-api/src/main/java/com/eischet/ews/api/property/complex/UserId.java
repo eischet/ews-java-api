@@ -28,9 +28,7 @@ import com.eischet.ews.api.core.EwsServiceXmlWriter;
 import com.eischet.ews.api.core.XmlElementNames;
 import com.eischet.ews.api.core.enumeration.misc.XmlNamespace;
 import com.eischet.ews.api.core.enumeration.property.StandardUser;
-import com.eischet.ews.api.core.exception.service.local.ServiceXmlSerializationException;
-
-import javax.xml.stream.XMLStreamException;
+import com.eischet.ews.api.core.exception.xml.ExchangeXmlException;
 
 /**
  * Represents the Id of a user.
@@ -85,15 +83,33 @@ public class UserId extends ComplexProperty {
     }
 
     /**
+     * Implements an implicit conversion between a string representing a
+     * primary SMTP address and UserId.
+     *
+     * @param primarySmtpAddress the primary smtp address
+     * @return A UserId initialized with the specified primary SMTP address
+     */
+    public static UserId getUserId(String primarySmtpAddress) {
+        return new UserId(primarySmtpAddress);
+    }
+
+    /**
+     * Implements an implicit conversion between StandardUser and UserId.
+     *
+     * @param standardUser the standard user
+     * @return A UserId initialized with the specified standard user value
+     */
+    public static UserId getUserIdFromStandardUser(StandardUser standardUser) {
+        return new UserId(standardUser);
+    }
+
+    /**
      * Determines whether this instance is valid.
      *
      * @return true, if this instance is valid. Else, false
      */
     protected boolean isValid() {
-        return (this.standardUser != null ||
-                !(this.primarySmtpAddress == null || this.primarySmtpAddress
-                        .isEmpty()) || !(this.sID == null ||
-                this.sID.isEmpty()));
+        return (this.standardUser != null || !(this.primarySmtpAddress == null || this.primarySmtpAddress.isEmpty()) || !(this.sID == null || this.sID.isEmpty()));
     }
 
     /**
@@ -183,47 +199,22 @@ public class UserId extends ComplexProperty {
     }
 
     /**
-     * Implements an implicit conversion between a string representing a
-     * primary SMTP address and UserId.
-     *
-     * @param primarySmtpAddress the primary smtp address
-     * @return A UserId initialized with the specified primary SMTP address
-     */
-    public static UserId getUserId(String primarySmtpAddress) {
-        return new UserId(primarySmtpAddress);
-    }
-
-    /**
-     * Implements an implicit conversion between StandardUser and UserId.
-     *
-     * @param standardUser the standard user
-     * @return A UserId initialized with the specified standard user value
-     */
-    public static UserId getUserIdFromStandardUser(StandardUser standardUser) {
-        return new UserId(standardUser);
-    }
-
-    /**
      * Tries to read element from XML.
      *
      * @param reader the reader
      * @return True if element was read.
-     * @throws Exception the exception
      */
-    public boolean tryReadElementFromXml(EwsServiceXmlReader reader)
-            throws Exception {
+    public boolean tryReadElementFromXml(EwsServiceXmlReader reader) throws ExchangeXmlException {
         if (reader.getLocalName().equals(XmlElementNames.SID)) {
             this.sID = reader.readValue();
             return true;
-        } else if (reader.getLocalName().equals(
-                XmlElementNames.PrimarySmtpAddress)) {
+        } else if (reader.getLocalName().equals(XmlElementNames.PrimarySmtpAddress)) {
             this.primarySmtpAddress = reader.readValue();
             return true;
         } else if (reader.getLocalName().equals(XmlElementNames.DisplayName)) {
             this.displayName = reader.readValue();
             return true;
-        } else if (reader.getLocalName().equals(
-                XmlElementNames.DistinguishedUser)) {
+        } else if (reader.getLocalName().equals(XmlElementNames.DistinguishedUser)) {
             this.standardUser = reader.readValue(StandardUser.class);
             return true;
         } else {
@@ -235,18 +226,11 @@ public class UserId extends ComplexProperty {
      * Writes elements to XML.
      *
      * @param writer the writer
-     * @throws XMLStreamException               the XML stream exception
-     * @throws ServiceXmlSerializationException the service xml serialization exception
      */
-    public void writeElementsToXml(EwsServiceXmlWriter writer)
-            throws XMLStreamException, ServiceXmlSerializationException {
-        writer.writeElementValue(XmlNamespace.Types, XmlElementNames.SID,
-                this.sID);
-        writer.writeElementValue(XmlNamespace.Types,
-                XmlElementNames.PrimarySmtpAddress, this.primarySmtpAddress);
-        writer.writeElementValue(XmlNamespace.Types,
-                XmlElementNames.DisplayName, this.displayName);
-        writer.writeElementValue(XmlNamespace.Types,
-                XmlElementNames.DistinguishedUser, this.standardUser);
+    public void writeElementsToXml(EwsServiceXmlWriter writer) throws ExchangeXmlException {
+        writer.writeElementValue(XmlNamespace.Types, XmlElementNames.SID, this.sID);
+        writer.writeElementValue(XmlNamespace.Types, XmlElementNames.PrimarySmtpAddress, this.primarySmtpAddress);
+        writer.writeElementValue(XmlNamespace.Types, XmlElementNames.DisplayName, this.displayName);
+        writer.writeElementValue(XmlNamespace.Types, XmlElementNames.DistinguishedUser, this.standardUser);
     }
 }

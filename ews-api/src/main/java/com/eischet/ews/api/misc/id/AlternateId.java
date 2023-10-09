@@ -25,7 +25,8 @@ package com.eischet.ews.api.misc.id;
 
 import com.eischet.ews.api.core.*;
 import com.eischet.ews.api.core.enumeration.misc.IdFormat;
-import com.eischet.ews.api.core.exception.service.local.ServiceXmlSerializationException;
+import com.eischet.ews.api.core.exception.service.local.ExchangeValidationException;
+import com.eischet.ews.api.core.exception.xml.ExchangeXmlException;
 
 /**
  * Represents an Id expressed in a specific format.
@@ -157,11 +158,9 @@ public class AlternateId extends AlternateIdBase {
      * Gets the name of the XML element.
      *
      * @param writer the writer
-     * @throws ServiceXmlSerializationException the service xml serialization exception
      */
     @Override
-    protected void writeAttributesToXml(EwsServiceXmlWriter writer)
-            throws ServiceXmlSerializationException {
+    protected void writeAttributesToXml(EwsServiceXmlWriter writer) throws ExchangeXmlException {
         super.writeAttributesToXml(writer);
         writer.writeAttributeValue(XmlAttributeNames.Id, this.getUniqueId());
         writer.writeAttributeValue(XmlAttributeNames.Mailbox,
@@ -178,11 +177,9 @@ public class AlternateId extends AlternateIdBase {
      * Gets the name of the XML element.
      *
      * @param reader the reader
-     * @throws Exception// the exception
      */
     @Override
-    public void loadAttributesFromXml(EwsServiceXmlReader reader)
-            throws Exception {
+    public void loadAttributesFromXml(EwsServiceXmlReader reader) throws ExchangeXmlException {
         super.loadAttributesFromXml(reader);
 
         this.setUniqueId(reader.readAttributeValue(XmlAttributeNames.Id));
@@ -202,7 +199,7 @@ public class AlternateId extends AlternateIdBase {
      * Validate this instance.
      */
     @Override
-    protected void internalValidate() throws Exception {
+    protected void internalValidate() throws ExchangeValidationException {
         EwsUtilities.validateParam(this.getMailbox(), "mailbox");
     }
 }

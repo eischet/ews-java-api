@@ -29,6 +29,7 @@ package com.eischet.ews.api.misc;
  * @param <T>       the generic type
  * @param <TResult> the generic type
  */
+@FunctionalInterface
 public interface IFunction<T, TResult> {
 
     /**

@@ -24,6 +24,7 @@
 package com.eischet.ews.api.core.response;
 
 import com.eischet.ews.api.core.*;
+import com.eischet.ews.api.core.exception.xml.ExchangeXmlException;
 import com.eischet.ews.api.core.service.ServiceObject;
 import com.eischet.ews.api.core.service.folder.Folder;
 
@@ -82,10 +83,9 @@ public final class GetFolderResponse extends ServiceResponse implements
      * @param service        the service
      * @param xmlElementName the xml element name
      * @return the object instance delegate
-     * @throws Exception the exception
      */
     @Override
-    public ServiceObject getObjectInstanceDelegate(ExchangeService service, String xmlElementName) throws Exception {
+    public ServiceObject getObjectInstanceDelegate(ExchangeService service, String xmlElementName) throws ExchangeXmlException {
         return this.getObjectInstance(service, xmlElementName);
     }
 
@@ -95,10 +95,9 @@ public final class GetFolderResponse extends ServiceResponse implements
      * @param service        The service.
      * @param xmlElementName Name of the XML element.
      * @return folder
-     * @throws Exception the exception
      */
     private Folder getObjectInstance(ExchangeService service,
-                                     String xmlElementName) throws Exception {
+                                     String xmlElementName) throws ExchangeXmlException {
         if (this.getFolder() != null) {
             return this.getFolder();
         } else {

@@ -30,9 +30,10 @@ import com.eischet.ews.api.core.XmlAttributeNames;
 import com.eischet.ews.api.core.enumeration.attribute.EditorBrowsableState;
 import com.eischet.ews.api.core.enumeration.misc.XmlNamespace;
 import com.eischet.ews.api.core.enumeration.service.ServiceObjectType;
-import com.eischet.ews.api.core.exception.service.local.ServiceValidationException;
+import com.eischet.ews.api.core.exception.service.local.ExchangeValidationException;
 import com.eischet.ews.api.core.exception.service.local.ServiceVersionException;
 import com.eischet.ews.api.core.exception.service.local.ServiceXmlSerializationException;
+import com.eischet.ews.api.core.exception.xml.ExchangeXmlException;
 import com.eischet.ews.api.core.request.ServiceRequestBase;
 
 import javax.xml.stream.XMLStreamException;
@@ -58,11 +59,11 @@ public abstract class ViewBase {
      * Validates this view.
      *
      * @param request The request using this view.
-     * @throws ServiceValidationException the service validation exception
+     * @throws ExchangeValidationException the service validation exception
      * @throws ServiceVersionException    the service version exception
      */
     public void internalValidate(ServiceRequestBase request)
-            throws ServiceValidationException, ServiceVersionException {
+            throws ExchangeValidationException, ServiceVersionException {
         if (this.getPropertySet() != null) {
             this.getPropertySet().internalValidate();
             this.getPropertySet().validateForRequest(
@@ -71,17 +72,8 @@ public abstract class ViewBase {
         }
     }
 
-    /**
-     * Writes this view to XML.
-     *
-     * @param writer The writer
-     * @throws ServiceXmlSerializationException the service xml serialization exception
-     * @throws Exception                        the exception
-     */
-    protected void internalWriteViewToXml(EwsServiceXmlWriter writer)
-            throws ServiceXmlSerializationException, Exception {
+    protected void internalWriteViewToXml(EwsServiceXmlWriter writer) throws ExchangeXmlException {
         Integer maxEntriesReturned = this.getMaxEntriesReturned();
-
         if (maxEntriesReturned != null) {
             writer.writeAttributeValue(XmlAttributeNames.MaxEntriesReturned,
                     maxEntriesReturned);
@@ -98,7 +90,7 @@ public abstract class ViewBase {
      */
     protected abstract void internalWriteSearchSettingsToXml(
             EwsServiceXmlWriter writer, Grouping groupBy)
-            throws XMLStreamException, ServiceXmlSerializationException;
+            throws XMLStreamException, ServiceXmlSerializationException, ExchangeXmlException;
 
     /**
      * Writes OrderBy property to XML.
@@ -108,7 +100,7 @@ public abstract class ViewBase {
      * @throws ServiceXmlSerializationException the service xml serialization exception
      */
     public abstract void writeOrderByToXml(EwsServiceXmlWriter writer)
-            throws XMLStreamException, ServiceXmlSerializationException;
+            throws XMLStreamException, ServiceXmlSerializationException, ExchangeXmlException;
 
     /**
      * Gets the name of the view XML element.
@@ -139,8 +131,7 @@ public abstract class ViewBase {
      * @param writer The writer.
      * @throws ServiceXmlSerializationException the service xml serialization exception
      */
-    public abstract void writeAttributesToXml(EwsServiceXmlWriter writer)
-            throws ServiceXmlSerializationException;
+    public abstract void writeAttributesToXml(EwsServiceXmlWriter writer) throws ExchangeXmlException;
 
     /**
      * Writes to XML.

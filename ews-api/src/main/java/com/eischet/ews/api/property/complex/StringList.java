@@ -29,6 +29,7 @@ import com.eischet.ews.api.core.XmlElementNames;
 import com.eischet.ews.api.core.enumeration.misc.XmlNamespace;
 import com.eischet.ews.api.core.exception.service.local.ServiceXmlDeserializationException;
 import com.eischet.ews.api.core.exception.service.local.ServiceXmlSerializationException;
+import com.eischet.ews.api.core.exception.xml.ExchangeXmlException;
 
 import javax.xml.stream.XMLStreamException;
 import java.util.ArrayList;
@@ -43,7 +44,7 @@ public class StringList extends ComplexProperty implements Iterable<String> {
     /**
      * The item.
      */
-    private final List<String> items = new ArrayList<String>();
+    private final List<String> items = new ArrayList<>();
 
     /**
      * The item xml element name.
@@ -79,12 +80,9 @@ public class StringList extends ComplexProperty implements Iterable<String> {
      *
      * @param reader accepts EwsServiceXmlReader
      * @return True if element was read
-     * @throws XMLStreamException                 the XML stream exception
-     * @throws ServiceXmlDeserializationException the service xml deserialization exception
      */
     @Override
-    public boolean tryReadElementFromXml(EwsServiceXmlReader reader)
-            throws XMLStreamException, ServiceXmlDeserializationException {
+    public boolean tryReadElementFromXml(EwsServiceXmlReader reader) throws ExchangeXmlException {
         boolean returnValue = false;
         if (reader.getLocalName().equals(this.itemXmlElementName)) {
             if (!reader.isEmptyElement()) {
@@ -104,15 +102,11 @@ public class StringList extends ComplexProperty implements Iterable<String> {
      * Writes elements to XML.
      *
      * @param writer accepts EwsServiceXmlWriter
-     * @throws ServiceXmlSerializationException the service xml serialization exception
-     * @throws XMLStreamException               the XML stream exception
      */
     @Override
-    public void writeElementsToXml(EwsServiceXmlWriter writer)
-            throws ServiceXmlSerializationException, XMLStreamException {
+    public void writeElementsToXml(EwsServiceXmlWriter writer) throws ExchangeXmlException {
         for (String item : this.items) {
-            writer.writeStartElement(XmlNamespace.Types,
-                    this.itemXmlElementName);
+            writer.writeStartElement(XmlNamespace.Types, this.itemXmlElementName);
             writer.writeValue(item, this.itemXmlElementName);
             writer.writeEndElement();
         }

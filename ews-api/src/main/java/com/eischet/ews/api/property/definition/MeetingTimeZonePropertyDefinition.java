@@ -28,6 +28,7 @@ import com.eischet.ews.api.core.EwsServiceXmlWriter;
 import com.eischet.ews.api.core.PropertyBag;
 import com.eischet.ews.api.core.enumeration.misc.ExchangeVersion;
 import com.eischet.ews.api.core.enumeration.property.PropertyDefinitionFlags;
+import com.eischet.ews.api.core.exception.xml.ExchangeXmlException;
 import com.eischet.ews.api.core.service.schema.AppointmentSchema;
 import com.eischet.ews.api.property.complex.MeetingTimeZone;
 
@@ -58,9 +59,8 @@ public class MeetingTimeZonePropertyDefinition extends PropertyDefinition {
      *
      * @param reader      the reader
      * @param propertyBag the property bag
-     * @throws Exception the exception
      */
-    public final void loadPropertyValueFromXml(EwsServiceXmlReader reader, PropertyBag propertyBag) throws Exception {
+    public final void loadPropertyValueFromXml(EwsServiceXmlReader reader, PropertyBag propertyBag) throws ExchangeXmlException {
         MeetingTimeZone meetingTimeZone = new MeetingTimeZone();
         meetingTimeZone.loadFromXml(reader, this.getXmlElement());
 
@@ -75,13 +75,9 @@ public class MeetingTimeZonePropertyDefinition extends PropertyDefinition {
      * @param writer            the writer
      * @param propertyBag       the property bag
      * @param isUpdateOperation the is update operation
-     * @throws Exception the exception
      */
-    public void writePropertyValueToXml(EwsServiceXmlWriter writer, PropertyBag propertyBag,
-                                        boolean isUpdateOperation)
-            throws Exception {
+    public void writePropertyValueToXml(EwsServiceXmlWriter writer, PropertyBag propertyBag, boolean isUpdateOperation) throws ExchangeXmlException {
         MeetingTimeZone value = propertyBag.getObjectFromPropertyDefinition(this);
-
         if (value != null) {
             value.writeToXml(writer, this.getXmlElement());
         }

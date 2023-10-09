@@ -29,8 +29,9 @@ import com.eischet.ews.api.autodiscover.AutodiscoverService;
 import com.eischet.ews.api.core.EwsServiceXmlWriter;
 import com.eischet.ews.api.core.enumeration.misc.ExchangeVersion;
 import com.eischet.ews.api.core.exception.misc.ArgumentException;
-import com.eischet.ews.api.core.exception.service.local.ServiceValidationException;
+import com.eischet.ews.api.core.exception.service.local.ExchangeValidationException;
 import com.eischet.ews.api.core.exception.service.local.ServiceXmlSerializationException;
+import com.eischet.ews.api.core.exception.xml.ExchangeXmlException;
 import com.eischet.ews.api.http.ExchangeHttpClient;
 import org.hamcrest.core.IsNot;
 import org.hamcrest.core.IsNull;
@@ -121,13 +122,12 @@ public class GetUserSettingsRequestTest extends BaseTest {
     /**
      * Nothing should be written to the OutputStream if expectPartnerToken is not set.
      *
-     * @throws ServiceValidationException
+     * @throws ExchangeValidationException
      * @throws XMLStreamException               the XML stream exception
-     * @throws ServiceXmlSerializationException the service xml serialization exception
      */
     @Test
     public void testWriteExtraCustomSoapHeadersToXmlWithoutPartnertoken()
-            throws ServiceValidationException, XMLStreamException, ServiceXmlSerializationException {
+            throws ExchangeXmlException, XMLStreamException {
         // HTTPS
         GetUserSettingsRequest getUserSettingsRequest =
                 new GetUserSettingsRequest(autodiscoverService, uriMockHttps);
@@ -155,13 +155,12 @@ public class GetUserSettingsRequestTest extends BaseTest {
     /**
      * Test if content is added correctly if expectPartnerToken is set.
      *
-     * @throws ServiceValidationException
+     * @throws ExchangeValidationException
      * @throws XMLStreamException               the XML stream exception
-     * @throws ServiceXmlSerializationException the service xml serialization exception
      */
     @Test
     public void testWriteExtraCustomSoapHeadersToXmlWithPartnertoken()
-            throws ServiceValidationException, XMLStreamException, ServiceXmlSerializationException {
+            throws ExchangeXmlException, XMLStreamException {
         GetUserSettingsRequest getUserSettingsRequest =
                 new GetUserSettingsRequest(autodiscoverService, uriMockHttps, Boolean.TRUE);
 
@@ -180,13 +179,13 @@ public class GetUserSettingsRequestTest extends BaseTest {
     /**
      * Initialising a GetUserSettingsRequest with Http should lead to an ServiceValidationException.
      *
-     * @throws ServiceValidationException
+     * @throws ExchangeValidationException
      * @throws XMLStreamException               the XML stream exception
      * @throws ServiceXmlSerializationException the service xml serialization exception
      */
-    @Test(expected = ServiceValidationException.class)
+    @Test(expected = ExchangeValidationException.class)
     public void testWriteExtraCustomSoapHeadersToXmlWithPartnertoken2()
-            throws ServiceValidationException, XMLStreamException, ServiceXmlSerializationException {
+            throws ExchangeValidationException, XMLStreamException, ServiceXmlSerializationException {
         GetUserSettingsRequest getUserSettingsRequest =
                 new GetUserSettingsRequest(autodiscoverService, uriMockHttp, Boolean.TRUE);
     }

@@ -30,6 +30,7 @@ import com.eischet.ews.api.core.enumeration.misc.ExchangeVersion;
 import com.eischet.ews.api.core.enumeration.misc.XmlNamespace;
 import com.eischet.ews.api.core.enumeration.property.PropertyDefinitionFlags;
 import com.eischet.ews.api.core.exception.service.local.ServiceLocalException;
+import com.eischet.ews.api.core.exception.xml.ExchangeXmlException;
 
 import javax.xml.stream.XMLStreamException;
 import java.io.Serializable;
@@ -94,12 +95,8 @@ abstract class TypedPropertyDefinition<T extends Serializable> extends PropertyD
      *
      * @param value The value.
      * @return Typed value.
-     * @throws java.text.ParseException
-     * @throws IllegalAccessException
-     * @throws InstantiationException
      */
-    protected abstract T parse(String value) throws InstantiationException,
-            IllegalAccessException, ParseException;
+    protected abstract T parse(String value) throws ExchangeXmlException;
 
     /**
      * Gets a value indicating whether this property definition is for a
@@ -127,12 +124,10 @@ abstract class TypedPropertyDefinition<T extends Serializable> extends PropertyD
      *
      * @param reader      The reader.
      * @param propertyBag The property bag.
-     * @throws Exception the exception
      */
     @Override
-    public void loadPropertyValueFromXml(EwsServiceXmlReader reader, PropertyBag propertyBag) throws Exception {
-        String value = reader.readElementValue(XmlNamespace.Types, this
-                .getXmlElement());
+    public void loadPropertyValueFromXml(EwsServiceXmlReader reader, PropertyBag propertyBag) throws ExchangeXmlException {
+        String value = reader.readElementValue(XmlNamespace.Types, this.getXmlElement());
 
         if (value != null && !value.isEmpty()) {
             propertyBag.setObjectFromPropertyDefinition(this, this.parse(value));
@@ -145,17 +140,13 @@ abstract class TypedPropertyDefinition<T extends Serializable> extends PropertyD
      * @param writer            The writer.
      * @param propertyBag       The property bag.
      * @param isUpdateOperation Indicates whether the context is an update operation.
-     * @throws XMLStreamException    the XML stream exception
-     * @throws ServiceLocalException the service local exception
      */
     @Override
     public void writePropertyValueToXml(EwsServiceXmlWriter writer, PropertyBag propertyBag,
-                                        boolean isUpdateOperation) throws XMLStreamException, ServiceLocalException {
+                                        boolean isUpdateOperation) throws ExchangeXmlException {
         T value = propertyBag.getObjectFromPropertyDefinition(this);
-
         if (value != null) {
-            writer.writeElementValue(XmlNamespace.Types, this.getXmlElement(),
-                    this.getName(), value);
+            writer.writeElementValue(XmlNamespace.Types, this.getXmlElement(), this.getName(), value);
         }
 
     }

@@ -23,22 +23,12 @@
 
 package com.eischet.ews.api.core.service;
 
+import com.eischet.ews.api.core.exception.xml.ExchangeXmlException;
 import com.eischet.ews.api.property.complex.ItemAttachment;
 
-/**
- * The Interface ICreateServiceObjectWithAttachmentParam.
- */
+@FunctionalInterface
 public interface ICreateServiceObjectWithAttachmentParam {
 
-    /**
-     * Creates the service object with attachment param.
-     *
-     * @param itemAttachment the item attachment
-     * @param isNew          the is new
-     * @return the object
-     * @throws Exception the exception
-     */
-    Object createServiceObjectWithAttachmentParam(
-            ItemAttachment itemAttachment, boolean isNew) throws Exception;
+    Object createServiceObjectWithAttachmentParam(ItemAttachment itemAttachment, boolean isNew) throws ExchangeXmlException;
 
 }

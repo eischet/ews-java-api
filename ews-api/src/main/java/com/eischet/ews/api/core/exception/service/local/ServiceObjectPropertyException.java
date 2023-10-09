@@ -59,8 +59,7 @@ public class ServiceObjectPropertyException extends PropertyException {
      * @param propertyDefinition The definition of the property that is at the origin of the
      *                           exception.
      */
-    public ServiceObjectPropertyException(String message,
-                                          PropertyDefinitionBase propertyDefinition) {
+    public ServiceObjectPropertyException(String message, PropertyDefinitionBase propertyDefinition) {
         super(message, propertyDefinition.getPrintableName());
         this.propertyDefinition = propertyDefinition;
     }

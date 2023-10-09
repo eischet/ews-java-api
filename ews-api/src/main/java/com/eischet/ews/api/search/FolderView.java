@@ -30,6 +30,7 @@ import com.eischet.ews.api.core.enumeration.search.FolderTraversal;
 import com.eischet.ews.api.core.enumeration.search.OffsetBasePoint;
 import com.eischet.ews.api.core.enumeration.service.ServiceObjectType;
 import com.eischet.ews.api.core.exception.service.local.ServiceXmlSerializationException;
+import com.eischet.ews.api.core.exception.xml.ExchangeXmlException;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -72,13 +73,8 @@ public final class FolderView extends PagedView {
      * @param writer The writer
      */
     @Override
-    public void writeAttributesToXml(EwsServiceXmlWriter writer) {
-        try {
-            writer.writeAttributeValue(XmlAttributeNames.Traversal, this
-                    .getTraversal());
-        } catch (ServiceXmlSerializationException e) {
-            LOG.log(Level.SEVERE, "error writing XML", e);
-        }
+    public void writeAttributesToXml(EwsServiceXmlWriter writer) throws ExchangeXmlException {
+        writer.writeAttributeValue(XmlAttributeNames.Traversal, this.getTraversal());
     }
 
     /**

@@ -26,6 +26,7 @@ package com.eischet.ews.api.property.complex;
 import com.eischet.ews.api.core.EwsServiceXmlReader;
 import com.eischet.ews.api.core.XmlElementNames;
 import com.eischet.ews.api.core.exception.misc.ArgumentOutOfRangeException;
+import com.eischet.ews.api.core.exception.xml.ExchangeXmlException;
 
 import java.util.Iterator;
 
@@ -94,11 +95,9 @@ public final class RuleOperationError extends ComplexProperty implements Iterabl
      * Tries to read element from XML.
      *
      * @return true
-     * @throws Exception
      */
     @Override
-    public boolean tryReadElementFromXml(EwsServiceXmlReader reader)
-            throws Exception {
+    public boolean tryReadElementFromXml(EwsServiceXmlReader reader) throws ExchangeXmlException {
         if (reader.getLocalName().equals(XmlElementNames.OperationIndex)) {
             this.operationIndex = reader.readElementValue(Integer.class);
             return true;

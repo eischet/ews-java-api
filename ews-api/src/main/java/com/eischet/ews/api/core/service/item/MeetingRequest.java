@@ -33,6 +33,7 @@ import com.eischet.ews.api.core.enumeration.property.MeetingResponseType;
 import com.eischet.ews.api.core.enumeration.service.MeetingRequestType;
 import com.eischet.ews.api.core.enumeration.service.calendar.AppointmentType;
 import com.eischet.ews.api.core.exception.service.local.ServiceLocalException;
+import com.eischet.ews.api.core.exception.xml.ExchangeXmlException;
 import com.eischet.ews.api.core.service.response.AcceptMeetingInvitationMessage;
 import com.eischet.ews.api.core.service.response.DeclineMeetingInvitationMessage;
 import com.eischet.ews.api.core.service.schema.AppointmentSchema;
@@ -64,7 +65,7 @@ public class MeetingRequest extends MeetingMessage implements ICalendarActionPro
      * @param parentAttachment The parent attachment
      * @throws Exception throws Exception
      */
-    public MeetingRequest(ItemAttachment parentAttachment) throws Exception {
+    public MeetingRequest(ItemAttachment parentAttachment) throws ExchangeXmlException {
         super(parentAttachment);
     }
 
@@ -74,7 +75,7 @@ public class MeetingRequest extends MeetingMessage implements ICalendarActionPro
      * @param service EWS service to which this object belongs.
      * @throws Exception throws Exception
      */
-    public MeetingRequest(ExchangeService service) throws Exception {
+    public MeetingRequest(ExchangeService service) throws ExchangeXmlException {
         super(service);
     }
 
@@ -239,9 +240,8 @@ public class MeetingRequest extends MeetingMessage implements ICalendarActionPro
      * Gets the type of this meeting request.
      *
      * @return the meeting request type
-     * @throws ServiceLocalException the service local exception
      */
-    public MeetingRequestType getMeetingRequestType() throws ServiceLocalException {
+    public MeetingRequestType getMeetingRequestType() throws ExchangeXmlException {
         return getPropertyBag().getObjectFromPropertyDefinition(MeetingRequestSchema.MeetingRequestType);
     }
 
@@ -250,9 +250,8 @@ public class MeetingRequest extends MeetingMessage implements ICalendarActionPro
      * meeting.
      *
      * @return the intended free busy status
-     * @throws ServiceLocalException the service local exception
      */
-    public LegacyFreeBusyStatus getIntendedFreeBusyStatus() throws ServiceLocalException {
+    public LegacyFreeBusyStatus getIntendedFreeBusyStatus() throws ExchangeXmlException {
         return getPropertyBag().getObjectFromPropertyDefinition(MeetingRequestSchema.IntendedFreeBusyStatus);
     }
 
@@ -260,9 +259,8 @@ public class MeetingRequest extends MeetingMessage implements ICalendarActionPro
      * Gets the start time of the appointment.
      *
      * @return the start
-     * @throws ServiceLocalException the service local exception
      */
-    public LocalDateTime getStart() throws ServiceLocalException {
+    public LocalDateTime getStart() throws ExchangeXmlException {
         return getPropertyBag().getObjectFromPropertyDefinition(AppointmentSchema.Start);
     }
 
@@ -270,9 +268,8 @@ public class MeetingRequest extends MeetingMessage implements ICalendarActionPro
      * Gets the end time of the appointment.
      *
      * @return the end
-     * @throws ServiceLocalException the service local exception
      */
-    public LocalDateTime getEnd() throws ServiceLocalException {
+    public LocalDateTime getEnd() throws ExchangeXmlException {
         return getPropertyBag().getObjectFromPropertyDefinition(AppointmentSchema.End);
     }
 
@@ -280,9 +277,8 @@ public class MeetingRequest extends MeetingMessage implements ICalendarActionPro
      * Gets the original start time of the appointment.
      *
      * @return the original start
-     * @throws ServiceLocalException the service local exception
      */
-    public LocalDateTime getOriginalStart() throws ServiceLocalException {
+    public LocalDateTime getOriginalStart() throws ExchangeXmlException {
         return getPropertyBag().getObjectFromPropertyDefinition(AppointmentSchema.OriginalStart);
     }
 
@@ -290,9 +286,8 @@ public class MeetingRequest extends MeetingMessage implements ICalendarActionPro
      * Gets a value indicating whether this appointment is an all day event.
      *
      * @return the checks if is all day event
-     * @throws ServiceLocalException the service local exception
      */
-    public boolean getIsAllDayEvent() throws ServiceLocalException {
+    public boolean getIsAllDayEvent() throws ExchangeXmlException {
         return getPropertyBag().getObjectFromPropertyDefinition(
                 AppointmentSchema.IsAllDayEvent) != null;
     }
@@ -302,10 +297,9 @@ public class MeetingRequest extends MeetingMessage implements ICalendarActionPro
      * appointment.
      *
      * @return the legacy free busy status
-     * @throws ServiceLocalException the service local exception
      */
     public LegacyFreeBusyStatus legacyFreeBusyStatus()
-            throws ServiceLocalException {
+            throws ExchangeXmlException {
         return getPropertyBag().getObjectFromPropertyDefinition(
                 AppointmentSchema.LegacyFreeBusyStatus);
     }
@@ -316,7 +310,7 @@ public class MeetingRequest extends MeetingMessage implements ICalendarActionPro
      * @return the location
      * @throws ServiceLocalException the service local exception
      */
-    public String getLocation() throws ServiceLocalException {
+    public String getLocation() throws ServiceLocalException, ExchangeXmlException {
         return getPropertyBag().getObjectFromPropertyDefinition(
                 AppointmentSchema.Location);
     }
@@ -328,9 +322,8 @@ public class MeetingRequest extends MeetingMessage implements ICalendarActionPro
      * this appointment is bound to.
      *
      * @return the when
-     * @throws ServiceLocalException the service local exception
      */
-    public String getWhen() throws ServiceLocalException {
+    public String getWhen() throws ExchangeXmlException {
         return getPropertyBag().getObjectFromPropertyDefinition(
                 AppointmentSchema.When);
     }
@@ -341,7 +334,7 @@ public class MeetingRequest extends MeetingMessage implements ICalendarActionPro
      * @return the checks if is meeting
      * @throws ServiceLocalException the service local exception
      */
-    public boolean getIsMeeting() throws ServiceLocalException {
+    public boolean getIsMeeting() throws ServiceLocalException, ExchangeXmlException {
         return getPropertyBag().getObjectFromPropertyDefinition(
                 AppointmentSchema.IsMeeting) != null;
     }
@@ -352,7 +345,7 @@ public class MeetingRequest extends MeetingMessage implements ICalendarActionPro
      * @return the checks if is cancelled
      * @throws ServiceLocalException the service local exception
      */
-    public boolean getIsCancelled() throws ServiceLocalException {
+    public boolean getIsCancelled() throws ServiceLocalException, ExchangeXmlException {
         return getPropertyBag().getObjectFromPropertyDefinition(
                 AppointmentSchema.IsCancelled) != null;
     }
@@ -363,7 +356,7 @@ public class MeetingRequest extends MeetingMessage implements ICalendarActionPro
      * @return the checks if is recurring
      * @throws ServiceLocalException the service local exception
      */
-    public boolean getIsRecurring() throws ServiceLocalException {
+    public boolean getIsRecurring() throws ServiceLocalException, ExchangeXmlException {
         return getPropertyBag().getObjectFromPropertyDefinition(
                 AppointmentSchema.IsRecurring) != null;
     }
@@ -375,7 +368,7 @@ public class MeetingRequest extends MeetingMessage implements ICalendarActionPro
      * @return the meeting request was sent
      * @throws ServiceLocalException the service local exception
      */
-    public boolean getMeetingRequestWasSent() throws ServiceLocalException {
+    public boolean getMeetingRequestWasSent() throws ServiceLocalException, ExchangeXmlException {
         return getPropertyBag().getObjectFromPropertyDefinition(
                 AppointmentSchema.MeetingRequestWasSent) != null;
     }
@@ -386,7 +379,7 @@ public class MeetingRequest extends MeetingMessage implements ICalendarActionPro
      * @return the appointment type
      * @throws ServiceLocalException the service local exception
      */
-    public AppointmentType getAppointmentType() throws ServiceLocalException {
+    public AppointmentType getAppointmentType() throws ServiceLocalException, ExchangeXmlException {
         return getPropertyBag().getObjectFromPropertyDefinition(
                 AppointmentSchema.AppointmentType);
     }
@@ -399,7 +392,7 @@ public class MeetingRequest extends MeetingMessage implements ICalendarActionPro
      * @throws ServiceLocalException the service local exception
      */
     public MeetingResponseType getMyResponseType()
-            throws ServiceLocalException {
+            throws ServiceLocalException, ExchangeXmlException {
         return getPropertyBag().getObjectFromPropertyDefinition(
                 AppointmentSchema.MyResponseType);
     }
@@ -410,7 +403,7 @@ public class MeetingRequest extends MeetingMessage implements ICalendarActionPro
      * @return the organizer
      * @throws ServiceLocalException the service local exception
      */
-    public EmailAddress getOrganizer() throws ServiceLocalException {
+    public EmailAddress getOrganizer() throws ServiceLocalException, ExchangeXmlException {
         return getPropertyBag().getObjectFromPropertyDefinition(
                 AppointmentSchema.Organizer);
     }
@@ -422,7 +415,7 @@ public class MeetingRequest extends MeetingMessage implements ICalendarActionPro
      * @throws ServiceLocalException the service local exception
      */
     public AttendeeCollection getRequiredAttendees()
-            throws ServiceLocalException {
+            throws ServiceLocalException, ExchangeXmlException {
         return getPropertyBag().getObjectFromPropertyDefinition(
                 AppointmentSchema.RequiredAttendees);
     }
@@ -434,7 +427,7 @@ public class MeetingRequest extends MeetingMessage implements ICalendarActionPro
      * @throws ServiceLocalException the service local exception
      */
     public AttendeeCollection getOptionalAttendees()
-            throws ServiceLocalException {
+            throws ServiceLocalException, ExchangeXmlException {
         return getPropertyBag().getObjectFromPropertyDefinition(
                 AppointmentSchema.OptionalAttendees);
     }
@@ -445,7 +438,7 @@ public class MeetingRequest extends MeetingMessage implements ICalendarActionPro
      * @return the resources
      * @throws ServiceLocalException the service local exception
      */
-    public AttendeeCollection getResources() throws ServiceLocalException {
+    public AttendeeCollection getResources() throws ServiceLocalException, ExchangeXmlException {
         return getPropertyBag().getObjectFromPropertyDefinition(
                 AppointmentSchema.Resources);
     }
@@ -459,7 +452,7 @@ public class MeetingRequest extends MeetingMessage implements ICalendarActionPro
      * @throws ServiceLocalException the service local exception
      */
     public int getConflictingMeetingCount() throws NumberFormatException,
-            ServiceLocalException {
+            ServiceLocalException, ExchangeXmlException {
         return (Integer.parseInt(this.getPropertyBag()
                 .getObjectFromPropertyDefinition(
                         AppointmentSchema.ConflictingMeetingCount).toString()));
@@ -474,7 +467,7 @@ public class MeetingRequest extends MeetingMessage implements ICalendarActionPro
      * @throws ServiceLocalException the service local exception
      */
     public int getAdjacentMeetingCount() throws NumberFormatException,
-            ServiceLocalException {
+            ServiceLocalException, ExchangeXmlException {
         return (Integer.parseInt(this.getPropertyBag()
                 .getObjectFromPropertyDefinition(
                         AppointmentSchema.AdjacentMeetingCount).toString()));
@@ -488,7 +481,7 @@ public class MeetingRequest extends MeetingMessage implements ICalendarActionPro
      * @throws ServiceLocalException the service local exception
      */
     public ItemCollection<Appointment> getConflictingMeetings()
-            throws ServiceLocalException {
+            throws ServiceLocalException, ExchangeXmlException {
         return getPropertyBag().getObjectFromPropertyDefinition(
                 AppointmentSchema.ConflictingMeetings);
     }
@@ -501,7 +494,7 @@ public class MeetingRequest extends MeetingMessage implements ICalendarActionPro
      * @throws ServiceLocalException the service local exception
      */
     public ItemCollection<Appointment> getAdjacentMeetings()
-            throws ServiceLocalException {
+            throws ServiceLocalException, ExchangeXmlException {
         return getPropertyBag().getObjectFromPropertyDefinition(
                 AppointmentSchema.AdjacentMeetings);
     }
@@ -512,7 +505,7 @@ public class MeetingRequest extends MeetingMessage implements ICalendarActionPro
      * @return the duration
      * @throws ServiceLocalException the service local exception
      */
-    public TimeSpan getDuration() throws ServiceLocalException {
+    public TimeSpan getDuration() throws ServiceLocalException, ExchangeXmlException {
         return getPropertyBag().getObjectFromPropertyDefinition(
                 AppointmentSchema.Duration);
     }
@@ -523,7 +516,7 @@ public class MeetingRequest extends MeetingMessage implements ICalendarActionPro
      * @return the time zone
      * @throws ServiceLocalException the service local exception
      */
-    public String getTimeZone() throws ServiceLocalException {
+    public String getTimeZone() throws ServiceLocalException, ExchangeXmlException {
         return getPropertyBag().getObjectFromPropertyDefinition(
                 AppointmentSchema.TimeZone);
     }
@@ -534,7 +527,7 @@ public class MeetingRequest extends MeetingMessage implements ICalendarActionPro
      * @return the appointment reply time
      * @throws ServiceLocalException the service local exception
      */
-    public LocalDateTime getAppointmentReplyTime() throws ServiceLocalException {
+    public LocalDateTime getAppointmentReplyTime() throws ServiceLocalException, ExchangeXmlException {
         return getPropertyBag().getObjectFromPropertyDefinition(AppointmentSchema.AppointmentReplyTime);
     }
 
@@ -546,7 +539,7 @@ public class MeetingRequest extends MeetingMessage implements ICalendarActionPro
      * @throws ServiceLocalException the service local exception
      */
     public int getAppointmentSequenceNumber() throws NumberFormatException,
-            ServiceLocalException {
+            ServiceLocalException, ExchangeXmlException {
         return (Integer
                 .parseInt(this.getPropertyBag()
                         .getObjectFromPropertyDefinition(
@@ -562,7 +555,7 @@ public class MeetingRequest extends MeetingMessage implements ICalendarActionPro
      * @throws ServiceLocalException the service local exception
      */
     public int getAppointmentState() throws NumberFormatException,
-            ServiceLocalException {
+            ServiceLocalException, ExchangeXmlException {
         return (Integer.parseInt(this.getPropertyBag()
                 .getObjectFromPropertyDefinition(
                         AppointmentSchema.AppointmentState).toString()));
@@ -574,7 +567,7 @@ public class MeetingRequest extends MeetingMessage implements ICalendarActionPro
      * @return the recurrence
      * @throws ServiceLocalException the service local exception
      */
-    public Recurrence getRecurrence() throws ServiceLocalException {
+    public Recurrence getRecurrence() throws ServiceLocalException, ExchangeXmlException {
         return getPropertyBag().getObjectFromPropertyDefinition(
                 AppointmentSchema.Recurrence);
     }
@@ -585,7 +578,7 @@ public class MeetingRequest extends MeetingMessage implements ICalendarActionPro
      * @return the first occurrence
      * @throws ServiceLocalException the service local exception
      */
-    public OccurrenceInfo getFirstOccurrence() throws ServiceLocalException {
+    public OccurrenceInfo getFirstOccurrence() throws ServiceLocalException, ExchangeXmlException {
         return getPropertyBag().getObjectFromPropertyDefinition(
                 AppointmentSchema.FirstOccurrence);
     }
@@ -596,7 +589,7 @@ public class MeetingRequest extends MeetingMessage implements ICalendarActionPro
      * @return the last occurrence
      * @throws ServiceLocalException the service local exception
      */
-    public OccurrenceInfo getLastOccurrence() throws ServiceLocalException {
+    public OccurrenceInfo getLastOccurrence() throws ServiceLocalException, ExchangeXmlException {
         return getPropertyBag().getObjectFromPropertyDefinition(
                 AppointmentSchema.FirstOccurrence);
     }
@@ -608,7 +601,7 @@ public class MeetingRequest extends MeetingMessage implements ICalendarActionPro
      * @throws ServiceLocalException the service local exception
      */
     public OccurrenceInfoCollection getModifiedOccurrences()
-            throws ServiceLocalException {
+            throws ServiceLocalException, ExchangeXmlException {
         return getPropertyBag().getObjectFromPropertyDefinition(
                 AppointmentSchema.ModifiedOccurrences);
     }
@@ -620,7 +613,7 @@ public class MeetingRequest extends MeetingMessage implements ICalendarActionPro
      * @throws ServiceLocalException the service local exception
      */
     public DeletedOccurrenceInfoCollection getDeletedOccurrences()
-            throws ServiceLocalException {
+            throws ServiceLocalException, ExchangeXmlException {
         return getPropertyBag().getObjectFromPropertyDefinition(
                 AppointmentSchema.DeletedOccurrences);
     }
@@ -631,7 +624,7 @@ public class MeetingRequest extends MeetingMessage implements ICalendarActionPro
      * @return the start time zone
      * @throws ServiceLocalException the service local exception
      */
-    public TimeZoneDefinition getStartTimeZone() throws ServiceLocalException {
+    public TimeZoneDefinition getStartTimeZone() throws ServiceLocalException, ExchangeXmlException {
         return getPropertyBag().getObjectFromPropertyDefinition(
                 AppointmentSchema.StartTimeZone);
     }
@@ -642,7 +635,7 @@ public class MeetingRequest extends MeetingMessage implements ICalendarActionPro
      * @return the end time zone
      * @throws ServiceLocalException the service local exception
      */
-    public TimeZoneDefinition getEndTimeZone() throws ServiceLocalException {
+    public TimeZoneDefinition getEndTimeZone() throws ServiceLocalException, ExchangeXmlException {
         return getPropertyBag().getObjectFromPropertyDefinition(
                 AppointmentSchema.EndTimeZone);
     }
@@ -655,7 +648,7 @@ public class MeetingRequest extends MeetingMessage implements ICalendarActionPro
      * @throws ServiceLocalException the service local exception
      */
     public int getConferenceType() throws NumberFormatException,
-            ServiceLocalException {
+            ServiceLocalException, ExchangeXmlException {
         return (Integer.parseInt(this.getPropertyBag()
                 .getObjectFromPropertyDefinition(
                         AppointmentSchema.ConferenceType).toString()));
@@ -668,7 +661,7 @@ public class MeetingRequest extends MeetingMessage implements ICalendarActionPro
      * @return the allow new time proposal
      * @throws ServiceLocalException the service local exception
      */
-    public boolean getAllowNewTimeProposal() throws ServiceLocalException {
+    public boolean getAllowNewTimeProposal() throws ServiceLocalException, ExchangeXmlException {
         return getPropertyBag().<Boolean>getObjectFromPropertyDefinition(
                 AppointmentSchema.AllowNewTimeProposal);
     }
@@ -679,7 +672,7 @@ public class MeetingRequest extends MeetingMessage implements ICalendarActionPro
      * @return the checks if is online meeting
      * @throws ServiceLocalException the service local exception
      */
-    public boolean getIsOnlineMeeting() throws ServiceLocalException {
+    public boolean getIsOnlineMeeting() throws ServiceLocalException, ExchangeXmlException {
         return getPropertyBag().<Boolean>getObjectFromPropertyDefinition(
                 AppointmentSchema.IsOnlineMeeting);
     }
@@ -690,9 +683,8 @@ public class MeetingRequest extends MeetingMessage implements ICalendarActionPro
      * planning meetings and tracking results.
      *
      * @return the meeting workspace url
-     * @throws ServiceLocalException the service local exception
      */
-    public String getMeetingWorkspaceUrl() throws ServiceLocalException {
+    public String getMeetingWorkspaceUrl() throws ExchangeXmlException {
         return getPropertyBag().getObjectFromPropertyDefinition(
                 AppointmentSchema.MeetingWorkspaceUrl);
     }
@@ -701,9 +693,8 @@ public class MeetingRequest extends MeetingMessage implements ICalendarActionPro
      * Gets the URL of the Microsoft NetShow online meeting.
      *
      * @return the net show url
-     * @throws ServiceLocalException the service local exception
      */
-    public String getNetShowUrl() throws ServiceLocalException {
+    public String getNetShowUrl() throws ExchangeXmlException {
         return getPropertyBag().getObjectFromPropertyDefinition(
                 AppointmentSchema.NetShowUrl);
     }

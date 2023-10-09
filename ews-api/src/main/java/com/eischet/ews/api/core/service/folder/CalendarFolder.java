@@ -30,6 +30,7 @@ import com.eischet.ews.api.core.PropertySet;
 import com.eischet.ews.api.core.XmlElementNames;
 import com.eischet.ews.api.core.enumeration.misc.ExchangeVersion;
 import com.eischet.ews.api.core.enumeration.property.WellKnownFolderName;
+import com.eischet.ews.api.core.exception.xml.ExchangeXmlException;
 import com.eischet.ews.api.core.response.FindItemResponse;
 import com.eischet.ews.api.core.response.ServiceResponseCollection;
 import com.eischet.ews.api.core.service.item.Appointment;
@@ -117,7 +118,7 @@ public class CalendarFolder extends Folder {
      * @param service the service
      * @throws Exception the exception
      */
-    public CalendarFolder(ExchangeService service) throws Exception {
+    public CalendarFolder(ExchangeService service) throws ExchangeXmlException {
         super(service);
     }
 

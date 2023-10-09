@@ -37,6 +37,7 @@ import com.eischet.ews.api.core.enumeration.service.calendar.AffectedTaskOccurre
 import com.eischet.ews.api.core.enumeration.service.error.ServiceErrorHandling;
 import com.eischet.ews.api.core.exception.misc.InvalidOperationException;
 import com.eischet.ews.api.core.exception.service.local.ServiceLocalException;
+import com.eischet.ews.api.core.exception.xml.ExchangeXmlException;
 import com.eischet.ews.api.core.response.FindItemResponse;
 import com.eischet.ews.api.core.response.ServiceResponseCollection;
 import com.eischet.ews.api.core.service.ServiceObject;
@@ -69,9 +70,8 @@ public class Folder extends ServiceObject {
      * Initializes an unsaved local instance of {@link Folder}.
      *
      * @param service EWS service to which this object belongs
-     * @throws Exception the exception
      */
-    public Folder(ExchangeService service) throws Exception {
+    public Folder(ExchangeService service) throws ExchangeXmlException {
         super(service);
     }
 
@@ -263,7 +263,6 @@ public class Folder extends ServiceObject {
      *
      * @param deletemode       the delete mode
      * @param deleteSubFolders Indicates whether sub-folder should also be deleted.
-     * @throws Exception
      */
     public void empty(DeleteMode deletemode, boolean deleteSubFolders)
             throws Exception {
@@ -387,7 +386,7 @@ public class Folder extends ServiceObject {
     <TItem extends Item> ServiceResponseCollection<FindItemResponse<TItem>>
     internalFindItems(String queryString, ViewBase view, Grouping groupBy)
             throws Exception {
-        ArrayList<FolderId> folderIdArry = new ArrayList<FolderId>();
+        ArrayList<FolderId> folderIdArry = new ArrayList<>();
         folderIdArry.add(this.getId());
 
         this.throwIfThisIsNew();
@@ -413,7 +412,7 @@ public class Folder extends ServiceObject {
     internalFindItems(SearchFilter searchFilter,
                       ViewBase view, Grouping groupBy)
             throws Exception {
-        ArrayList<FolderId> folderIdArry = new ArrayList<FolderId>();
+        ArrayList<FolderId> folderIdArry = new ArrayList<>();
         folderIdArry.add(this.getId());
         this.throwIfThisIsNew();
 
@@ -622,25 +621,17 @@ public class Folder extends ServiceObject {
      *
      * @return the id
      */
-    public FolderId getId() {
-        try {
-            return getPropertyBag().getObjectFromPropertyDefinition(
-                    getIdPropertyDefinition());
-        } catch (ServiceLocalException e) {
-            LOG.log(Level.SEVERE, "error getting the folder ID", e);
-            return null;
-        }
+    public FolderId getId() throws ExchangeXmlException {
+        return getPropertyBag().getObjectFromPropertyDefinition(getIdPropertyDefinition());
     }
 
     /**
      * Gets the Id of this folder's parent folder.
      *
      * @return the parent folder id
-     * @throws ServiceLocalException the service local exception
      */
-    public FolderId getParentFolderId() throws ServiceLocalException {
-        return getPropertyBag().getObjectFromPropertyDefinition(
-                FolderSchema.ParentFolderId);
+    public FolderId getParentFolderId() throws ExchangeXmlException {
+        return getPropertyBag().getObjectFromPropertyDefinition(FolderSchema.ParentFolderId);
     }
 
     /**
@@ -648,22 +639,19 @@ public class Folder extends ServiceObject {
      *
      * @return the child folder count
      * @throws NumberFormatException the number format exception
-     * @throws ServiceLocalException the service local exception
      */
     public int getChildFolderCount() throws NumberFormatException,
-            ServiceLocalException {
-        return (Integer.parseInt(this.getPropertyBag()
-                .getObjectFromPropertyDefinition(FolderSchema.ChildFolderCount)
-                .toString()));
+            ExchangeXmlException {
+        // TODO: this is super terrible, get rid of the number format exception!
+        return (Integer.parseInt(this.getPropertyBag().getObjectFromPropertyDefinition(FolderSchema.ChildFolderCount).toString()));
     }
 
     /**
      * Gets the display name of the folder.
      *
      * @return the display name
-     * @throws ServiceLocalException the service local exception
      */
-    public String getDisplayName() throws ServiceLocalException {
+    public String getDisplayName() throws ExchangeXmlException {
         return getPropertyBag().getObjectFromPropertyDefinition(
                 FolderSchema.DisplayName);
     }
@@ -685,7 +673,7 @@ public class Folder extends ServiceObject {
      * @return the folder class
      * @throws ServiceLocalException the service local exception
      */
-    public String getFolderClass() throws ServiceLocalException {
+    public String getFolderClass() throws ServiceLocalException, ExchangeXmlException {
         return getPropertyBag().getObjectFromPropertyDefinition(
                 FolderSchema.FolderClass);
     }
@@ -706,10 +694,9 @@ public class Folder extends ServiceObject {
      *
      * @return the total count
      * @throws NumberFormatException the number format exception
-     * @throws ServiceLocalException the service local exception
      */
     public int getTotalCount() throws NumberFormatException,
-            ServiceLocalException {
+            ExchangeXmlException {
         return (Integer.parseInt(this.getPropertyBag()
                 .getObjectFromPropertyDefinition(FolderSchema.TotalCount)
                 .toString()));
@@ -719,11 +706,10 @@ public class Folder extends ServiceObject {
      * Gets a list of extended property associated with the folder.
      *
      * @return the extended property for service
-     * @throws ServiceLocalException the service local exception
      */
     // changed the name of method as another method with same name exists
     public ExtendedPropertyCollection getExtendedPropertiesForService()
-            throws ServiceLocalException {
+            throws ExchangeXmlException {
         return getPropertyBag().getObjectFromPropertyDefinition(
                 ServiceObjectSchema.extendedProperties);
     }
@@ -733,10 +719,9 @@ public class Folder extends ServiceObject {
      * folder.
      *
      * @return the managed folder information
-     * @throws ServiceLocalException the service local exception
      */
     public ManagedFolderInformation getManagedFolderInformation()
-            throws ServiceLocalException {
+            throws ExchangeXmlException {
         return getPropertyBag().getObjectFromPropertyDefinition(
                 FolderSchema.ManagedFolderInformation);
     }
@@ -746,11 +731,9 @@ public class Folder extends ServiceObject {
      * user has on the folder.
      *
      * @return the effective rights
-     * @throws ServiceLocalException the service local exception
      */
-    public EnumSet<EffectiveRights> getEffectiveRights() throws ServiceLocalException {
-        return getPropertyBag().getObjectFromPropertyDefinition(
-                FolderSchema.EffectiveRights);
+    public EnumSet<EffectiveRights> getEffectiveRights() throws ExchangeXmlException {
+        return getPropertyBag().getObjectFromPropertyDefinition(FolderSchema.EffectiveRights);
     }
 
     /**
@@ -760,7 +743,7 @@ public class Folder extends ServiceObject {
      * @throws ServiceLocalException the service local exception
      */
     public FolderPermissionCollection getPermissions()
-            throws ServiceLocalException {
+            throws ServiceLocalException, ExchangeXmlException {
         return getPropertyBag().getObjectFromPropertyDefinition(
                 FolderSchema.Permissions);
     }
@@ -770,10 +753,8 @@ public class Folder extends ServiceObject {
      *
      * @return the unread count
      * @throws NumberFormatException the number format exception
-     * @throws ServiceLocalException the service local exception
      */
-    public int getUnreadCount() throws NumberFormatException,
-            ServiceLocalException {
+    public int getUnreadCount() throws NumberFormatException, ExchangeXmlException {
         return (Integer.parseInt(this.getPropertyBag()
                 .getObjectFromPropertyDefinition(FolderSchema.UnreadCount)
                 .toString()));

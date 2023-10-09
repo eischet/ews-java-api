@@ -37,6 +37,7 @@ import com.eischet.ews.api.core.exception.service.local.ServiceXmlSerializationE
 import com.eischet.ews.api.core.exception.service.remote.ServiceRemoteException;
 import com.eischet.ews.api.core.exception.service.remote.ServiceRequestException;
 import com.eischet.ews.api.core.exception.service.remote.ServiceResponseException;
+import com.eischet.ews.api.core.exception.xml.ExchangeXmlException;
 import com.eischet.ews.api.core.response.ServiceResponse;
 import com.eischet.ews.api.http.ExchangeHttpClient;
 import com.eischet.ews.api.misc.SoapFaultDetails;
@@ -444,7 +445,7 @@ public abstract class AutodiscoverRequest {
      * @throws XMLStreamException               the XML stream exception
      * @throws ServiceXmlSerializationException the service xml serialization exception
      */
-    protected void writeSoapRequest(URI requestUrl, EwsServiceXmlWriter writer) throws XMLStreamException, ServiceXmlSerializationException {
+    protected void writeSoapRequest(URI requestUrl, EwsServiceXmlWriter writer) throws XMLStreamException, ServiceXmlSerializationException, ExchangeXmlException {
 
         if (writer.isRequireWSSecurityUtilityNamespace()) {
             writer.writeAttributeValue("xmlns",
@@ -515,7 +516,7 @@ public abstract class AutodiscoverRequest {
      * @throws XMLStreamException               the XML stream exception
      */
     protected void writeExtraCustomSoapHeadersToXml(EwsServiceXmlWriter writer)
-            throws XMLStreamException, ServiceXmlSerializationException {
+            throws XMLStreamException, ServiceXmlSerializationException, ExchangeXmlException {
         // do nothing here.
         // currently used only by GetUserSettingRequest to emit the BinarySecret header.
     }
@@ -529,7 +530,7 @@ public abstract class AutodiscoverRequest {
      * @throws XMLStreamException               the XML stream exception
      */
     protected void writeBodyToXml(EwsServiceXmlWriter writer)
-            throws ServiceXmlSerializationException, XMLStreamException {
+            throws ServiceXmlSerializationException, XMLStreamException, ExchangeXmlException {
         writer.writeStartElement(XmlNamespace.Autodiscover, this
                 .getRequestXmlElementName());
 
@@ -704,7 +705,7 @@ public abstract class AutodiscoverRequest {
      * @throws ServiceXmlSerializationException the service xml serialization exception
      */
     protected abstract void writeAttributesToXml(EwsServiceXmlWriter writer)
-            throws ServiceXmlSerializationException;
+            throws ServiceXmlSerializationException, ExchangeXmlException;
 
     /**
      * Writes elements to request XML.
@@ -714,7 +715,7 @@ public abstract class AutodiscoverRequest {
      * @throws ServiceXmlSerializationException the service xml serialization exception
      */
     protected abstract void writeElementsToXml(EwsServiceXmlWriter writer)
-            throws XMLStreamException, ServiceXmlSerializationException;
+            throws XMLStreamException, ServiceXmlSerializationException, ExchangeXmlException;
 
     /**
      * Gets the Service.

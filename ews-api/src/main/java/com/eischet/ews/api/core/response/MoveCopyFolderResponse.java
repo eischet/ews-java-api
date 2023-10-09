@@ -27,20 +27,18 @@ import com.eischet.ews.api.core.EwsServiceXmlReader;
 import com.eischet.ews.api.core.EwsUtilities;
 import com.eischet.ews.api.core.ExchangeService;
 import com.eischet.ews.api.core.XmlElementNames;
-import com.eischet.ews.api.core.exception.service.local.ServiceLocalException;
+import com.eischet.ews.api.core.exception.xml.ExchangeXmlException;
 import com.eischet.ews.api.core.service.ServiceObject;
 import com.eischet.ews.api.core.service.folder.Folder;
 
 import java.util.List;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
  * Represents the base response class for individual folder move and copy
  * operations.
  */
-public final class MoveCopyFolderResponse extends ServiceResponse implements
-        IGetObjectInstanceDelegate<ServiceObject> {
+public final class MoveCopyFolderResponse extends ServiceResponse implements IGetObjectInstanceDelegate<ServiceObject> {
 
     private static final Logger LOG = Logger.getLogger(MoveCopyFolderResponse.class.getCanonicalName());
 
@@ -64,8 +62,7 @@ public final class MoveCopyFolderResponse extends ServiceResponse implements
      * @return folder
      * @throws Exception the exception
      */
-    private Folder getObjectInstance(ExchangeService service,
-                                     String xmlElementName) throws Exception {
+    private Folder getObjectInstance(ExchangeService service, String xmlElementName) throws ExchangeXmlException {
         return EwsUtilities.createEwsObjectFromXmlElementName(Folder.class, service, xmlElementName);
     }
 
@@ -76,22 +73,17 @@ public final class MoveCopyFolderResponse extends ServiceResponse implements
      * @throws Exception the exception
      */
     @Override
-    protected void readElementsFromXml(EwsServiceXmlReader reader)
-            throws Exception {
+    protected void readElementsFromXml(EwsServiceXmlReader reader) throws Exception {
         super.readElementsFromXml(reader);
 
         List<Folder> folders;
-        try {
-            folders = reader.readServiceObjectsCollectionFromXml(
+        folders = reader.readServiceObjectsCollectionFromXml(
 
-                    XmlElementNames.Folders, this, false,/* clearPropertyBag */
-                    null, /* requestedPropertySet */
-                    false); /* summaryPropertiesOnly */
+                XmlElementNames.Folders, this, false,/* clearPropertyBag */
+                null, /* requestedPropertySet */
+                false); /* summaryPropertiesOnly */
 
-            this.folder = folders.get(0);
-        } catch (ServiceLocalException e) {
-            LOG.log(Level.SEVERE, "error reading XML", e);
-        }
+        this.folder = folders.get(0);
 
     }
 
@@ -110,11 +102,9 @@ public final class MoveCopyFolderResponse extends ServiceResponse implements
      * @param service        accepts ExchangeService
      * @param xmlElementName accepts String
      * @return Object
-     * @throws Exception throws Exception
      */
     @Override
-    public ServiceObject getObjectInstanceDelegate(ExchangeService service,
-                                                   String xmlElementName) throws Exception {
+    public ServiceObject getObjectInstanceDelegate(ExchangeService service, String xmlElementName) throws ExchangeXmlException {
         return this.getObjectInstance(service, xmlElementName);
     }
 

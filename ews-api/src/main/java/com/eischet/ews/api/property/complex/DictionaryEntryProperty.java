@@ -29,6 +29,7 @@ import com.eischet.ews.api.core.EwsServiceXmlWriter;
 import com.eischet.ews.api.core.XmlAttributeNames;
 import com.eischet.ews.api.core.enumeration.attribute.EditorBrowsableState;
 import com.eischet.ews.api.core.exception.service.local.ServiceXmlSerializationException;
+import com.eischet.ews.api.core.exception.xml.ExchangeXmlException;
 import com.eischet.ews.api.core.service.ServiceObject;
 
 import javax.xml.stream.XMLStreamException;
@@ -93,11 +94,9 @@ public abstract class DictionaryEntryProperty<TKey> extends ComplexProperty {
      * Reads the attribute from XML.
      *
      * @param reader accepts EwsServiceXmlReader
-     * @throws Exception throws Exception
      */
     @Override
-    public void readAttributesFromXml(EwsServiceXmlReader reader)
-            throws Exception {
+    public void readAttributesFromXml(EwsServiceXmlReader reader) throws ExchangeXmlException {
         this.key = reader.readAttributeValue(instance,
                 XmlAttributeNames.Key);
     }
@@ -106,11 +105,9 @@ public abstract class DictionaryEntryProperty<TKey> extends ComplexProperty {
      * Writes the attribute to XML.
      *
      * @param writer accepts EwsServiceXmlWriter
-     * @throws ServiceXmlSerializationException throws ServiceXmlSerializationException
      */
     @Override
-    public void writeAttributesToXml(EwsServiceXmlWriter writer)
-            throws ServiceXmlSerializationException {
+    public void writeAttributesToXml(EwsServiceXmlWriter writer) throws ExchangeXmlException {
         writer.writeAttributeValue(XmlAttributeNames.Key, this.getKey());
     }
 
@@ -126,7 +123,7 @@ public abstract class DictionaryEntryProperty<TKey> extends ComplexProperty {
      */
     protected boolean writeSetUpdateToXml(EwsServiceXmlWriter writer,
                                           ServiceObject ewsObject, String ownerDictionaryXmlElementName)
-            throws XMLStreamException, ServiceXmlSerializationException {
+            throws XMLStreamException, ServiceXmlSerializationException, ExchangeXmlException {
         return false;
     }
 
@@ -140,7 +137,7 @@ public abstract class DictionaryEntryProperty<TKey> extends ComplexProperty {
      * @throws ServiceXmlSerializationException the service xml serialization exception
      */
     protected boolean writeDeleteUpdateToXml(EwsServiceXmlWriter writer,
-                                             ServiceObject ewsObject) throws XMLStreamException, ServiceXmlSerializationException {
+                                             ServiceObject ewsObject) throws XMLStreamException, ServiceXmlSerializationException, ExchangeXmlException {
         return false;
     }
 

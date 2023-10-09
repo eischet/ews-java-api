@@ -34,8 +34,7 @@ import java.util.EnumSet;
 /**
  * Represents base Attachments property type.
  */
-public final class AttachmentsPropertyDefinition extends
-        ComplexPropertyDefinition<AttachmentCollection> {
+public final class AttachmentsPropertyDefinition extends ComplexPropertyDefinition<AttachmentCollection> {
 
     private static final EnumSet<PropertyDefinitionFlags> Exchange2010SP2PropertyDefinitionFlags = EnumSet
             .of(PropertyDefinitionFlags.AutoInstantiateOnRead,

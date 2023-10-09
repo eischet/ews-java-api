@@ -31,7 +31,7 @@ import com.eischet.ews.api.core.enumeration.property.EmailAddressKey;
 import com.eischet.ews.api.core.enumeration.property.MailboxType;
 import com.eischet.ews.api.core.enumeration.property.MemberStatus;
 import com.eischet.ews.api.core.exception.service.local.ServiceLocalException;
-import com.eischet.ews.api.core.exception.service.local.ServiceXmlSerializationException;
+import com.eischet.ews.api.core.exception.xml.ExchangeXmlException;
 import com.eischet.ews.api.core.service.item.Contact;
 
 /**
@@ -276,10 +276,8 @@ public class GroupMember extends ComplexProperty implements IComplexPropertyChan
      * Reads the member Key attribute from XML.
      *
      * @param reader the reader
-     * @throws Exception the exception
      */
-    public void readAttributesFromXml(EwsServiceXmlReader reader)
-            throws Exception {
+    public void readAttributesFromXml(EwsServiceXmlReader reader) throws ExchangeXmlException {
         this.key = reader.readAttributeValue(String.class, XmlAttributeNames.Key);
     }
 
@@ -288,10 +286,8 @@ public class GroupMember extends ComplexProperty implements IComplexPropertyChan
      *
      * @param reader the reader
      * @return True if element was read.
-     * @throws Exception the exception
      */
-    public boolean tryReadElementFromXml(EwsServiceXmlReader reader)
-            throws Exception {
+    public boolean tryReadElementFromXml(EwsServiceXmlReader reader) throws ExchangeXmlException {
         if (reader.getLocalName().equals(XmlElementNames.Status)) {
 
             this.status = EwsUtilities.parse(MemberStatus.class, reader.readElementValue());
@@ -312,10 +308,8 @@ public class GroupMember extends ComplexProperty implements IComplexPropertyChan
      * Writes the member key attribute to XML.
      *
      * @param writer the writer
-     * @throws ServiceXmlSerializationException the service xml serialization exception
      */
-    public void writeAttributesToXml(EwsServiceXmlWriter writer)
-            throws ServiceXmlSerializationException {
+    public void writeAttributesToXml(EwsServiceXmlWriter writer) throws ExchangeXmlException {
         // if this.key is null or empty, writer skips the attribute
         writer.writeAttributeValue(XmlAttributeNames.Key, this.key);
     }
@@ -324,10 +318,8 @@ public class GroupMember extends ComplexProperty implements IComplexPropertyChan
      * Writes elements to XML.
      *
      * @param writer the writer
-     * @throws Exception the exception
      */
-    public void writeElementsToXml(EwsServiceXmlWriter writer)
-            throws Exception {
+    public void writeElementsToXml(EwsServiceXmlWriter writer) throws ExchangeXmlException {
         // No need to write member Status back to server
         // Write only AddressInformation container element
         this.getAddressInformation().writeToXml(writer, XmlNamespace.Types,

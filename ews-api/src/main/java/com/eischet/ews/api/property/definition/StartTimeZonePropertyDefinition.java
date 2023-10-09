@@ -30,6 +30,7 @@ import com.eischet.ews.api.core.XmlElementNames;
 import com.eischet.ews.api.core.enumeration.misc.ExchangeVersion;
 import com.eischet.ews.api.core.enumeration.property.PropertyDefinitionFlags;
 import com.eischet.ews.api.core.exception.service.local.ServiceXmlSerializationException;
+import com.eischet.ews.api.core.exception.xml.ExchangeXmlException;
 import com.eischet.ews.api.core.service.schema.AppointmentSchema;
 import com.eischet.ews.api.property.complex.MeetingTimeZone;
 import com.eischet.ews.api.property.complex.time.TimeZoneDefinition;
@@ -75,11 +76,9 @@ public class StartTimeZonePropertyDefinition extends TimeZonePropertyDefinition 
      * @param writer            the writer
      * @param propertyBag       the property bag
      * @param isUpdateOperation the is update operation
-     * @throws Exception the exception
      */
     public void writePropertyValueToXml(EwsServiceXmlWriter writer, PropertyBag propertyBag,
-                                        boolean isUpdateOperation)
-            throws Exception {
+                                        boolean isUpdateOperation) throws ExchangeXmlException {
         Object value = propertyBag.getObjectFromPropertyDefinition(this);
 
         if (value != null) {
@@ -99,11 +98,8 @@ public class StartTimeZonePropertyDefinition extends TimeZonePropertyDefinition 
      * Writes to XML.
      *
      * @param writer the writer
-     * @throws XMLStreamException               the XML stream exception
-     * @throws ServiceXmlSerializationException the service xml serialization exception
      */
-    public void writeToXml(EwsServiceXmlWriter writer)
-            throws XMLStreamException, ServiceXmlSerializationException {
+    public void writeToXml(EwsServiceXmlWriter writer) throws ExchangeXmlException {
         if (writer.getService().getRequestedServerVersion() == ExchangeVersion.Exchange2007_SP1) {
             AppointmentSchema.MeetingTimeZone.writeToXml(writer);
         } else {

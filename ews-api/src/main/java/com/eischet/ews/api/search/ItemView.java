@@ -30,12 +30,10 @@ import com.eischet.ews.api.core.XmlElementNames;
 import com.eischet.ews.api.core.enumeration.search.ItemTraversal;
 import com.eischet.ews.api.core.enumeration.search.OffsetBasePoint;
 import com.eischet.ews.api.core.enumeration.service.ServiceObjectType;
-import com.eischet.ews.api.core.exception.service.local.ServiceValidationException;
+import com.eischet.ews.api.core.exception.service.local.ExchangeValidationException;
 import com.eischet.ews.api.core.exception.service.local.ServiceVersionException;
-import com.eischet.ews.api.core.exception.service.local.ServiceXmlSerializationException;
+import com.eischet.ews.api.core.exception.xml.ExchangeXmlException;
 import com.eischet.ews.api.core.request.ServiceRequestBase;
-
-import javax.xml.stream.XMLStreamException;
 
 /**
  * Represents the view settings in a folder search operation.
@@ -43,89 +41,13 @@ import javax.xml.stream.XMLStreamException;
 public final class ItemView extends PagedView {
 
     /**
-     * The traversal.
-     */
-    private ItemTraversal traversal = ItemTraversal.Shallow;
-
-    /**
      * The order by.
      */
     private final OrderByCollection orderBy = new OrderByCollection();
-
     /**
-     * Gets the name of the view XML element.
-     *
-     * @return XML element name.
+     * The traversal.
      */
-    @Override
-    protected String getViewXmlElementName() {
-        return XmlElementNames.IndexedPageItemView;
-    }
-
-    /**
-     * Gets the type of service object this view applies to.
-     *
-     * @return A ServiceObjectType value.
-     */
-    @Override
-    protected ServiceObjectType getServiceObjectType() {
-        return ServiceObjectType.Item;
-    }
-
-    /**
-     * Validates this view.
-     *
-     * @param request the request
-     * @throws ServiceVersionException    the service version exception
-     * @throws ServiceValidationException the service validation exception
-     */
-    @Override
-    public void internalValidate(ServiceRequestBase request)
-            throws ServiceVersionException, ServiceValidationException {
-        super.internalValidate(request);
-
-        EwsUtilities.validateEnumVersionValue(this.traversal, request.getService().getRequestedServerVersion());
-    }
-
-    /**
-     * Writes the attribute to XML.
-     *
-     * @param writer the writer
-     * @throws ServiceXmlSerializationException the service xml serialization exception
-     */
-    @Override
-    public void writeAttributesToXml(EwsServiceXmlWriter writer)
-            throws ServiceXmlSerializationException {
-        writer.writeAttributeValue(XmlAttributeNames.Traversal, this.traversal);
-    }
-
-    /**
-     * Internals the write search settings to XML.
-     *
-     * @param writer  the writer
-     * @param groupBy the group by
-     * @throws XMLStreamException               the XML stream exception
-     * @throws ServiceXmlSerializationException the service xml serialization exception
-     */
-    @Override
-    protected void internalWriteSearchSettingsToXml(EwsServiceXmlWriter writer,
-                                                    Grouping groupBy) throws XMLStreamException,
-            ServiceXmlSerializationException {
-        super.internalWriteSearchSettingsToXml(writer, groupBy);
-    }
-
-    /**
-     * Writes OrderBy property to XML.
-     *
-     * @param writer the writer
-     * @throws XMLStreamException               the XML stream exception
-     * @throws ServiceXmlSerializationException the service xml serialization exception
-     */
-    @Override
-    public void writeOrderByToXml(EwsServiceXmlWriter writer)
-            throws XMLStreamException, ServiceXmlSerializationException {
-        this.orderBy.writeToXml(writer, XmlElementNames.SortOrder);
-    }
+    private ItemTraversal traversal = ItemTraversal.Shallow;
 
     /**
      * Initializes a new instance of the ItemView class.
@@ -156,6 +78,66 @@ public final class ItemView extends PagedView {
      */
     public ItemView(int pageSize, int offset, OffsetBasePoint offsetBasePoint) {
         super(pageSize, offset, offsetBasePoint);
+    }
+
+    /**
+     * Gets the name of the view XML element.
+     *
+     * @return XML element name.
+     */
+    @Override
+    protected String getViewXmlElementName() {
+        return XmlElementNames.IndexedPageItemView;
+    }
+
+    /**
+     * Gets the type of service object this view applies to.
+     *
+     * @return A ServiceObjectType value.
+     */
+    @Override
+    protected ServiceObjectType getServiceObjectType() {
+        return ServiceObjectType.Item;
+    }
+
+    /**
+     * Validates this view.
+     *
+     * @param request the request
+     * @throws ServiceVersionException     the service version exception
+     * @throws ExchangeValidationException the service validation exception
+     */
+    @Override
+    public void internalValidate(ServiceRequestBase request) throws ServiceVersionException, ExchangeValidationException {
+        super.internalValidate(request);
+
+        EwsUtilities.validateEnumVersionValue(this.traversal, request.getService().getRequestedServerVersion());
+    }
+
+    @Override
+    public void writeAttributesToXml(EwsServiceXmlWriter writer) throws ExchangeXmlException {
+        writer.writeAttributeValue(XmlAttributeNames.Traversal, this.traversal);
+    }
+
+    /**
+     * Internals the write search settings to XML.
+     *
+     * @param writer  the writer
+     * @param groupBy the group by
+     */
+    @Override
+    protected void internalWriteSearchSettingsToXml(EwsServiceXmlWriter writer, Grouping groupBy) throws ExchangeXmlException {
+        super.internalWriteSearchSettingsToXml(writer, groupBy);
+    }
+
+    /**
+     * Writes OrderBy property to XML.
+     *
+     * @param writer the writer
+     */
+    @Override
+    public void writeOrderByToXml(EwsServiceXmlWriter writer) throws ExchangeXmlException {
+        this.orderBy.writeToXml(writer, XmlElementNames.SortOrder);
     }
 
     /**

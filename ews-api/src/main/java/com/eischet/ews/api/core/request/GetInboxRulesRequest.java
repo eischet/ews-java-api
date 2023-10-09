@@ -31,6 +31,7 @@ import com.eischet.ews.api.core.enumeration.misc.ExchangeVersion;
 import com.eischet.ews.api.core.enumeration.misc.XmlNamespace;
 import com.eischet.ews.api.core.exception.service.local.ServiceLocalException;
 import com.eischet.ews.api.core.exception.service.local.ServiceXmlSerializationException;
+import com.eischet.ews.api.core.exception.xml.ExchangeXmlException;
 import com.eischet.ews.api.core.response.GetInboxRulesResponse;
 
 import javax.xml.stream.XMLStreamException;
@@ -90,8 +91,7 @@ public final class GetInboxRulesRequest extends SimpleServiceRequestBase<GetInbo
      * @throws ServiceXmlSerializationException
      */
     @Override
-    protected void writeElementsToXml(EwsServiceXmlWriter writer)
-            throws ServiceXmlSerializationException, XMLStreamException {
+    protected void writeElementsToXml(EwsServiceXmlWriter writer) throws ExchangeXmlException {
         if (!(this.mailboxSmtpAddress == null ||
                 this.mailboxSmtpAddress.isEmpty())) {
             writer.writeElementValue(

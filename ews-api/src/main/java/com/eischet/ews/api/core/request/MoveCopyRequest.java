@@ -29,6 +29,7 @@ import com.eischet.ews.api.core.ExchangeService;
 import com.eischet.ews.api.core.XmlElementNames;
 import com.eischet.ews.api.core.enumeration.misc.XmlNamespace;
 import com.eischet.ews.api.core.enumeration.service.error.ServiceErrorHandling;
+import com.eischet.ews.api.core.exception.service.local.ServiceVersionException;
 import com.eischet.ews.api.core.response.ServiceResponse;
 import com.eischet.ews.api.core.service.ServiceObject;
 import com.eischet.ews.api.property.complex.FolderId;
@@ -68,8 +69,7 @@ abstract class MoveCopyRequest<TServiceObject extends ServiceObject,
      * @throws Exception
      */
     protected MoveCopyRequest(ExchangeService service,
-                              ServiceErrorHandling errorHandlingMode)
-            throws Exception {
+                              ServiceErrorHandling errorHandlingMode) throws ServiceVersionException {
         super(service, errorHandlingMode);
     }
 

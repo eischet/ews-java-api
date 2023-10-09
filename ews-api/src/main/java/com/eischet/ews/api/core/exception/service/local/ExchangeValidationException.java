@@ -23,42 +23,25 @@
 
 package com.eischet.ews.api.core.exception.service.local;
 
+import com.eischet.ews.api.core.exception.xml.ExchangeXmlException;
+
 /**
  * Represents an error that occurs when a validation check fails.
  */
-public final class ServiceValidationException extends ServiceLocalException {
+public class ExchangeValidationException extends ExchangeXmlException {
 
-    /**
-     * Constant serialized ID used for compatibility.
-     */
     private static final long serialVersionUID = 1L;
 
-    /**
-     * ServiceValidationException Constructor.
-     */
-    public ServiceValidationException() {
-        super();
+    public ExchangeValidationException(final String message, final Throwable cause) {
+        super(message, cause);
     }
 
-    /**
-     * ServiceValidationException Constructor.
-     *
-     * @param message the message
-     */
-    public ServiceValidationException(String message) {
+    public ExchangeValidationException(String message) {
         super(message);
     }
 
-    /**
-     * Instantiates a new service validation exception.
-     *
-     * @param message        the message
-     * @param innerException the inner exception
-     */
-    public ServiceValidationException(String message,
-                                      Exception innerException) {
-        super(message, innerException);
 
+    public ExchangeValidationException() {
+        // TODO: remove this. We should never throw an exception that gives the user no clue at all about what went wrong.
     }
-
 }

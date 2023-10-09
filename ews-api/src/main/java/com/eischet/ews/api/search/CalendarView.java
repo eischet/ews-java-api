@@ -29,9 +29,10 @@ import com.eischet.ews.api.core.XmlElementNames;
 import com.eischet.ews.api.core.enumeration.search.ItemTraversal;
 import com.eischet.ews.api.core.enumeration.service.ServiceObjectType;
 import com.eischet.ews.api.core.exception.misc.ArgumentException;
-import com.eischet.ews.api.core.exception.service.local.ServiceValidationException;
+import com.eischet.ews.api.core.exception.service.local.ExchangeValidationException;
 import com.eischet.ews.api.core.exception.service.local.ServiceVersionException;
 import com.eischet.ews.api.core.exception.service.local.ServiceXmlSerializationException;
+import com.eischet.ews.api.core.exception.xml.ExchangeXmlException;
 import com.eischet.ews.api.core.request.ServiceRequestBase;
 
 import java.time.LocalDateTime;
@@ -68,10 +69,8 @@ public final class CalendarView extends ViewBase {
      * @param writer the writer
      * @throws ServiceXmlSerializationException the service xml serialization exception
      */
-    public void writeAttributesToXml(EwsServiceXmlWriter writer)
-            throws ServiceXmlSerializationException {
-        writer.writeAttributeValue(XmlAttributeNames.Traversal, this
-                .getTraversal());
+    public void writeAttributesToXml(EwsServiceXmlWriter writer) throws ExchangeXmlException {
+        writer.writeAttributeValue(XmlAttributeNames.Traversal, this.getTraversal());
     }
 
     /**
@@ -132,14 +131,14 @@ public final class CalendarView extends ViewBase {
      *
      * @param request the request
      * @throws ServiceVersionException    the service version exception
-     * @throws ServiceValidationException the service validation exception
+     * @throws ExchangeValidationException the service validation exception
      */
     public void internalValidate(ServiceRequestBase request)
-            throws ServiceVersionException, ServiceValidationException {
+            throws ServiceVersionException, ExchangeValidationException {
         super.internalValidate(request);
 
         if (this.endDate.compareTo(this.startDate) < 0) {
-            throw new ServiceValidationException("EndDate must be greater than StartDate.");
+            throw new ExchangeValidationException("EndDate must be greater than StartDate.");
         }
     }
 
@@ -149,8 +148,7 @@ public final class CalendarView extends ViewBase {
      * @param writer the writer
      * @throws Exception the exception
      */
-    protected void internalWriteViewToXml(EwsServiceXmlWriter writer)
-            throws Exception {
+    protected void internalWriteViewToXml(EwsServiceXmlWriter writer) throws ExchangeXmlException {
         super.internalWriteViewToXml(writer);
 
         writer.writeAttributeValue(XmlAttributeNames.StartDate, this.startDate);

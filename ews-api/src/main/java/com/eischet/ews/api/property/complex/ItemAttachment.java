@@ -28,8 +28,8 @@ import com.eischet.ews.api.core.EwsServiceXmlWriter;
 import com.eischet.ews.api.core.EwsUtilities;
 import com.eischet.ews.api.core.XmlElementNames;
 import com.eischet.ews.api.core.enumeration.property.BodyType;
-import com.eischet.ews.api.core.exception.service.local.ServiceLocalException;
-import com.eischet.ews.api.core.exception.service.local.ServiceValidationException;
+import com.eischet.ews.api.core.exception.service.local.ExchangeValidationException;
+import com.eischet.ews.api.core.exception.xml.ExchangeXmlException;
 import com.eischet.ews.api.core.service.ServiceObject;
 import com.eischet.ews.api.core.service.item.Item;
 import com.eischet.ews.api.property.definition.PropertyDefinitionBase;
@@ -111,11 +111,9 @@ public class ItemAttachment extends Attachment implements IServiceObjectChangedD
      *
      * @param reader the reader
      * @return True if the element was read, false otherwise.
-     * @throws Exception the exception
      */
     @Override
-    public boolean tryReadElementFromXml(EwsServiceXmlReader reader)
-            throws Exception {
+    public boolean tryReadElementFromXml(EwsServiceXmlReader reader) throws ExchangeXmlException {
         boolean result = super.tryReadElementFromXml(reader);
 
         if (!result) {
@@ -140,7 +138,7 @@ public class ItemAttachment extends Attachment implements IServiceObjectChangedD
      *               <p/>
      *               True if element was read.
      */
-    public boolean tryReadElementFromXmlToPatch(EwsServiceXmlReader reader) throws Exception {
+    public boolean tryReadElementFromXmlToPatch(EwsServiceXmlReader reader) throws ExchangeXmlException {
         // update the attachment id.
         super.tryReadElementFromXml(reader);
 
@@ -151,8 +149,7 @@ public class ItemAttachment extends Attachment implements IServiceObjectChangedD
 
         if (itemClass != null) {
             if (item == null || item.getClass() != itemClass) {
-                throw new ServiceLocalException(
-                        "Attachment item type mismatch.");
+                throw new ExchangeXmlException("Attachment item type mismatch.");
             }
 
             this.item.loadFromXml(reader, false /* clearPropertyBag */);
@@ -170,8 +167,7 @@ public class ItemAttachment extends Attachment implements IServiceObjectChangedD
      * @throws Exception the exception
      */
     @Override
-    public void writeElementsToXml(EwsServiceXmlWriter writer)
-            throws Exception {
+    public void writeElementsToXml(EwsServiceXmlWriter writer) throws ExchangeXmlException {
         super.writeElementsToXml(writer);
         try {
             this.item.writeToXml(writer);
@@ -185,12 +181,10 @@ public class ItemAttachment extends Attachment implements IServiceObjectChangedD
      * {@inheritDoc}
      */
     @Override
-    protected void validate(int attachmentIndex) throws Exception {
+    protected void validate(int attachmentIndex) throws ExchangeValidationException {
         if (this.getName() == null || this.getName().isEmpty()) {
-            throw new ServiceValidationException(String.format(
-                    "The name of the item attachment at index %d must be set.", attachmentIndex));
+            throw new ExchangeValidationException(String.format("The name of the item attachment at index %d must be set.", attachmentIndex));
         }
-
         // Recurse through any item attached to item attachment.
         this.validate();
     }

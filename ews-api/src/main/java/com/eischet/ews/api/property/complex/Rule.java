@@ -28,6 +28,8 @@ import com.eischet.ews.api.core.EwsServiceXmlWriter;
 import com.eischet.ews.api.core.EwsUtilities;
 import com.eischet.ews.api.core.XmlElementNames;
 import com.eischet.ews.api.core.enumeration.misc.XmlNamespace;
+import com.eischet.ews.api.core.exception.service.local.ExchangeValidationException;
+import com.eischet.ews.api.core.exception.xml.ExchangeXmlException;
 
 /**
  * Represents a rule that automatically handles incoming messages.
@@ -219,11 +221,10 @@ public final class Rule extends ComplexProperty {
      *
      * @param reader The reader.
      * @return True if element was read.
-     * @throws Exception
      */
     @Override
     public boolean tryReadElementFromXml(EwsServiceXmlReader
-                                                 reader) throws Exception {
+                                                 reader) throws ExchangeXmlException {
 
         if (reader.getLocalName().equals(XmlElementNames.DisplayName)) {
             this.displayName = reader.readElementValue();
@@ -264,8 +265,7 @@ public final class Rule extends ComplexProperty {
      * @throws Exception
      */
     @Override
-    public void writeElementsToXml(EwsServiceXmlWriter writer)
-            throws Exception {
+    public void writeElementsToXml(EwsServiceXmlWriter writer) throws ExchangeXmlException {
         if (!(getId() == null || getId().isEmpty())) {
             writer.writeElementValue(
                     XmlNamespace.Types,
@@ -299,7 +299,7 @@ public final class Rule extends ComplexProperty {
      * Validates this instance.
      */
     @Override
-    protected void internalValidate() throws Exception {
+    protected void internalValidate() throws ExchangeValidationException {
         super.internalValidate();
         EwsUtilities.validateParam(this.displayName, "DisplayName");
         EwsUtilities.validateParam(this.conditions, "Conditions");

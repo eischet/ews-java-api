@@ -21,21 +21,22 @@
  * THE SOFTWARE.
  */
 
-package com.eischet.ews.api.core;
+package com.eischet.ews.api.core.exception.xml;
 
-import com.eischet.ews.api.core.enumeration.misc.ExchangeVersion;
-import com.eischet.ews.api.property.definition.PropertyDefinition;
+import com.eischet.ews.api.core.exception.ExchangeException;
 
-/**
- * The Interface GetPropertyDefinitionCallbackInterface.
- */
-interface IGetPropertyDefinitionCallback {
+public class ExchangeXmlException extends ExchangeException {
 
-    /**
-     * Gets the property definition callback.
-     *
-     * @param version the version
-     * @return the property definition callback
-     */
-    PropertyDefinition getPropertyDefinitionCallback(ExchangeVersion version);
+    public ExchangeXmlException() {
+        super();
+    }
+
+    public ExchangeXmlException(final String message) {
+        super(message);
+
+    }
+
+    public ExchangeXmlException(String message, Throwable cause) {
+        super(message, cause);
+    }
 }

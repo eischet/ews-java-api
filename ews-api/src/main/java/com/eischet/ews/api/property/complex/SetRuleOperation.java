@@ -27,6 +27,8 @@ import com.eischet.ews.api.core.EwsServiceXmlReader;
 import com.eischet.ews.api.core.EwsServiceXmlWriter;
 import com.eischet.ews.api.core.EwsUtilities;
 import com.eischet.ews.api.core.XmlElementNames;
+import com.eischet.ews.api.core.exception.service.local.ExchangeValidationException;
+import com.eischet.ews.api.core.exception.xml.ExchangeXmlException;
 
 /**
  * Represents an operation to update an existing rule.
@@ -79,8 +81,7 @@ public class SetRuleOperation extends RuleOperation {
      * @return True if element was read.
      */
     @Override
-    public boolean tryReadElementFromXml(EwsServiceXmlReader reader)
-            throws Exception {
+    public boolean tryReadElementFromXml(EwsServiceXmlReader reader) throws ExchangeXmlException {
         if (reader.getLocalName().equals(XmlElementNames.Rule)) {
             this.rule = new Rule();
             this.rule.loadFromXml(reader, reader.getLocalName());
@@ -96,18 +97,16 @@ public class SetRuleOperation extends RuleOperation {
      * @param writer The writer.
      */
     @Override
-    public void writeElementsToXml(EwsServiceXmlWriter writer)
-            throws Exception {
+    public void writeElementsToXml(EwsServiceXmlWriter writer) throws ExchangeXmlException {
         this.rule.writeToXml(writer, XmlElementNames.Rule);
     }
 
     /**
      * Validates this instance.
      *
-     * @throws Exception
      */
     @Override
-    protected void internalValidate() throws Exception {
+    protected void internalValidate() throws ExchangeValidationException {
         EwsUtilities.validateParam(this.rule, "Rule");
     }
 

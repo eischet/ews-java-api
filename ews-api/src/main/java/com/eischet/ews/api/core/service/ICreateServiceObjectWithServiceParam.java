@@ -24,6 +24,7 @@
 package com.eischet.ews.api.core.service;
 
 import com.eischet.ews.api.core.ExchangeService;
+import com.eischet.ews.api.core.exception.xml.ExchangeXmlException;
 
 /**
  * The Interface ICreateServiceObjectWithServiceParam.
@@ -37,6 +38,5 @@ public interface ICreateServiceObjectWithServiceParam {
      * @return the object
      * @throws Exception the exception
      */
-    Object createServiceObjectWithServiceParam(ExchangeService srv)
-            throws Exception;
+    Object createServiceObjectWithServiceParam(ExchangeService srv) throws ExchangeXmlException;
 }

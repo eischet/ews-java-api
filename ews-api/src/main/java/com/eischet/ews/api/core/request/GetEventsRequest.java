@@ -31,6 +31,7 @@ import com.eischet.ews.api.core.enumeration.misc.ExchangeVersion;
 import com.eischet.ews.api.core.enumeration.misc.XmlNamespace;
 import com.eischet.ews.api.core.enumeration.service.error.ServiceErrorHandling;
 import com.eischet.ews.api.core.exception.service.local.ServiceXmlSerializationException;
+import com.eischet.ews.api.core.exception.xml.ExchangeXmlException;
 import com.eischet.ews.api.core.response.GetEventsResponse;
 
 import javax.xml.stream.XMLStreamException;
@@ -135,12 +136,9 @@ public class GetEventsRequest extends MultiResponseServiceRequest<GetEventsRespo
      * @throws ServiceXmlSerializationException the service xml serialization exception
      */
     @Override
-    protected void writeElementsToXml(EwsServiceXmlWriter writer)
-            throws XMLStreamException, ServiceXmlSerializationException {
-        writer.writeElementValue(XmlNamespace.Messages,
-                XmlElementNames.SubscriptionId, this.getSubscriptionId());
-        writer.writeElementValue(XmlNamespace.Messages,
-                XmlElementNames.Watermark, this.getWatermark());
+    protected void writeElementsToXml(EwsServiceXmlWriter writer) throws ExchangeXmlException {
+        writer.writeElementValue(XmlNamespace.Messages, XmlElementNames.SubscriptionId, this.getSubscriptionId());
+        writer.writeElementValue(XmlNamespace.Messages, XmlElementNames.Watermark, this.getWatermark());
     }
 
     /**

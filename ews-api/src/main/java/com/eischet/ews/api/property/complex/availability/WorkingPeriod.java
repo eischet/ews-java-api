@@ -27,6 +27,7 @@ import com.eischet.ews.api.core.EwsServiceXmlReader;
 import com.eischet.ews.api.core.EwsUtilities;
 import com.eischet.ews.api.core.XmlElementNames;
 import com.eischet.ews.api.core.enumeration.property.time.DayOfTheWeek;
+import com.eischet.ews.api.core.exception.xml.ExchangeXmlException;
 import com.eischet.ews.api.property.complex.ComplexProperty;
 
 import java.util.ArrayList;
@@ -64,11 +65,9 @@ final class WorkingPeriod extends ComplexProperty {
      *
      * @param reader the reader
      * @return true, if successful
-     * @throws Exception the exception
      */
     @Override
-    public boolean tryReadElementFromXml(EwsServiceXmlReader reader)
-            throws Exception {
+    public boolean tryReadElementFromXml(EwsServiceXmlReader reader) throws ExchangeXmlException {
         if (reader.getLocalName().equals(XmlElementNames.DayOfWeek)) {
             EwsUtilities.parseEnumValueList(DayOfTheWeek.class, this.daysOfWeek, reader.readElementValue(), ' ');
             return true;
@@ -91,7 +90,7 @@ final class WorkingPeriod extends ComplexProperty {
      *
      * @return the days of week
      */
-    protected List<DayOfTheWeek> getDaysOfWeek() {
+    public List<DayOfTheWeek> getDaysOfWeek() {
         return daysOfWeek;
     }
 
@@ -100,7 +99,7 @@ final class WorkingPeriod extends ComplexProperty {
      *
      * @return the start time
      */
-    protected long getStartTime() {
+    public long getStartTime() {
         return startTime;
     }
 
@@ -109,7 +108,7 @@ final class WorkingPeriod extends ComplexProperty {
      *
      * @return the end time
      */
-    protected long getEndTime() {
+    public long getEndTime() {
         return endTime;
     }
 

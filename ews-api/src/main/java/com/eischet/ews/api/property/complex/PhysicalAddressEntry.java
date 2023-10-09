@@ -27,6 +27,7 @@ import com.eischet.ews.api.core.*;
 import com.eischet.ews.api.core.enumeration.misc.XmlNamespace;
 import com.eischet.ews.api.core.enumeration.property.PhysicalAddressKey;
 import com.eischet.ews.api.core.exception.service.local.ServiceXmlSerializationException;
+import com.eischet.ews.api.core.exception.xml.ExchangeXmlException;
 import com.eischet.ews.api.core.service.ServiceObject;
 
 import javax.xml.stream.XMLStreamException;
@@ -181,11 +182,9 @@ public final class PhysicalAddressEntry extends DictionaryEntryProperty<Physical
      *
      * @param reader the reader
      * @return true, if successful
-     * @throws Exception the exception
      */
     @Override
-    public boolean tryReadElementFromXml(EwsServiceXmlReader reader)
-            throws Exception {
+    public boolean tryReadElementFromXml(EwsServiceXmlReader reader) throws ExchangeXmlException {
         if (PhysicalAddressSchema.getXmlElementNames().contains(
                 reader.getLocalName())) {
             this.propertyBag.setSimplePropertyBag(reader.getLocalName(), reader
@@ -200,12 +199,9 @@ public final class PhysicalAddressEntry extends DictionaryEntryProperty<Physical
      * Writes elements to XML.
      *
      * @param writer the writer
-     * @throws XMLStreamException               the XML stream exception
-     * @throws ServiceXmlSerializationException the service xml serialization exception
      */
     @Override
-    public void writeElementsToXml(EwsServiceXmlWriter writer)
-            throws XMLStreamException, ServiceXmlSerializationException {
+    public void writeElementsToXml(EwsServiceXmlWriter writer) throws ExchangeXmlException {
         for (String xmlElementName : PhysicalAddressSchema.getXmlElementNames()) {
             writer.writeElementValue(XmlNamespace.Types, xmlElementName,
                     this.propertyBag.getSimplePropertyBag(xmlElementName));
@@ -224,9 +220,7 @@ public final class PhysicalAddressEntry extends DictionaryEntryProperty<Physical
      * @throws ServiceXmlSerializationException the service xml serialization exception
      */
     @Override
-    protected boolean writeSetUpdateToXml(EwsServiceXmlWriter writer,
-                                          ServiceObject ewsObject, String ownerDictionaryXmlElementName)
-            throws XMLStreamException, ServiceXmlSerializationException {
+    protected boolean writeSetUpdateToXml(EwsServiceXmlWriter writer, ServiceObject ewsObject, String ownerDictionaryXmlElementName) throws ExchangeXmlException {
         List<String> fieldsToSet = new ArrayList<String>();
 
         for (String xmlElementName : this.propertyBag.getAddedItems()) {
@@ -278,16 +272,11 @@ public final class PhysicalAddressEntry extends DictionaryEntryProperty<Physical
      * @param writer    the writer
      * @param ewsObject the ews object
      * @return true if update XML was written
-     * @throws XMLStreamException               the XML stream exception
-     * @throws ServiceXmlSerializationException the service xml serialization exception
      */
     @Override
-    protected boolean writeDeleteUpdateToXml(EwsServiceXmlWriter writer,
-                                             ServiceObject ewsObject) throws XMLStreamException,
-            ServiceXmlSerializationException {
+    protected boolean writeDeleteUpdateToXml(EwsServiceXmlWriter writer, ServiceObject ewsObject) throws ExchangeXmlException {
         for (String xmlElementName : PhysicalAddressSchema.getXmlElementNames()) {
-            this.internalWriteDeleteFieldToXml(writer, ewsObject,
-                    xmlElementName);
+            this.internalWriteDeleteFieldToXml(writer, ewsObject, xmlElementName);
         }
         return true;
     }
@@ -308,20 +297,12 @@ public final class PhysicalAddressEntry extends DictionaryEntryProperty<Physical
      * @param writer              the writer
      * @param ewsObject           the ews object
      * @param fieldXmlElementName the field xml element name
-     * @throws XMLStreamException               the XML stream exception
-     * @throws ServiceXmlSerializationException the service xml serialization exception
      */
-    private void internalWriteDeleteFieldToXml(EwsServiceXmlWriter writer,
-                                               ServiceObject ewsObject, String fieldXmlElementName)
-            throws XMLStreamException, ServiceXmlSerializationException {
-        writer.writeStartElement(XmlNamespace.Types, ewsObject
-                .getDeleteFieldXmlElementName());
-        writer.writeStartElement(XmlNamespace.Types,
-                XmlElementNames.IndexedFieldURI);
-        writer.writeAttributeValue(XmlAttributeNames.FieldURI,
-                getFieldUri(fieldXmlElementName));
-        writer.writeAttributeValue(XmlAttributeNames.FieldIndex, this.getKey()
-                .toString());
+    private void internalWriteDeleteFieldToXml(EwsServiceXmlWriter writer, ServiceObject ewsObject, String fieldXmlElementName) throws ExchangeXmlException {
+        writer.writeStartElement(XmlNamespace.Types, ewsObject.getDeleteFieldXmlElementName());
+        writer.writeStartElement(XmlNamespace.Types, XmlElementNames.IndexedFieldURI);
+        writer.writeAttributeValue(XmlAttributeNames.FieldURI, getFieldUri(fieldXmlElementName));
+        writer.writeAttributeValue(XmlAttributeNames.FieldIndex, this.getKey().toString());
         writer.writeEndElement(); // IndexedFieldURI
         writer.writeEndElement(); // ewsObject.GetDeleteFieldXmlElementName()
     }
@@ -360,19 +341,15 @@ public final class PhysicalAddressEntry extends DictionaryEntryProperty<Physical
          * List of XML element names.
          */
         private static final LazyMember<List<String>> xmlElementNames =
-                new LazyMember<List<String>>(
-
-                        new ILazyMember<List<String>>() {
-                            @Override
-                            public List<String> createInstance() {
-                                List<String> result = new ArrayList<String>();
-                                result.add(Street);
-                                result.add(City);
-                                result.add(State);
-                                result.add(CountryOrRegion);
-                                result.add(PostalCode);
-                                return result;
-                            }
+                new LazyMember<>(
+                        () -> {
+                            List<String> result = new ArrayList<>(5);
+                            result.add(Street);
+                            result.add(City);
+                            result.add(State);
+                            result.add(CountryOrRegion);
+                            result.add(PostalCode);
+                            return result;
                         });
 
         /**

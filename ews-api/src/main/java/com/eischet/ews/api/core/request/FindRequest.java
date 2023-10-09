@@ -32,6 +32,7 @@ import com.eischet.ews.api.core.enumeration.service.error.ServiceErrorHandling;
 import com.eischet.ews.api.core.exception.service.local.ServiceLocalException;
 import com.eischet.ews.api.core.exception.service.local.ServiceVersionException;
 import com.eischet.ews.api.core.exception.service.local.ServiceXmlSerializationException;
+import com.eischet.ews.api.core.exception.xml.ExchangeXmlException;
 import com.eischet.ews.api.core.response.ServiceResponse;
 import com.eischet.ews.api.misc.FolderIdWrapperList;
 import com.eischet.ews.api.search.Grouping;
@@ -46,8 +47,7 @@ import java.util.logging.Logger;
  *
  * @param <TResponse> The type of the response.
  */
-abstract class FindRequest<TResponse extends ServiceResponse> extends
-        MultiResponseServiceRequest<TResponse> {
+abstract class FindRequest<TResponse extends ServiceResponse> extends MultiResponseServiceRequest<TResponse> {
 
     private static final Logger LOG = Logger.getLogger(FindRequest.class.getCanonicalName());
 
@@ -78,9 +78,7 @@ abstract class FindRequest<TResponse extends ServiceResponse> extends
      * @param errorHandlingMode Indicates how errors should be handled.
      * @throws Exception
      */
-    protected FindRequest(ExchangeService service,
-                          ServiceErrorHandling errorHandlingMode)
-            throws Exception {
+    protected FindRequest(ExchangeService service, ServiceErrorHandling errorHandlingMode) throws ServiceVersionException {
         super(service, errorHandlingMode);
     }
 
@@ -137,13 +135,10 @@ abstract class FindRequest<TResponse extends ServiceResponse> extends
      * Writes XML attribute.
      *
      * @param writer The Writer
-     * @throws ServiceXmlSerializationException the service xml serialization exception
      */
     @Override
-    protected void writeAttributesToXml(EwsServiceXmlWriter writer)
-            throws ServiceXmlSerializationException {
+    protected void writeAttributesToXml(EwsServiceXmlWriter writer) throws ExchangeXmlException {
         super.writeAttributesToXml(writer);
-
         this.getView().writeAttributesToXml(writer);
     }
 

@@ -28,6 +28,7 @@ import com.eischet.ews.api.core.enumeration.service.MessageDisposition;
 import com.eischet.ews.api.core.enumeration.service.SendInvitationsMode;
 import com.eischet.ews.api.core.enumeration.service.error.ServiceErrorHandling;
 import com.eischet.ews.api.core.exception.service.local.ServiceXmlSerializationException;
+import com.eischet.ews.api.core.exception.xml.ExchangeXmlException;
 import com.eischet.ews.api.core.response.ServiceResponse;
 import com.eischet.ews.api.core.service.ServiceObject;
 
@@ -59,8 +60,7 @@ abstract class CreateItemRequestBase<TServiceObject extends ServiceObject, TResp
      * @param errorHandlingMode Indicates how errors should be handled.
      * @throws Exception on errors
      */
-    protected CreateItemRequestBase(ExchangeService service, ServiceErrorHandling errorHandlingMode)
-            throws Exception {
+    protected CreateItemRequestBase(ExchangeService service, ServiceErrorHandling errorHandlingMode) throws Exception {
         super(service, errorHandlingMode);
     }
 
@@ -129,10 +129,9 @@ abstract class CreateItemRequestBase<TServiceObject extends ServiceObject, TResp
      * Writes the attribute to XML.
      *
      * @param writer The writer.
-     * @throws ServiceXmlSerializationException the service xml serialization exception
      */
     @Override
-    protected void writeAttributesToXml(EwsServiceXmlWriter writer) throws ServiceXmlSerializationException {
+    protected void writeAttributesToXml(EwsServiceXmlWriter writer) throws ExchangeXmlException {
         super.writeAttributesToXml(writer);
         if (this.messageDisposition != null) {
             writer.writeAttributeValue(XmlAttributeNames.MessageDisposition, this.getMessageDisposition());

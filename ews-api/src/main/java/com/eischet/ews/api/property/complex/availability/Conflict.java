@@ -27,6 +27,7 @@ import com.eischet.ews.api.core.EwsServiceXmlReader;
 import com.eischet.ews.api.core.XmlElementNames;
 import com.eischet.ews.api.core.enumeration.property.ConflictType;
 import com.eischet.ews.api.core.enumeration.property.LegacyFreeBusyStatus;
+import com.eischet.ews.api.core.exception.xml.ExchangeXmlException;
 import com.eischet.ews.api.property.complex.ComplexProperty;
 
 /**
@@ -79,11 +80,9 @@ public final class Conflict extends ComplexProperty {
      *
      * @param reader the reader
      * @return True if appropriate element was read.
-     * @throws Exception the exception
      */
     @Override
-    public boolean tryReadElementFromXml(EwsServiceXmlReader reader)
-            throws Exception {
+    public boolean tryReadElementFromXml(EwsServiceXmlReader reader) throws ExchangeXmlException {
         if (reader.getLocalName().equals(XmlElementNames.NumberOfMembers)) {
             this.numberOfMembers = reader.readElementValue(Integer.class);
             return true;

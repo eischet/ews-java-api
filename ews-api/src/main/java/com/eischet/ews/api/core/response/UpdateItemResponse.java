@@ -29,6 +29,7 @@ import com.eischet.ews.api.core.ExchangeService;
 import com.eischet.ews.api.core.XmlElementNames;
 import com.eischet.ews.api.core.enumeration.misc.XmlNamespace;
 import com.eischet.ews.api.core.enumeration.service.ServiceResult;
+import com.eischet.ews.api.core.exception.xml.ExchangeXmlException;
 import com.eischet.ews.api.core.service.ServiceObject;
 import com.eischet.ews.api.core.service.item.Item;
 
@@ -120,8 +121,7 @@ public final class UpdateItemResponse extends ServiceResponse implements
      * getObjectInstanceDelegate(microsoft.exchange.webservices.ExchangeService,
      * java.lang.String)
      */
-    public ServiceObject getObjectInstanceDelegate(ExchangeService service,
-                                                   String xmlElementName) throws Exception {
+    public ServiceObject getObjectInstanceDelegate(ExchangeService service, String xmlElementName) throws ExchangeXmlException {
         return this.getObjectInstance(service, xmlElementName);
     }
 
@@ -141,10 +141,8 @@ public final class UpdateItemResponse extends ServiceResponse implements
      * @param service        the service
      * @param xmlElementName the xml element name
      * @return Item
-     * @throws Exception the exception
      */
-    private Item getObjectInstance(ExchangeService service,
-                                   String xmlElementName) throws Exception {
+    private Item getObjectInstance(ExchangeService service, String xmlElementName) throws ExchangeXmlException {
         this.returnedItem = EwsUtilities.createEwsObjectFromXmlElementName(
                 Item.class, service, xmlElementName);
         return this.returnedItem;

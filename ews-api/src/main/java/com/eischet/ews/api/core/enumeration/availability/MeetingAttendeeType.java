@@ -28,33 +28,28 @@ package com.eischet.ews.api.core.enumeration.availability;
  */
 public enum MeetingAttendeeType {
 
-    // The attendee is the organizer of the meeting.
     /**
-     * The Organizer.
+     * The attendee is the organizer of the meeting.
      */
     Organizer,
 
-    // The attendee is required.
     /**
-     * The Required.
+     * The attendee is required.
      */
     Required,
 
-    // The attendee is optional.
     /**
-     * The Optional.
+     * The attendee is optional.
      */
     Optional,
 
-    // The attendee is a room.
     /**
-     * The Room.
+     * The attendee is a room.
      */
     Room,
 
-    // The attendee is a resource.
     /**
-     * The Resource.
+     * The attendee is a resource.
      */
     Resource
 

@@ -28,13 +28,12 @@ import com.eischet.ews.api.core.EwsUtilities;
 import com.eischet.ews.api.core.XmlAttributeNames;
 import com.eischet.ews.api.core.XmlElementNames;
 import com.eischet.ews.api.core.enumeration.misc.ExchangeVersion;
-import com.eischet.ews.api.core.exception.service.local.ServiceXmlSerializationException;
+import com.eischet.ews.api.core.exception.xml.ExchangeXmlException;
 
 /**
  * Represents a property definition for a service object.
  */
-public abstract class ServiceObjectPropertyDefinition extends
-        PropertyDefinitionBase {
+public abstract class ServiceObjectPropertyDefinition extends PropertyDefinitionBase {
 
     /**
      * The uri.
@@ -65,11 +64,9 @@ public abstract class ServiceObjectPropertyDefinition extends
      * Writes the attribute to XML.
      *
      * @param writer the writer
-     * @throws ServiceXmlSerializationException the service xml serialization exception
      */
     @Override
-    protected void writeAttributesToXml(EwsServiceXmlWriter writer)
-            throws ServiceXmlSerializationException {
+    protected void writeAttributesToXml(EwsServiceXmlWriter writer) throws ExchangeXmlException {
         writer.writeAttributeValue(XmlAttributeNames.FieldURI, this.getUri());
     }
 

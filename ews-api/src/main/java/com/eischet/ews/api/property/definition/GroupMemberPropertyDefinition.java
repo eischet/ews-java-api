@@ -26,7 +26,7 @@ package com.eischet.ews.api.property.definition;
 import com.eischet.ews.api.core.EwsServiceXmlWriter;
 import com.eischet.ews.api.core.XmlAttributeNames;
 import com.eischet.ews.api.core.XmlElementNames;
-import com.eischet.ews.api.core.exception.service.local.ServiceXmlSerializationException;
+import com.eischet.ews.api.core.exception.xml.ExchangeXmlException;
 
 /**
  * Represents the definition of the GroupMember property.
@@ -96,10 +96,8 @@ public final class GroupMemberPropertyDefinition extends
      * Writes the attribute to XML.
      *
      * @param writer the writer
-     * @throws ServiceXmlSerializationException the service xml serialization exception
      */
-    protected void writeAttributesToXml(EwsServiceXmlWriter writer)
-            throws ServiceXmlSerializationException {
+    protected void writeAttributesToXml(EwsServiceXmlWriter writer) throws ExchangeXmlException {
         super.writeAttributesToXml(writer);
         writer.writeAttributeValue(XmlAttributeNames.FieldIndex, this.key);
     }

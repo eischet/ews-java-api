@@ -26,10 +26,7 @@ package com.eischet.ews.api.property.complex;
 import com.eischet.ews.api.core.EwsServiceXmlReader;
 import com.eischet.ews.api.core.EwsServiceXmlWriter;
 import com.eischet.ews.api.core.XmlAttributeNames;
-import com.eischet.ews.api.core.exception.service.local.ServiceXmlDeserializationException;
-import com.eischet.ews.api.core.exception.service.local.ServiceXmlSerializationException;
-
-import javax.xml.stream.XMLStreamException;
+import com.eischet.ews.api.core.exception.xml.ExchangeXmlException;
 
 /**
  * Defines the EwsXmlReader class.
@@ -56,10 +53,8 @@ public final class InternetMessageHeader extends ComplexProperty {
      * Reads the attribute from XML.
      *
      * @param reader the reader
-     * @throws Exception the exception
      */
-    public void readAttributesFromXml(EwsServiceXmlReader reader)
-            throws Exception {
+    public void readAttributesFromXml(EwsServiceXmlReader reader) throws ExchangeXmlException {
         this.name = reader.readAttributeValue(XmlAttributeNames.HeaderName);
     }
 
@@ -67,11 +62,8 @@ public final class InternetMessageHeader extends ComplexProperty {
      * Reads the text value from XML.
      *
      * @param reader the reader
-     * @throws XMLStreamException                 the XML stream exception
-     * @throws ServiceXmlDeserializationException the service xml deserialization exception
      */
-    public void readTextValueFromXml(EwsServiceXmlReader reader)
-            throws XMLStreamException, ServiceXmlDeserializationException {
+    public void readTextValueFromXml(EwsServiceXmlReader reader) throws ExchangeXmlException {
         this.value = reader.readValue();
     }
 
@@ -79,10 +71,8 @@ public final class InternetMessageHeader extends ComplexProperty {
      * Writes the attribute to XML.
      *
      * @param writer the writer
-     * @throws ServiceXmlSerializationException the service xml serialization exception
      */
-    public void writeAttributesToXml(EwsServiceXmlWriter writer)
-            throws ServiceXmlSerializationException {
+    public void writeAttributesToXml(EwsServiceXmlWriter writer) throws ExchangeXmlException {
         writer.writeAttributeValue(XmlAttributeNames.HeaderName, this.name);
     }
 
@@ -90,10 +80,8 @@ public final class InternetMessageHeader extends ComplexProperty {
      * Writes elements to XML.
      *
      * @param writer the writer
-     * @throws ServiceXmlSerializationException the service xml serialization exception
      */
-    public void writeElementsToXml(EwsServiceXmlWriter writer)
-            throws ServiceXmlSerializationException {
+    public void writeElementsToXml(EwsServiceXmlWriter writer) throws ExchangeXmlException {
         writer.writeValue(this.value, this.name);
     }
 

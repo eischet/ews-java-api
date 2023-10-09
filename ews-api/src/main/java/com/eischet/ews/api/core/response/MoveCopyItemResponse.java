@@ -27,6 +27,7 @@ import com.eischet.ews.api.core.EwsServiceXmlReader;
 import com.eischet.ews.api.core.EwsUtilities;
 import com.eischet.ews.api.core.ExchangeService;
 import com.eischet.ews.api.core.XmlElementNames;
+import com.eischet.ews.api.core.exception.xml.ExchangeXmlException;
 import com.eischet.ews.api.core.service.ServiceObject;
 import com.eischet.ews.api.core.service.item.Item;
 
@@ -56,10 +57,9 @@ public final class MoveCopyItemResponse extends ServiceResponse implements
      * @param service        the service
      * @param xmlElementName the xml element name
      * @return the object instance
-     * @throws Exception the exception
      */
     private Item getObjectInstance(ExchangeService service,
-                                   String xmlElementName) throws Exception {
+                                   String xmlElementName) throws ExchangeXmlException {
         return EwsUtilities.createEwsObjectFromXmlElementName(Item.class, service, xmlElementName);
     }
 
@@ -83,7 +83,7 @@ public final class MoveCopyItemResponse extends ServiceResponse implements
         // a single mailbox. No item is returned if the operation is
         // cross-mailbox, from a
         // mailbox to a public folder or from a public folder to a mailbox.
-        if (items.size() > 0) {
+        if (!items.isEmpty()) {
             this.item = items.get(0);
         }
     }
@@ -94,11 +94,10 @@ public final class MoveCopyItemResponse extends ServiceResponse implements
      * @param service        the service
      * @param xmlElementName the xml element name
      * @return the object instance delegate
-     * @throws Exception the exception
      */
     @Override
     public ServiceObject getObjectInstanceDelegate(ExchangeService service,
-                                                   String xmlElementName) throws Exception {
+                                                   String xmlElementName) throws ExchangeXmlException {
         return this.getObjectInstance(service, xmlElementName);
     }
 

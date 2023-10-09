@@ -30,13 +30,13 @@ import com.eischet.ews.api.core.enumeration.misc.ExchangeVersion;
 import com.eischet.ews.api.core.enumeration.property.EmailAddressKey;
 import com.eischet.ews.api.core.enumeration.property.MailboxType;
 import com.eischet.ews.api.core.exception.service.local.ServiceXmlSerializationException;
+import com.eischet.ews.api.core.exception.xml.ExchangeXmlException;
 
 /**
  * Represents an entry of an EmailAddressDictionary.
  */
 @EditorBrowsable(state = EditorBrowsableState.Never)
-public final class EmailAddressEntry extends DictionaryEntryProperty<EmailAddressKey> implements
-        IComplexPropertyChangedDelegate {
+public final class EmailAddressEntry extends DictionaryEntryProperty<EmailAddressKey> implements IComplexPropertyChangedDelegate {
     // / The email address.
     /**
      * The email address.
@@ -58,8 +58,7 @@ public final class EmailAddressEntry extends DictionaryEntryProperty<EmailAddres
      * @param key          The key.
      * @param emailAddress The email address.
      */
-    protected EmailAddressEntry(EmailAddressKey key,
-                                EmailAddress emailAddress) {
+    protected EmailAddressEntry(EmailAddressKey key, EmailAddress emailAddress) {
         super(EmailAddressKey.class, key);
         this.emailAddress = emailAddress;
     }
@@ -68,22 +67,13 @@ public final class EmailAddressEntry extends DictionaryEntryProperty<EmailAddres
      * Reads the attribute from XML.
      *
      * @param reader accepts EwsServiceXmlReader
-     * @throws Exception throws Exception
      */
     @Override
-    public void readAttributesFromXml(EwsServiceXmlReader reader)
-            throws Exception {
+    public void readAttributesFromXml(EwsServiceXmlReader reader) throws ExchangeXmlException {
         super.readAttributesFromXml(reader);
-        this.getEmailAddress().setName(
-                reader.readAttributeValue(XmlAttributeNames.Name));
-        this
-                .getEmailAddress()
-                .setRoutingType(
-                        reader
-                                .readAttributeValue(XmlAttributeNames.
-                                        RoutingType));
-        String mailboxTypeString = reader
-                .readAttributeValue(XmlAttributeNames.MailboxType);
+        this.getEmailAddress().setName(reader.readAttributeValue(XmlAttributeNames.Name));
+        this.getEmailAddress().setRoutingType(reader.readAttributeValue(XmlAttributeNames.RoutingType));
+        String mailboxTypeString = reader.readAttributeValue(XmlAttributeNames.MailboxType);
         if ((mailboxTypeString != null) && (!mailboxTypeString.isEmpty())) {
             this.getEmailAddress().setMailboxType(EwsUtilities.parse(MailboxType.class, mailboxTypeString));
         } else {
@@ -95,11 +85,9 @@ public final class EmailAddressEntry extends DictionaryEntryProperty<EmailAddres
      * Reads the text value from XML.
      *
      * @param reader accepts EwsServiceXmlReader
-     * @throws Exception the exception
      */
     @Override
-    public void readTextValueFromXml(EwsServiceXmlReader reader)
-            throws Exception {
+    public void readTextValueFromXml(EwsServiceXmlReader reader) throws ExchangeXmlException {
         this.getEmailAddress().setAddress(reader.readValue());
     }
 
@@ -107,22 +95,15 @@ public final class EmailAddressEntry extends DictionaryEntryProperty<EmailAddres
      * Writes the attribute to XML.
      *
      * @param writer accepts EwsServiceXmlWriter
-     * @throws ServiceXmlSerializationException throws ServiceXmlSerializationException
      */
     @Override
-    public void writeAttributesToXml(EwsServiceXmlWriter writer)
-            throws ServiceXmlSerializationException {
+    public void writeAttributesToXml(EwsServiceXmlWriter writer) throws ExchangeXmlException {
         super.writeAttributesToXml(writer);
-        if (writer.getService().getRequestedServerVersion().ordinal() >
-                ExchangeVersion.Exchange2007_SP1
-                        .ordinal()) {
-            writer.writeAttributeValue(XmlAttributeNames.Name, this
-                    .getEmailAddress().getName());
-            writer.writeAttributeValue(XmlAttributeNames.RoutingType, this
-                    .getEmailAddress().getRoutingType());
+        if (writer.getService().getRequestedServerVersion().ordinal() > ExchangeVersion.Exchange2007_SP1.ordinal()) {
+            writer.writeAttributeValue(XmlAttributeNames.Name, this.getEmailAddress().getName());
+            writer.writeAttributeValue(XmlAttributeNames.RoutingType, this.getEmailAddress().getRoutingType());
             if (this.getEmailAddress().getMailboxType() != MailboxType.Unknown) {
-                writer.writeAttributeValue(XmlAttributeNames.MailboxType, this
-                        .getEmailAddress().getMailboxType());
+                writer.writeAttributeValue(XmlAttributeNames.MailboxType, this.getEmailAddress().getMailboxType());
             }
         }
     }
@@ -131,13 +112,10 @@ public final class EmailAddressEntry extends DictionaryEntryProperty<EmailAddres
      * Writes elements to XML.
      *
      * @param writer accepts EwsServiceXmlWriter
-     * @throws ServiceXmlSerializationException throws ServiceXmlSerializationException
      */
     @Override
-    public void writeElementsToXml(EwsServiceXmlWriter writer)
-            throws ServiceXmlSerializationException {
-        writer.writeValue(this.getEmailAddress().getAddress(),
-                XmlElementNames.EmailAddress);
+    public void writeElementsToXml(EwsServiceXmlWriter writer) throws ExchangeXmlException {
+        writer.writeValue(this.getEmailAddress().getAddress(), XmlElementNames.EmailAddress);
     }
 
     /**

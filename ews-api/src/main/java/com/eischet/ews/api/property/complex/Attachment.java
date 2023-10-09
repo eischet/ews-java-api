@@ -27,8 +27,9 @@ import com.eischet.ews.api.core.*;
 import com.eischet.ews.api.core.enumeration.misc.ExchangeVersion;
 import com.eischet.ews.api.core.enumeration.misc.XmlNamespace;
 import com.eischet.ews.api.core.enumeration.property.BodyType;
-import com.eischet.ews.api.core.exception.service.local.ServiceValidationException;
+import com.eischet.ews.api.core.exception.service.local.ExchangeValidationException;
 import com.eischet.ews.api.core.exception.service.local.ServiceVersionException;
+import com.eischet.ews.api.core.exception.xml.ExchangeXmlException;
 import com.eischet.ews.api.core.service.item.Item;
 import com.eischet.ews.api.property.definition.PropertyDefinitionBase;
 
@@ -225,7 +226,7 @@ public abstract class Attachment extends ComplexProperty {
      * @return the size
      * @throws ServiceVersionException throws ServiceVersionException
      */
-    public int getSize() throws ServiceVersionException {
+    public int getSize() throws ExchangeXmlException {
         EwsUtilities.validatePropertyVersion(this.getOwner().getService(), ExchangeVersion.Exchange2010, "Size");
         return this.size;
     }
@@ -236,7 +237,7 @@ public abstract class Attachment extends ComplexProperty {
      * @return the last modified time
      * @throws ServiceVersionException the service version exception
      */
-    public LocalDateTime getLastModifiedTime() throws ServiceVersionException {
+    public LocalDateTime getLastModifiedTime() throws ExchangeXmlException {
         EwsUtilities.validatePropertyVersion(this.getOwner().getService(), ExchangeVersion.Exchange2010, "LastModifiedTime");
         return this.lastModifiedTime;
     }
@@ -248,7 +249,7 @@ public abstract class Attachment extends ComplexProperty {
      * @return the checks if is inline
      * @throws ServiceVersionException the service version exception
      */
-    public boolean getIsInline() throws ServiceVersionException {
+    public boolean getIsInline() throws ExchangeXmlException {
         EwsUtilities.validatePropertyVersion(this.getOwner().getService(), ExchangeVersion.Exchange2010, "IsInline");
         return this.isInline;
     }
@@ -259,7 +260,7 @@ public abstract class Attachment extends ComplexProperty {
      * @param value the new checks if is inline
      * @throws ServiceVersionException the service version exception
      */
-    public void setIsInline(boolean value) throws ServiceVersionException {
+    public void setIsInline(boolean value) throws ExchangeXmlException {
         EwsUtilities.validatePropertyVersion(this.getOwner().getService(),
                 ExchangeVersion.Exchange2010, "IsInline");
         if (this.canSetFieldValue(this.isInline, value)) {
@@ -301,8 +302,7 @@ public abstract class Attachment extends ComplexProperty {
      * @throws Exception the exception
      */
     @Override
-    public boolean tryReadElementFromXml(EwsServiceXmlReader reader)
-            throws Exception {
+    public boolean tryReadElementFromXml(EwsServiceXmlReader reader) throws ExchangeXmlException {
 
         try {
             if (reader.getLocalName().equalsIgnoreCase(XmlElementNames.AttachmentId)) {
@@ -366,24 +366,19 @@ public abstract class Attachment extends ComplexProperty {
      * Writes elements to XML.
      *
      * @param writer the writer
-     * @throws Exception the exception
      */
     @Override
-    public void writeElementsToXml(EwsServiceXmlWriter writer)
-            throws Exception {
-        writer.writeElementValue(XmlNamespace.Types, XmlElementNames.Name, this
-                .getName());
-        writer.writeElementValue(XmlNamespace.Types,
-                XmlElementNames.ContentType, this.getContentType());
-        writer.writeElementValue(XmlNamespace.Types, XmlElementNames.ContentId,
-                this.getContentId());
-        writer.writeElementValue(XmlNamespace.Types,
-                XmlElementNames.ContentLocation, this.getContentLocation());
-        if (writer.getService().getRequestedServerVersion().ordinal() >
-                ExchangeVersion.Exchange2007_SP1
-                        .ordinal()) {
-            writer.writeElementValue(XmlNamespace.Types,
-                    XmlElementNames.IsInline, this.getIsInline());
+    public void writeElementsToXml(EwsServiceXmlWriter writer) throws ExchangeXmlException {
+        writer.writeElementValue(XmlNamespace.Types, XmlElementNames.Name, this.getName());
+        writer.writeElementValue(XmlNamespace.Types, XmlElementNames.ContentType, this.getContentType());
+        writer.writeElementValue(XmlNamespace.Types, XmlElementNames.ContentId, this.getContentId());
+        writer.writeElementValue(XmlNamespace.Types, XmlElementNames.ContentLocation, this.getContentLocation());
+        if (writer.getService().getRequestedServerVersion().ordinal() > ExchangeVersion.Exchange2007_SP1.ordinal()) {
+            try {
+                writer.writeElementValue(XmlNamespace.Types, XmlElementNames.IsInline, this.getIsInline());
+            } catch (ServiceVersionException e) {
+                throw new ExchangeXmlException("error checking for is inline: the Exchange Version is 2007_SP1 or higher and 2010 *at the same time*"); // TODO LOL fix this
+            }
         }
     }
 
@@ -405,10 +400,10 @@ public abstract class Attachment extends ComplexProperty {
      * Validates this instance.
      *
      * @param attachmentIndex Index of this attachment.
-     * @throws ServiceValidationException the service validation exception
+     * @throws ExchangeValidationException the service validation exception
      * @throws Exception                  the exception
      */
-    abstract void validate(int attachmentIndex) throws Exception;
+    abstract void validate(int attachmentIndex) throws ExchangeValidationException;
 
     /**
      * Loads the attachment. Calling this method results in a call to EWS.

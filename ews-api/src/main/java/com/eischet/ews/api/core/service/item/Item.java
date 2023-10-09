@@ -39,6 +39,7 @@ import com.eischet.ews.api.core.enumeration.service.error.ServiceErrorHandling;
 import com.eischet.ews.api.core.exception.misc.InvalidOperationException;
 import com.eischet.ews.api.core.exception.service.local.ServiceLocalException;
 import com.eischet.ews.api.core.exception.service.remote.ServiceResponseException;
+import com.eischet.ews.api.core.exception.xml.ExchangeXmlException;
 import com.eischet.ews.api.core.service.ServiceObject;
 import com.eischet.ews.api.core.service.schema.ItemSchema;
 import com.eischet.ews.api.core.service.schema.ServiceObjectSchema;
@@ -71,7 +72,7 @@ public class Item extends ServiceObject {
      * @param service the service
      * @throws Exception the exception
      */
-    public Item(ExchangeService service) throws Exception {
+    public Item(ExchangeService service) throws ExchangeXmlException {
         super(service);
     }
 
@@ -81,7 +82,7 @@ public class Item extends ServiceObject {
      * @param parentAttachment The parent attachment.
      * @throws Exception the exception
      */
-    public Item(final ItemAttachment parentAttachment) throws Exception {
+    public Item(final ItemAttachment parentAttachment) throws ExchangeXmlException {
         this(parentAttachment.getOwner().getService());
         this.parentAttachment = parentAttachment;
     }
@@ -290,8 +291,7 @@ public class Item extends ServiceObject {
      *
      * @throws ServiceLocalException
      */
-    public boolean hasUnprocessedAttachmentChanges()
-            throws ServiceLocalException {
+    public boolean hasUnprocessedAttachmentChanges() throws ExchangeXmlException {
         return this.getAttachments().hasUnprocessedChanges();
 
     }
@@ -311,7 +311,7 @@ public class Item extends ServiceObject {
      * @return the root item id
      * @throws ServiceLocalException the service local exception
      */
-    public ItemId getRootItemId() throws ServiceLocalException {
+    public ItemId getRootItemId() throws ServiceLocalException, ExchangeXmlException {
 
         if (this.isAttachment()) {
             return this.getParentAttachment().getOwner().getRootItemId();
@@ -556,7 +556,7 @@ public class Item extends ServiceObject {
      * @return the checks if is new
      * @throws ServiceLocalException the service local exception
      */
-    public boolean getIsNew() throws ServiceLocalException {
+    public boolean getIsNew() throws ServiceLocalException, ExchangeXmlException {
 
         // Item attachments don't have an Id, need to check whether the
         // parentAttachment is new or not.
@@ -571,22 +571,18 @@ public class Item extends ServiceObject {
      * Gets the Id of this item.
      *
      * @return the id
-     * @throws ServiceLocalException the service local exception
      */
-    public ItemId getId() throws ServiceLocalException {
-        return getPropertyBag().getObjectFromPropertyDefinition(
-                getIdPropertyDefinition());
+    public ItemId getId() throws ExchangeXmlException {
+        return getPropertyBag().getObjectFromPropertyDefinition(getIdPropertyDefinition());
     }
 
     /**
      * Get the MIME content of this item.
      *
      * @return the mime content
-     * @throws ServiceLocalException the service local exception
      */
-    public MimeContent getMimeContent() throws ServiceLocalException {
-        return getPropertyBag().getObjectFromPropertyDefinition(
-                ItemSchema.MimeContent);
+    public MimeContent getMimeContent() throws ExchangeXmlException {
+        return getPropertyBag().getObjectFromPropertyDefinition(ItemSchema.MimeContent);
     }
 
     /**
@@ -604,20 +600,17 @@ public class Item extends ServiceObject {
      * Gets the Id of the parent folder of this item.
      *
      * @return the parent folder id
-     * @throws ServiceLocalException the service local exception
      */
-    public FolderId getParentFolderId() throws ServiceLocalException {
-        return getPropertyBag().getObjectFromPropertyDefinition(
-                ItemSchema.ParentFolderId);
+    public FolderId getParentFolderId() throws ExchangeXmlException {
+        return getPropertyBag().getObjectFromPropertyDefinition(ItemSchema.ParentFolderId);
     }
 
     /**
      * Gets the sensitivity of this item.
      *
      * @return the sensitivity
-     * @throws ServiceLocalException the service local exception
      */
-    public Sensitivity getSensitivity() throws ServiceLocalException {
+    public Sensitivity getSensitivity() throws ExchangeXmlException {
         return getPropertyBag().getObjectFromPropertyDefinition(
                 ItemSchema.Sensitivity);
     }
@@ -639,18 +632,16 @@ public class Item extends ServiceObject {
      * @return the attachments
      * @throws ServiceLocalException the service local exception
      */
-    public AttachmentCollection getAttachments() throws ServiceLocalException {
-        return getPropertyBag().getObjectFromPropertyDefinition(
-                ItemSchema.Attachments);
+    public AttachmentCollection getAttachments() throws ExchangeXmlException {
+        return getPropertyBag().getObjectFromPropertyDefinition(ItemSchema.Attachments);
     }
 
     /**
      * Gets the time when this item was received.
      *
      * @return the date time received
-     * @throws ServiceLocalException the service local exception
      */
-    public LocalDateTime getDateTimeReceived() throws ServiceLocalException {
+    public LocalDateTime getDateTimeReceived() throws ExchangeXmlException {
         return getPropertyBag().getObjectFromPropertyDefinition(ItemSchema.DateTimeReceived);
     }
 
@@ -658,9 +649,8 @@ public class Item extends ServiceObject {
      * Gets the size of this item.
      *
      * @return the size
-     * @throws ServiceLocalException the service local exception
      */
-    public int getSize() throws ServiceLocalException {
+    public int getSize() throws ExchangeXmlException {
         return getPropertyBag().<Integer>getObjectFromPropertyDefinition(ItemSchema.Size);
     }
 
@@ -668,9 +658,8 @@ public class Item extends ServiceObject {
      * Gets the list of categories associated with this item.
      *
      * @return the categories
-     * @throws ServiceLocalException the service local exception
      */
-    public StringList getCategories() throws ServiceLocalException {
+    public StringList getCategories() throws ExchangeXmlException {
         return getPropertyBag().getObjectFromPropertyDefinition(
                 ItemSchema.Categories);
     }
@@ -690,9 +679,8 @@ public class Item extends ServiceObject {
      * Gets the culture associated with this item.
      *
      * @return the culture
-     * @throws ServiceLocalException the service local exception
      */
-    public String getCulture() throws ServiceLocalException {
+    public String getCulture() throws ExchangeXmlException {
         return getPropertyBag().getObjectFromPropertyDefinition(
                 ItemSchema.Culture);
     }
@@ -712,9 +700,8 @@ public class Item extends ServiceObject {
      * Gets the importance of this item.
      *
      * @return the importance
-     * @throws ServiceLocalException the service local exception
      */
-    public Importance getImportance() throws ServiceLocalException {
+    public Importance getImportance() throws ExchangeXmlException {
         return getPropertyBag().getObjectFromPropertyDefinition(
                 ItemSchema.Importance);
     }
@@ -734,9 +721,8 @@ public class Item extends ServiceObject {
      * Gets the In-Reply-To reference of this item.
      *
      * @return the in reply to
-     * @throws ServiceLocalException the service local exception
      */
-    public String getInReplyTo() throws ServiceLocalException {
+    public String getInReplyTo() throws ExchangeXmlException {
         return getPropertyBag().getObjectFromPropertyDefinition(
                 ItemSchema.InReplyTo);
     }
@@ -757,9 +743,8 @@ public class Item extends ServiceObject {
      * sent.
      *
      * @return the checks if is submitted
-     * @throws ServiceLocalException the service local exception
      */
-    public boolean getIsSubmitted() throws ServiceLocalException {
+    public boolean getIsSubmitted() throws ExchangeXmlException {
         return getPropertyBag().<Boolean>getObjectFromPropertyDefinition(ItemSchema.IsSubmitted);
     }
 
@@ -770,9 +755,8 @@ public class Item extends ServiceObject {
      * @return the checks if is associated
      * @throws ServiceLocalException the service local exception
      */
-    public boolean getIsAssociated() throws ServiceLocalException {
-        return getPropertyBag().<Boolean>getObjectFromPropertyDefinition(
-                ItemSchema.IsAssociated);
+    public boolean getIsAssociated() throws ExchangeXmlException {
+        return getPropertyBag().<Boolean>getObjectFromPropertyDefinition(ItemSchema.IsAssociated);
     }
 
     /**
@@ -780,9 +764,8 @@ public class Item extends ServiceObject {
      * sent.
      *
      * @return the checks if is draft
-     * @throws ServiceLocalException the service local exception
      */
-    public boolean getIsDraft() throws ServiceLocalException {
+    public boolean getIsDraft() throws ExchangeXmlException {
         return getPropertyBag().<Boolean>getObjectFromPropertyDefinition(
                 ItemSchema.IsDraft);
     }
@@ -792,22 +775,18 @@ public class Item extends ServiceObject {
      * authenticated user.
      *
      * @return the checks if is from me
-     * @throws ServiceLocalException the service local exception
      */
-    public boolean getIsFromMe() throws ServiceLocalException {
-        return getPropertyBag().<Boolean>getObjectFromPropertyDefinition(
-                ItemSchema.IsFromMe);
+    public boolean getIsFromMe() throws ExchangeXmlException {
+        return getPropertyBag().<Boolean>getObjectFromPropertyDefinition(ItemSchema.IsFromMe);
     }
 
     /**
      * Gets a value indicating whether the item is a resend of another item.
      *
      * @return the checks if is resend
-     * @throws ServiceLocalException the service local exception
      */
-    public boolean getIsResend() throws ServiceLocalException {
-        return getPropertyBag().<Boolean>getObjectFromPropertyDefinition(
-                ItemSchema.IsResend);
+    public boolean getIsResend() throws ExchangeXmlException {
+        return getPropertyBag().<Boolean>getObjectFromPropertyDefinition(ItemSchema.IsResend);
     }
 
     /**
@@ -815,21 +794,17 @@ public class Item extends ServiceObject {
      * created.
      *
      * @return the checks if is unmodified
-     * @throws ServiceLocalException the service local exception
      */
-    public boolean getIsUnmodified() throws ServiceLocalException {
-        return getPropertyBag().<Boolean>getObjectFromPropertyDefinition(
-                ItemSchema.IsUnmodified);
+    public boolean getIsUnmodified() throws ExchangeXmlException {
+        return getPropertyBag().<Boolean>getObjectFromPropertyDefinition(ItemSchema.IsUnmodified);
     }
 
     /**
      * Gets a list of Internet headers for this item.
      *
      * @return the internet message headers
-     * @throws ServiceLocalException the service local exception
      */
-    public InternetMessageHeaderCollection getInternetMessageHeaders()
-            throws ServiceLocalException {
+    public InternetMessageHeaderCollection getInternetMessageHeaders() throws ExchangeXmlException {
         return getPropertyBag().getObjectFromPropertyDefinition(
                 ItemSchema.InternetMessageHeaders);
     }
@@ -838,9 +813,8 @@ public class Item extends ServiceObject {
      * Gets the date and time this item was sent.
      *
      * @return the date time sent
-     * @throws ServiceLocalException the service local exception
      */
-    public LocalDateTime getDateTimeSent() throws ServiceLocalException {
+    public LocalDateTime getDateTimeSent() throws ExchangeXmlException {
         return getPropertyBag().getObjectFromPropertyDefinition(
                 ItemSchema.DateTimeSent);
     }
@@ -849,9 +823,8 @@ public class Item extends ServiceObject {
      * Gets the date and time this item was created.
      *
      * @return the date time created
-     * @throws ServiceLocalException the service local exception
      */
-    public LocalDateTime getDateTimeCreated() throws ServiceLocalException {
+    public LocalDateTime getDateTimeCreated() throws ExchangeXmlException {
         return getPropertyBag().getObjectFromPropertyDefinition(
                 ItemSchema.DateTimeCreated);
     }
@@ -861,10 +834,8 @@ public class Item extends ServiceObject {
      * Examples of response actions are Reply and Forward.
      *
      * @return the allowed response actions
-     * @throws ServiceLocalException the service local exception
      */
-    public EnumSet<ResponseActions> getAllowedResponseActions()
-            throws ServiceLocalException {
+    public EnumSet<ResponseActions> getAllowedResponseActions() throws ExchangeXmlException {
         return getPropertyBag().getObjectFromPropertyDefinition(
                 ItemSchema.AllowedResponseActions);
     }
@@ -873,11 +844,9 @@ public class Item extends ServiceObject {
      * Gets the date and time when the reminder is due for this item.
      *
      * @return the reminder due by
-     * @throws ServiceLocalException the service local exception
      */
-    public LocalDateTime getReminderDueBy() throws ServiceLocalException {
-        return getPropertyBag().getObjectFromPropertyDefinition(
-                ItemSchema.ReminderDueBy);
+    public LocalDateTime getReminderDueBy() throws ExchangeXmlException {
+        return getPropertyBag().getObjectFromPropertyDefinition(ItemSchema.ReminderDueBy);
     }
 
     /**
@@ -895,11 +864,9 @@ public class Item extends ServiceObject {
      * Gets a value indicating whether a reminder is set for this item.
      *
      * @return the checks if is reminder set
-     * @throws ServiceLocalException the service local exception
      */
-    public boolean getIsReminderSet() throws ServiceLocalException {
-        return getPropertyBag().<Boolean>getObjectFromPropertyDefinition(
-                ItemSchema.IsReminderSet);
+    public boolean getIsReminderSet() throws ExchangeXmlException {
+        return getPropertyBag().<Boolean>getObjectFromPropertyDefinition(ItemSchema.IsReminderSet);
     }
 
     /**
@@ -918,9 +885,8 @@ public class Item extends ServiceObject {
      * reminder should be triggered.
      *
      * @return the reminder minutes before start
-     * @throws ServiceLocalException the service local exception
      */
-    public int getReminderMinutesBeforeStart() throws ServiceLocalException {
+    public int getReminderMinutesBeforeStart() throws ExchangeXmlException {
         return getPropertyBag().<Integer>getObjectFromPropertyDefinition(
                 ItemSchema.ReminderMinutesBeforeStart);
     }
@@ -940,9 +906,8 @@ public class Item extends ServiceObject {
      * Gets a text summarizing the Cc receipients of this item.
      *
      * @return the display cc
-     * @throws ServiceLocalException the service local exception
      */
-    public String getDisplayCc() throws ServiceLocalException {
+    public String getDisplayCc() throws ExchangeXmlException {
         return getPropertyBag().getObjectFromPropertyDefinition(
                 ItemSchema.DisplayCc);
     }
@@ -951,9 +916,8 @@ public class Item extends ServiceObject {
      * Gets a text summarizing the To recipients of this item.
      *
      * @return the display to
-     * @throws ServiceLocalException the service local exception
      */
-    public String getDisplayTo() throws ServiceLocalException {
+    public String getDisplayTo() throws ExchangeXmlException {
         return getPropertyBag().getObjectFromPropertyDefinition(
                 ItemSchema.DisplayTo);
     }
@@ -962,9 +926,8 @@ public class Item extends ServiceObject {
      * Gets a value indicating whether the item has attachments.
      *
      * @return the checks for attachments
-     * @throws ServiceLocalException the service local exception
      */
-    public boolean getHasAttachments() throws ServiceLocalException {
+    public boolean getHasAttachments() throws ExchangeXmlException {
         return getPropertyBag().<Boolean>getObjectFromPropertyDefinition(
                 ItemSchema.HasAttachments);
     }
@@ -973,9 +936,8 @@ public class Item extends ServiceObject {
      * Gets the body of this item.
      *
      * @return MessageBody
-     * @throws ServiceLocalException the service local exception
      */
-    public MessageBody getBody() throws ServiceLocalException {
+    public MessageBody getBody() throws ExchangeXmlException {
         return getPropertyBag().getObjectFromPropertyDefinition(ItemSchema.Body);
     }
 
@@ -994,9 +956,8 @@ public class Item extends ServiceObject {
      * Gets the custom class name of this item.
      *
      * @return the item class
-     * @throws ServiceLocalException the service local exception
      */
-    public String getItemClass() throws ServiceLocalException {
+    public String getItemClass() throws ExchangeXmlException {
         return getPropertyBag().getObjectFromPropertyDefinition(
                 ItemSchema.ItemClass);
     }
@@ -1027,9 +988,8 @@ public class Item extends ServiceObject {
      * Gets the subject.
      *
      * @return the subject
-     * @throws ServiceLocalException the service local exception
      */
-    public String getSubject() throws ServiceLocalException {
+    public String getSubject() throws ExchangeXmlException {
         return getPropertyBag().getObjectFromPropertyDefinition(
                 ItemSchema.Subject);
     }
@@ -1039,10 +999,8 @@ public class Item extends ServiceObject {
      * URL to open this item using the appropriate read form in a web browser.
      *
      * @return the web client read form query string
-     * @throws ServiceLocalException the service local exception
      */
-    public String getWebClientReadFormQueryString()
-            throws ServiceLocalException {
+    public String getWebClientReadFormQueryString() throws ExchangeXmlException {
         return getPropertyBag().getObjectFromPropertyDefinition(
                 ItemSchema.WebClientReadFormQueryString);
     }
@@ -1052,10 +1010,8 @@ public class Item extends ServiceObject {
      * URL to open this item using the appropriate read form in a web browser.
      *
      * @return the web client edit form query string
-     * @throws ServiceLocalException the service local exception
      */
-    public String getWebClientEditFormQueryString()
-            throws ServiceLocalException {
+    public String getWebClientEditFormQueryString() throws ExchangeXmlException {
         return getPropertyBag().getObjectFromPropertyDefinition(
                 ItemSchema.WebClientEditFormQueryString);
     }
@@ -1064,11 +1020,9 @@ public class Item extends ServiceObject {
      * Gets a list of extended property defined on this item.
      *
      * @return the extended property
-     * @throws ServiceLocalException the service local exception
      */
     @Override
-    public ExtendedPropertyCollection getExtendedProperties()
-            throws ServiceLocalException {
+    public ExtendedPropertyCollection getExtendedProperties() throws ExchangeXmlException {
         return getPropertyBag().getObjectFromPropertyDefinition(
                 ServiceObjectSchema.extendedProperties);
     }
@@ -1078,10 +1032,8 @@ public class Item extends ServiceObject {
      * user has on this item.
      *
      * @return the effective rights
-     * @throws ServiceLocalException the service local exception
      */
-    public EnumSet<EffectiveRights> getEffectiveRights()
-            throws ServiceLocalException {
+    public EnumSet<EffectiveRights> getEffectiveRights() throws ExchangeXmlException {
         return getPropertyBag().getObjectFromPropertyDefinition(
                 ItemSchema.EffectiveRights);
     }
@@ -1090,9 +1042,8 @@ public class Item extends ServiceObject {
      * Gets the name of the user who last modified this item.
      *
      * @return the last modified name
-     * @throws ServiceLocalException the service local exception
      */
-    public String getLastModifiedName() throws ServiceLocalException {
+    public String getLastModifiedName() throws ExchangeXmlException {
         return getPropertyBag().getObjectFromPropertyDefinition(
                 ItemSchema.LastModifiedName);
     }
@@ -1101,9 +1052,8 @@ public class Item extends ServiceObject {
      * Gets the date and time this item was last modified.
      *
      * @return the last modified time
-     * @throws ServiceLocalException the service local exception
      */
-    public LocalDateTime getLastModifiedTime() throws ServiceLocalException {
+    public LocalDateTime getLastModifiedTime() throws ExchangeXmlException {
         return getPropertyBag().getObjectFromPropertyDefinition(
                 ItemSchema.LastModifiedTime);
     }
@@ -1112,9 +1062,8 @@ public class Item extends ServiceObject {
      * Gets the Id of the conversation this item is part of.
      *
      * @return the conversation id
-     * @throws ServiceLocalException the service local exception
      */
-    public ConversationId getConversationId() throws ServiceLocalException {
+    public ConversationId getConversationId() throws ExchangeXmlException {
         return getPropertyBag().getObjectFromPropertyDefinition(
                 ItemSchema.ConversationId);
     }
@@ -1124,9 +1073,8 @@ public class Item extends ServiceObject {
      * of.
      *
      * @return the unique body
-     * @throws ServiceLocalException the service local exception
      */
-    public UniqueBody getUniqueBody() throws ServiceLocalException {
+    public UniqueBody getUniqueBody() throws ExchangeXmlException {
         return getPropertyBag().getObjectFromPropertyDefinition(
                 ItemSchema.UniqueBody);
     }

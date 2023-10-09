@@ -24,6 +24,7 @@
 package com.eischet.ews.api.property.complex.recurrence.range;
 
 import com.eischet.ews.api.core.XmlElementNames;
+import com.eischet.ews.api.core.exception.xml.ExchangeXmlException;
 import com.eischet.ews.api.property.complex.recurrence.pattern.Recurrence;
 
 import java.time.LocalDate;
@@ -62,9 +63,8 @@ public final class NoEndRecurrenceRange extends RecurrenceRange {
      * Setups the recurrence.
      *
      * @param recurrence the new up recurrence
-     * @throws Exception the exception
      */
-    public void setupRecurrence(Recurrence recurrence) throws Exception {
+    public void setupRecurrence(Recurrence recurrence) throws ExchangeXmlException {
         super.setupRecurrence(recurrence);
 
         recurrence.neverEnds();

@@ -28,11 +28,8 @@ import com.eischet.ews.api.core.EwsServiceXmlWriter;
 import com.eischet.ews.api.core.XmlAttributeNames;
 import com.eischet.ews.api.core.XmlElementNames;
 import com.eischet.ews.api.core.enumeration.misc.XmlNamespace;
-import com.eischet.ews.api.core.exception.service.local.ServiceLocalException;
-import com.eischet.ews.api.core.exception.service.local.ServiceXmlSerializationException;
+import com.eischet.ews.api.core.exception.xml.ExchangeXmlException;
 import com.eischet.ews.api.property.complex.ComplexProperty;
-
-import javax.xml.stream.XMLStreamException;
 
 /**
  * Represents the base class for all time zone transitions.
@@ -71,27 +68,20 @@ public class TimeZoneTransition extends ComplexProperty {
      * @param timeZoneDefinition the time zone definition
      * @param xmlElementName     the xml element name
      * @return A TimeZonePeriodTransition instance.
-     * @throws ServiceLocalException the service local exception
      */
-    public static TimeZoneTransition create(TimeZoneDefinition timeZoneDefinition, String xmlElementName)
-            throws ServiceLocalException {
+    public static TimeZoneTransition create(TimeZoneDefinition timeZoneDefinition, String xmlElementName) throws ExchangeXmlException {
         if (xmlElementName.equals(XmlElementNames.AbsoluteDateTransition)) {
             return new AbsoluteDateTransition(timeZoneDefinition);
-        } else if (xmlElementName
-                .equals(XmlElementNames.AbsoluteDateTransition)) {
+        } else if (xmlElementName.equals(XmlElementNames.AbsoluteDateTransition)) {
             return new AbsoluteDateTransition(timeZoneDefinition);
-        } else if (xmlElementName
-                .equals(XmlElementNames.RecurringDayTransition)) {
+        } else if (xmlElementName.equals(XmlElementNames.RecurringDayTransition)) {
             return new RelativeDayOfMonthTransition(timeZoneDefinition);
-        } else if (xmlElementName
-                .equals(XmlElementNames.RecurringDateTransition)) {
+        } else if (xmlElementName.equals(XmlElementNames.RecurringDateTransition)) {
             return new AbsoluteDayOfMonthTransition(timeZoneDefinition);
         } else if (xmlElementName.equals(XmlElementNames.Transition)) {
             return new TimeZoneTransition(timeZoneDefinition);
         } else {
-            throw new ServiceLocalException(String
-                    .format("Unknown time zone transition type: %s",
-                            xmlElementName));
+            throw new ExchangeXmlException(String.format("Unknown time zone transition type: %s", xmlElementName));
         }
     }
 
@@ -110,11 +100,10 @@ public class TimeZoneTransition extends ComplexProperty {
      * @param reader The
      *               reader.
      * @return True if element was read.
-     * @throws Exception the exception
      */
     @Override
     public boolean tryReadElementFromXml(EwsServiceXmlReader reader)
-            throws Exception {
+            throws ExchangeXmlException {
         if (reader.getLocalName().equals(XmlElementNames.To)) {
             String targetKind = reader
                     .readAttributeValue(XmlAttributeNames.Kind);
@@ -122,7 +111,7 @@ public class TimeZoneTransition extends ComplexProperty {
             if (targetKind.equals(PeriodTarget)) {
                 if (!this.timeZoneDefinition.getPeriods().containsKey(targetId)) {
 
-                    throw new ServiceLocalException(String.format(
+                    throw new ExchangeXmlException(String.format(
                             "Invalid transition. A period with the specified Id couldn't be found: %s", targetId));
                 } else {
                     this.targetPeriod = this.timeZoneDefinition.getPeriods()
@@ -132,14 +121,13 @@ public class TimeZoneTransition extends ComplexProperty {
                 if (!this.timeZoneDefinition.getTransitionGroups().containsKey(
                         targetId)) {
 
-                    throw new ServiceLocalException(String.format(
-                            "Invalid transition. A transition group with the specified ID couldn't be found: %s", targetId));
+                    throw new ExchangeXmlException(String.format("Invalid transition. A transition group with the specified ID couldn't be found: %s", targetId));
                 } else {
                     this.targetGroup = this.timeZoneDefinition
                             .getTransitionGroups().get(targetId);
                 }
             } else {
-                throw new ServiceLocalException("The time zone transition target isn't supported.");
+                throw new ExchangeXmlException("The time zone transition target isn't supported.");
             }
 
             return true;
@@ -152,14 +140,10 @@ public class TimeZoneTransition extends ComplexProperty {
      * Writes elements to XML.
      *
      * @param writer the writer
-     * @throws ServiceXmlSerializationException the service xml serialization exception
-     * @throws XMLStreamException               the XML stream exception
      */
     @Override
-    public void writeElementsToXml(EwsServiceXmlWriter writer)
-            throws ServiceXmlSerializationException, XMLStreamException {
+    public void writeElementsToXml(EwsServiceXmlWriter writer) throws ExchangeXmlException {
         writer.writeStartElement(XmlNamespace.Types, XmlElementNames.To);
-
         if (this.targetPeriod != null) {
             writer.writeAttributeValue(XmlAttributeNames.Kind, PeriodTarget);
             writer.writeValue(this.targetPeriod.getId(), XmlElementNames.To);
@@ -177,7 +161,7 @@ public class TimeZoneTransition extends ComplexProperty {
      * @param reader the reader
      * @throws Exception the exception
      */
-    public void loadFromXml(EwsServiceXmlReader reader) throws Exception {
+    public void loadFromXml(EwsServiceXmlReader reader) throws ExchangeXmlException {
         this.loadFromXml(reader, this.getXmlElementName());
     }
 
@@ -187,7 +171,7 @@ public class TimeZoneTransition extends ComplexProperty {
      * @param writer the writer
      * @throws Exception the exception
      */
-    public void writeToXml(EwsServiceXmlWriter writer) throws Exception {
+    public void writeToXml(EwsServiceXmlWriter writer) throws ExchangeXmlException {
         this.writeToXml(writer, this.getXmlElementName());
     }
 

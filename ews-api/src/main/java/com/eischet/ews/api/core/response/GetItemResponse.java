@@ -24,6 +24,7 @@
 package com.eischet.ews.api.core.response;
 
 import com.eischet.ews.api.core.*;
+import com.eischet.ews.api.core.exception.xml.ExchangeXmlException;
 import com.eischet.ews.api.core.service.ServiceObject;
 import com.eischet.ews.api.core.service.item.Item;
 
@@ -85,15 +86,12 @@ public final class GetItemResponse extends ServiceResponse implements
      * @param service        the service
      * @param xmlElementName the xml element name
      * @return Item
-     * @throws Exception the exception
      */
-    private Item getObjectInstance(ExchangeService service,
-                                   String xmlElementName) throws Exception {
+    private Item getObjectInstance(ExchangeService service, String xmlElementName) throws ExchangeXmlException {
         if (this.getItem() != null) {
             return this.getItem();
         } else {
-            return EwsUtilities.createEwsObjectFromXmlElementName(Item.class,
-                    service, xmlElementName);
+            return EwsUtilities.createEwsObjectFromXmlElementName(Item.class, service, xmlElementName);
 
         }
     }
@@ -113,10 +111,9 @@ public final class GetItemResponse extends ServiceResponse implements
      * @param service        accepts ExchangeService
      * @param xmlElementName accepts String
      * @return Name
-     * @throws Exception throws exception
      */
     @Override
-    public ServiceObject getObjectInstanceDelegate(ExchangeService service, String xmlElementName) throws Exception {
+    public ServiceObject getObjectInstanceDelegate(ExchangeService service, String xmlElementName) throws ExchangeXmlException {
         return getObjectInstance(service, xmlElementName);
     }
 }

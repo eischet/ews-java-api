@@ -31,6 +31,7 @@ import com.eischet.ews.api.core.XmlElementNames;
 import com.eischet.ews.api.core.enumeration.misc.ExchangeVersion;
 import com.eischet.ews.api.core.enumeration.service.ResponseMessageType;
 import com.eischet.ews.api.core.exception.service.local.ServiceLocalException;
+import com.eischet.ews.api.core.exception.xml.ExchangeXmlException;
 import com.eischet.ews.api.core.service.response.PostReply;
 import com.eischet.ews.api.core.service.response.ResponseMessage;
 import com.eischet.ews.api.core.service.schema.EmailMessageSchema;
@@ -59,7 +60,7 @@ public final class PostItem extends Item {
      * @param service the service
      * @throws Exception the exception
      */
-    public PostItem(ExchangeService service) throws Exception {
+    public PostItem(ExchangeService service) throws ExchangeXmlException {
         super(service);
     }
 
@@ -69,7 +70,7 @@ public final class PostItem extends Item {
      * @param parentAttachment the parent attachment
      * @throws Exception the exception
      */
-    public PostItem(ItemAttachment parentAttachment) throws Exception {
+    public PostItem(ItemAttachment parentAttachment) throws ExchangeXmlException {
         super(parentAttachment);
     }
 
@@ -225,9 +226,8 @@ public final class PostItem extends Item {
      * Gets the conversation index of the post item.
      *
      * @return the conversation index
-     * @throws ServiceLocalException the service local exception
      */
-    public byte[] getConversationIndex() throws ServiceLocalException {
+    public byte[] getConversationIndex() throws ExchangeXmlException {
         return getPropertyBag().getObjectFromPropertyDefinition(
                 EmailMessageSchema.ConversationIndex);
     }
@@ -236,9 +236,8 @@ public final class PostItem extends Item {
      * Gets the conversation topic of the post item.
      *
      * @return the conversation topic
-     * @throws ServiceLocalException the service local exception
      */
-    public String getConversationTopic() throws ServiceLocalException {
+    public String getConversationTopic() throws ExchangeXmlException {
         return getPropertyBag().getObjectFromPropertyDefinition(
                 EmailMessageSchema.ConversationTopic);
     }
@@ -247,9 +246,8 @@ public final class PostItem extends Item {
      * Gets the "on behalf" poster of the post item.
      *
      * @return the from
-     * @throws ServiceLocalException the service local exception
      */
-    public EmailAddress getFrom() throws ServiceLocalException {
+    public EmailAddress getFrom() throws ExchangeXmlException {
         return getPropertyBag().getObjectFromPropertyDefinition(
                 EmailMessageSchema.From);
     }
@@ -269,9 +267,8 @@ public final class PostItem extends Item {
      * Gets the Internet message Id of the post item.
      *
      * @return the internet message id
-     * @throws ServiceLocalException the service local exception
      */
-    public String getInternetMessageId() throws ServiceLocalException {
+    public String getInternetMessageId() throws ExchangeXmlException {
         return getPropertyBag().getObjectFromPropertyDefinition(
                 EmailMessageSchema.InternetMessageId);
     }
@@ -282,7 +279,7 @@ public final class PostItem extends Item {
      * @return the checks if is read
      * @throws ServiceLocalException the service local exception
      */
-    public Boolean getIsRead() throws ServiceLocalException {
+    public Boolean getIsRead() throws ExchangeXmlException {
         return getPropertyBag().getObjectFromPropertyDefinition(
                 EmailMessageSchema.IsRead);
     }
@@ -304,7 +301,7 @@ public final class PostItem extends Item {
      * @return the posted time
      * @throws ServiceLocalException the service local exception
      */
-    public LocalDateTime getPostedTime() throws ServiceLocalException {
+    public LocalDateTime getPostedTime() throws ExchangeXmlException {
         return getPropertyBag().getObjectFromPropertyDefinition(PostItemSchema.PostedTime);
     }
 
@@ -314,7 +311,7 @@ public final class PostItem extends Item {
      * @return the references
      * @throws ServiceLocalException the service local exception
      */
-    public String getReferences() throws ServiceLocalException {
+    public String getReferences() throws ExchangeXmlException {
         return getPropertyBag().getObjectFromPropertyDefinition(EmailMessageSchema.References);
     }
 
@@ -335,7 +332,7 @@ public final class PostItem extends Item {
      * @return the sender
      * @throws ServiceLocalException the service local exception
      */
-    public EmailAddress getSender() throws ServiceLocalException {
+    public EmailAddress getSender() throws ExchangeXmlException {
         return getPropertyBag().getObjectFromPropertyDefinition(
                 EmailMessageSchema.Sender);
     }

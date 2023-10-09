@@ -26,7 +26,7 @@ package com.eischet.ews.api.core.service.response;
 import com.eischet.ews.api.attribute.ServiceObjectDefinition;
 import com.eischet.ews.api.core.XmlElementNames;
 import com.eischet.ews.api.core.enumeration.misc.ExchangeVersion;
-import com.eischet.ews.api.core.exception.service.local.ServiceLocalException;
+import com.eischet.ews.api.core.exception.xml.ExchangeXmlException;
 import com.eischet.ews.api.core.service.item.Item;
 import com.eischet.ews.api.core.service.item.MeetingCancellation;
 import com.eischet.ews.api.core.service.schema.CancelMeetingMessageSchema;
@@ -76,9 +76,8 @@ public final class CancelMeetingMessage extends
      * Gets the body of the response.
      *
      * @return the body
-     * @throws ServiceLocalException the service local exception
      */
-    public MessageBody getBody() throws ServiceLocalException {
+    public MessageBody getBody() throws ExchangeXmlException {
         return getPropertyBag().getObjectFromPropertyDefinition(
                 CancelMeetingMessageSchema.Body);
     }

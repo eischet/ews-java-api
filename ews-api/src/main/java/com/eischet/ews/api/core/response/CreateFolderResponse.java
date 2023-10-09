@@ -28,6 +28,7 @@ import com.eischet.ews.api.core.EwsUtilities;
 import com.eischet.ews.api.core.ExchangeService;
 import com.eischet.ews.api.core.XmlElementNames;
 import com.eischet.ews.api.core.enumeration.service.ServiceResult;
+import com.eischet.ews.api.core.exception.xml.ExchangeXmlException;
 import com.eischet.ews.api.core.service.ServiceObject;
 import com.eischet.ews.api.core.service.folder.Folder;
 
@@ -54,16 +55,7 @@ public final class CreateFolderResponse extends ServiceResponse implements
         this.folder = folder;
     }
 
-    /**
-     * Gets the object instance.
-     *
-     * @param service        The service.
-     * @param xmlElementName Name of the XML element.
-     * @return Folder
-     * @throws Exception the exception
-     */
-    private Folder getObjectInstance(ExchangeService service,
-                                     String xmlElementName) throws Exception {
+    private Folder getObjectInstance(ExchangeService service, String xmlElementName) throws ExchangeXmlException {
         if (this.folder != null) {
             return this.folder;
         } else {
@@ -71,12 +63,6 @@ public final class CreateFolderResponse extends ServiceResponse implements
         }
     }
 
-    /**
-     * Reads response elements from XML.
-     *
-     * @param reader The reader
-     * @throws Exception the exception
-     */
     @Override
     protected void readElementsFromXml(EwsServiceXmlReader reader)
             throws Exception {
@@ -90,17 +76,8 @@ public final class CreateFolderResponse extends ServiceResponse implements
         this.folder = folders.get(0);
     }
 
-    /**
-     * Gets the object instance delegate.
-     *
-     * @param service        the service
-     * @param xmlElementName the xml element name
-     * @return the object instance delegate
-     * @throws Exception the exception
-     */
     @Override
-    public ServiceObject getObjectInstanceDelegate(ExchangeService service,
-                                                   String xmlElementName) throws Exception {
+    public ServiceObject getObjectInstanceDelegate(ExchangeService service, String xmlElementName) throws ExchangeXmlException {
         return this.getObjectInstance(service, xmlElementName);
     }
 

@@ -29,11 +29,9 @@ import com.eischet.ews.api.core.XmlAttributeNames;
 import com.eischet.ews.api.core.XmlElementNames;
 import com.eischet.ews.api.core.enumeration.misc.ExchangeVersion;
 import com.eischet.ews.api.core.enumeration.misc.XmlNamespace;
-import com.eischet.ews.api.core.exception.service.local.ServiceXmlSerializationException;
+import com.eischet.ews.api.core.exception.xml.ExchangeXmlException;
 import com.eischet.ews.api.core.service.schema.ServiceObjectSchema;
 import com.eischet.ews.api.misc.OutParam;
-
-import javax.xml.stream.XMLStreamException;
 
 /**
  * Represents the base class for all property definitions.
@@ -56,8 +54,7 @@ public abstract class PropertyDefinitionBase {
      * @throws Exception the exception
      */
     public static boolean tryLoadFromXml(EwsServiceXmlReader reader,
-                                         OutParam<PropertyDefinitionBase> propertyDefinition)
-            throws Exception {
+                                         OutParam<PropertyDefinitionBase> propertyDefinition) throws ExchangeXmlException {
         String strLocalName = reader.getLocalName();
         if (strLocalName.equals(XmlElementNames.FieldURI)) {
             PropertyDefinitionBase p = ServiceObjectSchema
@@ -87,12 +84,8 @@ public abstract class PropertyDefinitionBase {
 
     /**
      * Writes the attribute to XML.
-     *
-     * @param writer The writer.
-     * @throws ServiceXmlSerializationException the service xml serialization exception
      */
-    protected abstract void writeAttributesToXml(EwsServiceXmlWriter writer)
-            throws ServiceXmlSerializationException;
+    protected abstract void writeAttributesToXml(EwsServiceXmlWriter writer) throws ExchangeXmlException;
 
     /**
      * Gets the minimum Exchange version that supports this property.
@@ -115,28 +108,14 @@ public abstract class PropertyDefinitionBase {
 
     /**
      * Writes to XML.
-     *
-     * @param writer The writer.
-     * @throws XMLStreamException               the XML stream exception
-     * @throws ServiceXmlSerializationException the service xml serialization exception
      */
-    public void writeToXml(EwsServiceXmlWriter writer)
-            throws XMLStreamException, ServiceXmlSerializationException {
+    public void writeToXml(EwsServiceXmlWriter writer) throws ExchangeXmlException {
         writer.writeStartElement(XmlNamespace.Types, this.getXmlElementName());
         this.writeAttributesToXml(writer);
         writer.writeEndElement();
     }
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see java.lang.Object#toString()
-     */
     @Override
-    /**
-     * Returns a string that represents the current object.
-     * @return A string that represents the current object.
-     */
     public String toString() {
         return this.getPrintableName();
     }

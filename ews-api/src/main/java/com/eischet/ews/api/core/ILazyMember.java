@@ -28,6 +28,7 @@ package com.eischet.ews.api.core;
  *
  * @param <T> the generic type
  */
+@FunctionalInterface
 public interface ILazyMember<T> {
 
     /**

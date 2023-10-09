@@ -23,14 +23,14 @@
 
 package com.eischet.ews.api.core.exception.misc;
 
-import com.eischet.ews.api.core.exception.ExchangeException;
+import com.eischet.ews.api.core.exception.service.local.ExchangeValidationException;
 
 import java.security.PrivilegedActionException;
 
 /**
  * The Class ArgumentException.
  */
-public class ArgumentException extends ExchangeException {
+public class ArgumentException extends ExchangeValidationException {
 
     /**
      * Constant serialized ID used for compatibility.
@@ -42,12 +42,6 @@ public class ArgumentException extends ExchangeException {
      */
     private String paramName = null;
 
-    /**
-     * Constructs an <code>IllegalArgumentException</code> with no detail message.
-     */
-    protected ArgumentException() {
-        super();
-    }
 
     /**
      * Constructs an <code>IllegalArgumentException</code> with the specified detail message.
@@ -98,7 +92,8 @@ public class ArgumentException extends ExchangeException {
      * @since 1.5
      */
     public ArgumentException(Throwable cause) {
-        super(cause);
+        // TODO: remove this constructor, as it omits any detail helpful to users
+        super("unspecified argument exception", cause);
     }
 
     /**
@@ -113,7 +108,8 @@ public class ArgumentException extends ExchangeException {
      * @param paramName the Name of the Param that causes the exception
      */
     public ArgumentException(Throwable cause, String paramName) {
-        super(cause);
+        // TODO: remove this constructor, as it omits any detail helpful to users
+        super("unspecified argument exception", cause);
         this.paramName = paramName;
     }
 
@@ -128,8 +124,7 @@ public class ArgumentException extends ExchangeException {
      * @param paramName the Name of the Param that causes the exception
      */
     public ArgumentException(String message, Throwable cause, String paramName) {
-        super(message + " Parameter that caused " +
-                "the current exception :" + paramName);
+        super(message + " Parameter that caused the current exception :" + paramName, cause);
         this.paramName = paramName;
     }
 

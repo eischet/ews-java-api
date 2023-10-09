@@ -23,6 +23,8 @@
 
 package com.eischet.ews.api.core;
 
+import com.eischet.ews.api.core.exception.xml.ExchangeXmlException;
+
 import javax.xml.stream.XMLEventReader;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
@@ -50,10 +52,9 @@ public class EwsServiceMultiResponseXmlReader extends EwsServiceXmlReader {
      *
      * @param stream  The stream.
      * @param service The service.
-     * @throws Exception
      */
     private EwsServiceMultiResponseXmlReader(InputStream stream,
-                                             ExchangeService service) throws Exception {
+                                             ExchangeService service) throws ExchangeXmlException {
         super(stream, service);
     }
 
@@ -74,10 +75,8 @@ public class EwsServiceMultiResponseXmlReader extends EwsServiceXmlReader {
      *
      * @param stream The stream
      * @return an XML reader to use
-     * @throws XMLStreamException the XML stream exception
      */
-    private static XMLEventReader createXmlReader(InputStream stream)
-            throws XMLStreamException {
+    private static XMLEventReader createXmlReader(InputStream stream) throws ExchangeXmlException {
 
         // E14:240522 The ProhibitDtd property is used to indicate whether XmlReader should process DTDs or not. By default,
         // it will do so. EWS doesn't use DTD references so we want to turn this off. Also, the XmlResolver property is
@@ -86,7 +85,11 @@ public class EwsServiceMultiResponseXmlReader extends EwsServiceXmlReader {
         XMLInputFactory inputFactory = XMLInputFactory.newInstance();
         InputStreamReader isr = new InputStreamReader(stream);
         BufferedReader in = new BufferedReader(isr);
-        return inputFactory.createXMLEventReader(in);
+        try {
+            return inputFactory.createXMLEventReader(in);
+        } catch (XMLStreamException e) {
+            throw new ExchangeXmlException("error creating an xml event reader", e);
+        }
     }
 
 
@@ -94,11 +97,9 @@ public class EwsServiceMultiResponseXmlReader extends EwsServiceXmlReader {
      * Initializes the XML reader.
      *
      * @param stream The stream. An XML reader to use.
-     * @throws Exception on error
      */
     @Override
-    protected XMLEventReader initializeXmlReader(InputStream stream)
-            throws Exception {
+    protected XMLEventReader initializeXmlReader(InputStream stream) throws ExchangeXmlException {
         return createXmlReader(stream);
     }
 

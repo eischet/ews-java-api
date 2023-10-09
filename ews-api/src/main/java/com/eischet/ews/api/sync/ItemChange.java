@@ -23,7 +23,7 @@
 
 package com.eischet.ews.api.sync;
 
-import com.eischet.ews.api.core.exception.service.local.ServiceLocalException;
+import com.eischet.ews.api.core.exception.xml.ExchangeXmlException;
 import com.eischet.ews.api.core.service.item.Item;
 import com.eischet.ews.api.property.complex.ItemId;
 import com.eischet.ews.api.property.complex.ServiceId;
@@ -91,9 +91,8 @@ public final class ItemChange extends Change {
      * Gets the Id of the item the change applies to.
      *
      * @return the item id
-     * @throws ServiceLocalException the service local exception
      */
-    public ItemId getItemId() throws ServiceLocalException {
+    public ItemId getItemId() throws ExchangeXmlException {
         return (ItemId) this.getId();
     }
 

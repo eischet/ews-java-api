@@ -26,6 +26,7 @@ package com.eischet.ews.api.misc;
 import com.eischet.ews.api.core.EwsServiceXmlWriter;
 import com.eischet.ews.api.core.EwsUtilities;
 import com.eischet.ews.api.core.exception.service.local.ServiceLocalException;
+import com.eischet.ews.api.core.exception.xml.ExchangeXmlException;
 import com.eischet.ews.api.core.service.item.Item;
 
 /**
@@ -42,9 +43,8 @@ class ItemWrapper extends AbstractItemIdWrapper {
      * Initializes a new instance of ItemWrapper.
      *
      * @param item the item
-     * @throws ServiceLocalException the service local exception
      */
-    protected ItemWrapper(final Item item) throws ServiceLocalException {
+    protected ItemWrapper(final Item item) throws ExchangeXmlException {
         EwsUtilities.ewsAssert(item != null, "ItemWrapper.ctor", "item is null");
         EwsUtilities.ewsAssert(!item.isNew(), "ItemWrapper.ctor", "item does not have an Id");
         this.item = item;

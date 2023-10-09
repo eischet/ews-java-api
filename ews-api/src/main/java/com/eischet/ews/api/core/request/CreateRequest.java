@@ -61,8 +61,7 @@ abstract class CreateRequest<TServiceObject extends ServiceObject,
      * @param errorHandlingMode Indicates how errors should be handled.
      * @throws Exception
      */
-    protected CreateRequest(ExchangeService service,
-                            ServiceErrorHandling errorHandlingMode)
+    protected CreateRequest(ExchangeService service, ServiceErrorHandling errorHandlingMode)
             throws Exception {
         super(service, errorHandlingMode);
     }

@@ -40,10 +40,11 @@ import com.eischet.ews.api.core.enumeration.service.calendar.AffectedTaskOccurre
 import com.eischet.ews.api.core.enumeration.service.error.ServiceErrorHandling;
 import com.eischet.ews.api.core.exception.misc.ArgumentOutOfRangeException;
 import com.eischet.ews.api.core.exception.service.local.ServiceLocalException;
-import com.eischet.ews.api.core.exception.service.local.ServiceValidationException;
+import com.eischet.ews.api.core.exception.service.local.ExchangeValidationException;
 import com.eischet.ews.api.core.exception.service.remote.AccountIsLockedException;
 import com.eischet.ews.api.core.exception.service.remote.ServiceRemoteException;
 import com.eischet.ews.api.core.exception.service.remote.ServiceResponseException;
+import com.eischet.ews.api.core.exception.xml.ExchangeXmlException;
 import com.eischet.ews.api.core.request.*;
 import com.eischet.ews.api.core.response.*;
 import com.eischet.ews.api.core.service.ServiceObject;
@@ -503,13 +504,8 @@ public class ExchangeService extends ExchangeServiceBase implements IAutodiscove
             MessageDisposition messageDisposition,
             SendInvitationsMode sendInvitationsMode) throws Exception {
         // All item have to be new.
-        if (!EwsUtilities.trueForAll(items, new IPredicate<Item>() {
-            @Override
-            public boolean predicate(Item obj) throws ServiceLocalException {
-                return obj.isNew();
-            }
-        })) {
-            throw new ServiceValidationException(
+        if (!EwsUtilities.trueForAll(items, ServiceObject::isNew)) {
+            throw new ExchangeValidationException(
                     "This operation can't be performed because at least one item already has an ID.");
         }
 
@@ -517,11 +513,11 @@ public class ExchangeService extends ExchangeServiceBase implements IAutodiscove
         // attachments.
         if (!EwsUtilities.trueForAll(items, new IPredicate<Item>() {
             @Override
-            public boolean predicate(Item obj) throws ServiceLocalException {
+            public boolean predicate(Item obj) throws ExchangeXmlException {
                 return !obj.hasUnprocessedAttachmentChanges();
             }
         })) {
-            throw new ServiceValidationException("This operation doesn't support item that have attachments.");
+            throw new ExchangeValidationException("This operation doesn't support item that have attachments.");
         }
         return this.internalCreateItems(items, parentFolderId,
                 messageDisposition, sendInvitationsMode,
@@ -602,11 +598,11 @@ public class ExchangeService extends ExchangeServiceBase implements IAutodiscove
         // All item have to exist on the server (!new) and modified (dirty)
         if (!EwsUtilities.trueForAll(items, new IPredicate<Item>() {
             @Override
-            public boolean predicate(Item obj) throws ServiceLocalException {
+            public boolean predicate(Item obj) throws ExchangeXmlException {
                 return (!obj.isNew() && obj.isDirty());
             }
         })) {
-            throw new ServiceValidationException(
+            throw new ExchangeValidationException(
                     "This operation can't be performed because one or more item are new or unmodified.");
         }
 
@@ -614,11 +610,11 @@ public class ExchangeService extends ExchangeServiceBase implements IAutodiscove
         // attachments.
         if (!EwsUtilities.trueForAll(items, new IPredicate<Item>() {
             @Override
-            public boolean predicate(Item obj) throws ServiceLocalException {
+            public boolean predicate(Item obj) throws ExchangeXmlException {
                 return !obj.hasUnprocessedAttachmentChanges();
             }
         })) {
-            throw new ServiceValidationException(
+            throw new ExchangeValidationException(
                     "This operation can't be performed because attachments have been added or deleted for one or more item.");
         }
 
@@ -643,7 +639,7 @@ public class ExchangeService extends ExchangeServiceBase implements IAutodiscove
                            ConflictResolutionMode conflictResolution, MessageDisposition messageDisposition,
                            SendInvitationsOrCancellationsMode sendInvitationsOrCancellationsMode)
             throws Exception {
-        List<Item> itemIdArray = new ArrayList<Item>();
+        List<Item> itemIdArray = new ArrayList<>();
         itemIdArray.add(item);
 
         ServiceResponseCollection<UpdateItemResponse> responses = this
@@ -667,7 +663,7 @@ public class ExchangeService extends ExchangeServiceBase implements IAutodiscove
         SendItemRequest request = new SendItemRequest(this,
                 ServiceErrorHandling.ThrowOnError);
 
-        List<Item> itemIdArray = new ArrayList<Item>();
+        List<Item> itemIdArray = new ArrayList<>();
         itemIdArray.add(item);
 
         request.setItems(itemIdArray);

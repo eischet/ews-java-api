@@ -24,6 +24,7 @@
 package com.eischet.ews.api.misc;
 
 import com.eischet.ews.api.core.exception.misc.FormatException;
+import com.eischet.ews.api.core.exception.xml.ExchangeXmlException;
 
 import java.util.logging.Logger;
 
@@ -31,8 +32,6 @@ import java.util.logging.Logger;
  * The Class TimeSpan.
  */
 public class TimeSpan implements Comparable<TimeSpan>, java.io.Serializable, Cloneable {
-
-    private static final Logger LOG = Logger.getLogger(TimeSpan.class.getCanonicalName());
 
     /**
      * Constant serialized ID used for compatibility.
@@ -446,7 +445,7 @@ public class TimeSpan implements Comparable<TimeSpan>, java.io.Serializable, Clo
         return millis;
     }
 
-    public static TimeSpan parse(String s) throws Exception {
+    public static TimeSpan parse(String s) throws ExchangeXmlException {
         String str = s.trim();
         String[] st1 = str.split("\\.");
         int days = 0, millsec = 0, totMillSec = 0;
@@ -470,7 +469,7 @@ public class TimeSpan implements Comparable<TimeSpan>, java.io.Serializable, Clo
                 millsec = Integer.parseInt(st1[2]);
                 break;
             default:
-                throw new FormatException("Bad Format");
+                throw new FormatException("Bad Format for TimeSpan: " + s);
 
         }
         String[] st = data.split(":");

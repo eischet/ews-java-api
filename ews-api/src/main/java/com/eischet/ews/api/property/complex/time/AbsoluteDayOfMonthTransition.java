@@ -29,6 +29,7 @@ import com.eischet.ews.api.core.EwsUtilities;
 import com.eischet.ews.api.core.XmlElementNames;
 import com.eischet.ews.api.core.enumeration.misc.XmlNamespace;
 import com.eischet.ews.api.core.exception.service.local.ServiceXmlSerializationException;
+import com.eischet.ews.api.core.exception.xml.ExchangeXmlException;
 
 import javax.xml.stream.XMLStreamException;
 
@@ -61,8 +62,7 @@ class AbsoluteDayOfMonthTransition extends AbsoluteMonthTransition {
      * @throws Exception throws Exception
      */
     @Override
-    public boolean tryReadElementFromXml(EwsServiceXmlReader reader)
-            throws Exception {
+    public boolean tryReadElementFromXml(EwsServiceXmlReader reader) throws ExchangeXmlException {
         if (super.tryReadElementFromXml(reader)) {
             return true;
         } else {
@@ -84,16 +84,11 @@ class AbsoluteDayOfMonthTransition extends AbsoluteMonthTransition {
      * Writes elements to XML.
      *
      * @param writer the writer
-     * @throws ServiceXmlSerializationException the service xml serialization exception
-     * @throws XMLStreamException               the XML stream exception
      */
     @Override
-    public void writeElementsToXml(EwsServiceXmlWriter writer)
-            throws ServiceXmlSerializationException, XMLStreamException {
+    public void writeElementsToXml(EwsServiceXmlWriter writer) throws ExchangeXmlException {
         super.writeElementsToXml(writer);
-
-        writer.writeElementValue(XmlNamespace.Types, XmlElementNames.Day,
-                this.dayOfMonth);
+        writer.writeElementValue(XmlNamespace.Types, XmlElementNames.Day, this.dayOfMonth);
     }
 
     /**
@@ -112,8 +107,7 @@ class AbsoluteDayOfMonthTransition extends AbsoluteMonthTransition {
      * @param targetPeriod       the target period
      */
 
-    protected AbsoluteDayOfMonthTransition(
-            TimeZoneDefinition timeZoneDefinition, TimeZonePeriod targetPeriod) {
+    protected AbsoluteDayOfMonthTransition(TimeZoneDefinition timeZoneDefinition, TimeZonePeriod targetPeriod) {
         super(timeZoneDefinition, targetPeriod);
     }
 

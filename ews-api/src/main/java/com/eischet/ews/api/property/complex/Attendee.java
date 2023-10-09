@@ -28,6 +28,8 @@ import com.eischet.ews.api.core.EwsServiceXmlWriter;
 import com.eischet.ews.api.core.EwsUtilities;
 import com.eischet.ews.api.core.XmlElementNames;
 import com.eischet.ews.api.core.enumeration.property.MeetingResponseType;
+import com.eischet.ews.api.core.exception.service.local.ExchangeValidationException;
+import com.eischet.ews.api.core.exception.xml.ExchangeXmlException;
 
 import java.time.LocalDateTime;
 
@@ -60,7 +62,7 @@ public final class Attendee extends EmailAddress {
      * @param smtpAddress the smtp address
      * @throws Exception the exception
      */
-    public Attendee(String smtpAddress) throws Exception {
+    public Attendee(String smtpAddress) throws ExchangeValidationException {
         super(smtpAddress);
         EwsUtilities.validateParam(smtpAddress, "smtpAddress");
     }
@@ -120,10 +122,8 @@ public final class Attendee extends EmailAddress {
      *
      * @param reader the reader
      * @return True if element was read.
-     * @throws Exception the exception
      */
-    public boolean tryReadElementFromXml(EwsServiceXmlReader reader)
-            throws Exception {
+    public boolean tryReadElementFromXml(EwsServiceXmlReader reader) throws ExchangeXmlException {
         if (reader.getLocalName().equalsIgnoreCase(XmlElementNames.Mailbox)) {
             this.loadFromXml(reader, reader.getLocalName());
             return true;
@@ -145,10 +145,8 @@ public final class Attendee extends EmailAddress {
      * Writes the elements to XML.
      *
      * @param writer the writer
-     * @throws Exception the exception
      */
-    public void writeElementsToXml(EwsServiceXmlWriter writer)
-            throws Exception {
+    public void writeElementsToXml(EwsServiceXmlWriter writer) throws ExchangeXmlException {
         writer.writeStartElement(this.getNamespace(), XmlElementNames.Mailbox);
         super.writeElementsToXml(writer);
         writer.writeEndElement();

@@ -29,9 +29,8 @@ import com.eischet.ews.api.core.EwsServiceXmlWriter;
 import com.eischet.ews.api.core.XmlAttributeNames;
 import com.eischet.ews.api.core.enumeration.misc.IdFormat;
 import com.eischet.ews.api.core.enumeration.misc.XmlNamespace;
-import com.eischet.ews.api.core.exception.service.local.ServiceXmlSerializationException;
-
-import javax.xml.stream.XMLStreamException;
+import com.eischet.ews.api.core.exception.service.local.ExchangeValidationException;
+import com.eischet.ews.api.core.exception.xml.ExchangeXmlException;
 
 /**
  * Represents the base class for Id expressed in a specific format.
@@ -84,58 +83,25 @@ public abstract class AlternateIdBase implements ISelfValidate {
      */
     protected abstract String getXmlElementName();
 
-    /**
-     * Writes the attribute to XML.
-     *
-     * @param writer the writer
-     * @throws ServiceXmlSerializationException the service xml serialization exception
-     */
-    protected void writeAttributesToXml(EwsServiceXmlWriter writer)
-            throws ServiceXmlSerializationException {
+    protected void writeAttributesToXml(EwsServiceXmlWriter writer) throws ExchangeXmlException {
         writer.writeAttributeValue(XmlAttributeNames.Format, this.getFormat());
     }
 
-    /**
-     * Loads the attribute from XML.
-     *
-     * @param reader the reader
-     * @throws Exception the exception
-     */
-    public void loadAttributesFromXml(EwsServiceXmlReader reader)
-            throws Exception {
-        this.setFormat(reader.readAttributeValue(IdFormat.class,
-                XmlAttributeNames.Format));
+    public void loadAttributesFromXml(EwsServiceXmlReader reader) throws ExchangeXmlException {
+        this.setFormat(reader.readAttributeValue(IdFormat.class, XmlAttributeNames.Format));
     }
 
-    /**
-     * Writes to XML.
-     *
-     * @param writer the writer
-     * @throws ServiceXmlSerializationException the service xml serialization exception
-     * @throws XMLStreamException               the XML stream exception
-     */
-    public void writeToXml(EwsServiceXmlWriter writer)
-            throws ServiceXmlSerializationException, XMLStreamException {
+    public void writeToXml(EwsServiceXmlWriter writer) throws ExchangeXmlException {
         writer.writeStartElement(XmlNamespace.Types, this.getXmlElementName());
         this.writeAttributesToXml(writer);
         writer.writeEndElement(); // this.GetXmlElementName()
     }
 
-    /**
-     * Validate this instance.
-     *
-     * @throws Exception
-     */
-    protected void internalValidate() throws Exception {
+    protected void internalValidate() throws ExchangeValidationException {
         // nothing to do.
     }
 
-    /**
-     * Validates this instance.
-     *
-     * @throws Exception
-     */
-    public void validate() throws Exception {
+    public void validate() throws ExchangeValidationException {
         this.internalValidate();
     }
 

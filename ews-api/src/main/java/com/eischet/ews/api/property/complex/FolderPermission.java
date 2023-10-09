@@ -30,7 +30,8 @@ import com.eischet.ews.api.core.enumeration.permission.folder.FolderPermissionLe
 import com.eischet.ews.api.core.enumeration.permission.folder.FolderPermissionReadAccess;
 import com.eischet.ews.api.core.enumeration.property.StandardUser;
 import com.eischet.ews.api.core.exception.service.local.ServiceLocalException;
-import com.eischet.ews.api.core.exception.service.local.ServiceValidationException;
+import com.eischet.ews.api.core.exception.service.local.ExchangeValidationException;
+import com.eischet.ews.api.core.exception.xml.ExchangeXmlException;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -421,14 +422,14 @@ public final class FolderPermission extends ComplexProperty implements IComplexP
      *
      * @param isCalendarFolder the is calendar folder
      * @param permissionIndex  the permission index
-     * @throws ServiceValidationException the service validation exception
+     * @throws ExchangeValidationException the service validation exception
      * @throws ServiceLocalException      the service local exception
      */
     void validate(boolean isCalendarFolder, int permissionIndex)
-            throws ServiceValidationException, ServiceLocalException {
+            throws ExchangeValidationException, ServiceLocalException {
         // Check UserId
         if (!this.userId.isValid()) {
-            throw new ServiceValidationException(String.format(
+            throw new ExchangeValidationException(String.format(
                     "The UserId in the folder permission at index %d is invalid. "
                             + "The StandardUser, PrimarySmtpAddress, or SID property must be set.", permissionIndex));
         }
@@ -745,10 +746,8 @@ public final class FolderPermission extends ComplexProperty implements IComplexP
      *
      * @param reader the reader
      * @return True if element was read.
-     * @throws Exception the exception
      */
-    public boolean tryReadElementFromXml(EwsServiceXmlReader reader)
-            throws Exception {
+    public boolean tryReadElementFromXml(EwsServiceXmlReader reader) throws ExchangeXmlException {
         if (reader.getLocalName().equalsIgnoreCase(XmlElementNames.UserId)) {
             this.userId = new UserId();
             this.userId.loadFromXml(reader, reader.getLocalName());
@@ -802,9 +801,8 @@ public final class FolderPermission extends ComplexProperty implements IComplexP
      * @param reader         the reader
      * @param xmlNamespace   the xml namespace
      * @param xmlElementName the xml element name
-     * @throws Exception the exception
      */
-    public void loadFromXml(EwsServiceXmlReader reader, XmlNamespace xmlNamespace, String xmlElementName) throws Exception {
+    public void loadFromXml(EwsServiceXmlReader reader, XmlNamespace xmlNamespace, String xmlElementName) throws ExchangeXmlException {
         super.loadFromXml(reader, xmlNamespace, xmlElementName);
 
         this.AdjustPermissionLevel();
@@ -815,10 +813,8 @@ public final class FolderPermission extends ComplexProperty implements IComplexP
      *
      * @param writer           the writer
      * @param isCalendarFolder the is calendar folder
-     * @throws Exception the exception
      */
-    private void writeElementsToXml(EwsServiceXmlWriter writer,
-                                    boolean isCalendarFolder) throws Exception {
+    private void writeElementsToXml(EwsServiceXmlWriter writer, boolean isCalendarFolder) throws ExchangeXmlException {
         if (this.userId != null) {
             this.userId.writeToXml(writer, XmlElementNames.UserId);
         }
@@ -867,8 +863,7 @@ public final class FolderPermission extends ComplexProperty implements IComplexP
      * @param isCalendarFolder the is calendar folder
      * @throws Exception the exception
      */
-    void writeToXml(EwsServiceXmlWriter writer,
-                    String xmlElementName, boolean isCalendarFolder) throws Exception {
+    void writeToXml(EwsServiceXmlWriter writer, String xmlElementName, boolean isCalendarFolder) throws ExchangeXmlException {
         writer.writeStartElement(this.getNamespace(), xmlElementName);
         this.writeAttributesToXml(writer);
         this.writeElementsToXml(writer, isCalendarFolder);

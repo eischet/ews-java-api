@@ -33,18 +33,15 @@ import com.eischet.ews.api.core.enumeration.misc.XmlNamespace;
 import com.eischet.ews.api.core.enumeration.search.ComparisonMode;
 import com.eischet.ews.api.core.enumeration.search.ContainmentMode;
 import com.eischet.ews.api.core.enumeration.search.LogicalOperator;
-import com.eischet.ews.api.core.exception.service.local.ServiceValidationException;
-import com.eischet.ews.api.core.exception.service.local.ServiceXmlDeserializationException;
-import com.eischet.ews.api.core.exception.service.local.ServiceXmlSerializationException;
+import com.eischet.ews.api.core.exception.service.local.ExchangeValidationException;
+import com.eischet.ews.api.core.exception.xml.ExchangeXmlException;
 import com.eischet.ews.api.misc.OutParam;
 import com.eischet.ews.api.property.complex.ComplexProperty;
 import com.eischet.ews.api.property.complex.IComplexPropertyChangedDelegate;
 import com.eischet.ews.api.property.definition.PropertyDefinitionBase;
 
-import javax.xml.stream.XMLStreamException;
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
@@ -54,22 +51,12 @@ import java.util.logging.Logger;
  */
 public abstract class SearchFilter extends ComplexProperty {
 
-    private static final Logger LOG = Logger.getLogger(SearchFilter.class.getCanonicalName());
-
     /**
      * Initializes a new instance of the SearchFilter class.
      */
     protected SearchFilter() {
     }
 
-    /**
-     * The search.
-     *
-     * @param reader the reader
-     * @return the search filter
-     * @throws Exception the exception
-     */
-    //static SearchFilter search;
 
     /**
      * Loads from XML.
@@ -79,7 +66,7 @@ public abstract class SearchFilter extends ComplexProperty {
      * @throws Exception the exception
      */
     public static SearchFilter loadFromXml(EwsServiceXmlReader reader)
-            throws Exception {
+            throws ExchangeXmlException {
         reader.ensureCurrentNodeIsStartElement();
 
         SearchFilter searchFilter = null;
@@ -142,7 +129,7 @@ public abstract class SearchFilter extends ComplexProperty {
      * @param writer the writer
      * @throws Exception the exception
      */
-    public void writeToXml(EwsServiceXmlWriter writer) throws Exception {
+    public void writeToXml(EwsServiceXmlWriter writer) throws ExchangeXmlException {
         super.writeToXml(writer, this.getXmlElementName());
     }
 
@@ -207,13 +194,13 @@ public abstract class SearchFilter extends ComplexProperty {
         /**
          * validates instance.
          *
-         * @throws ServiceValidationException the service validation exception
+         * @throws ExchangeValidationException the service validation exception
          */
         @Override
-        protected void internalValidate() throws ServiceValidationException {
+        protected void internalValidate() throws ExchangeValidationException {
             super.internalValidate();
             if ((this.value == null) || this.value.isEmpty()) {
-                throw new ServiceValidationException("The Value property must be set.");
+                throw new ExchangeValidationException("The Value property must be set.");
             }
         }
 
@@ -232,17 +219,14 @@ public abstract class SearchFilter extends ComplexProperty {
          *
          * @param reader the reader
          * @return True if element was read.
-         * @throws Exception the exception
          */
         @Override
-        public boolean tryReadElementFromXml(EwsServiceXmlReader reader)
-                throws Exception {
+        public boolean tryReadElementFromXml(EwsServiceXmlReader reader) throws ExchangeXmlException {
             boolean result = super.tryReadElementFromXml(reader);
 
             if (!result) {
                 if (reader.getLocalName().equals(XmlElementNames.Constant)) {
-                    this.value = reader
-                            .readAttributeValue(XmlAttributeNames.Value);
+                    this.value = reader.readAttributeValue(XmlAttributeNames.Value);
                     result = true;
                 }
             }
@@ -253,11 +237,9 @@ public abstract class SearchFilter extends ComplexProperty {
          * Reads the attribute of Xml.
          *
          * @param reader the reader
-         * @throws Exception the exception
          */
         @Override
-        public void readAttributesFromXml(EwsServiceXmlReader reader)
-                throws Exception {
+        public void readAttributesFromXml(EwsServiceXmlReader reader) throws ExchangeXmlException {
 
             super.readAttributesFromXml(reader);
             this.containmentMode = reader.readAttributeValue(
@@ -281,33 +263,23 @@ public abstract class SearchFilter extends ComplexProperty {
          * Writes the attribute to XML.
          *
          * @param writer the writer
-         * @throws ServiceXmlSerializationException the service xml serialization exception
          */
         @Override
-        public void writeAttributesToXml(EwsServiceXmlWriter writer)
-                throws ServiceXmlSerializationException {
+        public void writeAttributesToXml(EwsServiceXmlWriter writer) throws ExchangeXmlException {
             super.writeAttributesToXml(writer);
-
-            writer.writeAttributeValue(XmlAttributeNames.ContainmentMode,
-                    this.containmentMode);
-            writer.writeAttributeValue(XmlAttributeNames.ContainmentComparison,
-                    this.comparisonMode);
+            writer.writeAttributeValue(XmlAttributeNames.ContainmentMode, this.containmentMode);
+            writer.writeAttributeValue(XmlAttributeNames.ContainmentComparison, this.comparisonMode);
         }
 
         /**
          * Writes the elements to Xml.
          *
          * @param writer the writer
-         * @throws XMLStreamException               the XML stream exception
-         * @throws ServiceXmlSerializationException the service xml serialization exception
          */
         @Override
-        public void writeElementsToXml(EwsServiceXmlWriter writer)
-                throws XMLStreamException, ServiceXmlSerializationException {
+        public void writeElementsToXml(EwsServiceXmlWriter writer) throws ExchangeXmlException {
             super.writeElementsToXml(writer);
-
-            writer.writeStartElement(XmlNamespace.Types,
-                    XmlElementNames.Constant);
+            writer.writeStartElement(XmlNamespace.Types, XmlElementNames.Constant);
             writer.writeAttributeValue(XmlAttributeNames.Value, this.value);
             writer.writeEndElement(); // Constant
         }
@@ -414,18 +386,15 @@ public abstract class SearchFilter extends ComplexProperty {
          *
          * @param reader the reader
          * @return true if element was read
-         * @throws Exception the exception
          */
         @Override
-        public boolean tryReadElementFromXml(EwsServiceXmlReader reader)
-                throws Exception {
+        public boolean tryReadElementFromXml(EwsServiceXmlReader reader) throws ExchangeXmlException {
             boolean result = super.tryReadElementFromXml(reader);
 
             if (!result) {
                 if (reader.getLocalName().equals(XmlElementNames.Bitmask)) {
                     // EWS always returns the Bitmask value in hexadecimal
-                    this.bitmask = Integer.parseInt(reader
-                            .readAttributeValue(XmlAttributeNames.Value));
+                    this.bitmask = Integer.parseInt(reader.readAttributeValue(XmlAttributeNames.Value));
                 }
             }
 
@@ -436,16 +405,12 @@ public abstract class SearchFilter extends ComplexProperty {
          * Writes the elements to XML.
          *
          * @param writer the writer
-         * @throws javax.xml.stream.XMLStreamException , ServiceXmlSerializationException
-         * @throws ServiceXmlSerializationException    the service xml serialization exception
          */
         @Override
-        public void writeElementsToXml(EwsServiceXmlWriter writer)
-                throws XMLStreamException, ServiceXmlSerializationException {
+        public void writeElementsToXml(EwsServiceXmlWriter writer) throws ExchangeXmlException {
             super.writeElementsToXml(writer);
 
-            writer.writeStartElement(XmlNamespace.Types,
-                    XmlElementNames.Bitmask);
+            writer.writeStartElement(XmlNamespace.Types, XmlElementNames.Bitmask);
             writer.writeAttributeValue(XmlAttributeNames.Value, this.bitmask);
             writer.writeEndElement(); // Bitmask
         }
@@ -833,12 +798,12 @@ public abstract class SearchFilter extends ComplexProperty {
         /**
          * validates the instance.
          *
-         * @throws ServiceValidationException the service validation exception
+         * @throws ExchangeValidationException the service validation exception
          */
         @Override
-        protected void internalValidate() throws ServiceValidationException {
+        protected void internalValidate() throws ExchangeValidationException {
             if (this.searchFilter == null) {
-                throw new ServiceValidationException("The SearchFilter property must be set.");
+                throw new ExchangeValidationException("The SearchFilter property must be set.");
             }
         }
 
@@ -857,11 +822,9 @@ public abstract class SearchFilter extends ComplexProperty {
          *
          * @param reader the reader
          * @return true if the element was read
-         * @throws Exception the exception
          */
         @Override
-        public boolean tryReadElementFromXml(EwsServiceXmlReader reader)
-                throws Exception {
+        public boolean tryReadElementFromXml(EwsServiceXmlReader reader) throws ExchangeXmlException {
             this.searchFilter = SearchFilter.loadFromXml(reader);
             return true;
         }
@@ -870,11 +833,9 @@ public abstract class SearchFilter extends ComplexProperty {
          * Writes the elements to XML.
          *
          * @param writer the writer
-         * @throws Exception the exception
          */
         @Override
-        public void writeElementsToXml(EwsServiceXmlWriter writer)
-                throws Exception {
+        public void writeElementsToXml(EwsServiceXmlWriter writer) throws ExchangeXmlException {
             this.searchFilter.writeToXml(writer);
         }
 
@@ -961,12 +922,12 @@ public abstract class SearchFilter extends ComplexProperty {
         /**
          * validate instance.
          *
-         * @throws ServiceValidationException the service validation exception
+         * @throws ExchangeValidationException the service validation exception
          */
         @Override
-        protected void internalValidate() throws ServiceValidationException {
+        protected void internalValidate() throws ExchangeValidationException {
             if (this.propertyDefinition == null) {
-                throw new ServiceValidationException("The PropertyDefinition property must be set.");
+                throw new ExchangeValidationException("The PropertyDefinition property must be set.");
             }
         }
 
@@ -978,8 +939,7 @@ public abstract class SearchFilter extends ComplexProperty {
          * @throws Exception the exception
          */
         @Override
-        public boolean tryReadElementFromXml(EwsServiceXmlReader reader)
-                throws Exception {
+        public boolean tryReadElementFromXml(EwsServiceXmlReader reader) throws ExchangeXmlException {
             OutParam<PropertyDefinitionBase> outParam =
                     new OutParam<PropertyDefinitionBase>();
             outParam.setParam(this.propertyDefinition);
@@ -991,12 +951,9 @@ public abstract class SearchFilter extends ComplexProperty {
          * Writes the elements to XML.
          *
          * @param writer the writer
-         * @throws XMLStreamException               the XML stream exception
-         * @throws ServiceXmlSerializationException the service xml serialization exception
          */
         @Override
-        public void writeElementsToXml(EwsServiceXmlWriter writer)
-                throws XMLStreamException, ServiceXmlSerializationException {
+        public void writeElementsToXml(EwsServiceXmlWriter writer) throws ExchangeXmlException {
             this.propertyDefinition.writeToXml(writer);
         }
 
@@ -1074,14 +1031,14 @@ public abstract class SearchFilter extends ComplexProperty {
         /**
          * validates the instance.
          *
-         * @throws ServiceValidationException the service validation exception
+         * @throws ExchangeValidationException the service validation exception
          */
         @Override
-        protected void internalValidate() throws ServiceValidationException {
+        protected void internalValidate() throws ExchangeValidationException {
             super.internalValidate();
 
             if (this.otherPropertyDefinition == null && this.value == null) {
-                throw new ServiceValidationException(
+                throw new ExchangeValidationException(
                         "Either the OtherPropertyDefinition or the Value property must be set.");
             }
         }
@@ -1094,32 +1051,19 @@ public abstract class SearchFilter extends ComplexProperty {
          * @throws Exception the exception
          */
         @Override
-        public boolean tryReadElementFromXml(EwsServiceXmlReader reader)
-                throws Exception {
+        public boolean tryReadElementFromXml(EwsServiceXmlReader reader) throws ExchangeXmlException {
             boolean result = super.tryReadElementFromXml(reader);
-
             if (!result) {
-                if (reader.getLocalName().equals(
-                        XmlElementNames.FieldURIOrConstant)) {
-                    try {
-                        reader.read();
-                        reader.ensureCurrentNodeIsStartElement();
-                    } catch (ServiceXmlDeserializationException | XMLStreamException e) {
-                        LOG.log(Level.SEVERE, "error reading XML", e);
-                    }
-
-                    if (reader.isStartElement(XmlNamespace.Types,
-                            XmlElementNames.Constant)) {
-                        this.value = reader
-                                .readAttributeValue(XmlAttributeNames.Value);
+                if (reader.getLocalName().equals(XmlElementNames.FieldURIOrConstant)) {
+                    reader.read();
+                    reader.ensureCurrentNodeIsStartElement();
+                    if (reader.isStartElement(XmlNamespace.Types, XmlElementNames.Constant)) {
+                        this.value = reader.readAttributeValue(XmlAttributeNames.Value);
                         result = true;
                     } else {
-                        OutParam<PropertyDefinitionBase> outParam =
-                                new OutParam<PropertyDefinitionBase>();
+                        OutParam<PropertyDefinitionBase> outParam = new OutParam<PropertyDefinitionBase>();
                         outParam.setParam(this.otherPropertyDefinition);
-
-                        result = PropertyDefinitionBase.tryLoadFromXml(reader,
-                                outParam);
+                        result = PropertyDefinitionBase.tryLoadFromXml(reader, outParam);
                     }
                 }
             }
@@ -1131,12 +1075,9 @@ public abstract class SearchFilter extends ComplexProperty {
          * Writes the elements to XML.
          *
          * @param writer the writer
-         * @throws javax.xml.stream.XMLStreamException , ServiceXmlSerializationException
-         * @throws ServiceXmlSerializationException    the service xml serialization exception
          */
         @Override
-        public void writeElementsToXml(EwsServiceXmlWriter writer)
-                throws XMLStreamException, ServiceXmlSerializationException {
+        public void writeElementsToXml(EwsServiceXmlWriter writer) throws ExchangeXmlException {
             super.writeElementsToXml(writer);
 
             writer.writeStartElement(XmlNamespace.Types,
@@ -1272,16 +1213,14 @@ public abstract class SearchFilter extends ComplexProperty {
         /**
          * Validate instance.
          *
-         * @throws Exception
          */
         @Override
-        protected void internalValidate() throws Exception {
+        protected void internalValidate() throws ExchangeValidationException {
             for (int i = 0; i < this.getCount(); i++) {
                 try {
                     this.searchFilters.get(i).internalValidate();
-                } catch (ServiceValidationException e) {
-                    throw new ServiceValidationException(String.format("The search filter at index %d is invalid.", i),
-                            e);
+                } catch (ExchangeValidationException e) {
+                    throw new ExchangeValidationException(String.format("The search filter at index %d is invalid.", i), e);
                 }
             }
         }
@@ -1310,11 +1249,9 @@ public abstract class SearchFilter extends ComplexProperty {
          *
          * @param reader the reader
          * @return true, if successful
-         * @throws Exception the exception
          */
         @Override
-        public boolean tryReadElementFromXml(EwsServiceXmlReader reader)
-                throws Exception {
+        public boolean tryReadElementFromXml(EwsServiceXmlReader reader) throws ExchangeXmlException {
 
             this.add(SearchFilter.loadFromXml(reader));
             return true;
@@ -1324,11 +1261,9 @@ public abstract class SearchFilter extends ComplexProperty {
          * Writes the elements to XML.
          *
          * @param writer the writer
-         * @throws Exception the exception
          */
         @Override
-        public void writeElementsToXml(EwsServiceXmlWriter writer)
-                throws Exception {
+        public void writeElementsToXml(EwsServiceXmlWriter writer) throws ExchangeXmlException {
             for (SearchFilter searchFilter : this.searchFilters) {
                 searchFilter.writeToXml(writer);
             }
@@ -1338,10 +1273,9 @@ public abstract class SearchFilter extends ComplexProperty {
          * Writes to XML.
          *
          * @param writer the writer
-         * @throws Exception the exception
          */
         @Override
-        public void writeToXml(EwsServiceXmlWriter writer) throws Exception {
+        public void writeToXml(EwsServiceXmlWriter writer) throws ExchangeXmlException {
             // If there is only one filter in the collection, which developers
             // tend
             // to do,

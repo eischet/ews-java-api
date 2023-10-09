@@ -30,9 +30,7 @@ import com.eischet.ews.api.core.enumeration.misc.XmlNamespace;
 import com.eischet.ews.api.core.enumeration.property.time.DayOfTheWeek;
 import com.eischet.ews.api.core.enumeration.property.time.DayOfTheWeekIndex;
 import com.eischet.ews.api.core.enumeration.property.time.Month;
-import com.eischet.ews.api.core.exception.service.local.ServiceXmlSerializationException;
-
-import javax.xml.stream.XMLStreamException;
+import com.eischet.ews.api.core.exception.xml.ExchangeXmlException;
 
 /**
  * Represents a recurrence pattern for a time change in a time zone.
@@ -144,11 +142,8 @@ final class TimeChangeRecurrence extends ComplexProperty {
      * Writes elements to XML.
      *
      * @param writer the writer
-     * @throws XMLStreamException               the XML stream exception
-     * @throws ServiceXmlSerializationException the service xml serialization exception
      */
-    public void writeElementsToXml(EwsServiceXmlWriter writer)
-            throws XMLStreamException, ServiceXmlSerializationException {
+    public void writeElementsToXml(EwsServiceXmlWriter writer) throws ExchangeXmlException {
         if (this.dayOfTheWeek != null) {
             writer.writeElementValue(XmlNamespace.Types,
                     XmlElementNames.DaysOfWeek, this.dayOfTheWeek);
@@ -170,10 +165,8 @@ final class TimeChangeRecurrence extends ComplexProperty {
      *
      * @param reader the reader
      * @return True if element was read.
-     * @throws Exception the exception
      */
-    public boolean tryReadElementFromXml(EwsServiceXmlReader reader)
-            throws Exception {
+    public boolean tryReadElementFromXml(EwsServiceXmlReader reader) throws ExchangeXmlException {
         if (reader.getLocalName().equalsIgnoreCase(XmlElementNames.DaysOfWeek)) {
 
             this.dayOfTheWeek = reader.readElementValue(DayOfTheWeek.class);

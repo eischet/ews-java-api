@@ -24,6 +24,7 @@
 package com.eischet.ews.api.core.response;
 
 import com.eischet.ews.api.core.ExchangeService;
+import com.eischet.ews.api.core.exception.xml.ExchangeXmlException;
 import com.eischet.ews.api.core.service.ServiceObject;
 
 /**
@@ -31,6 +32,7 @@ import com.eischet.ews.api.core.service.ServiceObject;
  *
  * @param <T> the generic type
  */
+@FunctionalInterface
 public interface IGetObjectInstanceDelegate<T extends ServiceObject> {
 
     /**
@@ -39,8 +41,6 @@ public interface IGetObjectInstanceDelegate<T extends ServiceObject> {
      * @param service        the service
      * @param xmlElementName the xml element name
      * @return the object instance delegate
-     * @throws Exception the exception
      */
-    T getObjectInstanceDelegate(ExchangeService service, String xmlElementName)
-            throws Exception;
+    T getObjectInstanceDelegate(ExchangeService service, String xmlElementName) throws ExchangeXmlException;
 }

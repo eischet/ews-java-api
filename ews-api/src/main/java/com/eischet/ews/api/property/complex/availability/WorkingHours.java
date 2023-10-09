@@ -27,6 +27,7 @@ import com.eischet.ews.api.core.EwsServiceXmlReader;
 import com.eischet.ews.api.core.XmlElementNames;
 import com.eischet.ews.api.core.enumeration.misc.XmlNamespace;
 import com.eischet.ews.api.core.enumeration.property.time.DayOfTheWeek;
+import com.eischet.ews.api.core.exception.xml.ExchangeXmlException;
 import com.eischet.ews.api.misc.availability.LegacyAvailabilityTimeZone;
 import com.eischet.ews.api.property.complex.ComplexProperty;
 import com.eischet.ews.api.property.complex.time.TimeZoneDefinition;
@@ -73,11 +74,9 @@ public final class WorkingHours extends ComplexProperty {
      *
      * @param reader accepts EwsServiceXmlReader
      * @return True if element was read
-     * @throws Exception throws Exception
      */
     @Override
-    public boolean tryReadElementFromXml(EwsServiceXmlReader reader)
-            throws Exception {
+    public boolean tryReadElementFromXml(EwsServiceXmlReader reader) throws ExchangeXmlException {
         if (reader.getLocalName().equals(XmlElementNames.TimeZone)) {
             LegacyAvailabilityTimeZone legacyTimeZone =
                     new LegacyAvailabilityTimeZone();
@@ -88,7 +87,7 @@ public final class WorkingHours extends ComplexProperty {
             return true;
         }
         if (reader.getLocalName().equals(XmlElementNames.WorkingPeriodArray)) {
-            List<WorkingPeriod> workingPeriods = new ArrayList<WorkingPeriod>();
+            List<WorkingPeriod> workingPeriods = new ArrayList<>();
 
             do {
                 reader.read();
@@ -124,8 +123,8 @@ public final class WorkingHours extends ComplexProperty {
             this.endTime = workingPeriods.get(0).getEndTime();
 
             for (WorkingPeriod workingPeriod : workingPeriods) {
-                for (DayOfTheWeek dayOfWeek : workingPeriods.get(0)
-                        .getDaysOfWeek()) {
+                // TODO check: can it possibly be right to ignore the loop var here an instead use the first element? I don't think so, but the API is so obtuse in parts I'm really not sure.
+                for (DayOfTheWeek dayOfWeek : workingPeriods.get(0).getDaysOfWeek()) {
                     if (!this.daysOfTheWeek.contains(dayOfWeek)) {
                         this.daysOfTheWeek.add(dayOfWeek);
                     }

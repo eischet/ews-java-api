@@ -33,8 +33,9 @@ import com.eischet.ews.api.core.EwsUtilities;
 import com.eischet.ews.api.core.XmlElementNames;
 import com.eischet.ews.api.core.enumeration.misc.ExchangeVersion;
 import com.eischet.ews.api.core.enumeration.misc.XmlNamespace;
-import com.eischet.ews.api.core.exception.service.local.ServiceValidationException;
+import com.eischet.ews.api.core.exception.service.local.ExchangeValidationException;
 import com.eischet.ews.api.core.exception.service.local.ServiceXmlSerializationException;
+import com.eischet.ews.api.core.exception.xml.ExchangeXmlException;
 
 import javax.xml.stream.XMLStreamException;
 import java.net.URI;
@@ -48,9 +49,7 @@ public class GetDomainSettingsRequest extends AutodiscoverRequest {
     /**
      * Action Uri of Autodiscover.GetDomainSettings method.
      */
-    private static final String GetDomainSettingsActionUri =
-            EwsUtilities.AutodiscoverSoapNamespace +
-                    "/Autodiscover/GetDomainSettings";
+    private static final String GetDomainSettingsActionUri = EwsUtilities.AutodiscoverSoapNamespace + "/Autodiscover/GetDomainSettings";
 
     /**
      * The domains.
@@ -87,16 +86,16 @@ public class GetDomainSettingsRequest extends AutodiscoverRequest {
         EwsUtilities.validateParam(this.getSettings(), "settings");
 
         if (this.getSettings().size() == 0) {
-            throw new ServiceValidationException("At least one setting must be requested.");
+            throw new ExchangeValidationException("At least one setting must be requested.");
         }
 
         if (domains.size() == 0) {
-            throw new ServiceValidationException("At least one domain name must be requested.");
+            throw new ExchangeValidationException("At least one domain name must be requested.");
         }
 
         for (String domain : this.getDomains()) {
             if (domain == null || domain.isEmpty()) {
-                throw new ServiceValidationException("The domain name must be specified.");
+                throw new ExchangeValidationException("The domain name must be specified.");
             }
         }
     }
@@ -108,9 +107,7 @@ public class GetDomainSettingsRequest extends AutodiscoverRequest {
      * @throws Exception the exception
      */
     public GetDomainSettingsResponseCollection execute() throws Exception {
-        GetDomainSettingsResponseCollection responses =
-                (GetDomainSettingsResponseCollection) this
-                        .internalExecute();
+        GetDomainSettingsResponseCollection responses = (GetDomainSettingsResponseCollection) this.internalExecute();
         if (responses.getErrorCode() == AutodiscoverErrorCode.NoError) {
             this.PostProcessResponses(responses);
         }
@@ -122,13 +119,11 @@ public class GetDomainSettingsRequest extends AutodiscoverRequest {
      *
      * @param responses The GetDomainSettings response.
      */
-    private void PostProcessResponses(
-            GetDomainSettingsResponseCollection responses) {
+    private void PostProcessResponses(GetDomainSettingsResponseCollection responses) {
         // Note:The response collection may not include all of the requested
         // domains if the request has been throttled.
         for (int index = 0; index < responses.getCount(); index++) {
-            responses.getResponses().get(index).setDomain(
-                    this.getDomains().get(index));
+            responses.getResponses().get(index).setDomain(this.getDomains().get(index));
         }
     }
 
@@ -179,11 +174,8 @@ public class GetDomainSettingsRequest extends AutodiscoverRequest {
      * @throws ServiceXmlSerializationException the service xml serialization exception
      */
     @Override
-    protected void writeAttributesToXml(EwsServiceXmlWriter writer)
-            throws ServiceXmlSerializationException {
-        writer.writeAttributeValue("xmlns",
-                EwsUtilities.AutodiscoverSoapNamespacePrefix,
-                EwsUtilities.AutodiscoverSoapNamespace);
+    protected void writeAttributesToXml(EwsServiceXmlWriter writer) throws ExchangeXmlException {
+        writer.writeAttributeValue("xmlns", EwsUtilities.AutodiscoverSoapNamespacePrefix, EwsUtilities.AutodiscoverSoapNamespace);
     }
 
     /**
@@ -194,34 +186,27 @@ public class GetDomainSettingsRequest extends AutodiscoverRequest {
      * @throws ServiceXmlSerializationException the service xml serialization exception
      */
     @Override
-    protected void writeElementsToXml(EwsServiceXmlWriter writer)
-            throws XMLStreamException, ServiceXmlSerializationException {
-        writer.writeStartElement(XmlNamespace.Autodiscover,
-                XmlElementNames.Request);
+    protected void writeElementsToXml(EwsServiceXmlWriter writer) throws ExchangeXmlException {
+        writer.writeStartElement(XmlNamespace.Autodiscover, XmlElementNames.Request);
 
-        writer.writeStartElement(XmlNamespace.Autodiscover,
-                XmlElementNames.Domains);
+        writer.writeStartElement(XmlNamespace.Autodiscover, XmlElementNames.Domains);
 
         for (String domain : this.getDomains()) {
             if (!(domain == null || domain.isEmpty())) {
-                writer.writeElementValue(XmlNamespace.Autodiscover,
-                        XmlElementNames.Domain, domain);
+                writer.writeElementValue(XmlNamespace.Autodiscover, XmlElementNames.Domain, domain);
             }
         }
         writer.writeEndElement(); // Domains
 
-        writer.writeStartElement(XmlNamespace.Autodiscover,
-                XmlElementNames.RequestedSettings);
+        writer.writeStartElement(XmlNamespace.Autodiscover, XmlElementNames.RequestedSettings);
         for (DomainSettingName setting : settings) {
-            writer.writeElementValue(XmlNamespace.Autodiscover,
-                    XmlElementNames.Setting, setting);
+            writer.writeElementValue(XmlNamespace.Autodiscover, XmlElementNames.Setting, setting);
         }
 
         writer.writeEndElement(); // RequestedSettings
 
         if (this.requestedVersion != null) {
-            writer.writeElementValue(XmlNamespace.Autodiscover,
-                    XmlElementNames.RequestedVersion, this.requestedVersion);
+            writer.writeElementValue(XmlNamespace.Autodiscover, XmlElementNames.RequestedVersion, this.requestedVersion);
         }
 
         writer.writeEndElement(); // Request

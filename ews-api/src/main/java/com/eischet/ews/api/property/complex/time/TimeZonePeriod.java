@@ -25,6 +25,7 @@ package com.eischet.ews.api.property.complex.time;
 
 import com.eischet.ews.api.core.*;
 import com.eischet.ews.api.core.exception.service.local.ServiceXmlSerializationException;
+import com.eischet.ews.api.core.exception.xml.ExchangeXmlException;
 import com.eischet.ews.api.misc.TimeSpan;
 import com.eischet.ews.api.property.complex.ComplexProperty;
 
@@ -76,7 +77,7 @@ public class TimeZonePeriod extends ComplexProperty {
      */
     @Override
     public void readAttributesFromXml(EwsServiceXmlReader reader)
-            throws Exception {
+            throws ExchangeXmlException {
         this.id = reader.readAttributeValue(XmlAttributeNames.Id);
         this.name = reader.readAttributeValue(XmlAttributeNames.Name);
         this.bias = EwsUtilities.getXSDurationToTimeSpan(reader.readAttributeValue(XmlAttributeNames.Bias));
@@ -89,10 +90,8 @@ public class TimeZonePeriod extends ComplexProperty {
      * @throws ServiceXmlSerializationException the service xml serialization exception
      */
     @Override
-    public void writeAttributesToXml(EwsServiceXmlWriter writer)
-            throws ServiceXmlSerializationException {
-        writer.writeAttributeValue(XmlAttributeNames.Bias, EwsUtilities
-                .getTimeSpanToXSDuration(this.bias));
+    public void writeAttributesToXml(EwsServiceXmlWriter writer) throws ExchangeXmlException {
+        writer.writeAttributeValue(XmlAttributeNames.Bias, EwsUtilities.getTimeSpanToXSDuration(this.bias));
         writer.writeAttributeValue(XmlAttributeNames.Name, this.name);
         writer.writeAttributeValue(XmlAttributeNames.Id, this.id);
     }
@@ -101,9 +100,8 @@ public class TimeZonePeriod extends ComplexProperty {
      * Loads from XML.
      *
      * @param reader the reader
-     * @throws Exception the exception
      */
-    public void loadFromXml(EwsServiceXmlReader reader) throws Exception {
+    public void loadFromXml(EwsServiceXmlReader reader) throws ExchangeXmlException {
         this.loadFromXml(reader, XmlElementNames.Period);
     }
 
@@ -111,9 +109,8 @@ public class TimeZonePeriod extends ComplexProperty {
      * Writes to XML.
      *
      * @param writer the writer
-     * @throws Exception the exception
      */
-    public void writeToXml(EwsServiceXmlWriter writer) throws Exception {
+    public void writeToXml(EwsServiceXmlWriter writer) throws ExchangeXmlException {
         this.writeToXml(writer, XmlElementNames.Period);
     }
 

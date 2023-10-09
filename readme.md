@@ -25,9 +25,9 @@ Thanks to Microsoft for releasing this code under the MIT license!
 
 *S.E.*
 
-## Changed from the original code:
+## Version 2.1-SNAPSHOT:
 
-Split into a number of packages:
+The original code was split into a number of packages:
 
 * `ews-api` contains most of the original code, but no HTTP client, which needs to be created before using the ExchangeService.
 * `ews-client-apache4` contains the original, Apache HTTP Components 4.x based client only.
@@ -43,6 +43,17 @@ because it allows me to include the old and the new package in my software at th
 the new code more easily.
 
 The build now uses Java 11.
+
+
+## Version 2.2-SNAPSHOT, 2023-10-09:
+
+* Removed some JavaDoc comments that only stated the obvious or where even plainly wrong (copy/pasted presumably).
+* Reduced the number of "throws Exception" to 5264, down from 8241 (!). That's still terrible, but it's a start.
+  Added a new "ExchangeException" base class and modified the Exception hierarchy to use it.
+  The near-term goal is to have two main exceptions, one for usage/XML errors and one for communication errors.
+  Ideally, validation of messages sent to the server should only happen when requests are actually sent, and any
+  e.g. Version checks that right now happen in the Item constructor (and cascade down to all derived classes)
+  should not be there at all.
 
 
 ## What to use
@@ -79,5 +90,4 @@ There are some areas which could be improved, and I'll work on these as time per
   My current favorite is the StringList::toString JavaDoc, which takes quite a lot of words to explain how generic toString works,
   but returns something entirely different.
 * There's quite a lot of unused code, e.g. all methods of IAsyncResult, and some unused type parameters, that could be removed/improved.
-* I'd rather use the new Java HTTP client, minimizing external dependencies, but can't get it to properly authenticate with NTLM.
-  Right now, it's not working, but I'll keep trying.
+

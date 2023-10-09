@@ -26,7 +26,7 @@ package com.eischet.ews.api.property.complex;
 import com.eischet.ews.api.core.EwsServiceXmlWriter;
 import com.eischet.ews.api.core.XmlAttributeNames;
 import com.eischet.ews.api.core.XmlElementNames;
-import com.eischet.ews.api.core.exception.service.local.ServiceXmlSerializationException;
+import com.eischet.ews.api.core.exception.xml.ExchangeXmlException;
 
 /**
  * Represents the Id of an occurrence of a recurring appointment.
@@ -57,15 +57,11 @@ public final class RecurringAppointmentMasterId extends ItemId {
      * Writes attribute to XML.
      *
      * @param writer the writer
-     * @throws ServiceXmlSerializationException the service xml serialization exception
      */
     @Override
-    public void writeAttributesToXml(EwsServiceXmlWriter writer)
-            throws ServiceXmlSerializationException {
-        writer.writeAttributeValue(XmlAttributeNames.OccurrenceId, this
-                .getUniqueId());
-        writer.writeAttributeValue(XmlAttributeNames.ChangeKey, this
-                .getChangeKey());
+    public void writeAttributesToXml(EwsServiceXmlWriter writer) throws ExchangeXmlException {
+        writer.writeAttributeValue(XmlAttributeNames.OccurrenceId, this.getUniqueId());
+        writer.writeAttributeValue(XmlAttributeNames.ChangeKey, this.getChangeKey());
     }
 
 }

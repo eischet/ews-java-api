@@ -27,8 +27,7 @@ import com.eischet.ews.api.core.EwsUtilities;
 import com.eischet.ews.api.core.ILazyMember;
 import com.eischet.ews.api.core.LazyMember;
 import com.eischet.ews.api.core.enumeration.property.MapiPropertyType;
-import com.eischet.ews.api.core.exception.misc.FormatException;
-import com.eischet.ews.api.core.exception.service.local.ServiceXmlDeserializationException;
+import com.eischet.ews.api.core.exception.xml.ExchangeXmlException;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -175,12 +174,12 @@ public class MapiTypeConverter {
      * @return Array of objects.
      * @throws Exception the exception
      */
-    public static List<Object> convertToValue(MapiPropertyType mapiPropType, Iterator<String> strings) throws Exception {
+    public static List<Object> convertToValue(MapiPropertyType mapiPropType, Iterator<String> strings) throws ExchangeXmlException {
         EwsUtilities.validateParam(strings, "strings");
 
         MapiTypeConverterMapEntry typeConverter = getMapiTypeConverterMap()
                 .get(mapiPropType);
-        List<Object> array = new ArrayList<Object>();
+        List<Object> array = new ArrayList<>();
 
         int index = 0;
 
@@ -197,12 +196,9 @@ public class MapiTypeConverter {
      * @param mapiPropType the mapi prop type
      * @param stringValue  the string value
      * @return the object
-     * @throws ServiceXmlDeserializationException the service xml deserialization exception
-     * @throws FormatException                    the format exception
      */
-    public static Object convertToValue(MapiPropertyType mapiPropType, String stringValue) throws ServiceXmlDeserializationException, FormatException {
-        return getMapiTypeConverterMap().get(mapiPropType).convertToValue(
-                stringValue);
+    public static Object convertToValue(MapiPropertyType mapiPropType, String stringValue) throws ExchangeXmlException {
+        return getMapiTypeConverterMap().get(mapiPropType).convertToValue(stringValue);
 
     }
 
@@ -245,10 +241,8 @@ public class MapiTypeConverter {
      * @return Integer value or the original string if the value could not be parsed as such.
      */
     protected static Object parseMapiIntegerValue(String s) {
-        int intValue;
         try {
-            intValue = Integer.parseInt(s.trim());
-            return Integer.valueOf(intValue);
+            return Integer.parseInt(s.trim());
         } catch (NumberFormatException e) {
             return s;
         }

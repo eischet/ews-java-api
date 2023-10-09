@@ -30,6 +30,7 @@ import com.eischet.ews.api.core.enumeration.service.SendCancellationsMode;
 import com.eischet.ews.api.core.enumeration.service.calendar.AffectedTaskOccurrence;
 import com.eischet.ews.api.core.enumeration.service.error.ServiceErrorHandling;
 import com.eischet.ews.api.core.exception.service.local.ServiceXmlSerializationException;
+import com.eischet.ews.api.core.exception.xml.ExchangeXmlException;
 import com.eischet.ews.api.core.response.ServiceResponse;
 import com.eischet.ews.api.misc.ItemIdWrapperList;
 
@@ -135,7 +136,7 @@ public final class DeleteItemRequest extends DeleteRequest<ServiceResponse> {
      * @throws ServiceXmlSerializationException the service xml serialization exception
      */
     @Override
-    protected void writeAttributesToXml(EwsServiceXmlWriter writer) throws ServiceXmlSerializationException {
+    protected void writeAttributesToXml(EwsServiceXmlWriter writer) throws ExchangeXmlException {
         super.writeAttributesToXml(writer);
 
         if (this.affectedTaskOccurrences != null) {

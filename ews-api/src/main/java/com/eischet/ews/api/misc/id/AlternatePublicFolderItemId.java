@@ -28,7 +28,7 @@ import com.eischet.ews.api.core.EwsServiceXmlWriter;
 import com.eischet.ews.api.core.XmlAttributeNames;
 import com.eischet.ews.api.core.XmlElementNames;
 import com.eischet.ews.api.core.enumeration.misc.IdFormat;
-import com.eischet.ews.api.core.exception.service.local.ServiceXmlSerializationException;
+import com.eischet.ews.api.core.exception.xml.ExchangeXmlException;
 
 /**
  * Represents the Id of a public folder item expressed in a specific format.
@@ -98,11 +98,9 @@ public class AlternatePublicFolderItemId extends AlternatePublicFolderId {
      * Writes the attribute to XML.
      *
      * @param writer the writer
-     * @throws ServiceXmlSerializationException the service xml serialization exception
      */
     @Override
-    protected void writeAttributesToXml(EwsServiceXmlWriter writer)
-            throws ServiceXmlSerializationException {
+    protected void writeAttributesToXml(EwsServiceXmlWriter writer) throws ExchangeXmlException {
         super.writeAttributesToXml(writer);
         writer.writeAttributeValue(XmlAttributeNames.ItemId, this.getItemId());
     }
@@ -111,11 +109,9 @@ public class AlternatePublicFolderItemId extends AlternatePublicFolderId {
      * Loads the attribute from XML.
      *
      * @param reader the reader
-     * @throws Exception the exception
      */
     @Override
-    public void loadAttributesFromXml(EwsServiceXmlReader reader)
-            throws Exception {
+    public void loadAttributesFromXml(EwsServiceXmlReader reader) throws ExchangeXmlException {
         super.loadAttributesFromXml(reader);
         this.itemId = reader.readAttributeValue(XmlAttributeNames.ItemId);
     }

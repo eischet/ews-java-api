@@ -28,7 +28,9 @@ import com.eischet.ews.api.core.EwsServiceXmlWriter;
 import com.eischet.ews.api.core.EwsUtilities;
 import com.eischet.ews.api.core.XmlElementNames;
 import com.eischet.ews.api.core.enumeration.misc.XmlNamespace;
+import com.eischet.ews.api.core.exception.service.local.ExchangeValidationException;
 import com.eischet.ews.api.core.exception.service.local.ServiceLocalException;
+import com.eischet.ews.api.core.exception.xml.ExchangeXmlException;
 import com.eischet.ews.api.core.service.folder.CalendarFolder;
 import com.eischet.ews.api.core.service.folder.Folder;
 
@@ -102,10 +104,9 @@ public final class FolderPermissionCollection extends ComplexPropertyCollection<
      *
      * @param reader           the reader
      * @param localElementName the local element name
-     * @throws Exception the exception
      */
     @Override
-    public void loadFromXml(EwsServiceXmlReader reader, String localElementName) throws Exception {
+    public void loadFromXml(EwsServiceXmlReader reader, String localElementName) throws ExchangeXmlException {
         reader.ensureCurrentNodeIsStartElement(XmlNamespace.Types,
                 localElementName);
 
@@ -134,7 +135,7 @@ public final class FolderPermissionCollection extends ComplexPropertyCollection<
     /**
      * Validates this instance.
      */
-    public void validate() {
+    public void validate() throws ExchangeValidationException {
         for (int permissionIndex = 0; permissionIndex < this.getItems().size(); permissionIndex++) {
             FolderPermission permission = this.getItems().get(permissionIndex);
             try {
@@ -149,11 +150,9 @@ public final class FolderPermissionCollection extends ComplexPropertyCollection<
      * Writes the elements to XML.
      *
      * @param writer the writer
-     * @throws Exception the exception
      */
     @Override
-    public void writeElementsToXml(EwsServiceXmlWriter writer)
-            throws Exception {
+    public void writeElementsToXml(EwsServiceXmlWriter writer) throws ExchangeXmlException {
         writer.writeStartElement(XmlNamespace.Types, this
                 .getInnerCollectionXmlElementName());
         for (FolderPermission folderPermission : this) {

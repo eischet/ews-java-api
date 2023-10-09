@@ -29,6 +29,7 @@ package com.eischet.ews.api.core;
  * @param <T> The type of the parameter of the
  *            method that this delegate encapsulates.
  */
+@FunctionalInterface
 public interface IAction<T> {
 
     /**

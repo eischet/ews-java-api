@@ -26,6 +26,7 @@ package com.eischet.ews.api.misc;
 /**
  * ITraceListener handles message tracing.
  */
+@FunctionalInterface
 public interface ITraceListener {
 
     /**

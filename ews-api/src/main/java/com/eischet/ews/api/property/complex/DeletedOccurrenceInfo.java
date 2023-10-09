@@ -25,20 +25,15 @@ package com.eischet.ews.api.property.complex;
 
 import com.eischet.ews.api.core.EwsServiceXmlReader;
 import com.eischet.ews.api.core.XmlElementNames;
-import com.eischet.ews.api.core.exception.service.local.ServiceXmlDeserializationException;
+import com.eischet.ews.api.core.exception.xml.ExchangeXmlException;
 
-import javax.xml.stream.XMLStreamException;
 import java.time.LocalDateTime;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * Encapsulates information on the deleted occurrence of a recurring
  * appointment.
  */
 public class DeletedOccurrenceInfo extends ComplexProperty {
-
-    private static final Logger LOG = Logger.getLogger(DeletedOccurrenceInfo.class.getCanonicalName());
 
     /**
      * The original start date and time of the deleted occurrence. The EWS
@@ -58,17 +53,11 @@ public class DeletedOccurrenceInfo extends ComplexProperty {
      *
      * @param reader The reader.
      * @return True if element was read.
-     * @throws Exception the exception
      */
     @Override
-    public boolean tryReadElementFromXml(EwsServiceXmlReader reader)
-            throws Exception {
+    public boolean tryReadElementFromXml(EwsServiceXmlReader reader) throws ExchangeXmlException {
         if (reader.getLocalName().equalsIgnoreCase(XmlElementNames.Start)) {
-            try {
-                this.originalStart = reader.readElementValueAsDateTime();
-            } catch (ServiceXmlDeserializationException | XMLStreamException e) {
-                LOG.log(Level.SEVERE, "error reading XML", e);
-            }
+            this.originalStart = reader.readElementValueAsDateTime();
             return true;
         } else {
             return false;

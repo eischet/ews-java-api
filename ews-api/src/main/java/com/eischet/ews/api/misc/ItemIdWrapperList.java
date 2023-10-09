@@ -26,6 +26,7 @@ package com.eischet.ews.api.misc;
 import com.eischet.ews.api.core.EwsServiceXmlWriter;
 import com.eischet.ews.api.core.enumeration.misc.XmlNamespace;
 import com.eischet.ews.api.core.exception.service.local.ServiceLocalException;
+import com.eischet.ews.api.core.exception.xml.ExchangeXmlException;
 import com.eischet.ews.api.core.service.item.Item;
 import com.eischet.ews.api.property.complex.ItemId;
 
@@ -56,7 +57,7 @@ public class ItemIdWrapperList implements Iterable<AbstractItemIdWrapper> {
      * @param item the item
      * @throws ServiceLocalException the service local exception
      */
-    protected void add(Item item) throws ServiceLocalException {
+    protected void add(Item item) throws ExchangeXmlException {
         this.itemIds.add(new ItemWrapper(item));
 
     }
@@ -65,10 +66,8 @@ public class ItemIdWrapperList implements Iterable<AbstractItemIdWrapper> {
      * Adds the specified item.
      *
      * @param items the item
-     * @throws ServiceLocalException the service local exception
      */
-    public void addRangeItem(Iterable<Item> items)
-            throws ServiceLocalException {
+    public void addRangeItem(Iterable<Item> items) throws ExchangeXmlException {
         for (Item item : items) {
             this.add(item);
         }

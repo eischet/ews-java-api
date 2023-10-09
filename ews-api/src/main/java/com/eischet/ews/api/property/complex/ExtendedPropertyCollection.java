@@ -28,13 +28,12 @@ import com.eischet.ews.api.core.*;
 import com.eischet.ews.api.core.enumeration.attribute.EditorBrowsableState;
 import com.eischet.ews.api.core.enumeration.misc.XmlNamespace;
 import com.eischet.ews.api.core.exception.misc.ArgumentException;
-import com.eischet.ews.api.core.exception.service.local.ServiceXmlSerializationException;
+import com.eischet.ews.api.core.exception.xml.ExchangeXmlException;
 import com.eischet.ews.api.core.service.ServiceObject;
 import com.eischet.ews.api.misc.OutParam;
 import com.eischet.ews.api.property.definition.ExtendedPropertyDefinition;
 import com.eischet.ews.api.property.definition.PropertyDefinition;
 
-import javax.xml.stream.XMLStreamException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -75,10 +74,9 @@ public final class ExtendedPropertyCollection extends ComplexPropertyCollection<
      *
      * @param reader           The reader.
      * @param localElementName Name of the local element.
-     * @throws Exception the exception
      */
     @Override
-    public void loadFromXml(EwsServiceXmlReader reader, String localElementName) throws Exception {
+    public void loadFromXml(EwsServiceXmlReader reader, String localElementName) throws ExchangeXmlException {
         ExtendedProperty extendedProperty = new ExtendedProperty();
         extendedProperty.loadFromXml(reader, reader.getLocalName());
         this.internalAdd(extendedProperty);
@@ -89,14 +87,11 @@ public final class ExtendedPropertyCollection extends ComplexPropertyCollection<
      *
      * @param writer         The writer.
      * @param xmlElementName Name of the XML element.
-     * @throws Exception the exception
      */
     @Override
-    public void writeToXml(EwsServiceXmlWriter writer, String xmlElementName)
-            throws Exception {
+    public void writeToXml(EwsServiceXmlWriter writer, String xmlElementName) throws ExchangeXmlException {
         for (ExtendedProperty extendedProperty : this) {
-            extendedProperty.writeToXml(writer,
-                    XmlElementNames.ExtendedProperty);
+            extendedProperty.writeToXml(writer, XmlElementNames.ExtendedProperty);
         }
     }
 
@@ -109,9 +104,8 @@ public final class ExtendedPropertyCollection extends ComplexPropertyCollection<
      */
     private ExtendedProperty getOrAddExtendedProperty(
             ExtendedPropertyDefinition propertyDefinition) throws Exception {
-        ExtendedProperty extendedProperty = null;
-        OutParam<ExtendedProperty> extendedPropertyOut =
-                new OutParam<ExtendedProperty>();
+        ExtendedProperty extendedProperty;
+        OutParam<ExtendedProperty> extendedPropertyOut = new OutParam<>();
         if (!this.tryGetProperty(propertyDefinition, extendedPropertyOut)) {
             extendedProperty = new ExtendedProperty(propertyDefinition);
             this.internalAdd(extendedProperty);
@@ -146,9 +140,9 @@ public final class ExtendedPropertyCollection extends ComplexPropertyCollection<
     public boolean removeExtendedProperty(ExtendedPropertyDefinition propertyDefinition) throws Exception {
         EwsUtilities.validateParam(propertyDefinition, "propertyDefinition");
 
-        ExtendedProperty extendedProperty = null;
+        ExtendedProperty extendedProperty;
         OutParam<ExtendedProperty> extendedPropertyOut =
-                new OutParam<ExtendedProperty>();
+                new OutParam<>();
         if (this.tryGetProperty(propertyDefinition, extendedPropertyOut)) {
             extendedProperty = extendedPropertyOut.getParam();
             return this.internalRemove(extendedProperty);
@@ -185,13 +179,11 @@ public final class ExtendedPropertyCollection extends ComplexPropertyCollection<
      * @param propertyDefinition The property definition.
      * @param propertyValueOut   The property value.
      * @return True if property exists in collection.
-     * @throws ArgumentException
      */
     public <T> boolean tryGetValue(Class<T> cls, ExtendedPropertyDefinition propertyDefinition,
                                    OutParam<T> propertyValueOut) throws ArgumentException {
-        ExtendedProperty extendedProperty = null;
-        OutParam<ExtendedProperty> extendedPropertyOut =
-                new OutParam<ExtendedProperty>();
+        ExtendedProperty extendedProperty;
+        OutParam<ExtendedProperty> extendedPropertyOut = new OutParam<ExtendedProperty>();
         if (this.tryGetProperty(propertyDefinition, extendedPropertyOut)) {
             extendedProperty = extendedPropertyOut.getParam();
             if (!cls.isAssignableFrom(propertyDefinition.getType())) {
@@ -259,15 +251,12 @@ public final class ExtendedPropertyCollection extends ComplexPropertyCollection<
      * @param writer    the writer
      * @param ewsObject the ews object
      * @return true if property generated serialization
-     * @throws XMLStreamException               the XML stream exception
-     * @throws ServiceXmlSerializationException the service xml serialization exception
      */
     @Override
     public boolean writeDeleteUpdateToXml(EwsServiceXmlWriter writer,
-                                          ServiceObject ewsObject) throws XMLStreamException, ServiceXmlSerializationException {
+                                          ServiceObject ewsObject) throws ExchangeXmlException {
         for (ExtendedProperty extendedProperty : this.getItems()) {
-            writer.writeStartElement(XmlNamespace.Types, ewsObject
-                    .getDeleteFieldXmlElementName());
+            writer.writeStartElement(XmlNamespace.Types, ewsObject.getDeleteFieldXmlElementName());
             extendedProperty.getPropertyDefinition().writeToXml(writer);
             writer.writeEndElement();
         }

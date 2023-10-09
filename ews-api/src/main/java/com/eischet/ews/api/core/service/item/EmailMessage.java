@@ -35,6 +35,7 @@ import com.eischet.ews.api.core.enumeration.service.ConflictResolutionMode;
 import com.eischet.ews.api.core.enumeration.service.MessageDisposition;
 import com.eischet.ews.api.core.enumeration.service.ResponseMessageType;
 import com.eischet.ews.api.core.exception.service.local.ServiceLocalException;
+import com.eischet.ews.api.core.exception.xml.ExchangeXmlException;
 import com.eischet.ews.api.core.service.response.ResponseMessage;
 import com.eischet.ews.api.core.service.response.SuppressReadReceipt;
 import com.eischet.ews.api.core.service.schema.EmailMessageSchema;
@@ -59,7 +60,7 @@ public class EmailMessage extends Item {
      *                bound.
      * @throws Exception the exception
      */
-    public EmailMessage(ExchangeService service) throws Exception {
+    public EmailMessage(ExchangeService service) throws ExchangeXmlException {
         super(service);
     }
 
@@ -67,9 +68,8 @@ public class EmailMessage extends Item {
      * Initializes a new instance of the "EmailMessage" class.
      *
      * @param parentAttachment The parent attachment.
-     * @throws Exception the exception
      */
-    public EmailMessage(ItemAttachment parentAttachment) throws Exception {
+    public EmailMessage(ItemAttachment parentAttachment) throws ExchangeXmlException {
         super(parentAttachment);
     }
 
@@ -313,10 +313,8 @@ public class EmailMessage extends Item {
      * Gets the list of To recipients for the e-mail message.
      *
      * @return The list of To recipients for the e-mail message.
-     * @throws ServiceLocalException the service local exception
      */
-    public EmailAddressCollection getToRecipients()
-            throws ServiceLocalException {
+    public EmailAddressCollection getToRecipients() throws ExchangeXmlException {
         return getPropertyBag().getObjectFromPropertyDefinition(
                 EmailMessageSchema.ToRecipients);
     }
@@ -325,10 +323,9 @@ public class EmailMessage extends Item {
      * Gets the list of Bcc recipients for the e-mail message.
      *
      * @return the bcc recipients
-     * @throws ServiceLocalException the service local exception
      */
     public EmailAddressCollection getBccRecipients()
-            throws ServiceLocalException {
+            throws ExchangeXmlException {
         return getPropertyBag().getObjectFromPropertyDefinition(
                 EmailMessageSchema.BccRecipients);
     }
@@ -337,10 +334,9 @@ public class EmailMessage extends Item {
      * Gets the list of Cc recipients for the e-mail message.
      *
      * @return the cc recipients
-     * @throws ServiceLocalException the service local exception
      */
     public EmailAddressCollection getCcRecipients()
-            throws ServiceLocalException {
+            throws ExchangeXmlException {
         return getPropertyBag().getObjectFromPropertyDefinition(
                 EmailMessageSchema.CcRecipients);
     }
@@ -349,20 +345,17 @@ public class EmailMessage extends Item {
      * Gets the conversation topic of the e-mail message.
      *
      * @return the conversation topic
-     * @throws ServiceLocalException the service local exception
      */
-    public String getConversationTopic() throws ServiceLocalException {
-        return getPropertyBag().getObjectFromPropertyDefinition(
-                EmailMessageSchema.ConversationTopic);
+    public String getConversationTopic() throws ExchangeXmlException {
+        return getPropertyBag().getObjectFromPropertyDefinition(EmailMessageSchema.ConversationTopic);
     }
 
     /**
      * Gets the conversation index of the e-mail message.
      *
      * @return the conversation index
-     * @throws ServiceLocalException the service local exception
      */
-    public byte[] getConversationIndex() throws ServiceLocalException {
+    public byte[] getConversationIndex() throws ExchangeXmlException {
         return getPropertyBag().getObjectFromPropertyDefinition(
                 EmailMessageSchema.ConversationIndex);
     }
@@ -371,9 +364,8 @@ public class EmailMessage extends Item {
      * Gets  the "on behalf" sender of the e-mail message.
      *
      * @return the from
-     * @throws ServiceLocalException the service local exception
      */
-    public EmailAddress getFrom() throws ServiceLocalException {
+    public EmailAddress getFrom() throws ExchangeXmlException {
         return getPropertyBag().getObjectFromPropertyDefinition(
                 EmailMessageSchema.From);
     }
@@ -393,9 +385,8 @@ public class EmailMessage extends Item {
      * Gets  a value indicating whether this is an associated message.
      *
      * @return the checks if is associated
-     * @throws ServiceLocalException the service local exception
      */
-    public boolean getIsAssociated() throws ServiceLocalException {
+    public boolean getIsAssociated() throws ExchangeXmlException {
         return super.getIsAssociated();
     }
 
@@ -423,10 +414,9 @@ public class EmailMessage extends Item {
      * the e-mail message.
      *
      * @return the checks if is delivery receipt requested
-     * @throws ServiceLocalException the service local exception
      */
     public Boolean getIsDeliveryReceiptRequested()
-            throws ServiceLocalException {
+            throws ExchangeXmlException {
         return getPropertyBag().getObjectFromPropertyDefinition(
                 EmailMessageSchema.IsDeliveryReceiptRequested);
     }
@@ -446,9 +436,8 @@ public class EmailMessage extends Item {
      * Gets  a value indicating whether the e-mail message is read.
      *
      * @return the checks if is read
-     * @throws ServiceLocalException the service local exception
      */
-    public Boolean getIsRead() throws ServiceLocalException {
+    public Boolean getIsRead() throws ExchangeXmlException {
         return getPropertyBag().getObjectFromPropertyDefinition(
                 EmailMessageSchema.IsRead);
     }
@@ -469,9 +458,8 @@ public class EmailMessage extends Item {
      * the e-mail message.
      *
      * @return the checks if is read receipt requested
-     * @throws ServiceLocalException the service local exception
      */
-    public Boolean getIsReadReceiptRequested() throws ServiceLocalException {
+    public Boolean getIsReadReceiptRequested() throws ExchangeXmlException {
         return getPropertyBag().getObjectFromPropertyDefinition(
                 EmailMessageSchema.IsReadReceiptRequested);
     }
@@ -482,7 +470,7 @@ public class EmailMessage extends Item {
      * @param value the new checks if is read receipt requested
      * @throws Exception the exception
      */
-    public void setIsReadReceiptRequested(Boolean value) throws Exception {
+    public void setIsReadReceiptRequested(Boolean value) throws ExchangeXmlException {
         this.getPropertyBag().setObjectFromPropertyDefinition(
                 EmailMessageSchema.IsReadReceiptRequested, value);
     }
@@ -492,9 +480,8 @@ public class EmailMessage extends Item {
      * e-mail message.
      *
      * @return the checks if is response requested
-     * @throws ServiceLocalException the service local exception
      */
-    public Boolean getIsResponseRequested() throws ServiceLocalException {
+    public Boolean getIsResponseRequested() throws ExchangeXmlException {
         return getPropertyBag().getObjectFromPropertyDefinition(
                 EmailMessageSchema.IsResponseRequested);
     }
@@ -505,7 +492,7 @@ public class EmailMessage extends Item {
      * @param value the new checks if is response requested
      * @throws Exception the exception
      */
-    public void setIsResponseRequested(Boolean value) throws Exception {
+    public void setIsResponseRequested(Boolean value) throws ExchangeXmlException {
         this.getPropertyBag().setObjectFromPropertyDefinition(
                 EmailMessageSchema.IsResponseRequested, value);
     }
@@ -514,9 +501,8 @@ public class EmailMessage extends Item {
      * Gets the Internat Message Id of the e-mail message.
      *
      * @return the internet message id
-     * @throws ServiceLocalException the service local exception
      */
-    public String getInternetMessageId() throws ServiceLocalException {
+    public String getInternetMessageId() throws ExchangeXmlException {
         return getPropertyBag().getObjectFromPropertyDefinition(
                 EmailMessageSchema.InternetMessageId);
     }
@@ -525,9 +511,8 @@ public class EmailMessage extends Item {
      * Gets  the references of the e-mail message.
      *
      * @return the references
-     * @throws ServiceLocalException the service local exception
      */
-    public String getReferences() throws ServiceLocalException {
+    public String getReferences() throws ExchangeXmlException {
         return getPropertyBag().getObjectFromPropertyDefinition(
                 EmailMessageSchema.References);
     }
@@ -547,9 +532,8 @@ public class EmailMessage extends Item {
      * Gets a list of e-mail addresses to which replies should be addressed.
      *
      * @return the reply to
-     * @throws ServiceLocalException the service local exception
      */
-    public EmailAddressCollection getReplyTo() throws ServiceLocalException {
+    public EmailAddressCollection getReplyTo() throws ExchangeXmlException {
         return getPropertyBag().getObjectFromPropertyDefinition(
                 EmailMessageSchema.ReplyTo);
     }
@@ -558,11 +542,9 @@ public class EmailMessage extends Item {
      * Gets  the sender of the e-mail message.
      *
      * @return the sender
-     * @throws ServiceLocalException the service local exception
      */
-    public EmailAddress getSender() throws ServiceLocalException {
-        return getPropertyBag().getObjectFromPropertyDefinition(
-                EmailMessageSchema.Sender);
+    public EmailAddress getSender() throws ExchangeXmlException {
+        return getPropertyBag().getObjectFromPropertyDefinition(EmailMessageSchema.Sender);
     }
 
     /**
@@ -580,21 +562,17 @@ public class EmailMessage extends Item {
      * Gets the ReceivedBy property of the e-mail message.
      *
      * @return the received by
-     * @throws ServiceLocalException the service local exception
      */
-    public EmailAddress getReceivedBy() throws ServiceLocalException {
-        return getPropertyBag().getObjectFromPropertyDefinition(
-                EmailMessageSchema.ReceivedBy);
+    public EmailAddress getReceivedBy() throws ExchangeXmlException {
+        return getPropertyBag().getObjectFromPropertyDefinition(EmailMessageSchema.ReceivedBy);
     }
 
     /**
      * Gets the ReceivedRepresenting property of the e-mail message.
      *
      * @return the received representing
-     * @throws ServiceLocalException the service local exception
      */
-    public EmailAddress getReceivedRepresenting() throws ServiceLocalException {
-        return getPropertyBag().getObjectFromPropertyDefinition(
-                EmailMessageSchema.ReceivedRepresenting);
+    public EmailAddress getReceivedRepresenting() throws ExchangeXmlException {
+        return getPropertyBag().getObjectFromPropertyDefinition(EmailMessageSchema.ReceivedRepresenting);
     }
 }

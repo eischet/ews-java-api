@@ -27,6 +27,7 @@ import com.eischet.ews.api.core.EwsServiceXmlReader;
 import com.eischet.ews.api.core.EwsServiceXmlWriter;
 import com.eischet.ews.api.core.XmlElementNames;
 import com.eischet.ews.api.core.enumeration.misc.XmlNamespace;
+import com.eischet.ews.api.core.exception.xml.ExchangeXmlException;
 
 /**
  * Represents the complete name of a contact.
@@ -178,11 +179,9 @@ public final class CompleteName extends ComplexProperty {
      *
      * @param reader The reader.
      * @return True if element was read.
-     * @throws Exception the exception
      */
     @Override
-    public boolean tryReadElementFromXml(EwsServiceXmlReader reader)
-            throws Exception {
+    public boolean tryReadElementFromXml(EwsServiceXmlReader reader) throws ExchangeXmlException {
 
         if (reader.getLocalName().equalsIgnoreCase(XmlElementNames.Title)) {
             this.title = reader.readElementValue();
@@ -232,11 +231,9 @@ public final class CompleteName extends ComplexProperty {
      * Writes the elements to XML.
      *
      * @param writer accepts EwsServiceXmlWriter
-     * @throws Exception throws Exception
      */
     @Override
-    public void writeElementsToXml(EwsServiceXmlWriter writer)
-            throws Exception {
+    public void writeElementsToXml(EwsServiceXmlWriter writer) throws ExchangeXmlException {
         writer.writeElementValue(XmlNamespace.Types, XmlElementNames.Title,
                 this.title);
         writer.writeElementValue(XmlNamespace.Types, XmlElementNames.FirstName,

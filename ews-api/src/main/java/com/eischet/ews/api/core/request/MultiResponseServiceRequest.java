@@ -30,6 +30,7 @@ import com.eischet.ews.api.core.XmlElementNames;
 import com.eischet.ews.api.core.enumeration.misc.XmlNamespace;
 import com.eischet.ews.api.core.enumeration.service.ServiceResult;
 import com.eischet.ews.api.core.enumeration.service.error.ServiceErrorHandling;
+import com.eischet.ews.api.core.exception.service.local.ServiceVersionException;
 import com.eischet.ews.api.core.exception.service.local.ServiceXmlDeserializationException;
 import com.eischet.ews.api.core.exception.service.remote.ServiceResponseException;
 import com.eischet.ews.api.core.response.ServiceResponse;
@@ -141,9 +142,7 @@ public abstract class MultiResponseServiceRequest<TResponse extends ServiceRespo
      * @param errorHandlingMode Indicates how errors should be handled.
      * @throws Exception
      */
-    protected MultiResponseServiceRequest(ExchangeService service,
-                                          ServiceErrorHandling errorHandlingMode)
-            throws Exception {
+    protected MultiResponseServiceRequest(ExchangeService service, ServiceErrorHandling errorHandlingMode) throws ServiceVersionException {
         super(service);
         this.errorHandlingMode = errorHandlingMode;
     }

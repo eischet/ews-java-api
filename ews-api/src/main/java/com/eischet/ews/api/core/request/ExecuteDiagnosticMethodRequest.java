@@ -30,6 +30,7 @@ import com.eischet.ews.api.core.enumeration.misc.ExchangeVersion;
 import com.eischet.ews.api.core.enumeration.misc.XmlNamespace;
 import com.eischet.ews.api.core.enumeration.service.error.ServiceErrorHandling;
 import com.eischet.ews.api.core.exception.service.local.ServiceXmlSerializationException;
+import com.eischet.ews.api.core.exception.xml.ExchangeXmlException;
 import com.eischet.ews.api.core.response.ExecuteDiagnosticMethodResponse;
 import org.w3c.dom.Node;
 
@@ -72,8 +73,7 @@ public final class ExecuteDiagnosticMethodRequest extends
      * @throws ServiceXmlSerializationException
      */
     @Override
-    protected void writeElementsToXml(EwsServiceXmlWriter writer)
-            throws ServiceXmlSerializationException, XMLStreamException {
+    protected void writeElementsToXml(EwsServiceXmlWriter writer) throws ExchangeXmlException {
         writer.writeElementValue(XmlNamespace.Messages,
                 XmlElementNames.Verb, this.getVerb());
 

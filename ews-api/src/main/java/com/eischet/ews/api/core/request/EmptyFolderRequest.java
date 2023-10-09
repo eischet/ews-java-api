@@ -28,6 +28,7 @@ import com.eischet.ews.api.core.enumeration.misc.ExchangeVersion;
 import com.eischet.ews.api.core.enumeration.misc.XmlNamespace;
 import com.eischet.ews.api.core.enumeration.service.error.ServiceErrorHandling;
 import com.eischet.ews.api.core.exception.service.local.ServiceXmlSerializationException;
+import com.eischet.ews.api.core.exception.xml.ExchangeXmlException;
 import com.eischet.ews.api.core.response.ServiceResponse;
 import com.eischet.ews.api.misc.FolderIdWrapperList;
 
@@ -136,14 +137,11 @@ public final class EmptyFolderRequest extends DeleteRequest<ServiceResponse> {
      * Writes XML attribute.
      *
      * @param writer The writer.
-     * @throws ServiceXmlSerializationException
      */
     @Override
-    protected void writeAttributesToXml(EwsServiceXmlWriter writer)
-            throws ServiceXmlSerializationException {
+    protected void writeAttributesToXml(EwsServiceXmlWriter writer) throws ExchangeXmlException {
         super.writeAttributesToXml(writer);
-        writer.writeAttributeValue(XmlAttributeNames.DeleteSubFolders,
-                this.deleteSubFolders);
+        writer.writeAttributeValue(XmlAttributeNames.DeleteSubFolders, this.deleteSubFolders);
     }
 
     /**

@@ -48,7 +48,7 @@ import com.eischet.ews.api.core.exception.http.EWSHttpException;
 import com.eischet.ews.api.core.exception.misc.ArgumentException;
 import com.eischet.ews.api.core.exception.misc.FormatException;
 import com.eischet.ews.api.core.exception.service.local.ServiceLocalException;
-import com.eischet.ews.api.core.exception.service.local.ServiceValidationException;
+import com.eischet.ews.api.core.exception.service.local.ExchangeValidationException;
 import com.eischet.ews.api.core.exception.service.local.ServiceVersionException;
 import com.eischet.ews.api.http.ExchangeHttpClient;
 import com.eischet.ews.api.credential.WSSecurityBasedCredentials;
@@ -424,7 +424,7 @@ public class AutodiscoverService extends ExchangeServiceBase implements IAutodis
         List<URI> urls = this.getAutodiscoverServiceUrls(domainName, outParamInt);
         scpUrlCount = outParamInt.getParam();
         if (urls.size() == 0) {
-            throw new ServiceValidationException(
+            throw new ExchangeValidationException(
                     "This Autodiscover request requires that either the Domain or Url be specified.");
         }
 
@@ -997,7 +997,7 @@ public class AutodiscoverService extends ExchangeServiceBase implements IAutodis
                     outParam);
             scpHostCount = outParam.getParam();
             if (hosts.size() == 0) {
-                throw new ServiceValidationException(
+                throw new ExchangeValidationException(
                         "This Autodiscover request requires that either the Domain or Url be specified.");
             }
 
@@ -1698,11 +1698,11 @@ public class AutodiscoverService extends ExchangeServiceBase implements IAutodis
         requestedSettings.addAll(Arrays.asList(userSettingNames));
 
         if (userSmtpAddress == null || userSmtpAddress.isEmpty()) {
-            throw new ServiceValidationException("A valid SMTP address must be specified.");
+            throw new ExchangeValidationException("A valid SMTP address must be specified.");
         }
 
         if (requestedSettings.size() == 0) {
-            throw new ServiceValidationException("At least one setting must be requested.");
+            throw new ExchangeValidationException("At least one setting must be requested.");
         }
 
         if (this.getRequestedServerVersion().compareTo(MinimumRequestVersionForAutoDiscoverSoapService) < 0) {

@@ -23,6 +23,7 @@
 
 package com.eischet.ews.api.misc;
 
+import java.util.Objects;
 import java.util.concurrent.*;
 
 public class AsyncExecutor extends ThreadPoolExecutor implements ExecutorService {
@@ -33,10 +34,7 @@ public class AsyncExecutor extends ThreadPoolExecutor implements ExecutorService
     }
 
     public <T> Future<T> submit(Callable<T> task, AsyncCallback callback) {
-        if (task == null) {
-            throw new NullPointerException();
-        }
-        RunnableFuture<T> ftask = newTaskFor(task);
+        RunnableFuture<T> ftask = newTaskFor(Objects.requireNonNull(task));
         execute(ftask);
         if (callback != null) {
             callback.setTask(ftask);

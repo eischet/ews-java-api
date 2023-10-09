@@ -28,6 +28,7 @@ import com.eischet.ews.api.core.ExchangeService;
 import com.eischet.ews.api.core.PropertySet;
 import com.eischet.ews.api.core.XmlElementNames;
 import com.eischet.ews.api.core.enumeration.misc.ExchangeVersion;
+import com.eischet.ews.api.core.exception.xml.ExchangeXmlException;
 import com.eischet.ews.api.property.complex.ItemAttachment;
 import com.eischet.ews.api.property.complex.ItemId;
 
@@ -49,8 +50,7 @@ public class MeetingResponse extends MeetingMessage {
      * @param parentAttachment The parentAttachment
      * @throws Exception the exception
      */
-    public MeetingResponse(ItemAttachment parentAttachment)
-            throws Exception {
+    public MeetingResponse(ItemAttachment parentAttachment) throws ExchangeXmlException {
         super(parentAttachment);
     }
 
@@ -60,7 +60,7 @@ public class MeetingResponse extends MeetingMessage {
      * @param service EWS service to which this object belongs.
      * @throws Exception the exception
      */
-    public MeetingResponse(ExchangeService service) throws Exception {
+    public MeetingResponse(ExchangeService service) throws ExchangeXmlException {
         super(service);
     }
 
@@ -74,8 +74,7 @@ public class MeetingResponse extends MeetingMessage {
      * @return A MeetingResponse instance representing the meeting response
      * corresponding to the specified Id.
      */
-    public static MeetingResponse bind(ExchangeService service, ItemId id,
-                                       PropertySet propertySet) {
+    public static MeetingResponse bind(ExchangeService service, ItemId id, PropertySet propertySet) {
         try {
             return service.bindToItem(MeetingResponse.class, id, propertySet);
         } catch (Exception e) {
@@ -94,8 +93,7 @@ public class MeetingResponse extends MeetingMessage {
      * corresponding to the specified Id.
      */
     public static MeetingResponse bind(ExchangeService service, ItemId id) {
-        return MeetingResponse.bind(service, id, PropertySet
-                .getFirstClassProperties());
+        return MeetingResponse.bind(service, id, PropertySet.getFirstClassProperties());
     }
 
     /**

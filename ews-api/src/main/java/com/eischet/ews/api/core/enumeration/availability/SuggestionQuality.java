@@ -28,27 +28,23 @@ package com.eischet.ews.api.core.enumeration.availability;
  */
 public enum SuggestionQuality {
 
-    // The suggestion is excellent.
     /**
-     * The Excellent.
+     * The suggestion is excellent.
      */
     Excellent,
 
-    // The suggestion is good.
     /**
-     * The Good.
+     * The suggestion is good.
      */
     Good,
 
-    // The suggestion is fair.
     /**
-     * The Fair.
+     * The suggestion is fair.
      */
     Fair,
 
-    // The suggestion is poor.
     /**
-     * The Poor.
+     * The suggestion is poor.
      */
     Poor
 

@@ -27,10 +27,9 @@ import com.eischet.ews.api.core.EwsServiceXmlReader;
 import com.eischet.ews.api.core.EwsServiceXmlWriter;
 import com.eischet.ews.api.core.XmlElementNames;
 import com.eischet.ews.api.core.enumeration.misc.XmlNamespace;
-import com.eischet.ews.api.core.exception.service.local.ServiceValidationException;
-import com.eischet.ews.api.core.exception.service.local.ServiceXmlSerializationException;
+import com.eischet.ews.api.core.exception.service.local.ExchangeValidationException;
+import com.eischet.ews.api.core.exception.xml.ExchangeXmlException;
 
-import javax.xml.stream.XMLStreamException;
 import java.time.LocalDateTime;
 
 /**
@@ -92,7 +91,7 @@ public final class RulePredicateDateRange extends ComplexProperty {
      * @return True if element was read.
      */
     @Override
-    public boolean tryReadElementFromXml(EwsServiceXmlReader reader) throws Exception {
+    public boolean tryReadElementFromXml(EwsServiceXmlReader reader) throws ExchangeXmlException {
         if (reader.getLocalName().equalsIgnoreCase(XmlElementNames.StartDateTime)) {
             this.start = reader.readElementValueAsDateTime();
             return true;
@@ -108,11 +107,9 @@ public final class RulePredicateDateRange extends ComplexProperty {
      * Writes elements to XML.
      *
      * @param writer the writer
-     * @throws XMLStreamException the XML stream exception
      */
     @Override
-    public void writeElementsToXml(EwsServiceXmlWriter writer)
-            throws ServiceXmlSerializationException, XMLStreamException {
+    public void writeElementsToXml(EwsServiceXmlWriter writer) throws ExchangeXmlException {
         if (this.getStart() != null) {
             writer.writeElementValue(XmlNamespace.Types,
                     XmlElementNames.StartDateTime, this.getStart());
@@ -127,10 +124,10 @@ public final class RulePredicateDateRange extends ComplexProperty {
      * Validates this instance.
      */
     @Override
-    protected void internalValidate() throws Exception {
+    protected void internalValidate() throws ExchangeValidationException {
         super.internalValidate();
         if (this.start != null && this.end != null && this.start.isAfter(this.end)) {
-            throw new ServiceValidationException("Start date time cannot be bigger than end date time.");
+            throw new ExchangeValidationException("Start date time cannot be bigger than end date time.");
         }
     }
 }

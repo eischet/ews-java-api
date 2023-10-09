@@ -29,6 +29,7 @@ import com.eischet.ews.api.core.EwsUtilities;
 import com.eischet.ews.api.core.XmlElementNames;
 import com.eischet.ews.api.core.enumeration.misc.XmlNamespace;
 import com.eischet.ews.api.core.exception.service.local.ServiceXmlSerializationException;
+import com.eischet.ews.api.core.exception.xml.ExchangeXmlException;
 
 import javax.xml.stream.XMLStreamException;
 
@@ -52,9 +53,8 @@ public final class OofReply {
      *
      * @param writer         the writer
      * @param xmlElementName the xml element name
-     * @throws XMLStreamException the XML stream exception
      */
-    public static void writeEmptyReplyToXml(EwsServiceXmlWriter writer, String xmlElementName) throws XMLStreamException {
+    public static void writeEmptyReplyToXml(EwsServiceXmlWriter writer, String xmlElementName) throws ExchangeXmlException {
         writer.writeStartElement(XmlNamespace.Types, xmlElementName);
         writer.writeEndElement(); // xmlElementName
     }
@@ -104,17 +104,14 @@ public final class OofReply {
      * @param xmlElementName the xml element name
      * @throws Exception the exception
      */
-    public void loadFromXml(EwsServiceXmlReader reader, String xmlElementName)
-            throws Exception {
-        reader.ensureCurrentNodeIsStartElement(XmlNamespace.Types,
-                xmlElementName);
+    public void loadFromXml(EwsServiceXmlReader reader, String xmlElementName) throws ExchangeXmlException {
+        reader.ensureCurrentNodeIsStartElement(XmlNamespace.Types, xmlElementName);
 
         if (reader.hasAttributes()) {
             this.setCulture(reader.readAttributeValue("xml:lang"));
         }
 
-        this.message = reader.readElementValue(XmlNamespace.Types,
-                XmlElementNames.Message);
+        this.message = reader.readElementValue(XmlNamespace.Types, XmlElementNames.Message);
 
         reader.readEndElement(XmlNamespace.Types, xmlElementName);
     }
@@ -124,11 +121,8 @@ public final class OofReply {
      *
      * @param writer         the writer
      * @param xmlElementName the xml element name
-     * @throws XMLStreamException               the XML stream exception
-     * @throws ServiceXmlSerializationException the service xml serialization exception
      */
-    public void writeToXml(EwsServiceXmlWriter writer, String xmlElementName)
-            throws XMLStreamException, ServiceXmlSerializationException {
+    public void writeToXml(EwsServiceXmlWriter writer, String xmlElementName) throws ExchangeXmlException {
         writer.writeStartElement(XmlNamespace.Types, xmlElementName);
 
         if (this.culture != null) {

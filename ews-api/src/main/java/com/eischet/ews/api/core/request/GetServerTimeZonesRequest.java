@@ -31,6 +31,7 @@ import com.eischet.ews.api.core.enumeration.misc.ExchangeVersion;
 import com.eischet.ews.api.core.enumeration.misc.XmlNamespace;
 import com.eischet.ews.api.core.enumeration.service.error.ServiceErrorHandling;
 import com.eischet.ews.api.core.exception.service.local.ServiceXmlSerializationException;
+import com.eischet.ews.api.core.exception.xml.ExchangeXmlException;
 import com.eischet.ews.api.core.response.GetServerTimeZonesResponse;
 
 import javax.xml.stream.XMLStreamException;
@@ -142,17 +143,12 @@ public final class GetServerTimeZonesRequest extends
      */
     @Override
     protected void writeElementsToXml(EwsServiceXmlWriter writer)
-            throws ServiceXmlSerializationException, XMLStreamException {
+            throws ServiceXmlSerializationException, XMLStreamException, ExchangeXmlException {
         if (this.getIds() != null) {
-            writer
-                    .writeStartElement(XmlNamespace.Messages,
-                            XmlElementNames.Ids);
-
+            writer.writeStartElement(XmlNamespace.Messages, XmlElementNames.Ids);
             for (String id : this.getIds()) {
-                writer.writeElementValue(XmlNamespace.Types,
-                        XmlElementNames.Id, id);
+                writer.writeElementValue(XmlNamespace.Types, XmlElementNames.Id, id);
             }
-
             writer.writeEndElement(); // Ids
         }
     }

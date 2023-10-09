@@ -24,7 +24,7 @@
 package com.eischet.ews.api.property.complex.time;
 
 
-import com.eischet.ews.api.core.exception.service.local.ServiceLocalException;
+import com.eischet.ews.api.core.exception.service.local.ExchangeValidationException;
 import com.eischet.ews.api.util.TimeZoneUtils;
 
 import java.util.Date;
@@ -49,9 +49,9 @@ public class OlsonTimeZoneDefinition extends TimeZoneDefinition {
     }
 
     @Override
-    public void validate() throws ServiceLocalException {
+    public void validate() throws ExchangeValidationException {
         if (this.id == null) {
-            throw new ServiceLocalException("Invalid TimeZone (" + this.name + ") Specified");
+            throw new ExchangeValidationException("Invalid TimeZone (" + this.name + ") Specified");
         }
     }
 }

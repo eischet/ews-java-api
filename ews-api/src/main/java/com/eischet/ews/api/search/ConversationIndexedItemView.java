@@ -28,12 +28,10 @@ import com.eischet.ews.api.core.XmlElementNames;
 import com.eischet.ews.api.core.enumeration.misc.XmlNamespace;
 import com.eischet.ews.api.core.enumeration.search.OffsetBasePoint;
 import com.eischet.ews.api.core.enumeration.service.ServiceObjectType;
-import com.eischet.ews.api.core.exception.service.local.ServiceValidationException;
+import com.eischet.ews.api.core.exception.service.local.ExchangeValidationException;
 import com.eischet.ews.api.core.exception.service.local.ServiceVersionException;
-import com.eischet.ews.api.core.exception.service.local.ServiceXmlSerializationException;
+import com.eischet.ews.api.core.exception.xml.ExchangeXmlException;
 import com.eischet.ews.api.core.request.ServiceRequestBase;
-
-import javax.xml.stream.XMLStreamException;
 
 /**
  * Represents the view settings in a folder search operation.
@@ -42,6 +40,38 @@ public final class ConversationIndexedItemView extends PagedView {
 
     private final OrderByCollection orderBy = new OrderByCollection();
 
+
+    /**
+     * Initializes a new instance of the <see cref="ItemView"/> class.
+     *
+     * @param pageSize The maximum number of elements the search operation should return.
+     */
+    public ConversationIndexedItemView(int pageSize) {
+        super(pageSize);
+    }
+
+    /**
+     * Initializes a new instance of the ItemView class.
+     *
+     * @param pageSize The maximum number of elements the search operation should return.
+     * @param offset   The offset of the view from the base point.
+     */
+    public ConversationIndexedItemView(int pageSize, int offset) {
+        super(pageSize, offset);
+        this.setOffset(offset);
+    }
+
+    /**
+     * Initializes a new instance of the ItemView class.
+     *
+     * @param pageSize        The maximum number of elements the search operation should return.
+     * @param offset          The offset of the view from the base point.
+     * @param offsetBasePoint The base point of the offset.
+     */
+    public ConversationIndexedItemView(int pageSize, int offset, OffsetBasePoint offsetBasePoint) {
+        super(pageSize, offset, offsetBasePoint);
+
+    }
 
     /**
      * Gets the type of service object this view applies to.
@@ -79,8 +109,7 @@ public final class ConversationIndexedItemView extends PagedView {
      * @param request The request using this view.
      */
     @Override
-    public void internalValidate(ServiceRequestBase request)
-            throws ServiceVersionException, ServiceValidationException {
+    public void internalValidate(ServiceRequestBase request) throws ServiceVersionException, ExchangeValidationException {
         super.internalValidate(request);
     }
 
@@ -91,9 +120,7 @@ public final class ConversationIndexedItemView extends PagedView {
      * @param groupBy The group by.
      */
     @Override
-    protected void internalWriteSearchSettingsToXml(EwsServiceXmlWriter writer,
-                                                    Grouping groupBy) throws ServiceXmlSerializationException,
-            XMLStreamException {
+    protected void internalWriteSearchSettingsToXml(EwsServiceXmlWriter writer, Grouping groupBy) throws ExchangeXmlException {
         super.internalWriteSearchSettingsToXml(writer, groupBy);
     }
 
@@ -103,8 +130,7 @@ public final class ConversationIndexedItemView extends PagedView {
      * @param writer The writer
      */
     @Override
-    public void writeOrderByToXml(EwsServiceXmlWriter writer)
-            throws ServiceXmlSerializationException, XMLStreamException {
+    public void writeOrderByToXml(EwsServiceXmlWriter writer) throws ExchangeXmlException {
         this.orderBy.writeToXml(writer, XmlElementNames.SortOrder);
     }
 
@@ -114,47 +140,11 @@ public final class ConversationIndexedItemView extends PagedView {
      * @param writer The writer
      */
     public void writeToXml(EwsServiceXmlWriter writer) throws Exception {
-        writer.writeStartElement(XmlNamespace.Messages,
-                this.getViewXmlElementName());
+        writer.writeStartElement(XmlNamespace.Messages, this.getViewXmlElementName());
 
         this.internalWriteViewToXml(writer);
 
         writer.writeEndElement(); // this.GetViewXmlElementName()
-    }
-
-    /**
-     * Initializes a new instance of the <see cref="ItemView"/> class.
-     *
-     * @param pageSize The maximum number of elements the search operation should return.
-     */
-    public ConversationIndexedItemView(int pageSize) {
-        super(pageSize);
-    }
-
-    /**
-     * Initializes a new instance of the ItemView class.
-     *
-     * @param pageSize The maximum number of elements the search operation should return.
-     * @param offset   The offset of the view from the base point.
-     */
-    public ConversationIndexedItemView(int pageSize, int offset) {
-        super(pageSize, offset);
-        this.setOffset(offset);
-    }
-
-    /**
-     * Initializes a new instance of the ItemView class.
-     *
-     * @param pageSize        The maximum number of elements the search operation should return.
-     * @param offset          The offset of the view from the base point.
-     * @param offsetBasePoint The base point of the offset.
-     */
-    public ConversationIndexedItemView(
-            int pageSize,
-            int offset,
-            OffsetBasePoint offsetBasePoint) {
-        super(pageSize, offset, offsetBasePoint);
-
     }
 
     /**

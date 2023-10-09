@@ -28,6 +28,7 @@ import com.eischet.ews.api.core.EwsServiceXmlReader;
 import com.eischet.ews.api.core.ExchangeService;
 import com.eischet.ews.api.core.XmlElementNames;
 import com.eischet.ews.api.core.enumeration.attribute.EditorBrowsableState;
+import com.eischet.ews.api.core.exception.xml.ExchangeXmlException;
 import com.eischet.ews.api.core.service.ServiceObject;
 import com.eischet.ews.api.core.service.item.Item;
 
@@ -37,8 +38,7 @@ import java.util.List;
  * Represents the base response class for item creation operations.
  */
 @EditorBrowsable(state = EditorBrowsableState.Never)
-abstract class CreateItemResponseBase extends ServiceResponse implements
-        IGetObjectInstanceDelegate<ServiceObject> {
+abstract class CreateItemResponseBase extends ServiceResponse implements IGetObjectInstanceDelegate<ServiceObject> {
 
     /**
      * The item.
@@ -51,13 +51,8 @@ abstract class CreateItemResponseBase extends ServiceResponse implements
      * @param service        The service.
      * @param xmlElementName Name of the XML element.
      * @return Item.
-     * @throws InstantiationException the instantiation exception
-     * @throws IllegalAccessException the illegal access exception
-     * @throws Exception              the exception
      */
-    protected abstract Item getObjectInstance(ExchangeService service,
-                                              String xmlElementName) throws InstantiationException,
-            IllegalAccessException, Exception;
+    protected abstract Item getObjectInstance(ExchangeService service, String xmlElementName) throws ExchangeXmlException;
 
     /**
      * Gets the object instance delegate.
@@ -65,10 +60,9 @@ abstract class CreateItemResponseBase extends ServiceResponse implements
      * @param service        accepts ExchangeService
      * @param xmlElementName accepts String
      * @return object
-     * @throws Exception throws Exception
      */
     public ServiceObject getObjectInstanceDelegate(ExchangeService service,
-                                                   String xmlElementName) throws Exception {
+                                                   String xmlElementName) throws ExchangeXmlException {
         return this.getObjectInstance(service, xmlElementName);
     }
 

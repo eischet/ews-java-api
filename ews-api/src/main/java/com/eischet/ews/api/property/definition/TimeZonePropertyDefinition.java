@@ -28,6 +28,7 @@ import com.eischet.ews.api.core.EwsServiceXmlWriter;
 import com.eischet.ews.api.core.PropertyBag;
 import com.eischet.ews.api.core.enumeration.misc.ExchangeVersion;
 import com.eischet.ews.api.core.enumeration.property.PropertyDefinitionFlags;
+import com.eischet.ews.api.core.exception.xml.ExchangeXmlException;
 import com.eischet.ews.api.property.complex.time.TimeZoneDefinition;
 
 import java.util.EnumSet;
@@ -58,7 +59,7 @@ public class TimeZonePropertyDefinition extends PropertyDefinition {
      * @param propertyBag the property bag
      * @throws Exception the exception
      */
-    public void loadPropertyValueFromXml(EwsServiceXmlReader reader, PropertyBag propertyBag) throws Exception {
+    public void loadPropertyValueFromXml(EwsServiceXmlReader reader, PropertyBag propertyBag) throws ExchangeXmlException {
         TimeZoneDefinition timeZoneDefinition = new TimeZoneDefinition();
         timeZoneDefinition.loadFromXml(reader, this.getXmlElement());
         propertyBag.setObjectFromPropertyDefinition(this, timeZoneDefinition);
@@ -73,7 +74,7 @@ public class TimeZonePropertyDefinition extends PropertyDefinition {
      * @throws Exception the exception
      */
     public void writePropertyValueToXml(EwsServiceXmlWriter writer, PropertyBag propertyBag,
-                                        boolean isUpdateOperation) throws Exception {
+                                        boolean isUpdateOperation) throws ExchangeXmlException {
         TimeZoneDefinition timeZoneDefinition = propertyBag.getObjectFromPropertyDefinition(this);
 
         if (timeZoneDefinition != null) {

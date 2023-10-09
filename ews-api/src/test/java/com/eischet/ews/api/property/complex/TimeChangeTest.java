@@ -21,6 +21,7 @@
 package com.eischet.ews.api.property.complex;
 
 import com.eischet.ews.api.core.EwsUtilities;
+import com.eischet.ews.api.core.exception.misc.ArgumentException;
 import com.eischet.ews.api.misc.Time;
 import com.eischet.ews.api.util.DateTimeUtils;
 import org.junit.Assert;
@@ -75,7 +76,7 @@ public class TimeChangeTest {
         testDate(date_fail3);
     }
 
-    private String testTime(String value) {
+    private String testTime(String value) throws ArgumentException {
         // Calendar cal = DatatypeConverter.parseTime(value);
         // Time time = new Time(cal.getTime());
         System.out.println("parsing: " + value);
@@ -92,18 +93,18 @@ public class TimeChangeTest {
     }
      */
 
-    @Test(expected = IllegalArgumentException.class)
-    public void testTimeFail2() {
+    @Test(expected = ArgumentException.class)
+    public void testTimeFail2() throws ArgumentException {
         testTime(time_fail2);
     }
 
-    @Test(expected = IllegalArgumentException.class)
-    public void testTimeFail3() {
+    @Test(expected = ArgumentException.class)
+    public void testTimeFail3() throws ArgumentException {
         testTime(time_fail3);
     }
 
     @Test
-    public void testTimeValues() {
+    public void testTimeValues() throws ArgumentException {
         Assert.assertEquals("{0:00}:{1:00}:{2:00},3,0,0", testTime(time));
     }
 

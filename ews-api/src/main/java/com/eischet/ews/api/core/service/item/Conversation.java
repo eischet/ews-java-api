@@ -36,6 +36,7 @@ import com.eischet.ews.api.core.enumeration.service.calendar.AffectedTaskOccurre
 import com.eischet.ews.api.core.exception.misc.ArgumentException;
 import com.eischet.ews.api.core.exception.service.local.ServiceLocalException;
 import com.eischet.ews.api.core.exception.service.remote.ServiceResponseException;
+import com.eischet.ews.api.core.exception.xml.ExchangeXmlException;
 import com.eischet.ews.api.core.service.ServiceObject;
 import com.eischet.ews.api.core.service.schema.ConversationSchema;
 import com.eischet.ews.api.core.service.schema.ServiceObjectSchema;
@@ -64,7 +65,7 @@ public class Conversation extends ServiceObject {
      *                The ExchangeService object to which the item will be bound.
      * @throws Exception
      */
-    public Conversation(ExchangeService service) throws Exception {
+    public Conversation(ExchangeService service) throws ExchangeXmlException {
         super(service);
     }
 
@@ -437,9 +438,8 @@ public class Conversation extends ServiceObject {
      * Gets the Id of this Conversation.
      *
      * @return Id
-     * @throws ServiceLocalException
      */
-    public ConversationId getId() throws ServiceLocalException {
+    public ConversationId getId() throws ExchangeXmlException {
         return getPropertyBag().getObjectFromPropertyDefinition(
                 getIdPropertyDefinition());
     }
@@ -694,9 +694,8 @@ public class Conversation extends ServiceObject {
      * conversation, in the current folder only, has an attachment.
      *
      * @return Value
-     * @throws ServiceLocalException
      */
-    public boolean getHasAttachments() throws ServiceLocalException {
+    public boolean getHasAttachments() throws ExchangeXmlException {
         return getPropertyBag().<Boolean>getObjectFromPropertyDefinition(ConversationSchema.HasAttachments);
     }
 
@@ -706,9 +705,8 @@ public class Conversation extends ServiceObject {
      * has an attachment.
      *
      * @return boolean
-     * @throws ServiceLocalException
      */
-    public boolean getGlobalHasAttachments() throws ServiceLocalException {
+    public boolean getGlobalHasAttachments() throws ExchangeXmlException {
         return getPropertyBag().<Boolean>getObjectFromPropertyDefinition(
                 ConversationSchema.GlobalHasAttachments);
     }
@@ -718,9 +716,8 @@ public class Conversation extends ServiceObject {
      * in the current folder only.
      *
      * @return integer
-     * @throws ServiceLocalException
      */
-    public int getMessageCount() throws ServiceLocalException {
+    public int getMessageCount() throws ExchangeXmlException {
         return getPropertyBag().<Integer>getObjectFromPropertyDefinition(
                 ConversationSchema.MessageCount);
     }
@@ -730,9 +727,8 @@ public class Conversation extends ServiceObject {
      * conversation across all folder in the mailbox.
      *
      * @return integer
-     * @throws ServiceLocalException
      */
-    public int getGlobalMessageCount() throws ServiceLocalException {
+    public int getGlobalMessageCount() throws ExchangeXmlException {
         return getPropertyBag().<Integer>getObjectFromPropertyDefinition(
                 ConversationSchema.GlobalMessageCount);
     }
@@ -790,9 +786,8 @@ public class Conversation extends ServiceObject {
      * the current folder only.
      *
      * @return integer
-     * @throws ServiceLocalException
      */
-    public int getSize() throws ServiceLocalException {
+    public int getSize() throws ExchangeXmlException {
         return getPropertyBag().<Integer>getObjectFromPropertyDefinition(
                 ConversationSchema.Size);
     }
@@ -803,9 +798,8 @@ public class Conversation extends ServiceObject {
      * across all folder in the mailbox.
      *
      * @return integer
-     * @throws ServiceLocalException
      */
-    public int getGlobalSize() throws ServiceLocalException {
+    public int getGlobalSize() throws ExchangeXmlException {
         return getPropertyBag().<Integer>getObjectFromPropertyDefinition(
                 ConversationSchema.GlobalSize);
     }

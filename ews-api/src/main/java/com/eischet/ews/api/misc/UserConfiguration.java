@@ -32,6 +32,7 @@ import com.eischet.ews.api.core.exception.misc.InvalidOperationException;
 import com.eischet.ews.api.core.exception.service.local.PropertyException;
 import com.eischet.ews.api.core.exception.service.local.ServiceVersionException;
 import com.eischet.ews.api.core.exception.service.local.ServiceXmlSerializationException;
+import com.eischet.ews.api.core.exception.xml.ExchangeXmlException;
 import com.eischet.ews.api.property.complex.FolderId;
 import com.eischet.ews.api.property.complex.ItemId;
 import com.eischet.ews.api.property.complex.UserConfigurationDictionary;
@@ -102,11 +103,9 @@ public class UserConfiguration {
      * @param writer         the writer
      * @param byteArray      byte array to write
      * @param xmlElementName name of the Xml element
-     * @throws XMLStreamException               the XML stream exception
-     * @throws ServiceXmlSerializationException the service xml serialization exception
      */
     private static void writeByteArrayToXml(EwsServiceXmlWriter writer,
-                                            byte[] byteArray, String xmlElementName) throws XMLStreamException, ServiceXmlSerializationException {
+                                            byte[] byteArray, String xmlElementName) throws ExchangeXmlException {
         EwsUtilities.ewsAssert(writer != null, "UserConfiguration.WriteByteArrayToXml", "writer is null");
         EwsUtilities.ewsAssert(xmlElementName != null, "UserConfiguration.WriteByteArrayToXml",
                 "xmlElementName is null");
@@ -502,7 +501,7 @@ public class UserConfiguration {
      * @throws ServiceXmlSerializationException the service xml serialization exception
      */
     private void writeXmlDataToXml(EwsServiceXmlWriter writer)
-            throws XMLStreamException, ServiceXmlSerializationException {
+            throws XMLStreamException, ServiceXmlSerializationException, ExchangeXmlException {
         EwsUtilities.ewsAssert(writer != null, "UserConfiguration.WriteXmlDataToXml", "writer is null");
 
         writeByteArrayToXml(writer, this.xmlData, XmlElementNames.XmlData);
@@ -516,7 +515,7 @@ public class UserConfiguration {
      * @throws ServiceXmlSerializationException the service xml serialization exception
      */
     private void writeBinaryDataToXml(EwsServiceXmlWriter writer)
-            throws XMLStreamException, ServiceXmlSerializationException {
+            throws XMLStreamException, ServiceXmlSerializationException, ExchangeXmlException {
         EwsUtilities.ewsAssert(writer != null, "UserConfiguration.WriteBinaryDataToXml", "writer is null");
 
         writeByteArrayToXml(writer, this.binaryData,

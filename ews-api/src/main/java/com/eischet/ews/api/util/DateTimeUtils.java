@@ -23,11 +23,11 @@
 
 package com.eischet.ews.api.util;
 
+import com.eischet.ews.api.core.exception.misc.ArgumentException;
+
 import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
-import java.util.HashSet;
-import java.util.Set;
 import java.util.logging.Logger;
 
 public final class DateTimeUtils {
@@ -94,14 +94,14 @@ public final class DateTimeUtils {
         throw new IllegalArgumentException("cannot parse as datetime: '" + value + "'");
     }
 
-    public static LocalTime parseTime(final String value) {
+    public static LocalTime parseTime(final String value) throws ArgumentException {
         //if (value == null || value.isBlank()) {
         //    return null;
         //}
         try {
             return LocalTime.parse(value);
         } catch (DateTimeParseException e) {
-            throw new IllegalArgumentException("cannot parse '" + value + "' as a LocalTime", e);
+            throw new ArgumentException("cannot parse '" + value + "' as a LocalTime", e);
         }
         // return null; // TODO: parse it
     }

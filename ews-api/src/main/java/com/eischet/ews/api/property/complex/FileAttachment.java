@@ -29,8 +29,9 @@ import com.eischet.ews.api.core.EwsUtilities;
 import com.eischet.ews.api.core.XmlElementNames;
 import com.eischet.ews.api.core.enumeration.misc.ExchangeVersion;
 import com.eischet.ews.api.core.enumeration.misc.XmlNamespace;
-import com.eischet.ews.api.core.exception.service.local.ServiceValidationException;
+import com.eischet.ews.api.core.exception.service.local.ExchangeValidationException;
 import com.eischet.ews.api.core.exception.service.local.ServiceVersionException;
+import com.eischet.ews.api.core.exception.xml.ExchangeXmlException;
 import com.eischet.ews.api.core.service.item.Item;
 import com.eischet.ews.api.util.IOUtils;
 
@@ -88,10 +89,10 @@ public final class FileAttachment extends Attachment {
      * {@inheritDoc}
      */
     @Override
-    protected void validate(int attachmentIndex) throws ServiceValidationException {
+    protected void validate(int attachmentIndex) throws ExchangeValidationException {
         if ((this.fileName == null || this.fileName.isEmpty())
                 && this.content == null && this.contentStream == null) {
-            throw new ServiceValidationException(String.format(
+            throw new ExchangeValidationException(String.format(
                     "The content of the file attachment at index %d must be set.",
                     attachmentIndex));
         }
@@ -102,11 +103,9 @@ public final class FileAttachment extends Attachment {
      *
      * @param reader the reader
      * @return True if element was read.
-     * @throws Exception the exception
      */
     @Override
-    public boolean tryReadElementFromXml(EwsServiceXmlReader reader)
-            throws Exception {
+    public boolean tryReadElementFromXml(EwsServiceXmlReader reader) throws ExchangeXmlException {
         boolean result = super.tryReadElementFromXml(reader);
 
         if (!result) {
@@ -114,7 +113,7 @@ public final class FileAttachment extends Attachment {
                 this.isContactPhoto = reader.readElementValue(Boolean.class);
             } else if (reader.getLocalName().equals(XmlElementNames.Content)) {
                 if (this.loadToStream != null) {
-                    reader.readBase64ElementValue(this.loadToStream);
+                    reader.writeBase64ElementValue(this.loadToStream);
                 } else {
                     // If there's a file attachment content handler, use it.
                     // Otherwise
@@ -126,12 +125,12 @@ public final class FileAttachment extends Attachment {
                                 .getFileAttachmentContentHandler()
                                 .getOutputStream(getId());
                         if (outputStream != null) {
-                            reader.readBase64ElementValue(outputStream);
+                            reader.writeBase64ElementValue(outputStream);
                         } else {
-                            this.content = reader.readBase64ElementValue();
+                            this.content = reader.writeBase64ElementValue();
                         }
                     } else {
-                        this.content = reader.readBase64ElementValue();
+                        this.content = reader.writeBase64ElementValue();
                     }
                 }
 
@@ -150,7 +149,7 @@ public final class FileAttachment extends Attachment {
      * @return true if element was read
      */
     @Override
-    public boolean tryReadElementFromXmlToPatch(EwsServiceXmlReader reader) throws Exception {
+    public boolean tryReadElementFromXmlToPatch(EwsServiceXmlReader reader) throws ExchangeXmlException {
         return super.tryReadElementFromXml(reader);
     }
 
@@ -159,11 +158,9 @@ public final class FileAttachment extends Attachment {
      * Writes elements and content to XML.
      *
      * @param writer the writer
-     * @throws Exception the exception
      */
     @Override
-    public void writeElementsToXml(EwsServiceXmlWriter writer)
-            throws Exception {
+    public void writeElementsToXml(EwsServiceXmlWriter writer) throws ExchangeXmlException {
         super.writeElementsToXml(writer);
         // ExchangeVersion ev=writer.getService().getRequestedServerVersion();
         if (writer.getService().getRequestedServerVersion().ordinal() >
@@ -176,15 +173,19 @@ public final class FileAttachment extends Attachment {
         writer.writeStartElement(XmlNamespace.Types, XmlElementNames.Content);
 
         if (!(this.fileName == null || this.fileName.isEmpty())) {
-            File fileStream = new File(this.fileName);
-            FileInputStream fis = null;
             try {
-                fis = new FileInputStream(fileStream);
-                writer.writeBase64ElementValue(fis);
-            } finally {
-                if (fis != null) {
-                    fis.close();
+                File fileStream = new File(this.fileName);
+                FileInputStream fis = null;
+                try {
+                    fis = new FileInputStream(fileStream);
+                    writer.writeBase64ElementValue(fis);
+                } finally {
+                    if (fis != null) {
+                        fis.close();
+                    }
                 }
+            } catch (IOException e) {
+                throw new ExchangeXmlException("error reading file " + this.fileName + " as a file attachment", e);
             }
 
         } else if (this.contentStream != null) {
@@ -315,9 +316,8 @@ public final class FileAttachment extends Attachment {
      * @return true, if is contact photo
      * @throws ServiceVersionException the service version exception
      */
-    public boolean isContactPhoto() throws ServiceVersionException {
-        EwsUtilities.validatePropertyVersion(this.getOwner().getService(),
-                ExchangeVersion.Exchange2010, "IsContactPhoto");
+    public boolean isContactPhoto() throws ExchangeXmlException {
+        EwsUtilities.validatePropertyVersion(this.getOwner().getService(), ExchangeVersion.Exchange2010, "IsContactPhoto");
         return this.isContactPhoto;
     }
 
@@ -328,7 +328,7 @@ public final class FileAttachment extends Attachment {
      * @throws ServiceVersionException the service version exception
      */
     public void setIsContactPhoto(boolean isContactPhoto)
-            throws ServiceVersionException {
+            throws ExchangeXmlException {
         EwsUtilities.validatePropertyVersion(this.getOwner().getService(),
                 ExchangeVersion.Exchange2010, "IsContactPhoto");
         this.throwIfThisIsNotNew();

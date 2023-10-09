@@ -31,6 +31,7 @@ import com.eischet.ews.api.core.enumeration.misc.ExchangeVersion;
 import com.eischet.ews.api.core.enumeration.misc.XmlNamespace;
 import com.eischet.ews.api.core.enumeration.property.PropertyDefinitionFlags;
 import com.eischet.ews.api.core.enumeration.service.EffectiveRights;
+import com.eischet.ews.api.core.exception.xml.ExchangeXmlException;
 
 import java.util.EnumSet;
 
@@ -47,8 +48,7 @@ public final class EffectiveRightsPropertyDefinition extends PropertyDefinition 
      * @param flags          the flags
      * @param version        the version
      */
-    public EffectiveRightsPropertyDefinition(String xmlElementName, String uri,
-                                             EnumSet<PropertyDefinitionFlags> flags, ExchangeVersion version) {
+    public EffectiveRightsPropertyDefinition(String xmlElementName, String uri, EnumSet<PropertyDefinitionFlags> flags, ExchangeVersion version) {
         super(xmlElementName, uri, flags, version);
 
     }
@@ -58,14 +58,12 @@ public final class EffectiveRightsPropertyDefinition extends PropertyDefinition 
      *
      * @param reader      the reader
      * @param propertyBag the property bag
-     * @throws Exception the exception
      */
-    public void loadPropertyValueFromXml(EwsServiceXmlReader reader, PropertyBag propertyBag) throws Exception {
+    public void loadPropertyValueFromXml(EwsServiceXmlReader reader, PropertyBag propertyBag) throws ExchangeXmlException {
         EnumSet<EffectiveRights> value = EnumSet.noneOf(EffectiveRights.class);
         value.add(EffectiveRights.None);
 
-        reader.ensureCurrentNodeIsStartElement(XmlNamespace.Types, this
-                .getXmlElement());
+        reader.ensureCurrentNodeIsStartElement(XmlNamespace.Types, this.getXmlElement());
 
         if (!reader.isEmptyElement()) {
             do {
@@ -73,32 +71,27 @@ public final class EffectiveRightsPropertyDefinition extends PropertyDefinition 
 
                 if (reader.isStartElement()) {
 
-                    if (reader.getLocalName().equals(
-                            XmlElementNames.CreateAssociated)) {
+                    if (reader.getLocalName().equals(XmlElementNames.CreateAssociated)) {
 
                         if (reader.readElementValue(Boolean.class)) {
                             value.add(EffectiveRights.CreateAssociated);
                         }
-                    } else if (reader.getLocalName().equals(
-                            XmlElementNames.CreateContents)) {
+                    } else if (reader.getLocalName().equals(XmlElementNames.CreateContents)) {
 
                         if (reader.readElementValue(Boolean.class)) {
                             value.add(EffectiveRights.CreateContents);
                         }
-                    } else if (reader.getLocalName().equals(
-                            XmlElementNames.CreateHierarchy)) {
+                    } else if (reader.getLocalName().equals(XmlElementNames.CreateHierarchy)) {
 
                         if (reader.readElementValue(Boolean.class)) {
                             value.add(EffectiveRights.CreateHierarchy);
                         }
-                    } else if (reader.getLocalName().equals(
-                            XmlElementNames.Delete)) {
+                    } else if (reader.getLocalName().equals(XmlElementNames.Delete)) {
 
                         if (reader.readElementValue(Boolean.class)) {
                             value.add(EffectiveRights.Delete);
                         }
-                    } else if (reader.getLocalName().equals(
-                            XmlElementNames.Modify)) {
+                    } else if (reader.getLocalName().equals(XmlElementNames.Modify)) {
 
                         if (reader.readElementValue(Boolean.class)) {
                             value.add(EffectiveRights.Modify);
@@ -115,8 +108,7 @@ public final class EffectiveRightsPropertyDefinition extends PropertyDefinition 
                     }
                 }
 
-            } while (!reader.isEndElement(XmlNamespace.Types, this
-                    .getXmlElement()));
+            } while (!reader.isEndElement(XmlNamespace.Types, this.getXmlElement()));
         }
         propertyBag.setObjectFromPropertyDefinition(this, value);
     }
@@ -128,8 +120,7 @@ public final class EffectiveRightsPropertyDefinition extends PropertyDefinition 
      * @param propertyBag       the property bag
      * @param isUpdateOperation the is update operation
      */
-    public void writePropertyValueToXml(EwsServiceXmlWriter writer, PropertyBag propertyBag,
-                                        boolean isUpdateOperation) {
+    public void writePropertyValueToXml(EwsServiceXmlWriter writer, PropertyBag propertyBag, boolean isUpdateOperation) {
         // EffectiveRights is a read-only property, no need to implement this.
     }
 

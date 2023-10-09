@@ -29,7 +29,9 @@ import com.eischet.ews.api.core.LazyMember;
 import com.eischet.ews.api.core.exception.misc.ArgumentException;
 import com.eischet.ews.api.core.exception.misc.ArgumentNullException;
 import com.eischet.ews.api.core.exception.misc.FormatException;
+import com.eischet.ews.api.core.exception.service.local.ExchangeValidationException;
 import com.eischet.ews.api.core.exception.service.local.ServiceXmlDeserializationException;
+import com.eischet.ews.api.core.exception.xml.ExchangeXmlException;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -125,9 +127,8 @@ public class MapiTypeConverterMapEntry {
      *
      * @param value The value.
      * @return New value.
-     * @throws Exception the exception
      */
-    public Object changeType(Object value) throws Exception {
+    public Object changeType(Object value) throws ExchangeValidationException {
         if (this.getIsArray()) {
             this.validateValueAsArray(value);
             return value;
@@ -142,7 +143,11 @@ public class MapiTypeConverterMapEntry {
                 } else if (this.getType().isInstance(new Date())) {
                     DateFormat df = new SimpleDateFormat(
                             "yyyy-MM-dd'T'HH:mm:ss'Z'");
-                    return df.parse(value + "");
+                    try {
+                        return df.parse(value + "");
+                    } catch (ParseException e) {
+                        throw new ExchangeValidationException("error parsing as date value: " + value, e);
+                    }
                 } else if (this.getType().isInstance(Boolean.valueOf(false))) {
                     Object o = null;
                     o = Boolean.parseBoolean(value + "");
@@ -169,14 +174,11 @@ public class MapiTypeConverterMapEntry {
      * @throws ServiceXmlDeserializationException the service xml deserialization exception
      * @throws FormatException                    the format exception
      */
-    public Object convertToValue(String stringValue)
-            throws ServiceXmlDeserializationException, FormatException {
+    public Object convertToValue(String stringValue) throws ExchangeXmlException {
         try {
             return this.getParse().func(stringValue);
         } catch (ClassCastException | NumberFormatException ex) {
-            throw new ServiceXmlDeserializationException(String
-                    .format("The value '%s' couldn't be converted to type %s.", stringValue, this
-                            .getType()), ex);
+            throw new ExchangeXmlException(String.format("The value '%s' couldn't be converted to type %s.", stringValue, this.getType()), ex);
         }
 
     }
@@ -186,11 +188,8 @@ public class MapiTypeConverterMapEntry {
      *
      * @param stringValue to convert to a value.
      * @return Value.
-     * @throws FormatException
-     * @throws ServiceXmlDeserializationException
      */
-    public Object convertToValueOrDefault(final String stringValue)
-            throws ServiceXmlDeserializationException, FormatException {
+    public Object convertToValueOrDefault(final String stringValue) throws ExchangeXmlException {
         return (stringValue != null && !stringValue.isEmpty())
                 ? getDefaultValue() : convertToValue(stringValue);
     }

@@ -33,7 +33,8 @@ import com.eischet.ews.api.core.enumeration.property.time.DayOfTheWeekIndex;
 import com.eischet.ews.api.core.enumeration.property.time.Month;
 import com.eischet.ews.api.core.exception.misc.ArgumentException;
 import com.eischet.ews.api.core.exception.misc.ArgumentOutOfRangeException;
-import com.eischet.ews.api.core.exception.service.local.ServiceValidationException;
+import com.eischet.ews.api.core.exception.service.local.ExchangeValidationException;
+import com.eischet.ews.api.core.exception.xml.ExchangeXmlException;
 import com.eischet.ews.api.property.complex.ComplexProperty;
 import com.eischet.ews.api.property.complex.IComplexPropertyChangedDelegate;
 import com.eischet.ews.api.property.complex.recurrence.DayOfTheWeekCollection;
@@ -104,18 +105,16 @@ public abstract class Recurrence extends ComplexProperty {
      * @param writer the writer
      * @throws Exception the exception
      */
-    public void internalWritePropertiesToXml(EwsServiceXmlWriter writer) throws Exception {
+    public void internalWritePropertiesToXml(EwsServiceXmlWriter writer) throws ExchangeXmlException {
     }
 
     /**
      * Writes elements to XML.
      *
      * @param writer the writer
-     * @throws Exception the exception
      */
     @Override
-    public final void writeElementsToXml(EwsServiceXmlWriter writer)
-            throws Exception {
+    public final void writeElementsToXml(EwsServiceXmlWriter writer) throws ExchangeXmlException {
         writer.writeStartElement(XmlNamespace.Types, this.getXmlElementName());
         this.internalWritePropertiesToXml(writer);
         writer.writeEndElement();
@@ -147,16 +146,13 @@ public abstract class Recurrence extends ComplexProperty {
      * @param value the value
      * @param name  the name
      * @return Property value
-     * @throws ServiceValidationException the service validation exception
+     * @throws ExchangeValidationException the service validation exception
      */
-    public <T> T getFieldValueOrThrowIfNull(Class<T> cls, Object value,
-                                            String name) throws ServiceValidationException {
+    public <T> T getFieldValueOrThrowIfNull(Class<T> cls, Object value, String name) throws ExchangeValidationException {
         if (value != null) {
             return (T) value;
         } else {
-            throw new ServiceValidationException(String.format(
-                    "The recurrence pattern's %s property must be specified.",
-                    name));
+            throw new ExchangeValidationException(String.format("The recurrence pattern's %s property must be specified.", name));
         }
     }
 
@@ -164,11 +160,10 @@ public abstract class Recurrence extends ComplexProperty {
      * Gets the date and time when the recurrence start.
      *
      * @return Date
-     * @throws ServiceValidationException the service validation exception
+     * @throws ExchangeValidationException the service validation exception
      */
-    public LocalDate getStartDate() throws ServiceValidationException {
-        return this.getFieldValueOrThrowIfNull(LocalDate.class, this.startDate,
-                "StartDate");
+    public LocalDate getStartDate() throws ExchangeValidationException {
+        return this.getFieldValueOrThrowIfNull(LocalDate.class, this.startDate, "StartDate");
 
     }
 
@@ -205,14 +200,12 @@ public abstract class Recurrence extends ComplexProperty {
     /**
      * Validates this instance.
      *
-     * @throws Exception
      */
     @Override
-    public void internalValidate() throws Exception {
+    public void internalValidate() throws ExchangeValidationException {
         super.internalValidate();
-
         if (this.startDate == null) {
-            throw new ServiceValidationException("The recurrence pattern's StartDate property must be specified.");
+            throw new ExchangeValidationException("The recurrence pattern's StartDate property must be specified.");
         }
     }
 
@@ -224,7 +217,6 @@ public abstract class Recurrence extends ComplexProperty {
      */
     public Integer getNumberOfOccurrences() {
         return this.numberOfOccurrences;
-
     }
 
     /**
@@ -407,10 +399,9 @@ public abstract class Recurrence extends ComplexProperty {
          * Write property to XML.
          *
          * @param writer the writer
-         * @throws Exception the exception
          */
         @Override
-        public void internalWritePropertiesToXml(EwsServiceXmlWriter writer) throws Exception {
+        public void internalWritePropertiesToXml(EwsServiceXmlWriter writer) throws ExchangeXmlException {
             super.internalWritePropertiesToXml(writer);
 
             writer.writeElementValue(XmlNamespace.Types,
@@ -422,11 +413,9 @@ public abstract class Recurrence extends ComplexProperty {
          *
          * @param reader the reader
          * @return true, if successful
-         * @throws Exception the exception
          */
         @Override
-        public boolean tryReadElementFromXml(EwsServiceXmlReader reader)
-                throws Exception {
+        public boolean tryReadElementFromXml(EwsServiceXmlReader reader) throws ExchangeXmlException {
             if (super.tryReadElementFromXml(reader)) {
                 return true;
             } else {
@@ -522,15 +511,15 @@ public abstract class Recurrence extends ComplexProperty {
          * Write property to XML.
          *
          * @param writer the writer
-         * @throws Exception the exception
          */
         @Override
-        public void internalWritePropertiesToXml(EwsServiceXmlWriter writer)
-                throws Exception {
+        public void internalWritePropertiesToXml(EwsServiceXmlWriter writer) throws ExchangeXmlException {
             super.internalWritePropertiesToXml(writer);
-
-            writer.writeElementValue(XmlNamespace.Types,
-                    XmlElementNames.DayOfMonth, this.getDayOfMonth());
+            try {
+                writer.writeElementValue(XmlNamespace.Types, XmlElementNames.DayOfMonth, this.getDayOfMonth());
+            } catch (ExchangeValidationException e) {
+                throw new ExchangeXmlException("invalid day of month " + this.getDayOfMonth(), e);
+            }
         }
 
         /**
@@ -538,11 +527,9 @@ public abstract class Recurrence extends ComplexProperty {
          *
          * @param reader the reader
          * @return True if appropriate element was read.
-         * @throws Exception the exception
          */
         @Override
-        public boolean tryReadElementFromXml(EwsServiceXmlReader reader)
-                throws Exception {
+        public boolean tryReadElementFromXml(EwsServiceXmlReader reader) throws ExchangeXmlException {
             if (super.tryReadElementFromXml(reader)) {
                 return true;
             } else {
@@ -558,14 +545,13 @@ public abstract class Recurrence extends ComplexProperty {
         /**
          * Validates this instance.
          *
-         * @throws Exception
          */
         @Override
-        public void internalValidate() throws Exception {
+        public void internalValidate() throws ExchangeValidationException {
             super.internalValidate();
 
             if (this.dayOfMonth == null) {
-                throw new ServiceValidationException("DayOfMonth must be between 1 and 31.");
+                throw new ExchangeValidationException("DayOfMonth must be between 1 and 31.");
             }
         }
 
@@ -573,9 +559,9 @@ public abstract class Recurrence extends ComplexProperty {
          * Gets the day of month.
          *
          * @return the day of month
-         * @throws ServiceValidationException the service validation exception
+         * @throws ExchangeValidationException the service validation exception
          */
-        public int getDayOfMonth() throws ServiceValidationException {
+        public int getDayOfMonth() throws ExchangeValidationException {
             return this.getFieldValueOrThrowIfNull(Integer.class, this.dayOfMonth,
                     "DayOfMonth");
 
@@ -624,8 +610,7 @@ public abstract class Recurrence extends ComplexProperty {
          * @param interval  the interval
          * @throws ArgumentOutOfRangeException the argument out of range exception
          */
-        public MonthlyRegenerationPattern(LocalDate startDate, int interval)
-                throws ArgumentOutOfRangeException {
+        public MonthlyRegenerationPattern(LocalDate startDate, int interval) throws ArgumentOutOfRangeException {
             super(startDate, interval);
 
         }
@@ -710,11 +695,9 @@ public abstract class Recurrence extends ComplexProperty {
          * Write property to XML.
          *
          * @param writer the writer
-         * @throws Exception the exception
          */
         @Override
-        public void internalWritePropertiesToXml(EwsServiceXmlWriter writer)
-                throws Exception {
+        public void internalWritePropertiesToXml(EwsServiceXmlWriter writer) throws ExchangeXmlException {
             super.internalWritePropertiesToXml(writer);
 
             writer.writeElementValue(XmlNamespace.Types,
@@ -731,11 +714,9 @@ public abstract class Recurrence extends ComplexProperty {
          *
          * @param reader the reader
          * @return True if appropriate element was read.
-         * @throws Exception the exception
          */
         @Override
-        public boolean tryReadElementFromXml(EwsServiceXmlReader reader)
-                throws Exception {
+        public boolean tryReadElementFromXml(EwsServiceXmlReader reader) throws ExchangeXmlException {
             if (super.tryReadElementFromXml(reader)) {
                 return true;
             } else {
@@ -760,19 +741,18 @@ public abstract class Recurrence extends ComplexProperty {
         /**
          * Validates this instance.
          *
-         * @throws Exception
          */
         @Override
-        public void internalValidate() throws Exception {
+        public void internalValidate() throws ExchangeValidationException {
             super.internalValidate();
 
             if (this.dayOfTheWeek == null) {
-                throw new ServiceValidationException(
+                throw new ExchangeValidationException(
                         "The recurrence pattern's property DayOfTheWeek must be specified.");
             }
 
             if (this.dayOfTheWeekIndex == null) {
-                throw new ServiceValidationException(
+                throw new ExchangeValidationException(
                         "The recurrence pattern's DayOfWeekIndex property must be specified.");
             }
         }
@@ -781,10 +761,10 @@ public abstract class Recurrence extends ComplexProperty {
          * Day of the week index.
          *
          * @return the day of the week index
-         * @throws ServiceValidationException the service validation exception
+         * @throws ExchangeValidationException the service validation exception
          */
         public DayOfTheWeekIndex getDayOfTheWeekIndex()
-                throws ServiceValidationException {
+                throws ExchangeValidationException {
             return this.getFieldValueOrThrowIfNull(DayOfTheWeekIndex.class,
                     this.dayOfTheWeekIndex, "DayOfTheWeekIndex");
         }
@@ -806,12 +786,10 @@ public abstract class Recurrence extends ComplexProperty {
          * Gets the day of the week.
          *
          * @return the day of the week
-         * @throws ServiceValidationException the service validation exception
+         * @throws ExchangeValidationException the service validation exception
          */
-        public DayOfTheWeek getDayOfTheWeek()
-                throws ServiceValidationException {
-            return this.getFieldValueOrThrowIfNull(DayOfTheWeek.class,
-                    this.dayOfTheWeek, "DayOfTheWeek");
+        public DayOfTheWeek getDayOfTheWeek() throws ExchangeValidationException {
+            return this.getFieldValueOrThrowIfNull(DayOfTheWeek.class, this.dayOfTheWeek, "DayOfTheWeek");
 
         }
 
@@ -865,11 +843,9 @@ public abstract class Recurrence extends ComplexProperty {
          * Write property to XML.
          *
          * @param writer the writer
-         * @throws Exception the exception
          */
         @Override
-        public void internalWritePropertiesToXml(EwsServiceXmlWriter writer)
-                throws Exception {
+        public void internalWritePropertiesToXml(EwsServiceXmlWriter writer) throws ExchangeXmlException {
             super.internalWritePropertiesToXml(writer);
 
             writer.writeElementValue(XmlNamespace.Types,
@@ -887,11 +863,9 @@ public abstract class Recurrence extends ComplexProperty {
          *
          * @param reader the reader
          * @return True if element was read.
-         * @throws Exception the exception
          */
         @Override
-        public boolean tryReadElementFromXml(EwsServiceXmlReader reader)
-                throws Exception {
+        public boolean tryReadElementFromXml(EwsServiceXmlReader reader) throws ExchangeXmlException {
             if (super.tryReadElementFromXml(reader)) {
                 return true;
             } else {
@@ -946,24 +920,23 @@ public abstract class Recurrence extends ComplexProperty {
         /**
          * Validates this instance.
          *
-         * @throws Exception
          */
         @Override
-        public void internalValidate() throws Exception {
+        public void internalValidate() throws ExchangeValidationException {
             super.internalValidate();
 
             if (this.dayOfTheWeekIndex == null) {
-                throw new ServiceValidationException(
+                throw new ExchangeValidationException(
                         "The recurrence pattern's DayOfWeekIndex property must be specified.");
             }
 
             if (this.dayOfTheWeek == null) {
-                throw new ServiceValidationException(
+                throw new ExchangeValidationException(
                         "The recurrence pattern's property DayOfTheWeek must be specified.");
             }
 
             if (this.month == null) {
-                throw new ServiceValidationException("The recurrence pattern's Month property must be specified.");
+                throw new ExchangeValidationException("The recurrence pattern's Month property must be specified.");
             }
         }
 
@@ -972,10 +945,10 @@ public abstract class Recurrence extends ComplexProperty {
          * within the month.
          *
          * @return the day of the week index
-         * @throws ServiceValidationException the service validation exception
+         * @throws ExchangeValidationException the service validation exception
          */
         public DayOfTheWeekIndex getDayOfTheWeekIndex()
-                throws ServiceValidationException {
+                throws ExchangeValidationException {
 
             return this.getFieldValueOrThrowIfNull(DayOfTheWeekIndex.class,
                     this.dayOfTheWeekIndex, "DayOfTheWeekIndex");
@@ -999,10 +972,10 @@ public abstract class Recurrence extends ComplexProperty {
          * Gets the day of the week.
          *
          * @return the day of the week
-         * @throws ServiceValidationException the service validation exception
+         * @throws ExchangeValidationException the service validation exception
          */
         public DayOfTheWeek getDayOfTheWeek()
-                throws ServiceValidationException {
+                throws ExchangeValidationException {
 
             return this.getFieldValueOrThrowIfNull(DayOfTheWeek.class,
                     this.dayOfTheWeek, "DayOfTheWeek");
@@ -1025,9 +998,9 @@ public abstract class Recurrence extends ComplexProperty {
          * Gets the month.
          *
          * @return the month
-         * @throws ServiceValidationException the service validation exception
+         * @throws ExchangeValidationException the service validation exception
          */
-        public Month getMonth() throws ServiceValidationException {
+        public Month getMonth() throws ExchangeValidationException {
 
             return this.getFieldValueOrThrowIfNull(Month.class, this.month,
                     "Month");
@@ -1116,11 +1089,9 @@ public abstract class Recurrence extends ComplexProperty {
          * Write property to XML.
          *
          * @param writer the writer
-         * @throws Exception the exception
          */
         @Override
-        public void internalWritePropertiesToXml(EwsServiceXmlWriter writer)
-                throws Exception {
+        public void internalWritePropertiesToXml(EwsServiceXmlWriter writer) throws ExchangeXmlException {
             super.internalWritePropertiesToXml(writer);
 
             this.getDaysOfTheWeek().writeToXml(writer,
@@ -1144,18 +1115,15 @@ public abstract class Recurrence extends ComplexProperty {
          *
          * @param reader the reader
          * @return True if appropriate element was read.
-         * @throws Exception the exception
          */
         @Override
-        public boolean tryReadElementFromXml(EwsServiceXmlReader reader)
-                throws Exception {
+        public boolean tryReadElementFromXml(EwsServiceXmlReader reader) throws ExchangeXmlException {
             if (super.tryReadElementFromXml(reader)) {
                 return true;
             } else {
                 if (reader.getLocalName().equals(XmlElementNames.DaysOfWeek)) {
 
-                    this.getDaysOfTheWeek().loadFromXml(reader,
-                            reader.getLocalName());
+                    this.getDaysOfTheWeek().loadFromXml(reader, reader.getLocalName());
                     return true;
                 } else if (reader.getLocalName().equals(XmlElementNames.FirstDayOfWeek)) {
                     this.firstDayOfWeek = reader.
@@ -1173,14 +1141,13 @@ public abstract class Recurrence extends ComplexProperty {
         /**
          * Validates this instance.
          *
-         * @throws Exception
          */
         @Override
-        public void internalValidate() throws Exception {
+        public void internalValidate() throws ExchangeValidationException {
             super.internalValidate();
 
             if (this.getDaysOfTheWeek().getCount() == 0) {
-                throw new ServiceValidationException(
+                throw new ExchangeValidationException(
                         "The recurrence pattern's property DaysOfTheWeek must contain at least one day of the week.");
             }
         }
@@ -1194,7 +1161,7 @@ public abstract class Recurrence extends ComplexProperty {
             return this.daysOfTheWeek;
         }
 
-        public Calendar getFirstDayOfWeek() throws ServiceValidationException {
+        public Calendar getFirstDayOfWeek() throws ExchangeValidationException {
             return this.getFieldValueOrThrowIfNull(Calendar.class,
                     this.firstDayOfWeek, "FirstDayOfWeek");
         }
@@ -1228,8 +1195,7 @@ public abstract class Recurrence extends ComplexProperty {
      * each occurrence happens a specified number of weeks after the previous
      * one is completed.
      */
-    public final static class WeeklyRegenerationPattern extends
-            IntervalPattern {
+    public final static class WeeklyRegenerationPattern extends IntervalPattern {
 
         /**
          * Initializes a new instance of the WeeklyRegenerationPattern class.
@@ -1329,11 +1295,9 @@ public abstract class Recurrence extends ComplexProperty {
          * Write property to XML.
          *
          * @param writer the writer
-         * @throws Exception the exception
          */
         @Override
-        public void internalWritePropertiesToXml(EwsServiceXmlWriter writer)
-                throws Exception {
+        public void internalWritePropertiesToXml(EwsServiceXmlWriter writer) throws ExchangeXmlException {
             super.internalWritePropertiesToXml(writer);
 
             writer.writeElementValue(XmlNamespace.Types,
@@ -1348,11 +1312,9 @@ public abstract class Recurrence extends ComplexProperty {
          *
          * @param reader the reader
          * @return True if element was read
-         * @throws Exception the exception
          */
         @Override
-        public boolean tryReadElementFromXml(EwsServiceXmlReader reader)
-                throws Exception {
+        public boolean tryReadElementFromXml(EwsServiceXmlReader reader) throws ExchangeXmlException {
             if (super.tryReadElementFromXml(reader)) {
                 return true;
             } else {
@@ -1374,18 +1336,17 @@ public abstract class Recurrence extends ComplexProperty {
         /**
          * Validates this instance.
          *
-         * @throws Exception
          */
         @Override
-        public void internalValidate() throws Exception {
+        public void internalValidate() throws ExchangeValidationException {
             super.internalValidate();
 
             if (this.month == null) {
-                throw new ServiceValidationException("The recurrence pattern's Month property must be specified.");
+                throw new ExchangeValidationException("The recurrence pattern's Month property must be specified.");
             }
 
             if (this.dayOfMonth == null) {
-                throw new ServiceValidationException(
+                throw new ExchangeValidationException(
                         "The recurrence pattern's DayOfMonth property must be specified.");
             }
         }
@@ -1394,9 +1355,9 @@ public abstract class Recurrence extends ComplexProperty {
          * Gets the month of the year when each occurrence happens.
          *
          * @return the month
-         * @throws ServiceValidationException the service validation exception
+         * @throws ExchangeValidationException the service validation exception
          */
-        public Month getMonth() throws ServiceValidationException {
+        public Month getMonth() throws ExchangeValidationException {
             return this.getFieldValueOrThrowIfNull(Month.class, this.month,
                     "Month");
         }
@@ -1419,9 +1380,9 @@ public abstract class Recurrence extends ComplexProperty {
          * must be between 1 and 31.
          *
          * @return the day of month
-         * @throws ServiceValidationException the service validation exception
+         * @throws ExchangeValidationException the service validation exception
          */
-        public int getDayOfMonth() throws ServiceValidationException {
+        public int getDayOfMonth() throws ExchangeValidationException {
 
             return this.getFieldValueOrThrowIfNull(Integer.class, this.dayOfMonth,
                     "DayOfMonth");

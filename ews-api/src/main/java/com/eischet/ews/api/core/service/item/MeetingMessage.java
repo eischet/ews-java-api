@@ -31,7 +31,7 @@ import com.eischet.ews.api.core.XmlElementNames;
 import com.eischet.ews.api.core.enumeration.attribute.EditorBrowsableState;
 import com.eischet.ews.api.core.enumeration.misc.ExchangeVersion;
 import com.eischet.ews.api.core.enumeration.property.MeetingResponseType;
-import com.eischet.ews.api.core.exception.service.local.ServiceLocalException;
+import com.eischet.ews.api.core.exception.xml.ExchangeXmlException;
 import com.eischet.ews.api.core.service.schema.MeetingMessageSchema;
 import com.eischet.ews.api.core.service.schema.ServiceObjectSchema;
 import com.eischet.ews.api.property.complex.ItemAttachment;
@@ -55,7 +55,7 @@ public class MeetingMessage extends EmailMessage {
      * @param parentAttachment the parent attachment
      * @throws Exception the exception
      */
-    public MeetingMessage(ItemAttachment parentAttachment) throws Exception {
+    public MeetingMessage(ItemAttachment parentAttachment) throws ExchangeXmlException {
         super(parentAttachment);
     }
 
@@ -65,7 +65,7 @@ public class MeetingMessage extends EmailMessage {
      * @param service EWS service to which this object belongs.
      * @throws Exception the exception
      */
-    public MeetingMessage(ExchangeService service) throws Exception {
+    public MeetingMessage(ExchangeService service) throws ExchangeXmlException {
         super(service);
     }
 
@@ -126,10 +126,8 @@ public class MeetingMessage extends EmailMessage {
      * Gets the associated appointment ID.
      *
      * @return the associated appointment ID.
-     * @throws ServiceLocalException the service local exception
      */
-    public ItemId getAssociatedAppointmentId()
-            throws ServiceLocalException {
+    public ItemId getAssociatedAppointmentId() throws ExchangeXmlException {
         return getPropertyBag().getObjectFromPropertyDefinition(
                 MeetingMessageSchema.AssociatedAppointmentId);
     }
@@ -138,10 +136,8 @@ public class MeetingMessage extends EmailMessage {
      * Gets whether the meeting message has been processed.
      *
      * @return whether the meeting message has been processed.
-     * @throws ServiceLocalException the service local exception
      */
-    public Boolean getHasBeenProcessed()
-            throws ServiceLocalException {
+    public Boolean getHasBeenProcessed() throws ExchangeXmlException {
         return getPropertyBag().getObjectFromPropertyDefinition(
                 MeetingMessageSchema.HasBeenProcessed);
     }
@@ -150,10 +146,8 @@ public class MeetingMessage extends EmailMessage {
      * Gets the response type indicated by this meeting message.
      *
      * @return the response type indicated by this meeting message.
-     * @throws ServiceLocalException the service local exception
      */
-    public MeetingResponseType getResponseType()
-            throws ServiceLocalException {
+    public MeetingResponseType getResponseType() throws ExchangeXmlException {
         return getPropertyBag().getObjectFromPropertyDefinition(
                 MeetingMessageSchema.ResponseType);
     }
@@ -162,9 +156,8 @@ public class MeetingMessage extends EmailMessage {
      * Gets the ICalendar Uid.
      *
      * @return the ical uid
-     * @throws ServiceLocalException the service local exception
      */
-    public String getICalUid() throws ServiceLocalException {
+    public String getICalUid() throws ExchangeXmlException {
         return getPropertyBag().getObjectFromPropertyDefinition(
                 MeetingMessageSchema.ICalUid);
     }
@@ -173,9 +166,8 @@ public class MeetingMessage extends EmailMessage {
      * Gets the ICalendar RecurrenceId.
      *
      * @return the ical recurrence id
-     * @throws ServiceLocalException the service local exception
      */
-    public LocalDateTime getICalRecurrenceId() throws ServiceLocalException {
+    public LocalDateTime getICalRecurrenceId() throws ExchangeXmlException {
         return getPropertyBag().getObjectFromPropertyDefinition(MeetingMessageSchema.ICalRecurrenceId);
     }
 
@@ -183,9 +175,8 @@ public class MeetingMessage extends EmailMessage {
      * Gets the ICalendar DateTimeStamp.
      *
      * @return the ical date time stamp
-     * @throws ServiceLocalException the service local exception
      */
-    public LocalDateTime getICalDateTimeStamp() throws ServiceLocalException {
+    public LocalDateTime getICalDateTimeStamp() throws ExchangeXmlException {
         return getPropertyBag().getObjectFromPropertyDefinition(MeetingMessageSchema.ICalDateTimeStamp);
     }
 
@@ -193,9 +184,8 @@ public class MeetingMessage extends EmailMessage {
      * Gets the IsDelegated property.
      *
      * @return True if delegated; false otherwise.
-     * @throws ServiceLocalException the service local exception
      */
-    public Boolean getIsDelegated() throws ServiceLocalException {
+    public Boolean getIsDelegated() throws ExchangeXmlException {
         return getPropertyBag().getObjectFromPropertyDefinition(MeetingMessageSchema.IsDelegated);
     }
 
@@ -203,9 +193,8 @@ public class MeetingMessage extends EmailMessage {
      * Gets the IsOutOfDate property.
      *
      * @return True if out of date; false otherwise.
-     * @throws ServiceLocalException the service local exception
      */
-    public Boolean getIsOutOfDate() throws ServiceLocalException {
+    public Boolean getIsOutOfDate() throws ExchangeXmlException {
         return getPropertyBag().getObjectFromPropertyDefinition(MeetingMessageSchema.IsOutOfDate);
     }
 

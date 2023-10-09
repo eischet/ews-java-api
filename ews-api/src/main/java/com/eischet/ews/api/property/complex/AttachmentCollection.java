@@ -31,9 +31,10 @@ import com.eischet.ews.api.core.enumeration.misc.ExchangeVersion;
 import com.eischet.ews.api.core.enumeration.service.ServiceResult;
 import com.eischet.ews.api.core.exception.misc.InvalidOperationException;
 import com.eischet.ews.api.core.exception.service.local.ServiceLocalException;
-import com.eischet.ews.api.core.exception.service.local.ServiceValidationException;
+import com.eischet.ews.api.core.exception.service.local.ExchangeValidationException;
 import com.eischet.ews.api.core.exception.service.remote.CreateAttachmentException;
 import com.eischet.ews.api.core.exception.service.remote.DeleteAttachmentException;
+import com.eischet.ews.api.core.exception.xml.ExchangeXmlException;
 import com.eischet.ews.api.core.response.CreateAttachmentResponse;
 import com.eischet.ews.api.core.response.DeleteAttachmentResponse;
 import com.eischet.ews.api.core.response.ServiceResponseCollection;
@@ -323,7 +324,7 @@ public final class AttachmentCollection extends ComplexPropertyCollection<Attach
      * @return True if attachment adds or deletes haven't been processed yet.
      * @throws ServiceLocalException
      */
-    public boolean hasUnprocessedChanges() throws ServiceLocalException {
+    public boolean hasUnprocessedChanges() throws ExchangeXmlException {
         // Any new attachments?
         for (Attachment attachment : this) {
             if (attachment.isNew()) {
@@ -372,44 +373,47 @@ public final class AttachmentCollection extends ComplexPropertyCollection<Attach
     /**
      * Validates this instance.
      *
-     * @throws Exception the exception
      */
-    public void validate() throws Exception {
+    public void validate() throws ExchangeValidationException {
         // Validate all added attachments
-        if (this.owner.isNew()
-                && this.owner.getService().getRequestedServerVersion()
-                .ordinal() >= ExchangeVersion.Exchange2010_SP2
-                .ordinal()) {
-            boolean contactPhotoFound = false;
-            for (int attachmentIndex = 0; attachmentIndex < this.getAddedItems()
-                    .size(); attachmentIndex++) {
-                final Attachment attachment = this.getAddedItems().get(attachmentIndex);
-                if (attachment != null) {
-                    if (attachment.isNew() && attachment instanceof FileAttachment) {
-                        // At the server side, only the last attachment with
-                        // IsContactPhoto is kept, all other IsContactPhoto
-                        // attachments are removed. CreateAttachment will generate
-                        // AttachmentId for each of such attachments (although
-                        // only the last one is valid).
-                        //
-                        // With E14 SP2 CreateItemWithAttachment, such request will only
-                        // return 1 AttachmentId; but the client
-                        // expects to see all, so let us prevent such "invalid" request
-                        // in the first place.
-                        //
-                        // The IsNew check is to still let CreateAttachmentRequest allow
-                        // multiple IsContactPhoto attachments.
-                        //
-                        if (((FileAttachment) attachment).isContactPhoto()) {
-                            if (contactPhotoFound) {
-                                throw new ServiceValidationException("Multiple contact photos in attachment.");
+        try {
+            if (this.owner.isNew()
+                    && this.owner.getService().getRequestedServerVersion()
+                    .ordinal() >= ExchangeVersion.Exchange2010_SP2
+                    .ordinal()) {
+                boolean contactPhotoFound = false;
+                for (int attachmentIndex = 0; attachmentIndex < this.getAddedItems()
+                        .size(); attachmentIndex++) {
+                    final Attachment attachment = this.getAddedItems().get(attachmentIndex);
+                    if (attachment != null) {
+                        if (attachment.isNew() && attachment instanceof FileAttachment) {
+                            // At the server side, only the last attachment with
+                            // IsContactPhoto is kept, all other IsContactPhoto
+                            // attachments are removed. CreateAttachment will generate
+                            // AttachmentId for each of such attachments (although
+                            // only the last one is valid).
+                            //
+                            // With E14 SP2 CreateItemWithAttachment, such request will only
+                            // return 1 AttachmentId; but the client
+                            // expects to see all, so let us prevent such "invalid" request
+                            // in the first place.
+                            //
+                            // The IsNew check is to still let CreateAttachmentRequest allow
+                            // multiple IsContactPhoto attachments.
+                            //
+                            if (((FileAttachment) attachment).isContactPhoto()) {
+                                if (contactPhotoFound) {
+                                    throw new ExchangeValidationException("Multiple contact photos in attachment.");
+                                }
+                                contactPhotoFound = true;
                             }
-                            contactPhotoFound = true;
                         }
+                        attachment.validate(attachmentIndex);
                     }
-                    attachment.validate(attachmentIndex);
                 }
             }
+        } catch (ExchangeXmlException e) {
+            throw new ExchangeValidationException("error validating attachment collection " + this, e);
         }
     }
 

@@ -28,6 +28,7 @@ import com.eischet.ews.api.core.EwsServiceXmlWriter;
 import com.eischet.ews.api.core.XmlElementNames;
 import com.eischet.ews.api.core.enumeration.misc.XmlNamespace;
 import com.eischet.ews.api.core.exception.service.local.ServiceXmlSerializationException;
+import com.eischet.ews.api.core.exception.xml.ExchangeXmlException;
 import com.eischet.ews.api.property.complex.ComplexProperty;
 import com.eischet.ews.api.property.complex.recurrence.pattern.Recurrence;
 
@@ -83,7 +84,7 @@ public abstract class RecurrenceRange extends ComplexProperty {
      * @param recurrence the new up recurrence
      * @throws Exception the exception
      */
-    public void setupRecurrence(Recurrence recurrence) throws Exception {
+    public void setupRecurrence(Recurrence recurrence) throws ExchangeXmlException {
         recurrence.setStartDate(this.getStartDate());
     }
 
@@ -91,11 +92,8 @@ public abstract class RecurrenceRange extends ComplexProperty {
      * Writes elements to XML..
      *
      * @param writer the writer
-     * @throws XMLStreamException               the XML stream exception
-     * @throws ServiceXmlSerializationException the service xml serialization exception
      */
-    public void writeElementsToXml(EwsServiceXmlWriter writer)
-            throws XMLStreamException, ServiceXmlSerializationException {
+    public void writeElementsToXml(EwsServiceXmlWriter writer) throws ExchangeXmlException {
         LocalDate d = this.startDate;
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
         String formattedString = df.format(d);
@@ -107,10 +105,8 @@ public abstract class RecurrenceRange extends ComplexProperty {
      *
      * @param reader the reader
      * @return True if element was read
-     * @throws Exception the exception
      */
-    public boolean tryReadElementFromXml(EwsServiceXmlReader reader)
-            throws Exception {
+    public boolean tryReadElementFromXml(EwsServiceXmlReader reader) throws ExchangeXmlException {
         if (reader.getLocalName().equals(XmlElementNames.StartDate)) {
             //this.startDate = reader.readElementValueAsDateTime();
             LocalDate startDate = reader.readElementValueAsUnspecifiedDate();

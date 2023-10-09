@@ -29,6 +29,7 @@ import com.eischet.ews.api.core.enumeration.misc.IdFormat;
 import com.eischet.ews.api.core.enumeration.misc.XmlNamespace;
 import com.eischet.ews.api.core.enumeration.service.error.ServiceErrorHandling;
 import com.eischet.ews.api.core.exception.service.local.ServiceXmlSerializationException;
+import com.eischet.ews.api.core.exception.xml.ExchangeXmlException;
 import com.eischet.ews.api.core.response.ConvertIdResponse;
 import com.eischet.ews.api.misc.id.AlternateIdBase;
 
@@ -135,8 +136,7 @@ public final class ConvertIdRequest extends MultiResponseServiceRequest<ConvertI
      * @throws ServiceXmlSerializationException the service xml serialization exception
      */
     @Override
-    protected void writeElementsToXml(EwsServiceXmlWriter writer)
-            throws XMLStreamException, ServiceXmlSerializationException {
+    protected void writeElementsToXml(EwsServiceXmlWriter writer) throws ExchangeXmlException {
         writer.writeAttributeValue(XmlAttributeNames.DestinationFormat,
                 this.destinationFormat);
         writer.writeStartElement(XmlNamespace.Messages,

@@ -23,34 +23,19 @@
 
 package com.eischet.ews.api.core;
 
-import static org.junit.Assert.assertEquals;
-
-import com.eischet.ews.api.core.service.folder.CalendarFolder;
-import com.eischet.ews.api.core.service.folder.ContactsFolder;
-import com.eischet.ews.api.core.service.folder.Folder;
-import com.eischet.ews.api.core.service.folder.SearchFolder;
-import com.eischet.ews.api.core.service.folder.TasksFolder;
-import com.eischet.ews.api.core.service.item.Appointment;
-import com.eischet.ews.api.core.service.item.Contact;
-import com.eischet.ews.api.core.service.item.ContactGroup;
-import com.eischet.ews.api.core.service.item.Conversation;
-import com.eischet.ews.api.core.service.item.EmailMessage;
-import com.eischet.ews.api.core.service.item.Item;
-import com.eischet.ews.api.core.service.item.MeetingCancellation;
-import com.eischet.ews.api.core.service.item.MeetingMessage;
-import com.eischet.ews.api.core.service.item.MeetingRequest;
-import com.eischet.ews.api.core.service.item.MeetingResponse;
-import com.eischet.ews.api.core.service.item.PostItem;
-import com.eischet.ews.api.core.service.item.Task;
+import com.eischet.ews.api.core.exception.xml.ExchangeXmlException;
+import com.eischet.ews.api.core.service.folder.*;
+import com.eischet.ews.api.core.service.item.*;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+
+import static org.junit.Assert.assertEquals;
 
 @RunWith(JUnit4.class)
 public class EwsUtilitiesTest {
@@ -93,23 +78,23 @@ public class EwsUtilitiesTest {
   }
 
   @Test
-  public void testParseBigInt() throws ParseException {
+  public void testParseBigInt() throws ExchangeXmlException {
     assertEquals(BigInteger.TEN, EwsUtilities.parse(BigInteger.class, BigInteger.TEN.toString()));
   }
 
   @Test
-  public void testParseBigDec() throws ParseException {
+  public void testParseBigDec() throws ExchangeXmlException {
     assertEquals(BigDecimal.TEN, EwsUtilities.parse(BigDecimal.class, BigDecimal.TEN.toString()));
   }
 
   @Test
-  public void testParseString() throws ParseException {
+  public void testParseString() throws ExchangeXmlException {
     final String input = "lorem ipsum dolor sit amet";
     assertEquals(input, EwsUtilities.parse(input.getClass(), input));
   }
 
   @Test
-  public void testParseDouble() throws ParseException {
+  public void testParseDouble() throws ExchangeXmlException {
     Double input = Double.MAX_VALUE;
     assertEquals(input, EwsUtilities.parse(input.getClass(), input.toString()));
 
@@ -121,7 +106,7 @@ public class EwsUtilitiesTest {
   }
 
   @Test
-  public void testParseInteger() throws ParseException {
+  public void testParseInteger() throws ExchangeXmlException {
     Integer input = Integer.MAX_VALUE;
     assertEquals(input, EwsUtilities.parse(input.getClass(), input.toString()));
 
@@ -133,7 +118,7 @@ public class EwsUtilitiesTest {
   }
 
   @Test
-  public void testParseBoolean() throws ParseException {
+  public void testParseBoolean() throws ExchangeXmlException {
     Boolean input = Boolean.TRUE;
     assertEquals(input, EwsUtilities.parse(input.getClass(), input.toString()));
 
@@ -142,7 +127,7 @@ public class EwsUtilitiesTest {
   }
 
   @Test
-  public void testParseLong() throws ParseException {
+  public void testParseLong() throws ExchangeXmlException {
     Long input = Long.MAX_VALUE;
     assertEquals(input, EwsUtilities.parse(input.getClass(), input.toString()));
 
@@ -154,7 +139,7 @@ public class EwsUtilitiesTest {
   }
 
   @Test
-  public void testParseFloat() throws ParseException {
+  public void testParseFloat() throws ExchangeXmlException {
     Float input = Float.MAX_VALUE;
     assertEquals(input, EwsUtilities.parse(input.getClass(), input.toString()));
 
@@ -166,7 +151,7 @@ public class EwsUtilitiesTest {
   }
 
   @Test
-  public void testParseShort() throws ParseException {
+  public void testParseShort() throws ExchangeXmlException {
     Short input = Short.MAX_VALUE;
     assertEquals(input, EwsUtilities.parse(input.getClass(), input.toString()));
 
@@ -178,7 +163,7 @@ public class EwsUtilitiesTest {
   }
 
   @Test
-  public void testParseByte() throws ParseException {
+  public void testParseByte() throws ExchangeXmlException {
     Byte input = Byte.MAX_VALUE;
     assertEquals(input, EwsUtilities.parse(input.getClass(), input.toString()));
 
@@ -190,14 +175,14 @@ public class EwsUtilitiesTest {
   }
 
   @Test
-  public void testParseDate() throws ParseException {
+  public void testParseDate() throws ExchangeXmlException {
     final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
     String input = sdf.format(new Date());
     assertEquals(input, EwsUtilities.parse(input.getClass(), input));
   }
 
   @Test
-  public void testParseNullValue() throws ParseException {
+  public void testParseNullValue() throws ExchangeXmlException {
     final String input = null;
     assertEquals(input, EwsUtilities.parse(String.class, input));
   }

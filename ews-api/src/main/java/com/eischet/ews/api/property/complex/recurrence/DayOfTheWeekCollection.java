@@ -30,10 +30,9 @@ import com.eischet.ews.api.core.XmlElementNames;
 import com.eischet.ews.api.core.enumeration.misc.XmlNamespace;
 import com.eischet.ews.api.core.enumeration.property.time.DayOfTheWeek;
 import com.eischet.ews.api.core.exception.misc.ArgumentOutOfRangeException;
-import com.eischet.ews.api.core.exception.service.local.ServiceXmlSerializationException;
+import com.eischet.ews.api.core.exception.xml.ExchangeXmlException;
 import com.eischet.ews.api.property.complex.ComplexProperty;
 
-import javax.xml.stream.XMLStreamException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -47,7 +46,7 @@ public final class DayOfTheWeekCollection extends ComplexProperty implements
     /**
      * The item.
      */
-    private final List<DayOfTheWeek> items = new ArrayList<DayOfTheWeek>();
+    private final List<DayOfTheWeek> items = new ArrayList<>();
 
     /**
      * Initializes a new instance of the class.
@@ -87,10 +86,8 @@ public final class DayOfTheWeekCollection extends ComplexProperty implements
      *
      * @param reader         The reader.
      * @param xmlElementName Name of the XML element.
-     * @throws Exception the exception
      */
-    public void loadFromXml(EwsServiceXmlReader reader, String xmlElementName)
-            throws Exception {
+    public void loadFromXml(EwsServiceXmlReader reader, String xmlElementName) throws ExchangeXmlException {
         reader.ensureCurrentNodeIsStartElement(XmlNamespace.Types,
                 xmlElementName);
         EwsUtilities.parseEnumValueList(DayOfTheWeek.class, this.items, reader.readElementValue(), ' ');
@@ -101,12 +98,10 @@ public final class DayOfTheWeekCollection extends ComplexProperty implements
      *
      * @param writer         the writer
      * @param xmlElementName the xml element name
-     * @throws XMLStreamException               the XML stream exception
-     * @throws ServiceXmlSerializationException the service xml serialization exception
      */
     @Override
     public void writeToXml(EwsServiceXmlWriter writer, String xmlElementName)
-            throws XMLStreamException, ServiceXmlSerializationException {
+            throws ExchangeXmlException {
         String daysOfWeekAsString = this.toString(" ");
 
         if (!daysOfWeekAsString.isEmpty()) {

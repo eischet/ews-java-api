@@ -28,12 +28,11 @@ import com.eischet.ews.api.core.enumeration.misc.ExchangeVersion;
 import com.eischet.ews.api.core.enumeration.misc.XmlNamespace;
 import com.eischet.ews.api.core.enumeration.property.BodyType;
 import com.eischet.ews.api.core.enumeration.service.error.ServiceErrorHandling;
-import com.eischet.ews.api.core.exception.service.local.ServiceXmlSerializationException;
+import com.eischet.ews.api.core.exception.xml.ExchangeXmlException;
 import com.eischet.ews.api.core.response.GetAttachmentResponse;
 import com.eischet.ews.api.property.complex.Attachment;
 import com.eischet.ews.api.property.definition.PropertyDefinitionBase;
 
-import javax.xml.stream.XMLStreamException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -129,18 +128,10 @@ public final class GetAttachmentRequest extends MultiResponseServiceRequest<GetA
         return XmlElementNames.GetAttachmentResponseMessage;
     }
 
-    /**
-     * Writes XML elements.
-     *
-     * @param writer the writer
-     * @throws XMLStreamException               the XML stream exception
-     * @throws ServiceXmlSerializationException the service xml serialization exception
-     */
     @Override
-    protected void writeElementsToXml(EwsServiceXmlWriter writer)
-            throws XMLStreamException, ServiceXmlSerializationException {
+    protected void writeElementsToXml(EwsServiceXmlWriter writer) throws ExchangeXmlException {
         if ((this.getBodyType() != null)
-                || this.getAdditionalProperties().size() > 0) {
+                || !this.getAdditionalProperties().isEmpty()) {
             writer.writeStartElement(XmlNamespace.Messages,
                     XmlElementNames.AttachmentShape);
 
@@ -149,7 +140,7 @@ public final class GetAttachmentRequest extends MultiResponseServiceRequest<GetA
                         XmlElementNames.BodyType, this.getBodyType());
             }
 
-            if (this.getAdditionalProperties().size() > 0) {
+            if (!this.getAdditionalProperties().isEmpty()) {
                 PropertySet.writeAdditionalPropertiesToXml(writer, this.getAdditionalProperties().iterator());
             }
 

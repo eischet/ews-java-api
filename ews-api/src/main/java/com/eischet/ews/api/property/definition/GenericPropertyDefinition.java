@@ -26,6 +26,7 @@ package com.eischet.ews.api.property.definition;
 import com.eischet.ews.api.core.EwsUtilities;
 import com.eischet.ews.api.core.enumeration.misc.ExchangeVersion;
 import com.eischet.ews.api.core.enumeration.property.PropertyDefinitionFlags;
+import com.eischet.ews.api.core.exception.xml.ExchangeXmlException;
 
 import java.io.Serializable;
 import java.text.ParseException;
@@ -36,8 +37,7 @@ import java.util.EnumSet;
  *
  * @param <TPropertyValue> Property type.
  */
-public class GenericPropertyDefinition<TPropertyValue extends Serializable> extends
-        TypedPropertyDefinition<TPropertyValue> {
+public class GenericPropertyDefinition<TPropertyValue extends Serializable> extends TypedPropertyDefinition<TPropertyValue> {
 
     private final Class<TPropertyValue> instance;
 
@@ -91,25 +91,12 @@ public class GenericPropertyDefinition<TPropertyValue extends Serializable> exte
     }
 
 
-    /**
-     * Parses the specified value.
-     *
-     * @param value The value
-     * @return Double value from parsed value.
-     * @throws java.text.ParseException
-     * @throws IllegalAccessException
-     * @throws InstantiationException
-     */
     @Override
-    protected TPropertyValue parse(String value) throws InstantiationException,
-            IllegalAccessException, ParseException {
+    protected TPropertyValue parse(String value) throws ExchangeXmlException {
 
         return EwsUtilities.parse(instance, value);
     }
 
-    /**
-     * Gets the property type.
-     */
     @Override
     public Class<TPropertyValue> getType() {
         return instance;

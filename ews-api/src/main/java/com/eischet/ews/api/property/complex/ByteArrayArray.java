@@ -26,6 +26,7 @@ package com.eischet.ews.api.property.complex;
 import com.eischet.ews.api.core.EwsServiceXmlReader;
 import com.eischet.ews.api.core.EwsServiceXmlWriter;
 import com.eischet.ews.api.core.enumeration.misc.XmlNamespace;
+import com.eischet.ews.api.core.exception.xml.ExchangeXmlException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,13 +36,15 @@ import java.util.List;
  */
 public class ByteArrayArray extends ComplexProperty {
     final static String ItemXmlElementName = "Base64Binary";
-    private final List<byte[]> content = new ArrayList<byte[]>();
+    private final List<byte[]> content = new ArrayList<>();
 
     public ByteArrayArray() {
     }
 
     /**
      * Gets the content of the array of byte arrays
+     *
+     * TODO: IntelliJ says this will not work at all (inspections)
      */
     public byte[][] getContent() {
         return (byte[][]) this.content.toArray();
@@ -50,12 +53,11 @@ public class ByteArrayArray extends ComplexProperty {
     /**
      * Tries to read element from XML.
      */
-    public boolean tryReadElementFromXml(EwsServiceXmlReader reader)
-            throws Exception {
+    public boolean tryReadElementFromXml(EwsServiceXmlReader reader) throws ExchangeXmlException {
 
         if (reader.getLocalName().equalsIgnoreCase(
                 ByteArrayArray.ItemXmlElementName)) {
-            this.content.add(reader.readBase64ElementValue());
+            this.content.add(reader.writeBase64ElementValue());
             return true;
         } else {
             return false;
@@ -66,8 +68,7 @@ public class ByteArrayArray extends ComplexProperty {
     /**
      * The Writer
      */
-    public void writeElementsToXml(EwsServiceXmlWriter writer)
-            throws Exception {
+    public void writeElementsToXml(EwsServiceXmlWriter writer) throws ExchangeXmlException {
         for (byte[] item : this.content) {
             writer.writeStartElement(XmlNamespace.Types,
                     ByteArrayArray.ItemXmlElementName);

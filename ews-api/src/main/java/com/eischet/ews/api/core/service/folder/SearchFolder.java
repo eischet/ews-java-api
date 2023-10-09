@@ -29,6 +29,7 @@ import com.eischet.ews.api.core.PropertySet;
 import com.eischet.ews.api.core.XmlElementNames;
 import com.eischet.ews.api.core.enumeration.misc.ExchangeVersion;
 import com.eischet.ews.api.core.enumeration.property.WellKnownFolderName;
+import com.eischet.ews.api.core.exception.xml.ExchangeXmlException;
 import com.eischet.ews.api.core.service.schema.SearchFolderSchema;
 import com.eischet.ews.api.core.service.schema.ServiceObjectSchema;
 import com.eischet.ews.api.property.complex.FolderId;
@@ -112,7 +113,7 @@ public class SearchFolder extends Folder {
      * @param service the service
      * @throws Exception the exception
      */
-    public SearchFolder(ExchangeService service) throws Exception {
+    public SearchFolder(ExchangeService service) throws ExchangeXmlException {
         super(service);
     }
 

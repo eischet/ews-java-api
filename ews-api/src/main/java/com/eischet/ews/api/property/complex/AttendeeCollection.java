@@ -27,6 +27,7 @@ import com.eischet.ews.api.attribute.EditorBrowsable;
 import com.eischet.ews.api.core.EwsUtilities;
 import com.eischet.ews.api.core.XmlElementNames;
 import com.eischet.ews.api.core.enumeration.attribute.EditorBrowsableState;
+import com.eischet.ews.api.core.exception.service.local.ExchangeValidationException;
 
 /**
  * Represents a collection of attendees.
@@ -57,7 +58,7 @@ public final class AttendeeCollection extends ComplexPropertyCollection<Attendee
      * @return An Attendee instance initialized with the provided SMTP address.
      * @throws Exception the exception
      */
-    public Attendee add(String smtpAddress) throws Exception {
+    public Attendee add(String smtpAddress) throws ExchangeValidationException {
         Attendee result = new Attendee(smtpAddress);
 
         this.internalAdd(result);

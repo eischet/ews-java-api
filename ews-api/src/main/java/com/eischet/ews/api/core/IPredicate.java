@@ -24,12 +24,14 @@
 package com.eischet.ews.api.core;
 
 import com.eischet.ews.api.core.exception.service.local.ServiceLocalException;
+import com.eischet.ews.api.core.exception.xml.ExchangeXmlException;
 
 /**
  * The Interface IPredicate.
  *
  * @param <T> The type of the object to compare.
  */
+@FunctionalInterface
 public interface IPredicate<T> {
 
     /**
@@ -45,5 +47,5 @@ public interface IPredicate<T> {
      * delegate; otherwise, false.
      * @throws ServiceLocalException
      */
-    boolean predicate(T obj) throws ServiceLocalException;
+    boolean predicate(T obj) throws ExchangeXmlException;
 }

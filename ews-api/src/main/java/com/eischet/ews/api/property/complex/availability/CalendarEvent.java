@@ -26,6 +26,7 @@ package com.eischet.ews.api.property.complex.availability;
 import com.eischet.ews.api.core.EwsServiceXmlReader;
 import com.eischet.ews.api.core.XmlElementNames;
 import com.eischet.ews.api.core.enumeration.property.LegacyFreeBusyStatus;
+import com.eischet.ews.api.core.exception.xml.ExchangeXmlException;
 import com.eischet.ews.api.property.complex.ComplexProperty;
 
 import java.time.LocalDateTime;
@@ -105,11 +106,9 @@ public final class CalendarEvent extends ComplexProperty {
      *
      * @param reader the reader
      * @return True if the element was read, false otherwise.
-     * @throws Exception the exception
      */
     @Override
-    public boolean tryReadElementFromXml(EwsServiceXmlReader reader)
-            throws Exception {
+    public boolean tryReadElementFromXml(EwsServiceXmlReader reader) throws ExchangeXmlException {
         if (reader.getLocalName().equals(XmlElementNames.StartTime)) {
             this.startTime = reader
                     .readElementValueAsUnbiasedDateTimeScopedToServiceTimeZone();

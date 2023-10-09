@@ -28,8 +28,8 @@ import com.eischet.ews.api.core.EwsServiceXmlReader;
 import com.eischet.ews.api.core.EwsUtilities;
 import com.eischet.ews.api.core.enumeration.attribute.EditorBrowsableState;
 import com.eischet.ews.api.core.enumeration.misc.XmlNamespace;
-import com.eischet.ews.api.core.exception.service.local.ServiceObjectPropertyException;
 import com.eischet.ews.api.core.exception.service.local.ServiceVersionException;
+import com.eischet.ews.api.core.exception.xml.ExchangeXmlException;
 import com.eischet.ews.api.core.service.item.Item;
 import com.eischet.ews.api.security.XmlNodeType;
 
@@ -67,10 +67,9 @@ public final class ItemCollection<TItem extends Item> extends ComplexProperty
      *
      * @param reader           The reader.
      * @param localElementName Name of the local element.
-     * @throws Exception the exception
      */
     @Override
-    public void loadFromXml(EwsServiceXmlReader reader, String localElementName) throws Exception {
+    public void loadFromXml(EwsServiceXmlReader reader, String localElementName) throws ExchangeXmlException {
         reader.ensureCurrentNodeIsStartElement(XmlNamespace.Types,
                 localElementName);
         if (!reader.isEmptyElement()) {
@@ -87,7 +86,7 @@ public final class ItemCollection<TItem extends Item> extends ComplexProperty
                         try {
                             item.loadFromXml(reader,
                                     true /* clearPropertyBag */);
-                        } catch (ServiceObjectPropertyException | ServiceVersionException e) {
+                        } catch (ServiceVersionException e) {
                             LOG.log(Level.SEVERE, "error loading XML", e);
                         }
 

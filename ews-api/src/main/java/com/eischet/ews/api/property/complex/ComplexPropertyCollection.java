@@ -30,7 +30,7 @@ import com.eischet.ews.api.core.EwsUtilities;
 import com.eischet.ews.api.core.ICustomXmlUpdateSerializer;
 import com.eischet.ews.api.core.enumeration.attribute.EditorBrowsableState;
 import com.eischet.ews.api.core.enumeration.misc.XmlNamespace;
-import com.eischet.ews.api.core.exception.service.local.ServiceLocalException;
+import com.eischet.ews.api.core.exception.xml.ExchangeXmlException;
 import com.eischet.ews.api.core.service.ServiceObject;
 import com.eischet.ews.api.property.definition.PropertyDefinition;
 
@@ -53,25 +53,24 @@ public abstract class ComplexPropertyCollection
     /**
      * The item.
      */
-    private final List<TComplexProperty> items = new ArrayList<TComplexProperty>();
+    private final List<TComplexProperty> items = new ArrayList<>();
 
     /**
      * The added item.
      */
     private final List<TComplexProperty> addedItems =
-            new ArrayList<TComplexProperty>();
+            new ArrayList<>();
 
     /**
      * The modified item.
      */
-    private final List<TComplexProperty> modifiedItems =
-            new ArrayList<TComplexProperty>();
+    private final List<TComplexProperty> modifiedItems = new ArrayList<>();
 
     /**
      * The removed item.
      */
     private final List<TComplexProperty> removedItems =
-            new ArrayList<TComplexProperty>();
+            new ArrayList<>();
 
     /**
      * Creates the complex property.
@@ -124,7 +123,7 @@ public abstract class ComplexPropertyCollection
      * @param localElementName Name of the local element.
      */
     @Override
-    public void loadFromXml(EwsServiceXmlReader reader, String localElementName) throws Exception {
+    public void loadFromXml(EwsServiceXmlReader reader, String localElementName) throws ExchangeXmlException {
         this.loadFromXml(
                 reader,
                 XmlNamespace.Types,
@@ -139,10 +138,8 @@ public abstract class ComplexPropertyCollection
      * @param localElementName Name of the local element.
      */
     @Override
-    public void loadFromXml(EwsServiceXmlReader reader, XmlNamespace xmlNamespace,
-                            String localElementName) throws Exception {
-        reader.ensureCurrentNodeIsStartElement(xmlNamespace,
-                localElementName);
+    public void loadFromXml(EwsServiceXmlReader reader, XmlNamespace xmlNamespace, String localElementName) throws ExchangeXmlException {
+        reader.ensureCurrentNodeIsStartElement(xmlNamespace, localElementName);
         if (!reader.isEmptyElement()) {
             do {
                 reader.read();
@@ -175,7 +172,7 @@ public abstract class ComplexPropertyCollection
     public void updateFromXml(
             EwsServiceXmlReader reader,
             XmlNamespace xmlNamespace,
-            String xmlElementName) throws Exception {
+            String xmlElementName) throws ExchangeXmlException {
         reader.ensureCurrentNodeIsStartElement(xmlNamespace, xmlElementName);
 
         if (!reader.isEmptyElement()) {
@@ -188,7 +185,7 @@ public abstract class ComplexPropertyCollection
                     TComplexProperty actualComplexProperty = this.getPropertyAtIndex(index++);
 
                     if (complexProperty == null || !complexProperty.equals(actualComplexProperty)) {
-                        throw new ServiceLocalException("Property type incompatible when updating collection.");
+                        throw new ExchangeXmlException("Property type incompatible when updating collection.");
                     }
 
                     actualComplexProperty.updateFromXml(reader, xmlNamespace, reader.getLocalName());
@@ -207,12 +204,9 @@ public abstract class ComplexPropertyCollection
      */
     @Override
     public void writeToXml(EwsServiceXmlWriter writer, XmlNamespace xmlNamespace,
-                           String xmlElementName) throws Exception {
+                           String xmlElementName) throws ExchangeXmlException {
         if (this.shouldWriteToXml()) {
-            super.writeToXml(
-                    writer,
-                    xmlNamespace,
-                    xmlElementName);
+            super.writeToXml(writer, xmlNamespace, xmlElementName);
         }
     }
 
@@ -230,14 +224,11 @@ public abstract class ComplexPropertyCollection
      * Writes elements to XML.
      *
      * @param writer The writer.
-     * @throws Exception the exception
      */
     @Override
-    public void writeElementsToXml(EwsServiceXmlWriter writer)
-            throws Exception {
+    public void writeElementsToXml(EwsServiceXmlWriter writer) throws ExchangeXmlException {
         for (TComplexProperty complexProperty : this) {
-            complexProperty.writeToXml(writer, this
-                    .getCollectionItemXmlElementName(complexProperty));
+            complexProperty.writeToXml(writer, this.getCollectionItemXmlElementName(complexProperty));
         }
     }
 
@@ -313,10 +304,8 @@ public abstract class ComplexPropertyCollection
      * @param complexProperty The complex property.
      * @param loading         If true, collection is being loaded.
      */
-    private void internalAdd(TComplexProperty complexProperty,
-                             boolean loading) {
-        EwsUtilities.ewsAssert(complexProperty != null, "ComplexPropertyCollection.InternalAdd",
-                "complexProperty is null");
+    private void internalAdd(TComplexProperty complexProperty, boolean loading) {
+        EwsUtilities.ewsAssert(complexProperty != null, "ComplexPropertyCollection.InternalAdd", "complexProperty is null");
 
         if (!this.items.contains(complexProperty)) {
             this.items.add(complexProperty);

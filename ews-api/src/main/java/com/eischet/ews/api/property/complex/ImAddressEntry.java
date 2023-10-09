@@ -31,6 +31,7 @@ import com.eischet.ews.api.core.enumeration.attribute.EditorBrowsableState;
 import com.eischet.ews.api.core.enumeration.property.ImAddressKey;
 import com.eischet.ews.api.core.exception.service.local.ServiceXmlDeserializationException;
 import com.eischet.ews.api.core.exception.service.local.ServiceXmlSerializationException;
+import com.eischet.ews.api.core.exception.xml.ExchangeXmlException;
 
 import javax.xml.stream.XMLStreamException;
 
@@ -86,12 +87,9 @@ public final class ImAddressEntry extends DictionaryEntryProperty<ImAddressKey> 
      * Reads the text value from XML.
      *
      * @param reader accepts EwsServiceXmlReader
-     * @throws XMLStreamException                 the XML stream exception
-     * @throws ServiceXmlDeserializationException the service xml deserialization exception
      */
     @Override
-    public void readTextValueFromXml(EwsServiceXmlReader reader)
-            throws XMLStreamException, ServiceXmlDeserializationException {
+    public void readTextValueFromXml(EwsServiceXmlReader reader) throws ExchangeXmlException {
         this.imAddress = reader.readValue();
     }
 
@@ -99,10 +97,8 @@ public final class ImAddressEntry extends DictionaryEntryProperty<ImAddressKey> 
      * Writes elements to XML.
      *
      * @param writer The writer.
-     * @throws ServiceXmlSerializationException the service xml serialization exception
      */
-    public void writeElementsToXml(EwsServiceXmlWriter writer)
-            throws ServiceXmlSerializationException {
+    public void writeElementsToXml(EwsServiceXmlWriter writer) throws ExchangeXmlException {
         writer.writeValue(this.imAddress, XmlElementNames.ImAddress);
     }
 }

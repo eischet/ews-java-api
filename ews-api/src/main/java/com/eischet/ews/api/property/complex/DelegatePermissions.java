@@ -28,8 +28,9 @@ import com.eischet.ews.api.core.EwsServiceXmlWriter;
 import com.eischet.ews.api.core.XmlElementNames;
 import com.eischet.ews.api.core.enumeration.misc.XmlNamespace;
 import com.eischet.ews.api.core.enumeration.permission.folder.DelegateFolderPermissionLevel;
-import com.eischet.ews.api.core.exception.service.local.ServiceValidationException;
+import com.eischet.ews.api.core.exception.service.local.ExchangeValidationException;
 import com.eischet.ews.api.core.exception.service.local.ServiceXmlSerializationException;
+import com.eischet.ews.api.core.exception.xml.ExchangeXmlException;
 
 import javax.xml.stream.XMLStreamException;
 import java.util.HashMap;
@@ -226,10 +227,8 @@ public final class DelegatePermissions extends ComplexProperty {
      *
      * @param reader the reader
      * @return Returns true if element was read.
-     * @throws Exception the exception
      */
-    public boolean tryReadElementFromXml(EwsServiceXmlReader reader)
-            throws Exception {
+    public boolean tryReadElementFromXml(EwsServiceXmlReader reader) throws ExchangeXmlException {
         DelegateFolderPermission delegateFolderPermission = null;
 
         if (this.delegateFolderPermissions.containsKey(reader.getLocalName())) {
@@ -247,10 +246,8 @@ public final class DelegatePermissions extends ComplexProperty {
      * Writes elements to XML.
      *
      * @param writer the writer
-     * @throws Exception the exception
      */
-    public void writeElementsToXml(EwsServiceXmlWriter writer)
-            throws Exception {
+    public void writeElementsToXml(EwsServiceXmlWriter writer) throws ExchangeXmlException {
         this.writePermissionToXml(writer,
                 XmlElementNames.CalendarFolderPermissionLevel);
 
@@ -275,12 +272,8 @@ public final class DelegatePermissions extends ComplexProperty {
      *
      * @param writer         the writer
      * @param xmlElementName the element name
-     * @throws XMLStreamException the XML stream exception
      */
-    private void writePermissionToXml(
-            EwsServiceXmlWriter writer,
-            String xmlElementName) throws ServiceXmlSerializationException,
-            XMLStreamException {
+    private void writePermissionToXml(EwsServiceXmlWriter writer, String xmlElementName) throws ExchangeXmlException {
         DelegateFolderPermissionLevel delegateFolderPermissionLevel =
                 this.delegateFolderPermissions.
                         get(xmlElementName).getPermissionLevel();
@@ -297,13 +290,11 @@ public final class DelegatePermissions extends ComplexProperty {
 
     /**
      * Validates this instance for AddDelegate.
-     *
-     * @throws ServiceValidationException
      */
-    protected void validateAddDelegate() throws ServiceValidationException {
+    protected void validateAddDelegate() throws ExchangeValidationException {
         for (DelegateFolderPermission delegateFolderPermission : this.delegateFolderPermissions.values()) {
             if (delegateFolderPermission.getPermissionLevel() == DelegateFolderPermissionLevel.Custom) {
-                throw new ServiceValidationException("This operation can't be performed because one or more folder "
+                throw new ExchangeValidationException("This operation can't be performed because one or more folder "
                         + "permission levels were set to Custom.");
             }
         }
@@ -311,14 +302,12 @@ public final class DelegatePermissions extends ComplexProperty {
 
     /**
      * Validates this instance for UpdateDelegate.
-     *
-     * @throws ServiceValidationException
      */
-    protected void validateUpdateDelegate() throws ServiceValidationException {
+    protected void validateUpdateDelegate() throws ExchangeValidationException {
         for (DelegateFolderPermission delegateFolderPermission : this.delegateFolderPermissions.values()) {
             if (delegateFolderPermission.getPermissionLevel() == DelegateFolderPermissionLevel.Custom &&
                     !delegateFolderPermission.isExistingPermissionLevelCustom) {
-                throw new ServiceValidationException("This operation can't be performed because one or more folder "
+                throw new ExchangeValidationException("This operation can't be performed because one or more folder "
                         + "permission levels were set to Custom.");
             }
         }

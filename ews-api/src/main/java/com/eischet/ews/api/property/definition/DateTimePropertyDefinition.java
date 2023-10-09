@@ -30,6 +30,7 @@ import com.eischet.ews.api.core.PropertyBag;
 import com.eischet.ews.api.core.enumeration.misc.ExchangeVersion;
 import com.eischet.ews.api.core.enumeration.misc.XmlNamespace;
 import com.eischet.ews.api.core.enumeration.property.PropertyDefinitionFlags;
+import com.eischet.ews.api.core.exception.xml.ExchangeXmlException;
 import com.eischet.ews.api.util.DateTimeUtils;
 
 import java.time.LocalDateTime;
@@ -89,10 +90,8 @@ public class DateTimePropertyDefinition extends PropertyDefinition {
      *
      * @param reader      the reader
      * @param propertyBag the property bag
-     * @throws Exception the exception
      */
-    public void loadPropertyValueFromXml(EwsServiceXmlReader reader, PropertyBag propertyBag)
-            throws Exception {
+    public void loadPropertyValueFromXml(EwsServiceXmlReader reader, PropertyBag propertyBag) throws ExchangeXmlException {
         String value = reader.readElementValue(XmlNamespace.Types, getXmlElement());
         propertyBag.setObjectFromPropertyDefinition(this, DateTimeUtils.parseDateTime(value));
     }
@@ -104,11 +103,9 @@ public class DateTimePropertyDefinition extends PropertyDefinition {
      * @param writer            accepts EwsServiceXmlWriter
      * @param propertyBag       accepts PropertyBag
      * @param isUpdateOperation accepts boolean whether the context is an update operation.
-     * @throws Exception throws Exception
      */
     public void writePropertyValueToXml(EwsServiceXmlWriter writer, PropertyBag propertyBag,
-                                        boolean isUpdateOperation)
-            throws Exception {
+                                        boolean isUpdateOperation) throws ExchangeXmlException {
         Object value = propertyBag.getObjectFromPropertyDefinition(this);
 
         if (value != null) {

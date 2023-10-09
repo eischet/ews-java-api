@@ -29,11 +29,9 @@ import com.eischet.ews.api.core.EwsUtilities;
 import com.eischet.ews.api.core.XmlElementNames;
 import com.eischet.ews.api.core.enumeration.misc.XmlNamespace;
 import com.eischet.ews.api.core.enumeration.property.time.DayOfTheWeek;
-import com.eischet.ews.api.core.exception.service.local.ServiceXmlSerializationException;
+import com.eischet.ews.api.core.exception.xml.ExchangeXmlException;
 import com.eischet.ews.api.misc.TimeSpan;
 import com.eischet.ews.api.property.complex.ComplexProperty;
-
-import javax.xml.stream.XMLStreamException;
 
 /**
  * Represents a custom time zone time change.
@@ -124,14 +122,11 @@ final class LegacyAvailabilityTimeZoneTime extends ComplexProperty {
      *
      * @param reader accepts EwsServiceXmlReader
      * @return True if element was read.
-     * @throws Exception throws Exception
      */
     @Override
-    public boolean tryReadElementFromXml(EwsServiceXmlReader reader)
-            throws Exception {
+    public boolean tryReadElementFromXml(EwsServiceXmlReader reader) throws ExchangeXmlException {
         if (reader.getLocalName().equals(XmlElementNames.Bias)) {
-            this.delta = new TimeSpan((long)
-                    reader.readElementValue(Integer.class) * 60 * 1000);
+            this.delta = new TimeSpan((long) reader.readElementValue(Integer.class) * 60 * 1000);
             return true;
         } else if (reader.getLocalName().equals(XmlElementNames.Time)) {
             this.timeOfDay = TimeSpan.parse(reader.readElementValue());
@@ -157,34 +152,26 @@ final class LegacyAvailabilityTimeZoneTime extends ComplexProperty {
      * Writes the elements to XML.
      *
      * @param writer the writer
-     * @throws ServiceXmlSerializationException the service xml serialization exception
-     * @throws XMLStreamException               the XML stream exception
      */
     @Override
-    public void writeElementsToXml(EwsServiceXmlWriter writer)
-            throws ServiceXmlSerializationException, XMLStreamException {
-        writer.writeElementValue(XmlNamespace.Types, XmlElementNames.Bias,
-                (int) this.delta.getMinutes());
+    public void writeElementsToXml(EwsServiceXmlWriter writer) throws ExchangeXmlException {
+        writer.writeElementValue(XmlNamespace.Types, XmlElementNames.Bias, (int) this.delta.getMinutes());
 
-        writer.writeElementValue(XmlNamespace.Types, XmlElementNames.Time,
-                EwsUtilities.timeSpanToXSTime(this.timeOfDay));
+        writer.writeElementValue(XmlNamespace.Types, XmlElementNames.Time, EwsUtilities.timeSpanToXSTime(this.timeOfDay));
 
-        writer.writeElementValue(XmlNamespace.Types, XmlElementNames.DayOrder,
-                this.dayOrder);
+        writer.writeElementValue(XmlNamespace.Types, XmlElementNames.DayOrder, this.dayOrder);
 
         writer.writeElementValue(XmlNamespace.Types, XmlElementNames.Month, this.month);
 
         // Only write DayOfWeek if this is a recurring time change
         if (this.getYear() == 0) {
-            writer.writeElementValue(XmlNamespace.Types,
-                    XmlElementNames.DayOfWeek, this.dayOfTheWeek);
+            writer.writeElementValue(XmlNamespace.Types, XmlElementNames.DayOfWeek, this.dayOfTheWeek);
         }
 
         // Only emit year if it's non zero, otherwise AS returns
         // "Request is invalid"
         if (this.getYear() != 0) {
-            writer.writeElementValue(XmlNamespace.Types, XmlElementNames.Year,
-                    this.getYear());
+            writer.writeElementValue(XmlNamespace.Types, XmlElementNames.Year, this.getYear());
         }
     }
 

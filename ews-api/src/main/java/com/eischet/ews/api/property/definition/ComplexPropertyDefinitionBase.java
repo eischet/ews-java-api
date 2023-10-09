@@ -30,6 +30,7 @@ import com.eischet.ews.api.core.PropertyBag;
 import com.eischet.ews.api.core.enumeration.misc.ExchangeVersion;
 import com.eischet.ews.api.core.enumeration.misc.XmlNamespace;
 import com.eischet.ews.api.core.enumeration.property.PropertyDefinitionFlags;
+import com.eischet.ews.api.core.exception.xml.ExchangeXmlException;
 import com.eischet.ews.api.core.service.ServiceObject;
 import com.eischet.ews.api.misc.OutParam;
 import com.eischet.ews.api.property.complex.ComplexProperty;
@@ -93,10 +94,8 @@ public abstract class ComplexPropertyDefinitionBase extends PropertyDefinition {
      * @param propertyBag The property bag.
      * @throws Exception the exception
      */
-    protected void internalLoadFromXml(
-            final EwsServiceXmlReader reader, final PropertyBag propertyBag
-    ) throws Exception {
-        final OutParam<ComplexProperty> complexProperty = new OutParam<ComplexProperty>();
+    protected void internalLoadFromXml(final EwsServiceXmlReader reader, final PropertyBag propertyBag) throws ExchangeXmlException {
+        final OutParam<ComplexProperty> complexProperty = new OutParam<>();
         final boolean justCreated = getPropertyInstance(propertyBag, complexProperty);
 
         if (!justCreated && this.hasFlag(PropertyDefinitionFlags.UpdateCollectionItems,
@@ -139,12 +138,10 @@ public abstract class ComplexPropertyDefinitionBase extends PropertyDefinition {
      *
      * @param reader      The reader.
      * @param propertyBag The property bag.
-     * @throws Exception the exception
      */
     @Override
-    public void loadPropertyValueFromXml(EwsServiceXmlReader reader, PropertyBag propertyBag) throws Exception {
-        reader.ensureCurrentNodeIsStartElement(XmlNamespace.Types, this
-                .getXmlElement());
+    public void loadPropertyValueFromXml(EwsServiceXmlReader reader, PropertyBag propertyBag) throws ExchangeXmlException {
+        reader.ensureCurrentNodeIsStartElement(XmlNamespace.Types, this.getXmlElement());
 
         if (!reader.isEmptyElement() || reader.hasAttributes()) {
             this.internalLoadFromXml(reader, propertyBag);
@@ -159,12 +156,10 @@ public abstract class ComplexPropertyDefinitionBase extends PropertyDefinition {
      * @param writer            The writer.
      * @param propertyBag       The property bag.
      * @param isUpdateOperation Indicates whether the context is an update operation.
-     * @throws Exception the exception
      */
     @Override
     public void writePropertyValueToXml(EwsServiceXmlWriter writer, PropertyBag propertyBag,
-                                        boolean isUpdateOperation)
-            throws Exception {
+                                        boolean isUpdateOperation) throws ExchangeXmlException {
         ComplexProperty complexProperty =
                 propertyBag.getObjectFromPropertyDefinition(this);
         if (complexProperty != null) {

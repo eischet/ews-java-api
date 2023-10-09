@@ -29,6 +29,7 @@ import com.eischet.ews.api.core.EwsUtilities;
 import com.eischet.ews.api.core.XmlElementNames;
 import com.eischet.ews.api.core.enumeration.availability.MeetingAttendeeType;
 import com.eischet.ews.api.core.enumeration.misc.XmlNamespace;
+import com.eischet.ews.api.core.exception.service.local.ExchangeValidationException;
 
 /**
  * Represents information about an attendee for which to request availability
@@ -175,9 +176,8 @@ public final class AttendeeInfo implements ISelfValidate {
     /**
      * Validates this instance.
      *
-     * @throws Exception the exception
      */
-    public void validate() throws Exception {
+    public void validate() throws ExchangeValidationException {
         EwsUtilities.validateParam(this.smtpAddress, "SmtpAddress");
     }
 }

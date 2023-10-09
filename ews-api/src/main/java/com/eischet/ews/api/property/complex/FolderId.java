@@ -31,6 +31,7 @@ import com.eischet.ews.api.core.enumeration.misc.ExchangeVersion;
 import com.eischet.ews.api.core.enumeration.property.WellKnownFolderName;
 import com.eischet.ews.api.core.exception.service.local.ServiceVersionException;
 import com.eischet.ews.api.core.exception.service.local.ServiceXmlSerializationException;
+import com.eischet.ews.api.core.exception.xml.ExchangeXmlException;
 
 /**
  * Represents the Id of a folder.
@@ -106,20 +107,12 @@ public final class FolderId extends ServiceId {
      * Writes attribute to XML.
      *
      * @param writer the writer
-     * @throws ServiceXmlSerializationException the service xml serialization exception
      */
-    public void writeAttributesToXml(EwsServiceXmlWriter writer)
-            throws ServiceXmlSerializationException {
+    public void writeAttributesToXml(EwsServiceXmlWriter writer) throws ExchangeXmlException {
         if (this.getFolderName() != null) {
-            writer.writeAttributeValue(XmlAttributeNames.Id, this
-                    .getFolderName().toString().toLowerCase());
-
+            writer.writeAttributeValue(XmlAttributeNames.Id, this.getFolderName().toString().toLowerCase());
             if (this.mailbox != null) {
-                try {
-                    this.mailbox.writeToXml(writer, XmlElementNames.Mailbox);
-                } catch (Exception e) {
-                    throw new ServiceXmlSerializationException(e.getMessage());
-                }
+                this.mailbox.writeToXml(writer, XmlElementNames.Mailbox);
             }
         } else {
             super.writeAttributesToXml(writer);

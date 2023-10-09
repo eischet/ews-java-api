@@ -26,7 +26,10 @@ package com.eischet.ews.api.autodiscover;
 import com.eischet.ews.api.core.EwsXmlReader;
 import com.eischet.ews.api.core.XmlElementNames;
 import com.eischet.ews.api.core.enumeration.misc.XmlNamespace;
+import com.eischet.ews.api.core.exception.service.local.ServiceXmlDeserializationException;
 import com.eischet.ews.api.security.XmlNodeType;
+
+import javax.xml.stream.XMLStreamException;
 
 /**
  * Defines the AlternateMailbox class.
@@ -78,8 +81,7 @@ public final class AlternateMailbox {
      * @return AlternateMailbox
      * @throws Exception the exception
      */
-    public static AlternateMailbox loadFromXml(final EwsXmlReader reader)
-            throws Exception {
+    public static AlternateMailbox loadFromXml(final EwsXmlReader reader) throws Exception {
         final AlternateMailbox altMailbox = new AlternateMailbox();
 
         do {
@@ -213,7 +215,7 @@ public final class AlternateMailbox {
     /**
      * Sets the owner SMTP address.
      *
-     * @param ownerSmtpAdress the new owner SMTP address
+     * @param ownerSmtpAddress the new owner SMTP address
      */
     protected void setOwnerSmtpAddress(final String ownerSmtpAddress) {
         this.ownerSmtpAddress = ownerSmtpAddress;

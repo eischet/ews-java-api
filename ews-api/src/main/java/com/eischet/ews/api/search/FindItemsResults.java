@@ -33,8 +33,7 @@ import java.util.Iterator;
  *
  * @param <TItem> The type of item returned by the search operation.
  */
-public final class FindItemsResults<TItem extends Item> implements
-        Iterable<TItem> {
+public final class FindItemsResults<TItem extends Item> implements Iterable<TItem> {
 
     /**
      * The total count.

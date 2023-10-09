@@ -24,7 +24,7 @@
 package com.eischet.ews.api.core;
 
 import com.eischet.ews.api.core.enumeration.misc.XmlNamespace;
-import com.eischet.ews.api.core.exception.service.local.ServiceLocalException;
+import com.eischet.ews.api.core.exception.xml.ExchangeXmlException;
 import com.eischet.ews.api.core.response.IGetObjectInstanceDelegate;
 import com.eischet.ews.api.core.service.ServiceObject;
 import com.eischet.ews.api.util.DateTimeUtils;
@@ -50,10 +50,8 @@ public class EwsServiceXmlReader extends EwsXmlReader {
      *
      * @param stream  the stream
      * @param service the service
-     * @throws Exception on error
      */
-    public EwsServiceXmlReader(InputStream stream, ExchangeService service)
-            throws Exception {
+    public EwsServiceXmlReader(InputStream stream, ExchangeService service) throws ExchangeXmlException {
         super(stream);
         this.service = service;
     }
@@ -64,7 +62,7 @@ public class EwsServiceXmlReader extends EwsXmlReader {
      * @return Element value
      * @throws Exception the exception
      */
-    public LocalDateTime readElementValueAsDateTime() throws Exception {
+    public LocalDateTime readElementValueAsDateTime() throws ExchangeXmlException {
         return DateTimeUtils.parseDateTime(readElementValue());
     }
 
@@ -72,9 +70,8 @@ public class EwsServiceXmlReader extends EwsXmlReader {
      * Reads the element value as unspecified date.
      *
      * @return element value
-     * @throws Exception on error
      */
-    public LocalDate readElementValueAsUnspecifiedDate() throws Exception {
+    public LocalDate readElementValueAsUnspecifiedDate() throws ExchangeXmlException {
         return DateTimeUtils.parseDateOnly(readElementValue());
     }
 
@@ -85,8 +82,7 @@ public class EwsServiceXmlReader extends EwsXmlReader {
      * @return Date
      * @throws Exception the exception
      */
-    public LocalDateTime readElementValueAsUnbiasedDateTimeScopedToServiceTimeZone()
-            throws Exception {
+    public LocalDateTime readElementValueAsUnbiasedDateTimeScopedToServiceTimeZone() throws ExchangeXmlException {
         return DateTimeUtils.parseDateTime(this.readElementValue());
     }
 
@@ -98,7 +94,7 @@ public class EwsServiceXmlReader extends EwsXmlReader {
      * @return the date
      * @throws Exception the exception
      */
-    public LocalDateTime readElementValueAsDateTime(XmlNamespace xmlNamespace, String localName) throws Exception {
+    public LocalDateTime readElementValueAsDateTime(XmlNamespace xmlNamespace, String localName) throws ExchangeXmlException {
         return DateTimeUtils.parseDateTime(readElementValue(xmlNamespace, localName));
     }
 
@@ -112,7 +108,6 @@ public class EwsServiceXmlReader extends EwsXmlReader {
      * @param requestedPropertySet      the requested property set
      * @param summaryPropertiesOnly     the summary property only
      * @return the list
-     * @throws Exception the exception
      */
     public <TServiceObject extends ServiceObject> List<TServiceObject>
     readServiceObjectsCollectionFromXml(
@@ -120,7 +115,7 @@ public class EwsServiceXmlReader extends EwsXmlReader {
             IGetObjectInstanceDelegate<ServiceObject>
                     getObjectInstanceDelegate,
             boolean clearPropertyBag, PropertySet requestedPropertySet,
-            boolean summaryPropertiesOnly) throws Exception {
+            boolean summaryPropertiesOnly) throws ExchangeXmlException {
 
         List<TServiceObject> serviceObjects = new ArrayList<>();
         TServiceObject serviceObject;
@@ -132,17 +127,14 @@ public class EwsServiceXmlReader extends EwsXmlReader {
                 this.read();
 
                 if (this.isStartElement()) {
-                    serviceObject = (TServiceObject) getObjectInstanceDelegate
-                            .getObjectInstanceDelegate(this.getService(), this
-                                    .getLocalName());
+                    serviceObject = (TServiceObject) getObjectInstanceDelegate.getObjectInstanceDelegate(this.getService(), this.getLocalName());
                     if (serviceObject == null) {
                         this.skipCurrentElement();
                     } else {
                         if (!(this.getLocalName()).equals(serviceObject
                                 .getXmlElementName())) {
 
-                            throw new ServiceLocalException(String
-                                    .format(
+                            throw new ExchangeXmlException(String.format(
                                             "The type of the " + "object in " +
                                                     "the store (%s)" +
                                                     " does not match that" +

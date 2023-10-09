@@ -25,6 +25,7 @@ package com.eischet.ews.api.core.request;
 
 import com.eischet.ews.api.core.ExchangeService;
 import com.eischet.ews.api.core.enumeration.misc.TraceFlags;
+import com.eischet.ews.api.core.exception.service.local.ServiceVersionException;
 import com.eischet.ews.api.core.exception.service.remote.ServiceRequestException;
 import com.eischet.ews.api.http.ExchangeHttpClient;
 import com.eischet.ews.api.misc.*;
@@ -41,8 +42,7 @@ public abstract class SimpleServiceRequestBase<T> extends ServiceRequestBase<T> 
     /**
      * Initializes a new instance of the SimpleServiceRequestBase class.
      */
-    protected SimpleServiceRequestBase(ExchangeService service)
-            throws Exception {
+    protected SimpleServiceRequestBase(ExchangeService service) throws ServiceVersionException {
         super(service);
     }
 

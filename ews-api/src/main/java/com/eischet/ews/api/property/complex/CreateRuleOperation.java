@@ -26,6 +26,8 @@ package com.eischet.ews.api.property.complex;
 import com.eischet.ews.api.core.EwsServiceXmlWriter;
 import com.eischet.ews.api.core.EwsUtilities;
 import com.eischet.ews.api.core.XmlElementNames;
+import com.eischet.ews.api.core.exception.service.local.ExchangeValidationException;
+import com.eischet.ews.api.core.exception.xml.ExchangeXmlException;
 
 /**
  * Represents an operation to create a new rule.
@@ -78,21 +80,18 @@ public final class CreateRuleOperation extends RuleOperation {
      * Writes elements to XML.
      *
      * @param writer The writer.
-     * @throws Exception
      */
     @Override
-    public void writeElementsToXml(EwsServiceXmlWriter writer)
-            throws Exception {
+    public void writeElementsToXml(EwsServiceXmlWriter writer) throws ExchangeXmlException {
         this.getRule().writeToXml(writer, XmlElementNames.Rule);
     }
 
     /**
      * Validates this instance.
      *
-     * @throws Exception
      */
     @Override
-    protected void internalValidate() throws Exception {
+    protected void internalValidate() throws ExchangeValidationException {
         EwsUtilities.validateParam(this.rule, "Rule");
     }
 

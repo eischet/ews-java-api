@@ -32,7 +32,9 @@ import com.eischet.ews.api.core.enumeration.misc.XmlNamespace;
 import com.eischet.ews.api.core.enumeration.property.OofExternalAudience;
 import com.eischet.ews.api.core.enumeration.property.OofState;
 import com.eischet.ews.api.core.exception.misc.ArgumentException;
-import com.eischet.ews.api.core.exception.service.local.ServiceXmlSerializationException;
+import com.eischet.ews.api.core.exception.service.local.ServiceLocalException;
+import com.eischet.ews.api.core.exception.service.local.ExchangeValidationException;
+import com.eischet.ews.api.core.exception.xml.ExchangeXmlException;
 import com.eischet.ews.api.misc.availability.OofReply;
 import com.eischet.ews.api.misc.availability.TimeWindow;
 import com.eischet.ews.api.property.complex.ComplexProperty;
@@ -81,12 +83,10 @@ public final class OofSettings extends ComplexProperty implements ISelfValidate 
      * @param oofReply       The oof reply
      * @param writer         The writer
      * @param xmlElementName Name of the xml element
-     * @throws XMLStreamException               the XML stream exception
-     * @throws ServiceXmlSerializationException the service xml serialization exception
      */
     private void serializeOofReply(OofReply oofReply,
                                    EwsServiceXmlWriter writer, String xmlElementName)
-            throws XMLStreamException, ServiceXmlSerializationException {
+            throws ExchangeXmlException {
         if (oofReply != null) {
             oofReply.writeToXml(writer, xmlElementName);
         } else {
@@ -106,11 +106,9 @@ public final class OofSettings extends ComplexProperty implements ISelfValidate 
      *
      * @param reader The reader
      * @return True if appropriate element was read.
-     * @throws Exception the exception
      */
     @Override
-    public boolean tryReadElementFromXml(EwsServiceXmlReader reader)
-            throws Exception {
+    public boolean tryReadElementFromXml(EwsServiceXmlReader reader) throws ExchangeXmlException {
         if (reader.getLocalName().equals(XmlElementNames.OofState)) {
             this.state = reader.readValue(OofState.class);
             return true;
@@ -139,11 +137,9 @@ public final class OofSettings extends ComplexProperty implements ISelfValidate 
      * Writes elements to XML.
      *
      * @param writer The writer
-     * @throws Exception the exception
      */
     @Override
-    public void writeElementsToXml(EwsServiceXmlWriter writer)
-            throws Exception {
+    public void writeElementsToXml(EwsServiceXmlWriter writer) throws ExchangeXmlException {
         super.writeElementsToXml(writer);
 
         writer.writeElementValue(XmlNamespace.Types, XmlElementNames.OofState,
@@ -279,15 +275,13 @@ public final class OofSettings extends ComplexProperty implements ISelfValidate 
     /**
      * Validates this instance.
      *
-     * @throws Exception the exception
      */
     @Override
-    public void validate() throws Exception {
+    public void validate() throws ExchangeValidationException {
         if (this.getState() == OofState.Scheduled) {
             if (this.getDuration() == null) {
                 throw new ArgumentException("Duration must be specified when State is equal to Scheduled.");
             }
-
             EwsUtilities.validateParam(this.getDuration(), "Duration");
         }
     }

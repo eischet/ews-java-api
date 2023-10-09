@@ -27,6 +27,7 @@ import com.eischet.ews.api.attribute.EditorBrowsable;
 import com.eischet.ews.api.core.EwsUtilities;
 import com.eischet.ews.api.core.ExchangeService;
 import com.eischet.ews.api.core.enumeration.attribute.EditorBrowsableState;
+import com.eischet.ews.api.core.exception.xml.ExchangeXmlException;
 import com.eischet.ews.api.core.service.item.Item;
 
 import java.util.logging.Level;
@@ -38,8 +39,6 @@ import java.util.logging.Logger;
 @EditorBrowsable(state = EditorBrowsableState.Never)
 public final class CreateResponseObjectResponse extends CreateItemResponseBase {
 
-    private static final Logger LOG = Logger.getLogger(CreateResponseObjectResponse.class.getCanonicalName());
-
     /**
      * Gets Item instance.
      *
@@ -49,14 +48,8 @@ public final class CreateResponseObjectResponse extends CreateItemResponseBase {
      * @throws Exception the exception
      */
     @Override
-    protected Item getObjectInstance(ExchangeService service,
-                                     String xmlElementName) throws Exception {
-        try {
-            return EwsUtilities.createEwsObjectFromXmlElementName(Item.class, service, xmlElementName);
-        } catch (InstantiationException | IllegalAccessException e) {
-            LOG.log(Level.SEVERE, "error getting object instance for xml element name: " + xmlElementName, e);
-            return null;
-        }
+    protected Item getObjectInstance(ExchangeService service, String xmlElementName) throws ExchangeXmlException {
+        return EwsUtilities.createEwsObjectFromXmlElementName(Item.class, service, xmlElementName);
     }
 
     /**

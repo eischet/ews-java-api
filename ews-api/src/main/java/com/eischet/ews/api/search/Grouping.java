@@ -32,6 +32,7 @@ import com.eischet.ews.api.core.enumeration.misc.XmlNamespace;
 import com.eischet.ews.api.core.enumeration.search.AggregateType;
 import com.eischet.ews.api.core.enumeration.search.SortDirection;
 import com.eischet.ews.api.core.exception.service.local.ServiceXmlSerializationException;
+import com.eischet.ews.api.core.exception.xml.ExchangeXmlException;
 import com.eischet.ews.api.property.definition.PropertyDefinitionBase;
 
 import javax.xml.stream.XMLStreamException;
@@ -66,16 +67,6 @@ public final class Grouping implements ISelfValidate {
     private AggregateType aggregateType = AggregateType.Minimum;
 
     /**
-     * Validates this grouping.
-     *
-     * @throws Exception the exception
-     */
-    private void internalValidate() throws Exception {
-        EwsUtilities.validateParam(this.groupOn, "GroupOn");
-        EwsUtilities.validateParam(this.aggregateOn, "AggregateOn");
-    }
-
-    /**
      * Initializes a new instance of the "Grouping" class.
      */
     public Grouping() {
@@ -105,25 +96,30 @@ public final class Grouping implements ISelfValidate {
     }
 
     /**
+     * Validates this grouping.
+     *
+     * @throws Exception the exception
+     */
+    private void internalValidate() throws Exception {
+        EwsUtilities.validateParam(this.groupOn, "GroupOn");
+        EwsUtilities.validateParam(this.aggregateOn, "AggregateOn");
+    }
+
+    /**
      * Writes to XML.
      *
      * @param writer the writer
      * @throws XMLStreamException               the XML stream exception
      * @throws ServiceXmlSerializationException the service xml serialization exception
      */
-    protected void writeToXml(EwsServiceXmlWriter writer)
-            throws XMLStreamException, ServiceXmlSerializationException {
-        writer
-                .writeStartElement(XmlNamespace.Messages,
-                        XmlElementNames.GroupBy);
+    protected void writeToXml(EwsServiceXmlWriter writer) throws ExchangeXmlException {
+        writer.writeStartElement(XmlNamespace.Messages, XmlElementNames.GroupBy);
         writer.writeAttributeValue(XmlAttributeNames.Order, this.sortDirection);
 
         this.groupOn.writeToXml(writer);
 
-        writer.writeStartElement(XmlNamespace.Types,
-                XmlElementNames.AggregateOn);
-        writer.writeAttributeValue(XmlAttributeNames.Aggregate,
-                this.aggregateType);
+        writer.writeStartElement(XmlNamespace.Types, XmlElementNames.AggregateOn);
+        writer.writeAttributeValue(XmlAttributeNames.Aggregate, this.aggregateType);
 
         this.aggregateOn.writeToXml(writer);
 

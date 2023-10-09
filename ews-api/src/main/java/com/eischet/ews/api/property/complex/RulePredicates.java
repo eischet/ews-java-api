@@ -31,6 +31,8 @@ import com.eischet.ews.api.core.enumeration.misc.FlaggedForAction;
 import com.eischet.ews.api.core.enumeration.misc.XmlNamespace;
 import com.eischet.ews.api.core.enumeration.property.Importance;
 import com.eischet.ews.api.core.enumeration.property.Sensitivity;
+import com.eischet.ews.api.core.exception.service.local.ExchangeValidationException;
+import com.eischet.ews.api.core.exception.xml.ExchangeXmlException;
 
 /**
  * Represents the set of conditions and exception available for a rule.
@@ -698,11 +700,9 @@ public final class RulePredicates extends ComplexProperty {
      *
      * @param reader The reader
      * @return True if element was read.
-     * @throws Exception
      */
     @Override
-    public boolean tryReadElementFromXml(EwsServiceXmlReader
-                                                 reader) throws Exception {
+    public boolean tryReadElementFromXml(EwsServiceXmlReader reader) throws ExchangeXmlException {
 
         if (reader.getLocalName().equalsIgnoreCase(XmlElementNames.Categories)) {
             this.categories.loadFromXml(reader, reader.getLocalName());
@@ -824,11 +824,9 @@ public final class RulePredicates extends ComplexProperty {
      * Writes elements to XML.
      *
      * @param writer The writer.
-     * @throws Exception
      */
     @Override
-    public void writeElementsToXml(EwsServiceXmlWriter writer)
-            throws Exception {
+    public void writeElementsToXml(EwsServiceXmlWriter writer) throws ExchangeXmlException {
         if (this.getCategories().getSize() > 0) {
             this.getCategories().writeToXml(writer, XmlElementNames.Categories);
         }
@@ -1044,7 +1042,7 @@ public final class RulePredicates extends ComplexProperty {
      * Validates this instance.
      */
     @Override
-    protected void internalValidate() throws Exception {
+    protected void internalValidate() throws ExchangeValidationException {
         super.internalValidate();
         EwsUtilities.validateParam(this.fromAddresses, "FromAddresses");
         EwsUtilities.validateParam(this.sentToAddresses, "SentToAddresses");

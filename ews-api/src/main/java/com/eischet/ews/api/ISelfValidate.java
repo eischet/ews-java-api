@@ -23,18 +23,12 @@
 
 package com.eischet.ews.api;
 
-import com.eischet.ews.api.core.exception.service.local.ServiceValidationException;
+import com.eischet.ews.api.core.exception.xml.ExchangeXmlException;
 
 /**
  * The Interface ISelfValidate.
  */
 public interface ISelfValidate {
 
-    /**
-     * Validate.
-     *
-     * @throws ServiceValidationException the service validation exception
-     * @throws Exception                  the exception
-     */
-    void validate() throws ServiceValidationException, Exception;
+    void validate() throws ExchangeXmlException;
 }

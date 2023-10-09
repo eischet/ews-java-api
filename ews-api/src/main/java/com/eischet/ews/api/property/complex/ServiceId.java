@@ -27,7 +27,9 @@ import com.eischet.ews.api.core.EwsServiceXmlReader;
 import com.eischet.ews.api.core.EwsServiceXmlWriter;
 import com.eischet.ews.api.core.EwsUtilities;
 import com.eischet.ews.api.core.XmlAttributeNames;
+import com.eischet.ews.api.core.exception.service.local.ServiceLocalException;
 import com.eischet.ews.api.core.exception.service.local.ServiceXmlSerializationException;
+import com.eischet.ews.api.core.exception.xml.ExchangeXmlException;
 
 import java.util.Objects;
 
@@ -57,9 +59,8 @@ public abstract class ServiceId extends ComplexProperty {
      * Initializes a new instance.
      *
      * @param uniqueId The unique id.
-     * @throws Exception the exception
      */
-    public ServiceId(String uniqueId) throws Exception {
+    public ServiceId(String uniqueId) throws ExchangeXmlException {
         this();
         EwsUtilities.validateParam(uniqueId, "uniqueId");
         this.uniqueId = uniqueId;
@@ -69,44 +70,23 @@ public abstract class ServiceId extends ComplexProperty {
      * Read attribute from XML.
      *
      * @param reader The reader.
-     * @throws Exception the exception
      */
     @Override
-    public void readAttributesFromXml(EwsServiceXmlReader reader)
-            throws Exception {
+    public void readAttributesFromXml(EwsServiceXmlReader reader) throws ExchangeXmlException {
         this.uniqueId = reader.readAttributeValue(XmlAttributeNames.Id);
         this.changeKey = reader.readAttributeValue(XmlAttributeNames.ChangeKey);
 
     }
 
-    /**
-     * Writes attribute to XML.
-     *
-     * @param writer The writer.
-     * @throws ServiceXmlSerializationException the service xml serialization exception
-     */
     @Override
-    public void writeAttributesToXml(EwsServiceXmlWriter writer)
-            throws ServiceXmlSerializationException {
+    public void writeAttributesToXml(EwsServiceXmlWriter writer) throws ExchangeXmlException {
         writer.writeAttributeValue(XmlAttributeNames.Id, this.getUniqueId());
-        writer.writeAttributeValue(XmlAttributeNames.ChangeKey, this
-                .getChangeKey());
+        writer.writeAttributeValue(XmlAttributeNames.ChangeKey, this.getChangeKey());
     }
 
-    /**
-     * Gets the name of the XML element.
-     *
-     * @return XML element name.
-     */
     public abstract String getXmlElementName();
 
-    /**
-     * Writes to XML.
-     *
-     * @param writer The writer.
-     * @throws Exception the exception
-     */
-    public void writeToXml(EwsServiceXmlWriter writer) throws Exception {
+    public void writeToXml(EwsServiceXmlWriter writer) throws ExchangeXmlException {
         this.writeToXml(writer, this.getXmlElementName());
     }
 

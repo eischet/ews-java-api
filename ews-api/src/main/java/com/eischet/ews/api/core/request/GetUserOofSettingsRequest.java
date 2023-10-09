@@ -29,6 +29,7 @@ import com.eischet.ews.api.core.enumeration.misc.XmlNamespace;
 import com.eischet.ews.api.core.enumeration.misc.error.ServiceError;
 import com.eischet.ews.api.core.enumeration.property.OofExternalAudience;
 import com.eischet.ews.api.core.exception.service.local.ServiceXmlSerializationException;
+import com.eischet.ews.api.core.exception.xml.ExchangeXmlException;
 import com.eischet.ews.api.core.response.GetUserOofSettingsResponse;
 import com.eischet.ews.api.property.complex.availability.OofSettings;
 
@@ -75,7 +76,7 @@ public final class GetUserOofSettingsRequest extends SimpleServiceRequestBase<Ge
      */
     @Override
     protected void writeElementsToXml(EwsServiceXmlWriter writer)
-            throws XMLStreamException, ServiceXmlSerializationException {
+            throws ExchangeXmlException {
         writer.writeStartElement(XmlNamespace.Types, XmlElementNames.Mailbox);
         writer.writeElementValue(XmlNamespace.Types, XmlElementNames.Address,
                 this.getSmtpAddress());

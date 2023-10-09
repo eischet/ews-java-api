@@ -40,8 +40,9 @@ import com.eischet.ews.api.core.exception.misc.ArgumentException;
 import com.eischet.ews.api.core.exception.misc.ArgumentNullException;
 import com.eischet.ews.api.core.exception.misc.FormatException;
 import com.eischet.ews.api.core.exception.service.local.ServiceLocalException;
-import com.eischet.ews.api.core.exception.service.local.ServiceValidationException;
+import com.eischet.ews.api.core.exception.service.local.ExchangeValidationException;
 import com.eischet.ews.api.core.exception.service.local.ServiceVersionException;
+import com.eischet.ews.api.core.exception.xml.ExchangeXmlException;
 import com.eischet.ews.api.core.service.ICreateServiceObjectWithAttachmentParam;
 import com.eischet.ews.api.core.service.ICreateServiceObjectWithServiceParam;
 import com.eischet.ews.api.core.service.ServiceObject;
@@ -57,6 +58,7 @@ import javax.xml.stream.XMLStreamWriter;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.net.URISyntaxException;
@@ -401,10 +403,7 @@ public final class EwsUtilities {
      * @throws Exception the exception
      */
     @SuppressWarnings("unchecked")
-    public static <TServiceObject extends ServiceObject>
-    TServiceObject createEwsObjectFromXmlElementName(
-            Class<?> itemClass, ExchangeService service, String xmlElementName)
-            throws Exception {
+    public static <TServiceObject extends ServiceObject> TServiceObject createEwsObjectFromXmlElementName(Class<?> itemClass, ExchangeService service, String xmlElementName) throws ExchangeXmlException {
         final ServiceObjectInfo member = EwsUtilities.SERVICE_OBJECT_INFO.getMember();
         final Map<String, Class<?>> map = member.getXmlElementNameToServiceObjectClassMap();
 
@@ -416,14 +415,16 @@ public final class EwsUtilities {
                     serviceParam.get(ic);
 
             if (creationDelegate != null) {
-                return (TServiceObject) creationDelegate
-                        .createServiceObjectWithServiceParam(service);
+                return (TServiceObject) creationDelegate.createServiceObjectWithServiceParam(service);
             } else {
                 throw new IllegalArgumentException("No appropriate constructor could be found for this item class.");
             }
         }
-
-        return (TServiceObject) itemClass.newInstance();
+        try {
+            return (TServiceObject) itemClass.getDeclaredConstructor().newInstance();
+        } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
+            throw new ExchangeXmlException("cannot create an instance of class " + itemClass.getCanonicalName());
+        }
     }
 
     /**
@@ -435,9 +436,7 @@ public final class EwsUtilities {
      * @return the item
      * @throws Exception the exception
      */
-    public static Item createItemFromItemClass(
-            ItemAttachment itemAttachment, Class<?> itemClass, boolean isNew)
-            throws Exception {
+    public static Item createItemFromItemClass(ItemAttachment itemAttachment, Class<?> itemClass, boolean isNew) throws ExchangeXmlException {
         final ServiceObjectInfo member = EwsUtilities.SERVICE_OBJECT_INFO.getMember();
         final Map<Class<?>, ICreateServiceObjectWithAttachmentParam>
                 dataMap = member.getServiceObjectConstructorsWithAttachmentParam();
@@ -445,8 +444,7 @@ public final class EwsUtilities {
                 dataMap.get(itemClass);
 
         if (creationDelegate != null) {
-            return (Item) creationDelegate
-                    .createServiceObjectWithAttachmentParam(itemAttachment, isNew);
+            return (Item) creationDelegate.createServiceObjectWithAttachmentParam(itemAttachment, isNew);
         }
         throw new IllegalArgumentException("No appropriate constructor could be found for this item class.");
     }
@@ -459,9 +457,7 @@ public final class EwsUtilities {
      * @return the item
      * @throws Exception the exception
      */
-    public static Item createItemFromXmlElementName(
-            ItemAttachment itemAttachment, String xmlElementName)
-            throws Exception {
+    public static Item createItemFromXmlElementName(ItemAttachment itemAttachment, String xmlElementName) throws ExchangeXmlException {
         final ServiceObjectInfo member = EwsUtilities.SERVICE_OBJECT_INFO.getMember();
         final Map<String, Class<?>> map =
                 member.getXmlElementNameToServiceObjectClassMap();
@@ -701,7 +697,7 @@ public final class EwsUtilities {
      * @throws java.text.ParseException the parse exception
      */
     @SuppressWarnings("unchecked")
-    public static <T> T parse(Class<T> cls, String value) throws ParseException {
+    public static <T> T parse(Class<T> cls, String value) throws ExchangeXmlException {
         if (cls.isEnum()) {
             final Map<Class<?>, Map<String, String>> member = SCHEMA_TO_ENUM_DICTIONARIES.getMember();
 
@@ -739,7 +735,11 @@ public final class EwsUtilities {
             }
         } else if (Date.class.isAssignableFrom(cls)) {
             DateFormat df = createDateFormat(XML_SCHEMA_DATE_TIME_FORMAT);
-            return (T) df.parse(value);
+            try {
+                return (T) df.parse(value);
+            } catch (ParseException e) {
+                throw new ExchangeXmlException("error parsing as date: {}", e);
+            }
         } else if (Boolean.class.isAssignableFrom(cls)) {
             return (T) ((Boolean) Boolean.parseBoolean(value));
         } else if (String.class.isAssignableFrom(cls)) {
@@ -758,7 +758,7 @@ public final class EwsUtilities {
      */
     private static <E extends Enum<E>> Map<String, String>
     buildSchemaToEnumDict(Class<E> c) {
-        Map<String, String> dict = new HashMap<String, String>();
+        Map<String, String> dict = new HashMap<>();
 
         Field[] fields = c.getDeclaredFields();
         for (Field f : fields) {
@@ -938,23 +938,25 @@ public final class EwsUtilities {
      *
      * @param param     The param.
      * @param paramName Name of the param.
-     * @throws Exception the exception
      */
-    public static void validateParamAllowNull(Object param, String paramName)
-            throws Exception {
+    public static void validateParamAllowNull(Object param, String paramName) throws ExchangeValidationException {
         if (param instanceof ISelfValidate) {
             ISelfValidate selfValidate = (ISelfValidate) param;
             try {
                 selfValidate.validate();
-            } catch (ServiceValidationException e) {
-                throw new Exception(String.format("%s %s", "Validation failed.", paramName), e);
+            } catch (ExchangeXmlException e) {
+                throw new ExchangeValidationException(String.format("%s %s", "Validation failed.", paramName), e);
             }
         }
 
         if (param instanceof ServiceObject) {
             ServiceObject ewsObject = (ServiceObject) param;
-            if (ewsObject.isNew()) {
-                throw new Exception(String.format("%s %s", "This service object doesn't have an ID.", paramName));
+            try {
+                if (ewsObject.isNew()) {
+                    throw new ExchangeValidationException(String.format("%s %s", "This service object doesn't have an ID.", paramName));
+                }
+            } catch (ExchangeXmlException e) {
+                throw new ExchangeValidationException("error checking if object " + ewsObject + " is new", e);
             }
         }
     }
@@ -966,7 +968,7 @@ public final class EwsUtilities {
      * @param paramName Name of the param.
      * @throws Exception the exception
      */
-    public static void validateParam(Object param, String paramName) throws Exception {
+    public static void validateParam(Object param, String paramName) throws ExchangeValidationException {
         boolean isValid;
 
         if (param instanceof String) {
@@ -977,8 +979,7 @@ public final class EwsUtilities {
         }
 
         if (!isValid) {
-            throw new Exception(String.format("Argument %s not valid",
-                    paramName));
+            throw new ArgumentException(String.format("Argument %s = %s is not valid", paramName, param));
         }
         validateParamAllowNull(param, paramName);
     }
@@ -1018,22 +1019,16 @@ public final class EwsUtilities {
      *
      * @param param     The string parameter.
      * @param paramName Name of the parameter.
-     * @throws ArgumentException
-     * @throws ServiceLocalException
      */
-    public static void validateNonBlankStringParamAllowNull(String param,
-                                                            String paramName) throws ArgumentException, ServiceLocalException {
+    public static void validateNonBlankStringParamAllowNull(String param, String paramName) throws ExchangeValidationException {
         if (param != null) {
-            // Non-empty string has at least one character
-            //which is *not* a whitespace character
-            if (param.length() == countMatchingChars(param,
-                    new IPredicate<Character>() {
-                        @Override
-                        public boolean predicate(Character obj) {
-                            return Character.isWhitespace(obj);
-                        }
-                    })) {
-                throw new ArgumentException("The string argument contains only white space characters.", paramName);
+            // Non-empty string has at least one character which is *not* a whitespace character
+            try {
+                if (param.length() == countMatchingChars(param, Character::isWhitespace)) {
+                    throw new ArgumentException("The string argument contains only white space characters.", paramName);
+                }
+            } catch (ExchangeXmlException e) {
+                throw new ExchangeValidationException("error validating param " + paramName + " = " + param, e);
             }
         }
     }
@@ -1045,12 +1040,8 @@ public final class EwsUtilities {
      *
      * @param param     The string parameter.
      * @param paramName Name of the parameter.
-     * @throws ArgumentNullException
-     * @throws ArgumentException
-     * @throws ServiceLocalException
      */
-    public static void validateNonBlankStringParam(String param,
-                                                   String paramName) throws ArgumentNullException, ArgumentException, ServiceLocalException {
+    public static void validateNonBlankStringParam(String param, String paramName) throws ExchangeValidationException {
         if (param == null) {
             throw new ArgumentNullException(paramName);
         }
@@ -1096,16 +1087,10 @@ public final class EwsUtilities {
      * @throws ServiceVersionException Raised if this service object type requires a later version
      *                                 of Exchange.
      */
-    public static void validateServiceObjectVersion(
-            ServiceObject serviceObject, ExchangeVersion requestVersion)
-            throws ServiceVersionException {
-        ExchangeVersion minimumRequiredServerVersion = serviceObject
-                .getMinimumRequiredServerVersion();
-
+    public static void validateServiceObjectVersion(ServiceObject serviceObject, ExchangeVersion requestVersion) throws ServiceVersionException {
+        ExchangeVersion minimumRequiredServerVersion = serviceObject.getMinimumRequiredServerVersion();
         if (requestVersion.ordinal() < minimumRequiredServerVersion.ordinal()) {
-            String msg = String.format(
-                    "The object type %s is only valid for Exchange Server version %s or later versions.",
-                    serviceObject.getClass().getName(), minimumRequiredServerVersion);
+            String msg = String.format("The object type %s is only valid for Exchange Server version %s or later versions.", serviceObject.getClass().getName(), minimumRequiredServerVersion);
             throw new ServiceVersionException(msg);
         }
     }
@@ -1121,7 +1106,7 @@ public final class EwsUtilities {
     public static void validatePropertyVersion(
             ExchangeService service,
             ExchangeVersion minimumServerVersion,
-            String propertyName) throws ServiceVersionException {
+            String propertyName) throws ExchangeXmlException {
         if (service.getRequestedServerVersion().ordinal() <
                 minimumServerVersion.ordinal()) {
             throw new ServiceVersionException(
@@ -1156,7 +1141,6 @@ public final class EwsUtilities {
      * @param service              the service
      * @param minimumServerVersion The minimum server version that supports the method.
      * @param className            Name of the class.
-     * @throws ServiceVersionException
      */
     public static void validateClassVersion(
             ExchangeService service,
@@ -1176,10 +1160,8 @@ public final class EwsUtilities {
      *
      * @param domainName Domain name.
      * @param paramName  Parameter name.
-     * @throws ArgumentException
      */
-    public static void validateDomainNameAllowNull(String domainName, String paramName) throws
-            ArgumentException {
+    public static void validateDomainNameAllowNull(String domainName, String paramName) throws ArgumentException {
         if (domainName != null) {
             Pattern domainNamePattern = Pattern.compile(DomainRegex);
             Matcher domainNameMatcher = domainNamePattern.matcher(domainName);
@@ -1199,7 +1181,7 @@ public final class EwsUtilities {
     private static <E extends Enum<E>> Map<String, ExchangeVersion>
     buildEnumDict(Class<E> c) {
         Map<String, ExchangeVersion> dict =
-                new HashMap<String, ExchangeVersion>();
+                new HashMap<>();
         Field[] fields = c.getDeclaredFields();
         for (Field f : fields) {
             if (f.isEnumConstant()
@@ -1221,7 +1203,7 @@ public final class EwsUtilities {
      * @return The mapping from enum to schema name
      */
     private static Map<String, String> buildEnumToSchemaDict(Class<?> c) {
-        Map<String, String> dict = new HashMap<String, String>();
+        Map<String, String> dict = new HashMap<>();
         Field[] fields = c.getFields();
         for (Field f : fields) {
             if (f.isEnumConstant() && f.isAnnotationPresent(EwsEnum.class)) {
@@ -1278,11 +1260,8 @@ public final class EwsUtilities {
      * @param str           The string.
      * @param charPredicate Predicate to evaluate for each character in the string.
      * @return Count of characters that match condition expressed by predicate.
-     * @throws ServiceLocalException
      */
-    public static int countMatchingChars(
-            String str, IPredicate<Character> charPredicate
-    ) throws ServiceLocalException {
+    public static int countMatchingChars(String str, IPredicate<Character> charPredicate) throws ExchangeXmlException {
         int count = 0;
         for (int i = 0; i < str.length(); i++) {
             if (charPredicate.predicate(str.charAt(i))) {
@@ -1301,10 +1280,9 @@ public final class EwsUtilities {
      * @param predicate  Predicate that defines the conditions to check against the elements.
      * @return True if every element in the collection matches
      * the conditions defined by the specified predicate; otherwise, false.
-     * @throws ServiceLocalException
      */
     public static <T> boolean trueForAll(Iterable<T> collection,
-                                         IPredicate<T> predicate) throws ServiceLocalException {
+                                         IPredicate<T> predicate) throws ExchangeXmlException {
         for (T entry : collection) {
             if (!predicate.predicate(entry)) {
                 return false;

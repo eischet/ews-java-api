@@ -28,6 +28,7 @@ import com.eischet.ews.api.core.EwsServiceXmlWriter;
 import com.eischet.ews.api.core.PropertyBag;
 import com.eischet.ews.api.core.enumeration.misc.ExchangeVersion;
 import com.eischet.ews.api.core.enumeration.property.PropertyDefinitionFlags;
+import com.eischet.ews.api.core.exception.xml.ExchangeXmlException;
 import com.eischet.ews.api.core.service.schema.ServiceObjectSchema;
 
 import java.util.ArrayList;
@@ -141,8 +142,7 @@ public abstract class PropertyDefinition extends
      * property definition that is internal.
      */
     public List<PropertyDefinition> getAssociatedInternalProperties() {
-        List<PropertyDefinition> properties = new
-                ArrayList<PropertyDefinition>();
+        List<PropertyDefinition> properties = new ArrayList<>();
         this.registerAssociatedInternalProperties(properties);
         return properties;
     }
@@ -171,10 +171,8 @@ public abstract class PropertyDefinition extends
      *
      * @param reader      The reader.
      * @param propertyBag The property bag.
-     * @throws Exception the exception
      */
-    public abstract void loadPropertyValueFromXml(EwsServiceXmlReader reader, PropertyBag propertyBag)
-            throws Exception;
+    public abstract void loadPropertyValueFromXml(EwsServiceXmlReader reader, PropertyBag propertyBag) throws ExchangeXmlException;
 
     /**
      * Writes the property value to XML.
@@ -182,10 +180,8 @@ public abstract class PropertyDefinition extends
      * @param writer            the writer
      * @param propertyBag       the property bag
      * @param isUpdateOperation indicates whether the context is an update operation
-     * @throws Exception the exception
      */
-    public abstract void writePropertyValueToXml(EwsServiceXmlWriter writer, PropertyBag propertyBag,
-                                                 boolean isUpdateOperation) throws Exception;
+    public abstract void writePropertyValueToXml(EwsServiceXmlWriter writer, PropertyBag propertyBag, boolean isUpdateOperation) throws ExchangeXmlException;
 
     /**
      * Gets the name of the XML element.

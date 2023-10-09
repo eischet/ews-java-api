@@ -30,6 +30,7 @@ import com.eischet.ews.api.core.enumeration.misc.XmlNamespace;
 import com.eischet.ews.api.core.enumeration.search.SortDirection;
 import com.eischet.ews.api.core.exception.service.local.ServiceLocalException;
 import com.eischet.ews.api.core.exception.service.local.ServiceXmlSerializationException;
+import com.eischet.ews.api.core.exception.xml.ExchangeXmlException;
 import com.eischet.ews.api.misc.OutParam;
 import com.eischet.ews.api.property.definition.PropertyDefinitionBase;
 
@@ -167,8 +168,7 @@ public final class OrderByCollection implements
      * @throws XMLStreamException               the XML stream exception
      * @throws ServiceXmlSerializationException the service xml serialization exception
      */
-    protected void writeToXml(EwsServiceXmlWriter writer, String xmlElementName)
-            throws XMLStreamException, ServiceXmlSerializationException {
+    protected void writeToXml(EwsServiceXmlWriter writer, String xmlElementName) throws ExchangeXmlException {
         if (this.count() > 0) {
             writer.writeStartElement(XmlNamespace.Messages, xmlElementName);
 

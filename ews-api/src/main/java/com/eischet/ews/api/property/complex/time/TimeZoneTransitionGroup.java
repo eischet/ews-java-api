@@ -24,9 +24,11 @@
 package com.eischet.ews.api.property.complex.time;
 
 import com.eischet.ews.api.core.*;
+import com.eischet.ews.api.core.exception.service.local.ExchangeValidationException;
 import com.eischet.ews.api.core.exception.service.local.InvalidOrUnsupportedTimeZoneDefinitionException;
 import com.eischet.ews.api.core.exception.service.local.ServiceLocalException;
 import com.eischet.ews.api.core.exception.service.local.ServiceXmlSerializationException;
+import com.eischet.ews.api.core.exception.xml.ExchangeXmlException;
 import com.eischet.ews.api.misc.TimeSpan;
 import com.eischet.ews.api.property.complex.ComplexProperty;
 
@@ -81,7 +83,7 @@ public class TimeZoneTransitionGroup extends ComplexProperty {
      * @param reader the reader
      * @throws Exception the exception
      */
-    public void loadFromXml(EwsServiceXmlReader reader) throws Exception {
+    public void loadFromXml(EwsServiceXmlReader reader) throws ExchangeXmlException {
         this.loadFromXml(reader, XmlElementNames.TransitionsGroup);
     }
 
@@ -91,7 +93,7 @@ public class TimeZoneTransitionGroup extends ComplexProperty {
      * @param writer the writer
      * @throws Exception the exception
      */
-    public void writeToXml(EwsServiceXmlWriter writer) throws Exception {
+    public void writeToXml(EwsServiceXmlWriter writer) throws ExchangeXmlException {
         this.writeToXml(writer, XmlElementNames.TransitionsGroup);
     }
 
@@ -103,7 +105,7 @@ public class TimeZoneTransitionGroup extends ComplexProperty {
      */
     @Override
     public void readAttributesFromXml(EwsServiceXmlReader reader)
-            throws Exception {
+            throws ExchangeXmlException {
         this.id = reader.readAttributeValue(XmlAttributeNames.Id);
     }
 
@@ -115,7 +117,7 @@ public class TimeZoneTransitionGroup extends ComplexProperty {
      */
     @Override
     public void writeAttributesToXml(EwsServiceXmlWriter writer)
-            throws ServiceXmlSerializationException {
+            throws ExchangeXmlException {
         writer.writeAttributeValue(XmlAttributeNames.Id, this.id);
     }
 
@@ -128,7 +130,7 @@ public class TimeZoneTransitionGroup extends ComplexProperty {
      */
     @Override
     public boolean tryReadElementFromXml(EwsServiceXmlReader reader)
-            throws Exception {
+            throws ExchangeXmlException {
         reader.ensureCurrentNodeIsStartElement();
 
         TimeZoneTransition transition = TimeZoneTransition.create(
@@ -149,11 +151,9 @@ public class TimeZoneTransitionGroup extends ComplexProperty {
      * Writes elements to XML.
      *
      * @param writer the writer
-     * @throws Exception the exception
      */
     @Override
-    public void writeElementsToXml(EwsServiceXmlWriter writer)
-            throws Exception {
+    public void writeElementsToXml(EwsServiceXmlWriter writer) throws ExchangeXmlException {
         for (TimeZoneTransition transition : this.transitions) {
             transition.writeToXml(writer);
         }
@@ -164,9 +164,9 @@ public class TimeZoneTransitionGroup extends ComplexProperty {
      *
      * @throws InvalidOrUnsupportedTimeZoneDefinitionException thrown when time zone definition is not valid.
      */
-    public void validate() throws ServiceLocalException {
+    public void validate() throws ExchangeValidationException {
         // There must be exactly one or two transitions in the group.
-        if (this.transitions.size() < 1 || this.transitions.size() > 2) {
+        if (this.transitions.isEmpty() || this.transitions.size() > 2) {
             throw new InvalidOrUnsupportedTimeZoneDefinitionException();
         }
 
@@ -306,7 +306,7 @@ public class TimeZoneTransitionGroup extends ComplexProperty {
      *
      * @throws InvalidOrUnsupportedTimeZoneDefinitionException thrown when time zone definition is not valid.
      */
-    private void initializeTransitions() throws ServiceLocalException {
+    private void initializeTransitions() throws InvalidOrUnsupportedTimeZoneDefinitionException {
         if (this.transitionToStandard == null) {
             for (TimeZoneTransition transition : this.transitions) {
                 if (transition.getTargetPeriod().isStandardPeriod() ||
@@ -329,10 +329,8 @@ public class TimeZoneTransitionGroup extends ComplexProperty {
      * Gets the transition to the Daylight period.
      *
      * @return the transition to daylight
-     * @throws ServiceLocalException the service local exception
      */
-    private TimeZoneTransition getTransitionToDaylight()
-            throws ServiceLocalException {
+    private TimeZoneTransition getTransitionToDaylight() throws InvalidOrUnsupportedTimeZoneDefinitionException {
         this.initializeTransitions();
         return this.transitionToDaylight;
     }
@@ -341,10 +339,9 @@ public class TimeZoneTransitionGroup extends ComplexProperty {
      * Gets the transition to the Standard period.
      *
      * @return the transition to standard
-     * @throws ServiceLocalException the service local exception
      */
     private TimeZoneTransition getTransitionToStandard()
-            throws ServiceLocalException {
+            throws InvalidOrUnsupportedTimeZoneDefinitionException {
         this.initializeTransitions();
         return this.transitionToStandard;
     }

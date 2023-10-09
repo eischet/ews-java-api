@@ -29,6 +29,7 @@ import com.eischet.ews.api.core.PropertySet;
 import com.eischet.ews.api.core.XmlElementNames;
 import com.eischet.ews.api.core.enumeration.misc.ExchangeVersion;
 import com.eischet.ews.api.core.exception.service.local.ServiceLocalException;
+import com.eischet.ews.api.core.exception.xml.ExchangeXmlException;
 import com.eischet.ews.api.core.service.response.RemoveFromCalendar;
 import com.eischet.ews.api.misc.CalendarActionResults;
 import com.eischet.ews.api.property.complex.ItemAttachment;
@@ -52,8 +53,7 @@ public class MeetingCancellation extends MeetingMessage {
      * @param parentAttachment The parent attachment.
      * @throws Exception the exception
      */
-    public MeetingCancellation(ItemAttachment parentAttachment)
-            throws Exception {
+    public MeetingCancellation(ItemAttachment parentAttachment) throws ExchangeXmlException {
         super(parentAttachment);
     }
 
@@ -63,7 +63,7 @@ public class MeetingCancellation extends MeetingMessage {
      * @param service EWS service to which this object belongs.
      * @throws Exception the exception
      */
-    public MeetingCancellation(ExchangeService service) throws Exception {
+    public MeetingCancellation(ExchangeService service) throws ExchangeXmlException {
         super(service);
     }
 

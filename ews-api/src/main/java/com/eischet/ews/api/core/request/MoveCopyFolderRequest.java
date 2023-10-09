@@ -29,6 +29,7 @@ import com.eischet.ews.api.core.ExchangeService;
 import com.eischet.ews.api.core.XmlElementNames;
 import com.eischet.ews.api.core.enumeration.misc.XmlNamespace;
 import com.eischet.ews.api.core.enumeration.service.error.ServiceErrorHandling;
+import com.eischet.ews.api.core.exception.service.local.ServiceVersionException;
 import com.eischet.ews.api.core.response.ServiceResponse;
 import com.eischet.ews.api.core.service.folder.Folder;
 import com.eischet.ews.api.misc.FolderIdWrapperList;
@@ -72,9 +73,7 @@ abstract class MoveCopyFolderRequest<TResponse extends ServiceResponse> extends
      * @param errorHandlingMode Indicates how errors should be handled.
      * @throws Exception
      */
-    protected MoveCopyFolderRequest(ExchangeService service,
-                                    ServiceErrorHandling errorHandlingMode)
-            throws Exception {
+    protected MoveCopyFolderRequest(ExchangeService service, ServiceErrorHandling errorHandlingMode) throws ServiceVersionException {
         super(service, errorHandlingMode);
     }
 

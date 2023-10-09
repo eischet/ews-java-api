@@ -25,21 +25,18 @@ package com.eischet.ews.api.property.complex;
 
 import com.eischet.ews.api.core.*;
 import com.eischet.ews.api.core.enumeration.misc.XmlNamespace;
-import com.eischet.ews.api.core.exception.service.local.ServiceXmlSerializationException;
+import com.eischet.ews.api.core.exception.xml.ExchangeXmlException;
 import com.eischet.ews.api.misc.Time;
 import com.eischet.ews.api.misc.TimeSpan;
 import com.eischet.ews.api.util.DateTimeUtils;
 
 import java.time.LocalDateTime;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
  * Represents a change of time for a time zone.
  */
 public final class TimeChange extends ComplexProperty {
-
-    private static final Logger LOG = Logger.getLogger(TimeChange.class.getCanonicalName());
 
     /**
      * The time zone name.
@@ -197,11 +194,9 @@ public final class TimeChange extends ComplexProperty {
      *
      * @param reader accepts EwsServiceXmlReader
      * @return True if element was read
-     * @throws Exception throws Exception
      */
     @Override
-    public boolean tryReadElementFromXml(EwsServiceXmlReader reader)
-            throws Exception {
+    public boolean tryReadElementFromXml(EwsServiceXmlReader reader) throws ExchangeXmlException {
 
         if (reader.getLocalName().equalsIgnoreCase(XmlElementNames.Offset)) {
             this.offset = EwsUtilities.getXSDurationToTimeSpan(reader.readElementValue());
@@ -228,10 +223,9 @@ public final class TimeChange extends ComplexProperty {
      * Reads the attribute from XML.
      *
      * @param reader accepts EwsServiceXmlReader
-     * @throws Exception throws Exception
      */
     @Override
-    public void readAttributesFromXml(EwsServiceXmlReader reader) throws Exception {
+    public void readAttributesFromXml(EwsServiceXmlReader reader) throws ExchangeXmlException {
         this.timeZoneName = reader.readAttributeValue(XmlAttributeNames.TimeZoneName);
     }
 
@@ -241,23 +235,17 @@ public final class TimeChange extends ComplexProperty {
      * @param writer accepts EwsServiceXmlWriter
      */
     @Override
-    public void writeAttributesToXml(EwsServiceXmlWriter writer) {
-        try {
-            writer.writeAttributeValue(XmlAttributeNames.TimeZoneName, this.timeZoneName);
-        } catch (ServiceXmlSerializationException e) {
-            LOG.log(Level.SEVERE, "error writing XML", e);
-        }
+    public void writeAttributesToXml(EwsServiceXmlWriter writer) throws ExchangeXmlException {
+        writer.writeAttributeValue(XmlAttributeNames.TimeZoneName, this.timeZoneName);
     }
 
     /**
      * Writes elements to XML.
      *
      * @param writer accepts EwsServiceXmlWriter
-     * @throws Exception throws Exception
      */
     @Override
-    public void writeElementsToXml(EwsServiceXmlWriter writer)
-            throws Exception {
+    public void writeElementsToXml(EwsServiceXmlWriter writer) throws ExchangeXmlException {
         if (this.offset != null) {
             writer.writeElementValue(XmlNamespace.Types, XmlElementNames.Offset, EwsUtilities.getTimeSpanToXSDuration(this.getOffset()));
         }

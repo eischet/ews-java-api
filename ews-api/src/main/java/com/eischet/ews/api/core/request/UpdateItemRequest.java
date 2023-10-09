@@ -32,6 +32,7 @@ import com.eischet.ews.api.core.enumeration.service.SendInvitationsOrCancellatio
 import com.eischet.ews.api.core.enumeration.service.error.ServiceErrorHandling;
 import com.eischet.ews.api.core.exception.misc.ArgumentException;
 import com.eischet.ews.api.core.exception.service.local.ServiceXmlSerializationException;
+import com.eischet.ews.api.core.exception.xml.ExchangeXmlException;
 import com.eischet.ews.api.core.response.UpdateItemResponse;
 import com.eischet.ews.api.core.service.item.Item;
 import com.eischet.ews.api.property.complex.FolderId;
@@ -177,8 +178,7 @@ public final class UpdateItemRequest extends
      * (microsoft.exchange.webservices.EwsServiceXmlWriter)
      */
     @Override
-    protected void writeAttributesToXml(EwsServiceXmlWriter writer)
-            throws ServiceXmlSerializationException {
+    protected void writeAttributesToXml(EwsServiceXmlWriter writer) throws ExchangeXmlException {
         super.writeAttributesToXml(writer);
 
         if (this.messageDisposition != null) {

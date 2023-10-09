@@ -31,19 +31,7 @@ package com.eischet.ews.api.core.exception.service.local;
  * @see com.eischet.ews.api.property.complex.time.TimeZoneDefinition
  * @see com.eischet.ews.api.property.complex.time.TimeZoneTransitionGroup
  */
-public class InvalidOrUnsupportedTimeZoneDefinitionException extends ServiceLocalException {
-
-    /**
-     * Constant serialized ID used for compatibility.
-     */
-    private static final long serialVersionUID = 1L;
-
-    /**
-     * Constructs an <code>InvalidOrUnsupportedTimeZoneDefinitionException</code> with no detail message.
-     */
-    public InvalidOrUnsupportedTimeZoneDefinitionException() {
-        super();
-    }
+public class InvalidOrUnsupportedTimeZoneDefinitionException extends ExchangeValidationException {
 
     /**
      * Constructs an <code>InvalidOrUnsupportedTimeZoneDefinitionException</code> with the specified detail message.
@@ -67,4 +55,8 @@ public class InvalidOrUnsupportedTimeZoneDefinitionException extends ServiceLoca
         super(message, innerException);
     }
 
+    public InvalidOrUnsupportedTimeZoneDefinitionException() {
+
+        super();
+    }
 }

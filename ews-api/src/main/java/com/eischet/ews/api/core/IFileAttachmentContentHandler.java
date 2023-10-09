@@ -30,6 +30,7 @@ import java.io.OutputStream;
  * IFileAttachmentContentHandler /// to provide a stream in which the content of
  * file attachment should be written.
  */
+@FunctionalInterface
 public interface IFileAttachmentContentHandler {
 
     /**

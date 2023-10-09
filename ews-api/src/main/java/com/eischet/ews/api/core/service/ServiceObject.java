@@ -31,6 +31,9 @@ import com.eischet.ews.api.core.enumeration.service.SendCancellationsMode;
 import com.eischet.ews.api.core.enumeration.service.calendar.AffectedTaskOccurrence;
 import com.eischet.ews.api.core.exception.misc.InvalidOperationException;
 import com.eischet.ews.api.core.exception.service.local.ServiceLocalException;
+import com.eischet.ews.api.core.exception.service.local.ExchangeValidationException;
+import com.eischet.ews.api.core.exception.service.local.ServiceVersionException;
+import com.eischet.ews.api.core.exception.xml.ExchangeXmlException;
 import com.eischet.ews.api.core.service.schema.ServiceObjectSchema;
 import com.eischet.ews.api.misc.OutParam;
 import com.eischet.ews.api.property.complex.ExtendedProperty;
@@ -87,7 +90,7 @@ public abstract class ServiceObject {
      * @throws ServiceLocalException     the service local exception
      */
     public void throwIfThisIsNew() throws InvalidOperationException,
-            ServiceLocalException {
+            ServiceLocalException, ExchangeXmlException {
         if (this.isNew()) {
             throw new InvalidOperationException(
                     "This operation can't be performed because this service object doesn't have an Id.");
@@ -101,7 +104,7 @@ public abstract class ServiceObject {
      * @throws ServiceLocalException     the service local exception
      */
     protected void throwIfThisIsNotNew() throws InvalidOperationException,
-            ServiceLocalException {
+            ServiceLocalException, ExchangeXmlException {
         if (!this.isNew()) {
             throw new InvalidOperationException(
                     "This operation can't be performed because this service object already has an ID. To update this service object, use the Update() method instead.");
@@ -185,8 +188,6 @@ public abstract class ServiceObject {
      *
      * @param isUpdateOperation the is update operation
      * @return boolean
-     * @throws ServiceLocalException
-     * @throws Exception
      */
     protected boolean getIsTimeZoneHeaderRequired(boolean isUpdateOperation)
             throws ServiceLocalException, Exception {
@@ -218,10 +219,13 @@ public abstract class ServiceObject {
      * @param service the service
      * @throws Exception the exception
      */
-    protected ServiceObject(ExchangeService service) throws Exception {
-        EwsUtilities.validateParam(service, "service");
-        EwsUtilities.validateServiceObjectVersion(this, service
-                .getRequestedServerVersion());
+    protected ServiceObject(ExchangeService service) throws ExchangeXmlException {
+        try {
+            EwsUtilities.validateParam(service, "service");
+            EwsUtilities.validateServiceObjectVersion(this, service.getRequestedServerVersion());
+        } catch (ExchangeValidationException | ServiceVersionException e) {
+            throw new ExchangeXmlException("error validating " + this, e);
+        }
         this.service = service;
         this.propertyBag = new PropertyBag(this);
     }
@@ -254,9 +258,8 @@ public abstract class ServiceObject {
      *
      * @param reader           the reader
      * @param clearPropertyBag the clear property bag
-     * @throws Exception the exception
      */
-    public void loadFromXml(EwsServiceXmlReader reader, boolean clearPropertyBag) throws Exception {
+    public void loadFromXml(EwsServiceXmlReader reader, boolean clearPropertyBag) throws ExchangeXmlException {
 
         this.getPropertyBag().loadFromXml(reader, clearPropertyBag,
                 null, // propertySet
@@ -287,7 +290,7 @@ public abstract class ServiceObject {
      * @throws Exception the exception
      */
     public void loadFromXml(EwsServiceXmlReader reader, boolean clearPropertyBag,
-                            PropertySet requestedPropertySet, boolean summaryPropertiesOnly) throws Exception {
+                            PropertySet requestedPropertySet, boolean summaryPropertiesOnly) throws ExchangeXmlException {
 
         this.getPropertyBag().loadFromXml(reader, clearPropertyBag,
                 requestedPropertySet, summaryPropertiesOnly);
@@ -517,18 +520,13 @@ public abstract class ServiceObject {
      * Gets the id.
      *
      * @return the id
-     * @throws ServiceLocalException the service local exception
      */
-    public ServiceId getId() throws ServiceLocalException {
-        PropertyDefinition idPropertyDefinition = this
-                .getIdPropertyDefinition();
-
+    public ServiceId getId() throws ExchangeXmlException {
+        PropertyDefinition idPropertyDefinition = this.getIdPropertyDefinition();
         OutParam<Object> serviceId = new OutParam<Object>();
-
         if (idPropertyDefinition != null) {
             this.getPropertyBag().tryGetValue(idPropertyDefinition, serviceId);
         }
-
         return (ServiceId) serviceId.getParam();
     }
 
@@ -540,9 +538,8 @@ public abstract class ServiceObject {
      * Checks if is new.
      *
      * @return true, if is new
-     * @throws ServiceLocalException the service local exception
      */
-    public boolean isNew() throws ServiceLocalException {
+    public boolean isNew() throws ExchangeXmlException {
 
         ServiceId id = this.getId();
 
@@ -591,7 +588,7 @@ public abstract class ServiceObject {
      * The on change.
      */
     private final List<IServiceObjectChangedDelegate> onChange =
-            new ArrayList<IServiceObjectChangedDelegate>();
+            new ArrayList<>();
 
     /**
      * Adds the service object changed event.

@@ -27,8 +27,9 @@ import com.eischet.ews.api.core.*;
 import com.eischet.ews.api.core.enumeration.misc.XmlNamespace;
 import com.eischet.ews.api.core.enumeration.notification.EventType;
 import com.eischet.ews.api.core.enumeration.service.error.ServiceErrorHandling;
-import com.eischet.ews.api.core.exception.service.local.ServiceValidationException;
+import com.eischet.ews.api.core.exception.service.local.ExchangeValidationException;
 import com.eischet.ews.api.core.exception.service.local.ServiceXmlSerializationException;
+import com.eischet.ews.api.core.exception.xml.ExchangeXmlException;
 import com.eischet.ews.api.core.response.SubscribeResponse;
 import com.eischet.ews.api.http.ExchangeHttpClient;
 import com.eischet.ews.api.misc.FolderIdWrapperList;
@@ -77,7 +78,7 @@ abstract class SubscribeRequest<TSubscription extends SubscriptionBase> extends
         // Check that caller isn't trying
         //to subscribe to Status events.
         if (this.getEventTypes().contains(EventType.Status)) {
-            throw new ServiceValidationException("Status events can't be subscribed to.");
+            throw new ExchangeValidationException("Status events can't be subscribed to.");
         }
 
         // If Watermark was specified, make sure it's not a blank string.
@@ -148,7 +149,7 @@ abstract class SubscribeRequest<TSubscription extends SubscriptionBase> extends
      * @throws XMLStreamException               the XML stream exception
      * @throws ServiceXmlSerializationException the service xml serialization exception
      */
-    protected abstract void internalWriteElementsToXml(EwsServiceXmlWriter writer) throws XMLStreamException, ServiceXmlSerializationException;
+    protected abstract void internalWriteElementsToXml(EwsServiceXmlWriter writer) throws XMLStreamException, ServiceXmlSerializationException, ExchangeXmlException;
 
     /**
      * Writes XML elements.

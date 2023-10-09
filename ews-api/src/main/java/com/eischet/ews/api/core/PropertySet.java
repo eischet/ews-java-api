@@ -30,9 +30,10 @@ import com.eischet.ews.api.core.enumeration.property.BasePropertySet;
 import com.eischet.ews.api.core.enumeration.property.BodyType;
 import com.eischet.ews.api.core.enumeration.property.PropertyDefinitionFlags;
 import com.eischet.ews.api.core.enumeration.service.ServiceObjectType;
-import com.eischet.ews.api.core.exception.service.local.ServiceValidationException;
+import com.eischet.ews.api.core.exception.service.local.ExchangeValidationException;
 import com.eischet.ews.api.core.exception.service.local.ServiceVersionException;
 import com.eischet.ews.api.core.exception.service.local.ServiceXmlSerializationException;
+import com.eischet.ews.api.core.exception.xml.ExchangeXmlException;
 import com.eischet.ews.api.core.request.ServiceRequestBase;
 import com.eischet.ews.api.property.definition.PropertyDefinition;
 import com.eischet.ews.api.property.definition.PropertyDefinitionBase;
@@ -426,10 +427,10 @@ public final class PropertySet implements ISelfValidate,
     /**
      * Validate.
      *
-     * @throws ServiceValidationException the service validation exception
+     * @throws ExchangeValidationException the service validation exception
      */
     @Override
-    public void validate() throws ServiceValidationException {
+    public void validate() throws ExchangeValidationException {
         this.internalValidate();
     }
 
@@ -441,15 +442,12 @@ public final class PropertySet implements ISelfValidate,
      * @throws XMLStreamException               the XML stream exception
      * @throws ServiceXmlSerializationException the service xml serialization exception
      */
-    public static void writeAdditionalPropertiesToXml(EwsServiceXmlWriter writer,
-                                                      Iterator<PropertyDefinitionBase> propertyDefinitions)
-            throws XMLStreamException, ServiceXmlSerializationException {
+    public static void writeAdditionalPropertiesToXml(EwsServiceXmlWriter writer, Iterator<PropertyDefinitionBase> propertyDefinitions) throws ExchangeXmlException {
         writer.writeStartElement(XmlNamespace.Types,
                 XmlElementNames.AdditionalProperties);
 
         while (propertyDefinitions.hasNext()) {
-            PropertyDefinitionBase propertyDefinition = propertyDefinitions
-                    .next();
+            PropertyDefinitionBase propertyDefinition = propertyDefinitions.next();
             propertyDefinition.writeToXml(writer);
         }
 
@@ -459,12 +457,12 @@ public final class PropertySet implements ISelfValidate,
     /**
      * Validates this property set.
      *
-     * @throws ServiceValidationException the service validation exception
+     * @throws ExchangeValidationException the service validation exception
      */
-    public void internalValidate() throws ServiceValidationException {
+    public void internalValidate() throws ExchangeValidationException {
         for (int i = 0; i < this.additionalProperties.size(); i++) {
             if (this.additionalProperties.get(i) == null) {
-                throw new ServiceValidationException(String.format("The additional property at index %d is null.", i));
+                throw new ExchangeValidationException(String.format("The additional property at index %d is null.", i));
             }
         }
     }
@@ -478,10 +476,10 @@ public final class PropertySet implements ISelfValidate,
      * @param request               The request.
      * @param summaryPropertiesOnly if set to true then only summary property are allowed.
      * @throws ServiceVersionException    the service version exception
-     * @throws ServiceValidationException the service validation exception
+     * @throws ExchangeValidationException the service validation exception
      */
     public void validateForRequest(ServiceRequestBase request, boolean summaryPropertiesOnly) throws ServiceVersionException,
-            ServiceValidationException {
+            ExchangeValidationException {
         for (PropertyDefinitionBase propDefBase : this.additionalProperties) {
             if (propDefBase instanceof PropertyDefinition) {
                 PropertyDefinition propertyDefinition =
@@ -498,7 +496,7 @@ public final class PropertySet implements ISelfValidate,
                         !propertyDefinition.hasFlag(
                                 PropertyDefinitionFlags.CanFind, request.
                                         getService().getRequestedServerVersion())) {
-                    throw new ServiceValidationException(String.format("The property %s can't be used in %s request.",
+                    throw new ExchangeValidationException(String.format("The property %s can't be used in %s request.",
                             propertyDefinition.getName(), request
                                     .getXmlElementName()));
                 }
@@ -531,7 +529,7 @@ public final class PropertySet implements ISelfValidate,
      * @throws XMLStreamException               the XML stream exception
      * @throws ServiceXmlSerializationException the service xml serialization exception
      */
-    public void writeToXml(EwsServiceXmlWriter writer, ServiceObjectType serviceObjectType) throws XMLStreamException, ServiceXmlSerializationException {
+    public void writeToXml(EwsServiceXmlWriter writer, ServiceObjectType serviceObjectType) throws ExchangeXmlException {
         writer
                 .writeStartElement(
                         XmlNamespace.Messages,

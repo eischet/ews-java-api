@@ -31,6 +31,7 @@ import com.eischet.ews.api.core.enumeration.misc.ExchangeVersion;
 import com.eischet.ews.api.core.enumeration.misc.XmlNamespace;
 import com.eischet.ews.api.core.exception.service.local.ServiceLocalException;
 import com.eischet.ews.api.core.exception.service.local.ServiceXmlSerializationException;
+import com.eischet.ews.api.core.exception.xml.ExchangeXmlException;
 import com.eischet.ews.api.core.response.FindConversationResponse;
 import com.eischet.ews.api.misc.FolderIdWrapper;
 import com.eischet.ews.api.search.ConversationIndexedItemView;
@@ -109,11 +110,9 @@ public final class FindConversationRequest extends SimpleServiceRequestBase<Find
      * Writes XML attribute.
      *
      * @param writer The writer.
-     * @throws ServiceXmlSerializationException
      */
     @Override
-    protected void writeAttributesToXml(EwsServiceXmlWriter writer)
-            throws ServiceXmlSerializationException {
+    protected void writeAttributesToXml(EwsServiceXmlWriter writer) throws ExchangeXmlException {
         super.writeAttributesToXml(writer);
     }
 

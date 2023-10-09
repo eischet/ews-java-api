@@ -28,12 +28,10 @@ import com.eischet.ews.api.core.EwsServiceXmlWriter;
 import com.eischet.ews.api.core.XmlAttributeNames;
 import com.eischet.ews.api.core.enumeration.attribute.EditorBrowsableState;
 import com.eischet.ews.api.core.enumeration.search.OffsetBasePoint;
-import com.eischet.ews.api.core.exception.service.local.ServiceValidationException;
+import com.eischet.ews.api.core.exception.service.local.ExchangeValidationException;
 import com.eischet.ews.api.core.exception.service.local.ServiceVersionException;
-import com.eischet.ews.api.core.exception.service.local.ServiceXmlSerializationException;
+import com.eischet.ews.api.core.exception.xml.ExchangeXmlException;
 import com.eischet.ews.api.core.request.ServiceRequestBase;
-
-import javax.xml.stream.XMLStreamException;
 
 /**
  * Represents a view settings that support paging in a search operation.
@@ -63,8 +61,7 @@ public abstract class PagedView extends ViewBase {
      * @throws Exception the exception
      */
     @Override
-    protected void internalWriteViewToXml(EwsServiceXmlWriter writer)
-            throws Exception {
+    protected void internalWriteViewToXml(EwsServiceXmlWriter writer) throws ExchangeXmlException {
         super.internalWriteViewToXml(writer);
 
         writer.writeAttributeValue(XmlAttributeNames.Offset, this.getOffset());
@@ -89,13 +86,9 @@ public abstract class PagedView extends ViewBase {
      *
      * @param writer  the writer
      * @param groupBy the group by clause
-     * @throws XMLStreamException               the XML stream exception
-     * @throws ServiceXmlSerializationException the service xml serialization exception
      */
     @Override
-    protected void internalWriteSearchSettingsToXml(EwsServiceXmlWriter writer,
-                                                    Grouping groupBy) throws XMLStreamException,
-            ServiceXmlSerializationException {
+    protected void internalWriteSearchSettingsToXml(EwsServiceXmlWriter writer, Grouping groupBy) throws ExchangeXmlException {
         if (groupBy != null) {
             groupBy.writeToXml(writer);
         }
@@ -105,12 +98,9 @@ public abstract class PagedView extends ViewBase {
      * Writes OrderBy property to XML.
      *
      * @param writer the writer
-     * @throws XMLStreamException               the XML stream exception
-     * @throws ServiceXmlSerializationException the service xml serialization exception
      */
     @Override
-    public void writeOrderByToXml(EwsServiceXmlWriter writer)
-            throws XMLStreamException, ServiceXmlSerializationException {
+    public void writeOrderByToXml(EwsServiceXmlWriter writer) throws ExchangeXmlException {
         // No order by for paged view
     }
 
@@ -119,11 +109,10 @@ public abstract class PagedView extends ViewBase {
      *
      * @param request The request using this view.
      * @throws ServiceVersionException    the service version exception
-     * @throws ServiceValidationException the service validation exception
+     * @throws ExchangeValidationException the service validation exception
      */
     @Override
-    public void internalValidate(ServiceRequestBase request)
-            throws ServiceVersionException, ServiceValidationException {
+    public void internalValidate(ServiceRequestBase request) throws ServiceVersionException, ExchangeValidationException {
         super.internalValidate(request);
     }
 

@@ -29,9 +29,11 @@ import com.eischet.ews.api.core.XmlAttributeNames;
 import com.eischet.ews.api.core.XmlElementNames;
 import com.eischet.ews.api.core.enumeration.misc.ExchangeVersion;
 import com.eischet.ews.api.core.enumeration.misc.XmlNamespace;
+import com.eischet.ews.api.core.exception.service.local.ExchangeValidationException;
 import com.eischet.ews.api.core.exception.service.local.InvalidOrUnsupportedTimeZoneDefinitionException;
 import com.eischet.ews.api.core.exception.service.local.ServiceLocalException;
 import com.eischet.ews.api.core.exception.service.local.ServiceXmlSerializationException;
+import com.eischet.ews.api.core.exception.xml.ExchangeXmlException;
 import com.eischet.ews.api.property.complex.ComplexProperty;
 
 import java.time.LocalDateTime;
@@ -159,8 +161,7 @@ public class TimeZoneDefinition extends ComplexProperty implements Comparator<Ti
      * @throws Exception the exception
      */
     @Override
-    public void readAttributesFromXml(EwsServiceXmlReader reader)
-            throws Exception {
+    public void readAttributesFromXml(EwsServiceXmlReader reader) throws ExchangeXmlException {
         this.name = reader.readAttributeValue(XmlAttributeNames.Name);
         this.id = reader.readAttributeValue(XmlAttributeNames.Id);
 
@@ -179,8 +180,7 @@ public class TimeZoneDefinition extends ComplexProperty implements Comparator<Ti
      * @throws ServiceXmlSerializationException the service xml serialization exception
      */
     @Override
-    public void writeAttributesToXml(EwsServiceXmlWriter writer)
-            throws ServiceXmlSerializationException {
+    public void writeAttributesToXml(EwsServiceXmlWriter writer) throws ExchangeXmlException {
         // The Name attribute is only supported in Exchange 2010 and above.
         if (writer.getService().getRequestedServerVersion() != ExchangeVersion.Exchange2007_SP1) {
             writer.writeAttributeValue(XmlAttributeNames.Name, this.name);
@@ -197,8 +197,7 @@ public class TimeZoneDefinition extends ComplexProperty implements Comparator<Ti
      * @throws Exception the exception
      */
     @Override
-    public boolean tryReadElementFromXml(EwsServiceXmlReader reader)
-            throws Exception {
+    public boolean tryReadElementFromXml(EwsServiceXmlReader reader) throws ExchangeXmlException {
         if (reader.getLocalName().equals(XmlElementNames.Periods)) {
             do {
                 reader.read();
@@ -236,11 +235,8 @@ public class TimeZoneDefinition extends ComplexProperty implements Comparator<Ti
             do {
                 reader.read();
                 if (reader.isStartElement()) {
-                    TimeZoneTransition transition = TimeZoneTransition.create(
-                            this, reader.getLocalName());
-
+                    TimeZoneTransition transition = TimeZoneTransition.create(this, reader.getLocalName());
                     transition.loadFromXml(reader);
-
                     this.transitions.add(transition);
                 }
             } while (!reader.isEndElement(XmlNamespace.Types,
@@ -267,11 +263,9 @@ public class TimeZoneDefinition extends ComplexProperty implements Comparator<Ti
      * Writes elements to XML.
      *
      * @param writer the writer
-     * @throws Exception the exception
      */
     @Override
-    public void writeElementsToXml(EwsServiceXmlWriter writer)
-            throws Exception {
+    public void writeElementsToXml(EwsServiceXmlWriter writer) throws ExchangeXmlException {
         // We only emit the full time zone definition against Exchange 2010
         // servers and above.
         if (writer.getService().getRequestedServerVersion() != ExchangeVersion.Exchange2007_SP1) {
@@ -325,12 +319,12 @@ public class TimeZoneDefinition extends ComplexProperty implements Comparator<Ti
      *
      * @throws InvalidOrUnsupportedTimeZoneDefinitionException thrown when time zone definition is not valid.
      */
-    public void validate() throws ServiceLocalException {
+    public void validate() throws ExchangeValidationException {
         // The definition must have at least one period, one transition group
         // and one transition,
         // and there must be as many transitions as there are transition groups.
-        if (this.periods.size() < 1 || this.transitions.size() < 1
-                || this.transitionGroups.size() < 1
+        if (this.periods.isEmpty() || this.transitions.isEmpty()
+                || this.transitionGroups.isEmpty()
                 || this.transitionGroups.size() != this.transitions.size()) {
             throw new InvalidOrUnsupportedTimeZoneDefinitionException();
         }
@@ -425,8 +419,7 @@ public class TimeZoneDefinition extends ComplexProperty implements Comparator<Ti
      * @param xmlElementName accepts String
      * @throws Exception throws Exception
      */
-    public void writeToXml(EwsServiceXmlWriter writer, String xmlElementName)
-            throws Exception {
+    public void writeToXml(EwsServiceXmlWriter writer, String xmlElementName) throws ExchangeXmlException {
         this.writeToXml(writer, this.getNamespace(), xmlElementName);
     }
 

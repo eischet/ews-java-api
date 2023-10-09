@@ -35,8 +35,7 @@ import java.util.List;
  *
  * @param <TChange> the generic type
  */
-public final class ChangeCollection<TChange extends Change> implements
-        Iterable<TChange> {
+public final class ChangeCollection<TChange extends Change> implements Iterable<TChange> {
 
     /**
      * The changes.

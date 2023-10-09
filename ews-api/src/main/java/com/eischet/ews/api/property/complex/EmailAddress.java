@@ -29,6 +29,7 @@ import com.eischet.ews.api.core.EwsUtilities;
 import com.eischet.ews.api.core.XmlElementNames;
 import com.eischet.ews.api.core.enumeration.misc.XmlNamespace;
 import com.eischet.ews.api.core.enumeration.property.MailboxType;
+import com.eischet.ews.api.core.exception.xml.ExchangeXmlException;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -291,10 +292,8 @@ public class EmailAddress extends ComplexProperty implements ISearchStringProvid
      *
      * @param reader accepts EwsServiceXmlReader
      * @return true
-     * @throws Exception throws Exception
      */
-    public boolean tryReadElementFromXml(EwsServiceXmlReader reader)
-            throws Exception {
+    public boolean tryReadElementFromXml(EwsServiceXmlReader reader) throws ExchangeXmlException {
         try {
             if (reader.getLocalName().equals(XmlElementNames.Name)) {
                 this.name = reader.readElementValue();
@@ -328,20 +327,13 @@ public class EmailAddress extends ComplexProperty implements ISearchStringProvid
      * Writes elements to XML.
      *
      * @param writer The writer.
-     * @throws Exception the exception
      */
     @Override
-    public void writeElementsToXml(EwsServiceXmlWriter writer)
-            throws Exception {
-        writer.writeElementValue(XmlNamespace.Types, XmlElementNames.Name, this
-                .getName());
-        writer.writeElementValue(XmlNamespace.Types,
-                XmlElementNames.EmailAddress, this.getAddress());
-        writer.writeElementValue(XmlNamespace.Types,
-                XmlElementNames.RoutingType, this.getRoutingType());
-        writer.writeElementValue(XmlNamespace.Types,
-                XmlElementNames.MailboxType, this.getMailboxType());
-
+    public void writeElementsToXml(EwsServiceXmlWriter writer) throws ExchangeXmlException {
+        writer.writeElementValue(XmlNamespace.Types, XmlElementNames.Name, this.getName());
+        writer.writeElementValue(XmlNamespace.Types, XmlElementNames.EmailAddress, this.getAddress());
+        writer.writeElementValue(XmlNamespace.Types, XmlElementNames.RoutingType, this.getRoutingType());
+        writer.writeElementValue(XmlNamespace.Types, XmlElementNames.MailboxType, this.getMailboxType());
         if (this.getId() != null) {
             this.getId().writeToXml(writer, XmlElementNames.ItemId);
         }

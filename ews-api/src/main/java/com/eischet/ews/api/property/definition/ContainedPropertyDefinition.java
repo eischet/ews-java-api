@@ -29,6 +29,7 @@ import com.eischet.ews.api.core.PropertyBag;
 import com.eischet.ews.api.core.enumeration.misc.ExchangeVersion;
 import com.eischet.ews.api.core.enumeration.misc.XmlNamespace;
 import com.eischet.ews.api.core.enumeration.property.PropertyDefinitionFlags;
+import com.eischet.ews.api.core.exception.xml.ExchangeXmlException;
 import com.eischet.ews.api.property.complex.ComplexProperty;
 import com.eischet.ews.api.property.complex.ICreateComplexPropertyDelegate;
 
@@ -70,11 +71,10 @@ public class ContainedPropertyDefinition<TComplexProperty extends ComplexPropert
      *
      * @param reader      the reader
      * @param propertyBag the property bag
-     * @throws Exception the exception
      */
     @Override
     protected void internalLoadFromXml(EwsServiceXmlReader reader,
-                                       PropertyBag propertyBag) throws Exception {
+                                       PropertyBag propertyBag) throws ExchangeXmlException {
         reader.readStartElement(XmlNamespace.Types,
                 this.containedXmlElementName);
         super.internalLoadFromXml(reader, propertyBag);
@@ -89,12 +89,10 @@ public class ContainedPropertyDefinition<TComplexProperty extends ComplexPropert
      * @param writer            the writer
      * @param propertyBag       the property bag
      * @param isUpdateOperation the is update operation
-     * @throws Exception the exception
      */
     @Override
     public void writePropertyValueToXml(EwsServiceXmlWriter writer, PropertyBag propertyBag,
-                                        boolean isUpdateOperation)
-            throws Exception {
+                                        boolean isUpdateOperation) throws ExchangeXmlException {
 
         Object o = propertyBag.getObjectFromPropertyDefinition(this);
         if (o instanceof ComplexProperty) {

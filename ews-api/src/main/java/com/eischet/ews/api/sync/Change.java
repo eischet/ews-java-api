@@ -26,7 +26,7 @@ package com.eischet.ews.api.sync;
 import com.eischet.ews.api.attribute.EditorBrowsable;
 import com.eischet.ews.api.core.enumeration.attribute.EditorBrowsableState;
 import com.eischet.ews.api.core.enumeration.sync.ChangeType;
-import com.eischet.ews.api.core.exception.service.local.ServiceLocalException;
+import com.eischet.ews.api.core.exception.xml.ExchangeXmlException;
 import com.eischet.ews.api.core.service.ServiceObject;
 import com.eischet.ews.api.property.complex.ServiceId;
 
@@ -104,9 +104,8 @@ public abstract class Change {
      * Gets the Id of the service object the change applies to.
      *
      * @return the id
-     * @throws ServiceLocalException the service local exception
      */
-    public ServiceId getId() throws ServiceLocalException {
+    public ServiceId getId() throws ExchangeXmlException {
         return this.getServiceObject() != null ? this.getServiceObject()
                 .getId() : this.id;
     }

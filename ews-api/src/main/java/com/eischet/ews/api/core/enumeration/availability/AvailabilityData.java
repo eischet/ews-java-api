@@ -28,22 +28,8 @@ package com.eischet.ews.api.core.enumeration.availability;
  */
 public enum AvailabilityData {
 
-    // Only return free/busy data.
-    /**
-     * The Free busy.
-     */
-    FreeBusy,
-
-    // Only return suggestions.
-    /**
-     * The Suggestions.
-     */
-    Suggestions,
-
-    // Return both free/busy data and suggestions.
-    /**
-     * The Free busy and suggestions.
-     */
-    FreeBusyAndSuggestions
+    /** Only return free/busy data. */ FreeBusy,
+    /** Only return suggestions. */   Suggestions,
+    /** Return both free/busy data and suggestions. */ FreeBusyAndSuggestions,
 
 }

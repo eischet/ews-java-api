@@ -33,8 +33,7 @@ import java.util.Iterator;
  *
  * @param <TItem> The type of item returned by the search operation.
  */
-public final class GroupedFindItemsResults<TItem extends Item> implements
-        Iterable<ItemGroup<TItem>> {
+public final class GroupedFindItemsResults<TItem extends Item> implements Iterable<ItemGroup<TItem>> {
 
     /**
      * The total count.

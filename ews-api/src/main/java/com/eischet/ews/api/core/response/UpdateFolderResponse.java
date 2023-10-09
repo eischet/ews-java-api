@@ -99,11 +99,10 @@ public final class UpdateFolderResponse extends ServiceResponse implements
      * @param service        accepts ExchangeService
      * @param xmlElementName accepts String
      * @return Object
-     * @throws Exception throws Exception
      */
     @Override
     public ServiceObject getObjectInstanceDelegate(ExchangeService service,
-                                                   String xmlElementName) throws Exception {
+                                                   String xmlElementName) {
         return this.getObjectInstance(service, xmlElementName);
     }
 }

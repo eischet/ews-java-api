@@ -28,6 +28,7 @@ import com.eischet.ews.api.core.EwsServiceXmlWriter;
 import com.eischet.ews.api.core.XmlElementNames;
 import com.eischet.ews.api.core.enumeration.misc.XmlNamespace;
 import com.eischet.ews.api.core.exception.service.local.ServiceXmlSerializationException;
+import com.eischet.ews.api.core.exception.xml.ExchangeXmlException;
 import com.eischet.ews.api.util.DateTimeUtils;
 
 import javax.xml.stream.XMLStreamException;
@@ -60,12 +61,9 @@ public class AbsoluteDateTransition extends TimeZoneTransition {
      *
      * @param reader the reader
      * @return True if element was read.
-     * @throws java.text.ParseException the parse exception
-     * @throws Exception                the exception
      */
     @Override
-    public boolean tryReadElementFromXml(EwsServiceXmlReader reader)
-            throws ParseException, Exception {
+    public boolean tryReadElementFromXml(EwsServiceXmlReader reader) throws ExchangeXmlException {
         boolean result = super.tryReadElementFromXml(reader);
         if (!result) {
             if (reader.getLocalName().equals(XmlElementNames.DateTime)) {
@@ -80,12 +78,9 @@ public class AbsoluteDateTransition extends TimeZoneTransition {
      * Writes elements to XML.
      *
      * @param writer the writer
-     * @throws ServiceXmlSerializationException the service xml serialization exception
-     * @throws XMLStreamException               the XML stream exception
      */
     @Override
-    public void writeElementsToXml(EwsServiceXmlWriter writer)
-            throws ServiceXmlSerializationException, XMLStreamException {
+    public void writeElementsToXml(EwsServiceXmlWriter writer) throws ExchangeXmlException {
         super.writeElementsToXml(writer);
 
         writer.writeElementValue(XmlNamespace.Types, XmlElementNames.DateTime,
@@ -107,8 +102,7 @@ public class AbsoluteDateTransition extends TimeZoneTransition {
      * @param timeZoneDefinition The time zone definition the transition will belong to.
      * @param targetGroup        the target group
      */
-    protected AbsoluteDateTransition(TimeZoneDefinition timeZoneDefinition,
-                                     TimeZoneTransitionGroup targetGroup) {
+    protected AbsoluteDateTransition(TimeZoneDefinition timeZoneDefinition, TimeZoneTransitionGroup targetGroup) {
         super(timeZoneDefinition, targetGroup);
     }
 

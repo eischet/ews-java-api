@@ -36,6 +36,7 @@ import com.eischet.ews.api.core.enumeration.service.FileAsMapping;
 import com.eischet.ews.api.core.exception.service.local.PropertyException;
 import com.eischet.ews.api.core.exception.service.local.ServiceLocalException;
 import com.eischet.ews.api.core.exception.service.local.ServiceVersionException;
+import com.eischet.ews.api.core.exception.xml.ExchangeXmlException;
 import com.eischet.ews.api.core.service.schema.ContactSchema;
 import com.eischet.ews.api.core.service.schema.ServiceObjectSchema;
 import com.eischet.ews.api.misc.OutParam;
@@ -63,9 +64,8 @@ public class Contact extends Item {
      * To bind to an existing contact, use Contact.Bind() instead.
      *
      * @param service the service
-     * @throws Exception the exception
      */
-    public Contact(ExchangeService service) throws Exception {
+    public Contact(ExchangeService service) throws ExchangeXmlException {
         super(service);
     }
 
@@ -73,9 +73,8 @@ public class Contact extends Item {
      * Initializes a new instance of the {@link Contact} class.
      *
      * @param parentAttachment the parent attachment
-     * @throws Exception the exception
      */
-    public Contact(ItemAttachment parentAttachment) throws Exception {
+    public Contact(ItemAttachment parentAttachment) throws ExchangeXmlException {
         super(parentAttachment);
     }
 
@@ -184,8 +183,7 @@ public class Contact extends Item {
      * @return The file attachment that holds the contact's picture.
      * @throws ServiceLocalException the service local exception
      */
-    public FileAttachment getContactPictureAttachment()
-            throws ServiceLocalException {
+    public FileAttachment getContactPictureAttachment() throws ExchangeXmlException {
         EwsUtilities.validateMethodVersion(this.getService(),
                 ExchangeVersion.Exchange2010, "GetContactPictureAttachment");
 
@@ -269,7 +267,7 @@ public class Contact extends Item {
      * @return the file as
      * @throws ServiceLocalException the service local exception
      */
-    public String getFileAs() throws ServiceLocalException {
+    public String getFileAs() throws ServiceLocalException, ExchangeXmlException {
         return getPropertyBag().getObjectFromPropertyDefinition(
                 ContactSchema.FileAs);
 
@@ -293,7 +291,7 @@ public class Contact extends Item {
      * @return the file as mapping
      * @throws ServiceLocalException the service local exception
      */
-    public FileAsMapping getFileAsMapping() throws ServiceLocalException {
+    public FileAsMapping getFileAsMapping() throws ServiceLocalException, ExchangeXmlException {
         return getPropertyBag().getObjectFromPropertyDefinition(ContactSchema.FileAsMapping);
     }
 
@@ -314,7 +312,7 @@ public class Contact extends Item {
      * @return the display name
      * @throws ServiceLocalException the service local exception
      */
-    public String getDisplayName() throws ServiceLocalException {
+    public String getDisplayName() throws ServiceLocalException, ExchangeXmlException {
         return getPropertyBag().getObjectFromPropertyDefinition(
                 ContactSchema.DisplayName);
     }
@@ -336,7 +334,7 @@ public class Contact extends Item {
      * @return the given name
      * @throws ServiceLocalException the service local exception
      */
-    public String getGivenName() throws ServiceLocalException {
+    public String getGivenName() throws ServiceLocalException, ExchangeXmlException {
         return getPropertyBag().getObjectFromPropertyDefinition(
                 ContactSchema.GivenName);
     }
@@ -358,7 +356,7 @@ public class Contact extends Item {
      * @return the initials
      * @throws ServiceLocalException the service local exception
      */
-    public String getInitials() throws ServiceLocalException {
+    public String getInitials() throws ServiceLocalException, ExchangeXmlException {
         return getPropertyBag().getObjectFromPropertyDefinition(
                 ContactSchema.Initials);
     }
@@ -380,7 +378,7 @@ public class Contact extends Item {
      * @return the middle name
      * @throws ServiceLocalException the service local exception
      */
-    public String getMiddleName() throws ServiceLocalException {
+    public String getMiddleName() throws ServiceLocalException, ExchangeXmlException {
         return getPropertyBag().getObjectFromPropertyDefinition(
                 ContactSchema.MiddleName);
     }
@@ -402,7 +400,7 @@ public class Contact extends Item {
      * @return the nick name
      * @throws ServiceLocalException the service local exception
      */
-    public String getNickName() throws ServiceLocalException {
+    public String getNickName() throws ServiceLocalException, ExchangeXmlException {
         return getPropertyBag().getObjectFromPropertyDefinition(
                 ContactSchema.NickName);
     }
@@ -424,7 +422,7 @@ public class Contact extends Item {
      * @return the complete name
      * @throws ServiceLocalException the service local exception
      */
-    public CompleteName getCompleteName() throws ServiceLocalException {
+    public CompleteName getCompleteName() throws ServiceLocalException, ExchangeXmlException {
         return getPropertyBag().getObjectFromPropertyDefinition(
                 ContactSchema.CompleteName);
     }
@@ -435,7 +433,7 @@ public class Contact extends Item {
      * @return the company name
      * @throws ServiceLocalException the service local exception
      */
-    public String getCompanyName() throws ServiceLocalException {
+    public String getCompanyName() throws ServiceLocalException, ExchangeXmlException {
         return getPropertyBag().getObjectFromPropertyDefinition(
                 ContactSchema.CompanyName);
     }
@@ -460,7 +458,7 @@ public class Contact extends Item {
      * @throws ServiceLocalException the service local exception
      */
     public EmailAddressDictionary getEmailAddresses()
-            throws ServiceLocalException {
+            throws ServiceLocalException, ExchangeXmlException {
         return getPropertyBag().getObjectFromPropertyDefinition(ContactSchema.EmailAddresses);
     }
 
@@ -473,7 +471,7 @@ public class Contact extends Item {
      * @throws ServiceLocalException the service local exception
      */
     public PhysicalAddressDictionary getPhysicalAddresses()
-            throws ServiceLocalException {
+            throws ServiceLocalException, ExchangeXmlException {
         return getPropertyBag().getObjectFromPropertyDefinition(ContactSchema.PhysicalAddresses);
     }
 
@@ -486,7 +484,7 @@ public class Contact extends Item {
      * @throws ServiceLocalException the service local exception
      */
     public PhoneNumberDictionary getPhoneNumbers()
-            throws ServiceLocalException {
+            throws ServiceLocalException, ExchangeXmlException {
         return getPropertyBag()
                 .getObjectFromPropertyDefinition(ContactSchema.PhoneNumbers);
     }
@@ -497,7 +495,7 @@ public class Contact extends Item {
      * @return the assistant name
      * @throws ServiceLocalException the service local exception
      */
-    public String getAssistantName() throws ServiceLocalException {
+    public String getAssistantName() throws ServiceLocalException, ExchangeXmlException {
         return getPropertyBag().getObjectFromPropertyDefinition(
                 ContactSchema.AssistantName);
     }
@@ -519,7 +517,7 @@ public class Contact extends Item {
      * @return the birthday
      * @throws ServiceLocalException the service local exception
      */
-    public LocalDate getBirthday() throws ServiceLocalException {
+    public LocalDate getBirthday() throws ServiceLocalException, ExchangeXmlException {
         return getPropertyBag().getObjectFromPropertyDefinition(
                 ContactSchema.Birthday);
 
@@ -542,7 +540,7 @@ public class Contact extends Item {
      * @return the business home page
      * @throws ServiceLocalException the service local exception
      */
-    public String getBusinessHomePage() throws ServiceLocalException {
+    public String getBusinessHomePage() throws ServiceLocalException, ExchangeXmlException {
         return getPropertyBag().getObjectFromPropertyDefinition(
                 ContactSchema.BusinessHomePage);
 
@@ -565,7 +563,7 @@ public class Contact extends Item {
      * @return the children
      * @throws ServiceLocalException the service local exception
      */
-    public StringList getChildren() throws ServiceLocalException {
+    public StringList getChildren() throws ServiceLocalException, ExchangeXmlException {
         return getPropertyBag().getObjectFromPropertyDefinition(
                 ContactSchema.Children);
     }
@@ -587,7 +585,7 @@ public class Contact extends Item {
      * @return the companies
      * @throws ServiceLocalException the service local exception
      */
-    public StringList getCompanies() throws ServiceLocalException {
+    public StringList getCompanies() throws ServiceLocalException, ExchangeXmlException {
         return getPropertyBag().getObjectFromPropertyDefinition(
                 ContactSchema.Companies);
     }
@@ -609,7 +607,7 @@ public class Contact extends Item {
      * @return the contact source
      * @throws ServiceLocalException the service local exception
      */
-    public ContactSource getContactSource() throws ServiceLocalException {
+    public ContactSource getContactSource() throws ServiceLocalException, ExchangeXmlException {
         return getPropertyBag()
                 .getObjectFromPropertyDefinition(ContactSchema.ContactSource);
     }
@@ -620,7 +618,7 @@ public class Contact extends Item {
      * @return the department
      * @throws ServiceLocalException the service local exception
      */
-    public String getDepartment() throws ServiceLocalException {
+    public String getDepartment() throws ServiceLocalException, ExchangeXmlException {
         return getPropertyBag().getObjectFromPropertyDefinition(
                 ContactSchema.Department);
     }
@@ -642,7 +640,7 @@ public class Contact extends Item {
      * @return the generation
      * @throws ServiceLocalException the service local exception
      */
-    public String getGeneration() throws ServiceLocalException {
+    public String getGeneration() throws ServiceLocalException, ExchangeXmlException {
         return getPropertyBag().getObjectFromPropertyDefinition(
                 ContactSchema.Generation);
     }
@@ -666,7 +664,7 @@ public class Contact extends Item {
      * @return the im addresses
      * @throws ServiceLocalException the service local exception
      */
-    public ImAddressDictionary getImAddresses() throws ServiceLocalException {
+    public ImAddressDictionary getImAddresses() throws ServiceLocalException, ExchangeXmlException {
         return getPropertyBag().getObjectFromPropertyDefinition(ContactSchema.ImAddresses);
     }
 
@@ -676,7 +674,7 @@ public class Contact extends Item {
      * @return the job title
      * @throws ServiceLocalException the service local exception
      */
-    public String getJobTitle() throws ServiceLocalException {
+    public String getJobTitle() throws ServiceLocalException, ExchangeXmlException {
         return getPropertyBag().getObjectFromPropertyDefinition(
                 ContactSchema.JobTitle);
     }
@@ -698,7 +696,7 @@ public class Contact extends Item {
      * @return the manager
      * @throws ServiceLocalException the service local exception
      */
-    public String getManager() throws ServiceLocalException {
+    public String getManager() throws ServiceLocalException, ExchangeXmlException {
         return getPropertyBag().getObjectFromPropertyDefinition(
                 ContactSchema.Manager);
     }
@@ -718,9 +716,8 @@ public class Contact extends Item {
      * Gets the mileage for the contact.
      *
      * @return the mileage
-     * @throws ServiceLocalException the service local exception
      */
-    public String getMileage() throws ServiceLocalException {
+    public String getMileage() throws ExchangeXmlException {
         return getPropertyBag().getObjectFromPropertyDefinition(
                 ContactSchema.Mileage);
     }
@@ -740,9 +737,8 @@ public class Contact extends Item {
      * Gets  the location of the contact's office.
      *
      * @return the office location
-     * @throws ServiceLocalException the service local exception
      */
-    public String getOfficeLocation() throws ServiceLocalException {
+    public String getOfficeLocation() throws ExchangeXmlException {
         return getPropertyBag().getObjectFromPropertyDefinition(
                 ContactSchema.OfficeLocation);
     }
@@ -764,10 +760,9 @@ public class Contact extends Item {
      * list.
      *
      * @return the postal address index
-     * @throws ServiceLocalException the service local exception
      */
     public PhysicalAddressIndex getPostalAddressIndex()
-            throws ServiceLocalException {
+            throws ExchangeXmlException {
         return getPropertyBag().getObjectFromPropertyDefinition(
                 ContactSchema.PostalAddressIndex);
     }
@@ -788,9 +783,8 @@ public class Contact extends Item {
      * Gets the contact's profession.
      *
      * @return the profession
-     * @throws ServiceLocalException the service local exception
      */
-    public String getProfession() throws ServiceLocalException {
+    public String getProfession() throws ExchangeXmlException {
         return getPropertyBag().getObjectFromPropertyDefinition(
                 ContactSchema.Profession);
     }
@@ -810,9 +804,8 @@ public class Contact extends Item {
      * Gets the name of the contact's spouse.
      *
      * @return the spouse name
-     * @throws ServiceLocalException the service local exception
      */
-    public String getSpouseName() throws ServiceLocalException {
+    public String getSpouseName() throws ExchangeXmlException {
         return getPropertyBag().getObjectFromPropertyDefinition(
                 ContactSchema.SpouseName);
     }
@@ -832,9 +825,8 @@ public class Contact extends Item {
      * Gets the surname of the contact.
      *
      * @return the surname
-     * @throws ServiceLocalException the service local exception
      */
-    public String getSurname() throws ServiceLocalException {
+    public String getSurname() throws ExchangeXmlException {
         return getPropertyBag().getObjectFromPropertyDefinition(
                 ContactSchema.Surname);
     }
@@ -854,9 +846,8 @@ public class Contact extends Item {
      * Gets the date of the contact's wedding anniversary.
      *
      * @return the wedding anniversary
-     * @throws ServiceLocalException the service local exception
      */
-    public LocalDate getWeddingAnniversary() throws ServiceLocalException {
+    public LocalDate getWeddingAnniversary() throws ExchangeXmlException {
         return getPropertyBag().getObjectFromPropertyDefinition(
                 ContactSchema.WeddingAnniversary);
     }
@@ -877,9 +868,8 @@ public class Contact extends Item {
      * with it.
      *
      * @return the checks for picture
-     * @throws ServiceLocalException the service local exception
      */
-    public Boolean getHasPicture() throws ServiceLocalException {
+    public Boolean getHasPicture() throws ExchangeXmlException {
         return getPropertyBag().getObjectFromPropertyDefinition(
                 ContactSchema.HasPicture);
     }
@@ -901,45 +891,40 @@ public class Contact extends Item {
     /**
      * Gets the phonetic last name from the directory
      *
-     * @throws ServiceLocalException
      */
-    public String getPhoneticLastName() throws ServiceLocalException {
+    public String getPhoneticLastName() throws ExchangeXmlException {
         return getPropertyBag().getObjectFromPropertyDefinition(ContactSchema.PhoneticLastName);
     }
 
     /**
      * Gets the Alias from the directory
      *
-     * @throws ServiceLocalException
      */
-    public String getAlias() throws ServiceLocalException {
+    public String getAlias() throws ExchangeXmlException {
         return getPropertyBag().getObjectFromPropertyDefinition(ContactSchema.Alias);
     }
 
     /**
      * Get the Notes from the directory
      *
-     * @throws ServiceLocalException
      */
-    public String getNotes() throws ServiceLocalException {
+    public String getNotes() throws ExchangeXmlException {
         return getPropertyBag().getObjectFromPropertyDefinition(ContactSchema.Notes);
     }
 
     /**
      * Gets the Photo from the directory
      *
-     * @throws ServiceLocalException
      */
-    public byte[] getDirectoryPhoto() throws ServiceLocalException {
+    public byte[] getDirectoryPhoto() throws ExchangeXmlException {
         return getPropertyBag().getObjectFromPropertyDefinition(ContactSchema.Photo);
     }
 
     /**
      * Gets the User SMIME certificate from the directory
      *
-     * @throws ServiceLocalException
      */
-    public byte[][] getUserSMIMECertificate() throws ServiceLocalException {
+    public byte[][] getUserSMIMECertificate() throws ExchangeXmlException {
         ByteArrayArray array = this.getPropertyBag()
                 .getObjectFromPropertyDefinition(ContactSchema.UserSMIMECertificate);
         return array.getContent();
@@ -948,9 +933,8 @@ public class Contact extends Item {
     /**
      * Gets the MSExchange certificate from the directory
      *
-     * @throws ServiceLocalException
      */
-    public byte[][] getMSExchangeCertificate() throws ServiceLocalException {
+    public byte[][] getMSExchangeCertificate() throws ExchangeXmlException {
         ByteArrayArray array = getPropertyBag()
                 .getObjectFromPropertyDefinition(ContactSchema.MSExchangeCertificate);
         return array.getContent();
@@ -959,27 +943,24 @@ public class Contact extends Item {
     /**
      * Gets the DirectoryID as Guid or DN string
      *
-     * @throws ServiceLocalException
      */
-    public String getDirectoryId() throws ServiceLocalException {
+    public String getDirectoryId() throws ExchangeXmlException {
         return getPropertyBag().getObjectFromPropertyDefinition(ContactSchema.DirectoryId);
     }
 
     /**
      * Gets the manager mailbox information
      *
-     * @throws ServiceLocalException
      */
-    public EmailAddress getManagerMailbox() throws ServiceLocalException {
+    public EmailAddress getManagerMailbox() throws ExchangeXmlException {
         return getPropertyBag().getObjectFromPropertyDefinition(ContactSchema.ManagerMailbox);
     }
 
     /**
      * Get the direct reports mailbox information
      *
-     * @throws ServiceLocalException
      */
-    public EmailAddressCollection getDirectReports() throws ServiceLocalException {
+    public EmailAddressCollection getDirectReports() throws ExchangeXmlException {
         return getPropertyBag()
                 .getObjectFromPropertyDefinition(ContactSchema.DirectReports);
     }

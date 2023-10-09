@@ -28,9 +28,8 @@ import com.eischet.ews.api.core.EwsServiceXmlReader;
 import com.eischet.ews.api.core.EwsServiceXmlWriter;
 import com.eischet.ews.api.core.XmlElementNames;
 import com.eischet.ews.api.core.enumeration.misc.XmlNamespace;
-import com.eischet.ews.api.core.exception.service.local.ServiceXmlSerializationException;
+import com.eischet.ews.api.core.exception.xml.ExchangeXmlException;
 
-import javax.xml.stream.XMLStreamException;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -110,15 +109,10 @@ public class TimeWindow implements ISelfValidate {
      * @param reader the reader
      * @throws Exception the exception
      */
-    public void loadFromXml(EwsServiceXmlReader reader) throws Exception {
-        reader.ensureCurrentNodeIsStartElement(XmlNamespace.Types,
-                XmlElementNames.Duration);
-
-        this.startTime = reader.readElementValueAsDateTime(XmlNamespace.Types,
-                XmlElementNames.StartTime);
-        this.endTime = reader.readElementValueAsDateTime(XmlNamespace.Types,
-                XmlElementNames.EndTime);
-
+    public void loadFromXml(EwsServiceXmlReader reader) throws ExchangeXmlException {
+        reader.ensureCurrentNodeIsStartElement(XmlNamespace.Types, XmlElementNames.Duration);
+        this.startTime = reader.readElementValueAsDateTime(XmlNamespace.Types, XmlElementNames.StartTime);
+        this.endTime = reader.readElementValueAsDateTime(XmlNamespace.Types, XmlElementNames.EndTime);
         reader.readEndElement(XmlNamespace.Types, XmlElementNames.Duration);
     }
 
@@ -129,20 +123,12 @@ public class TimeWindow implements ISelfValidate {
      * @param xmlElementName the xml element name
      * @param startTime      the start time
      * @param endTime        the end time
-     * @throws XMLStreamException               the XML stream exception
-     * @throws ServiceXmlSerializationException the service xml serialization exception
      */
     private static void writeToXml(EwsServiceXmlWriter writer,
-                                   String xmlElementName, Object startTime, Object endTime)
-            throws XMLStreamException, ServiceXmlSerializationException {
+                                   String xmlElementName, Object startTime, Object endTime) throws ExchangeXmlException {
         writer.writeStartElement(XmlNamespace.Types, xmlElementName);
-
-        writer.writeElementValue(XmlNamespace.Types, XmlElementNames.StartTime,
-                startTime);
-
-        writer.writeElementValue(XmlNamespace.Types, XmlElementNames.EndTime,
-                endTime);
-
+        writer.writeElementValue(XmlNamespace.Types, XmlElementNames.StartTime, startTime);
+        writer.writeElementValue(XmlNamespace.Types, XmlElementNames.EndTime, endTime);
         writer.writeEndElement(); // xmlElementName
     }
 
@@ -151,11 +137,8 @@ public class TimeWindow implements ISelfValidate {
      *
      * @param writer         the writer
      * @param xmlElementName the xml element name
-     * @throws XMLStreamException               the XML stream exception
-     * @throws ServiceXmlSerializationException the service xml serialization exception
      */
-    protected void writeToXmlUnscopedDatesOnly(EwsServiceXmlWriter writer,
-                                               String xmlElementName) throws XMLStreamException, ServiceXmlSerializationException {
+    protected void writeToXmlUnscopedDatesOnly(EwsServiceXmlWriter writer, String xmlElementName) throws ExchangeXmlException {
         final String DateOnlyFormat = "yyyy-MM-dd'T'00:00:00";
 
         final DateTimeFormatter formatter = DateTimeFormatter.ofPattern(DateOnlyFormat);
@@ -173,11 +156,8 @@ public class TimeWindow implements ISelfValidate {
      *
      * @param writer         the writer
      * @param xmlElementName the xml element name
-     * @throws XMLStreamException               the XML stream exception
-     * @throws ServiceXmlSerializationException the service xml serialization exception
      */
-    public void writeToXml(EwsServiceXmlWriter writer, String xmlElementName)
-            throws XMLStreamException, ServiceXmlSerializationException {
+    public void writeToXml(EwsServiceXmlWriter writer, String xmlElementName) throws ExchangeXmlException {
         TimeWindow.writeToXml(writer, xmlElementName, startTime, endTime);
     }
 

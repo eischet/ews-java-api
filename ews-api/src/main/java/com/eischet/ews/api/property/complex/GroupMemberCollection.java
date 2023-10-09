@@ -31,8 +31,9 @@ import com.eischet.ews.api.core.enumeration.misc.XmlNamespace;
 import com.eischet.ews.api.core.enumeration.property.EmailAddressKey;
 import com.eischet.ews.api.core.enumeration.property.MailboxType;
 import com.eischet.ews.api.core.exception.service.local.ServiceLocalException;
-import com.eischet.ews.api.core.exception.service.local.ServiceValidationException;
+import com.eischet.ews.api.core.exception.service.local.ExchangeValidationException;
 import com.eischet.ews.api.core.exception.service.local.ServiceXmlSerializationException;
+import com.eischet.ews.api.core.exception.xml.ExchangeXmlException;
 import com.eischet.ews.api.core.service.ServiceObject;
 import com.eischet.ews.api.core.service.item.Contact;
 import com.eischet.ews.api.core.service.schema.ContactGroupSchema;
@@ -384,13 +385,9 @@ public final class GroupMemberCollection extends ComplexPropertyCollection<Group
      * Delete the whole members collection.
      *
      * @param writer the writer
-     * @throws XMLStreamException               the XML stream exception
-     * @throws ServiceXmlSerializationException the service xml serialization exception
      */
-    private void writeDeleteMembersCollectionToXml(EwsServiceXmlWriter writer)
-            throws XMLStreamException, ServiceXmlSerializationException {
-        writer.writeStartElement(XmlNamespace.Types,
-                XmlElementNames.DeleteItemField);
+    private void writeDeleteMembersCollectionToXml(EwsServiceXmlWriter writer) throws ExchangeXmlException {
+        writer.writeStartElement(XmlNamespace.Types, XmlElementNames.DeleteItemField);
         ContactGroupSchema.Members.writeToXml(writer);
         writer.writeEndElement();
     }
@@ -405,7 +402,7 @@ public final class GroupMemberCollection extends ComplexPropertyCollection<Group
      */
     private void writeDeleteMembersToXml(EwsServiceXmlWriter writer,
                                          List<GroupMember> members) throws XMLStreamException,
-            ServiceXmlSerializationException {
+            ServiceXmlSerializationException, ExchangeXmlException {
         if (!members.isEmpty()) {
             GroupMemberPropertyDefinition memberPropDef =
                     new GroupMemberPropertyDefinition();
@@ -458,15 +455,14 @@ public final class GroupMemberCollection extends ComplexPropertyCollection<Group
     /**
      * Validates this instance.
      *
-     * @throws Exception
      */
     @Override
-    protected void internalValidate() throws Exception {
+    protected void internalValidate() throws ExchangeValidationException {
         super.internalValidate();
 
         for (GroupMember groupMember : this.getModifiedItems()) {
             if (!(groupMember.getKey() == null || groupMember.getKey().isEmpty())) {
-                throw new ServiceValidationException("The contact group's Members property must be reloaded before "
+                throw new ExchangeValidationException("The contact group's Members property must be reloaded before "
                         + "newly-added members can be updated.");
             }
         }

@@ -28,7 +28,8 @@ import com.eischet.ews.api.core.EwsServiceXmlWriter;
 import com.eischet.ews.api.core.XmlElementNames;
 import com.eischet.ews.api.core.enumeration.misc.XmlNamespace;
 import com.eischet.ews.api.core.enumeration.property.StandardUser;
-import com.eischet.ews.api.core.exception.service.local.ServiceValidationException;
+import com.eischet.ews.api.core.exception.service.local.ExchangeValidationException;
+import com.eischet.ews.api.core.exception.xml.ExchangeXmlException;
 
 /**
  * Represents a delegate user.
@@ -36,15 +37,13 @@ import com.eischet.ews.api.core.exception.service.local.ServiceValidationExcepti
 public final class DelegateUser extends ComplexProperty {
 
     /**
-     * The user id.
-     */
-    private UserId userId = new UserId();
-
-    /**
      * The permissions.
      */
     private final DelegatePermissions permissions = new DelegatePermissions();
-
+    /**
+     * The user id.
+     */
+    private UserId userId = new UserId();
     /**
      * The receive copies of meeting messages.
      */
@@ -150,10 +149,8 @@ public final class DelegateUser extends ComplexProperty {
      *
      * @param reader the reader
      * @return true, if successful
-     * @throws Exception the exception
      */
-    public boolean tryReadElementFromXml(EwsServiceXmlReader reader)
-            throws Exception {
+    public boolean tryReadElementFromXml(EwsServiceXmlReader reader) throws ExchangeXmlException {
         if (reader.getLocalName().equals(XmlElementNames.UserId)) {
 
             this.userId = new UserId();
@@ -185,55 +182,33 @@ public final class DelegateUser extends ComplexProperty {
      * Writes elements to XML.
      *
      * @param writer the writer
-     * @throws Exception the exception
      */
-    public void writeElementsToXml(EwsServiceXmlWriter writer)
-            throws Exception {
+    public void writeElementsToXml(EwsServiceXmlWriter writer) throws ExchangeXmlException {
         this.getUserId().writeToXml(writer, XmlElementNames.UserId);
-        this.getPermissions().writeToXml(writer,
-                XmlElementNames.DelegatePermissions);
-
-        writer.writeElementValue(XmlNamespace.Types,
-                XmlElementNames.ReceiveCopiesOfMeetingMessages,
-                this.receiveCopiesOfMeetingMessages);
-
-        writer.writeElementValue(XmlNamespace.Types,
-                XmlElementNames.ViewPrivateItems, this.viewPrivateItems);
+        this.getPermissions().writeToXml(writer, XmlElementNames.DelegatePermissions);
+        writer.writeElementValue(XmlNamespace.Types, XmlElementNames.ReceiveCopiesOfMeetingMessages, this.receiveCopiesOfMeetingMessages);
+        writer.writeElementValue(XmlNamespace.Types, XmlElementNames.ViewPrivateItems, this.viewPrivateItems);
     }
 
     /**
      * Validates this instance.
      *
-     * @throws ServiceValidationException the service validation exception
+     * @throws ExchangeValidationException the service validation exception
      */
-    protected void internalValidate() throws ServiceValidationException {
+    protected void internalValidate() throws ExchangeValidationException {
         if (this.getUserId() == null) {
-            throw new ServiceValidationException("The UserId in the DelegateUser hasn't been specified.");
+            throw new ExchangeValidationException("The UserId in the DelegateUser hasn't been specified.");
         } else if (!this.getUserId().isValid()) {
-            throw new ServiceValidationException(
+            throw new ExchangeValidationException(
                     "The UserId in the DelegateUser is invalid. The StandardUser, PrimarySmtpAddress or SID property must be set.");
         }
     }
 
-    /**
-     * Validates this instance for AddDelegate.
-     *
-     * @throws Exception
-     * @throws ServiceValidationException
-     */
-    protected void validateAddDelegate() throws ServiceValidationException,
-            Exception {
-        {
-            this.permissions.validateAddDelegate();
-        }
+    protected void validateAddDelegate() throws ExchangeValidationException {
+        this.permissions.validateAddDelegate();
     }
 
-    /**
-     * Validates this instance for UpdateDelegate.
-     */
     public void validateUpdateDelegate() throws Exception {
-        {
-            this.permissions.validateUpdateDelegate();
-        }
+        this.permissions.validateUpdateDelegate();
     }
 }

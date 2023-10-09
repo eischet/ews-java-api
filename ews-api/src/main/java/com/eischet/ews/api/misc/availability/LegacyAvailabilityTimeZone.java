@@ -28,6 +28,7 @@ import com.eischet.ews.api.core.EwsServiceXmlWriter;
 import com.eischet.ews.api.core.XmlElementNames;
 import com.eischet.ews.api.core.enumeration.misc.XmlNamespace;
 import com.eischet.ews.api.core.enumeration.property.time.DayOfTheWeek;
+import com.eischet.ews.api.core.exception.xml.ExchangeXmlException;
 import com.eischet.ews.api.misc.TimeSpan;
 import com.eischet.ews.api.property.complex.ComplexProperty;
 import com.eischet.ews.api.property.complex.time.TimeZoneDefinition;
@@ -107,11 +108,9 @@ public final class LegacyAvailabilityTimeZone extends ComplexProperty {
      *
      * @param reader the reader
      * @return True if element was read.
-     * @throws Exception the exception
      */
     @Override
-    public boolean tryReadElementFromXml(EwsServiceXmlReader reader)
-            throws Exception {
+    public boolean tryReadElementFromXml(EwsServiceXmlReader reader) throws ExchangeXmlException {
         if (reader.getLocalName().equals(XmlElementNames.Bias)) {
             this.bias = new TimeSpan((long)
                     reader.readElementValue(Integer.class) * 60 * 1000);
@@ -135,11 +134,9 @@ public final class LegacyAvailabilityTimeZone extends ComplexProperty {
      * Writes the elements to XML.
      *
      * @param writer the writer
-     * @throws Exception the exception
      */
     @Override
-    public void writeElementsToXml(EwsServiceXmlWriter writer)
-            throws Exception {
+    public void writeElementsToXml(EwsServiceXmlWriter writer) throws ExchangeXmlException {
         writer.writeElementValue(
                 XmlNamespace.Types,
                 XmlElementNames.Bias,

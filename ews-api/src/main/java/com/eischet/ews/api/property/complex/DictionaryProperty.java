@@ -27,6 +27,7 @@ import com.eischet.ews.api.attribute.EditorBrowsable;
 import com.eischet.ews.api.core.*;
 import com.eischet.ews.api.core.enumeration.attribute.EditorBrowsableState;
 import com.eischet.ews.api.core.enumeration.misc.XmlNamespace;
+import com.eischet.ews.api.core.exception.xml.ExchangeXmlException;
 import com.eischet.ews.api.core.service.ServiceObject;
 import com.eischet.ews.api.property.definition.PropertyDefinition;
 
@@ -238,9 +239,8 @@ public abstract class DictionaryProperty
      *
      * @param reader           the reader
      * @param localElementName the local element name
-     * @throws Exception the exception
      */
-    public void loadFromXml(EwsServiceXmlReader reader, String localElementName) throws Exception {
+    public void loadFromXml(EwsServiceXmlReader reader, String localElementName) throws ExchangeXmlException {
         reader.ensureCurrentNodeIsStartElement(XmlNamespace.Types,
                 localElementName);
 
@@ -271,11 +271,10 @@ public abstract class DictionaryProperty
      * @param writer         The writer
      * @param xmlNamespace   The XML namespace.
      * @param xmlElementName Name of the XML element.
-     * @throws Exception
      */
     @Override
     public void writeToXml(EwsServiceXmlWriter writer, XmlNamespace xmlNamespace,
-                           String xmlElementName) throws Exception {
+                           String xmlElementName) throws ExchangeXmlException {
         //  Only write collection if it has at least one element.
         if (this.entries.size() > 0) {
             super.writeToXml(
@@ -289,10 +288,8 @@ public abstract class DictionaryProperty
      * Writes elements to XML.
      *
      * @param writer the writer
-     * @throws Exception the exception
      */
-    public void writeElementsToXml(EwsServiceXmlWriter writer)
-            throws Exception {
+    public void writeElementsToXml(EwsServiceXmlWriter writer) throws ExchangeXmlException {
         for (Entry<TKey, TEntry> keyValuePair : this.entries.entrySet()) {
             keyValuePair.getValue().writeToXml(writer,
                     this.getEntryXmlElementName(keyValuePair.getValue()));
@@ -331,7 +328,7 @@ public abstract class DictionaryProperty
     public boolean writeSetUpdateToXml(EwsServiceXmlWriter writer,
                                        ServiceObject ewsObject, PropertyDefinition propertyDefinition)
             throws Exception {
-        List<TEntry> tempEntries = new ArrayList<TEntry>();
+        List<TEntry> tempEntries = new ArrayList<>();
 
         for (TKey key : this.addedEntries) {
             tempEntries.add(this.entries.get(key));

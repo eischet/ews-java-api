@@ -27,9 +27,8 @@ import com.eischet.ews.api.core.EwsServiceXmlWriter;
 import com.eischet.ews.api.core.EwsUtilities;
 import com.eischet.ews.api.core.XmlElementNames;
 import com.eischet.ews.api.core.enumeration.misc.XmlNamespace;
-import com.eischet.ews.api.core.exception.service.local.ServiceXmlSerializationException;
-
-import javax.xml.stream.XMLStreamException;
+import com.eischet.ews.api.core.exception.service.local.ExchangeValidationException;
+import com.eischet.ews.api.core.exception.xml.ExchangeXmlException;
 
 /**
  * Represents an operation to delete an existing rule.
@@ -77,11 +76,10 @@ public final class DeleteRuleOperation extends RuleOperation {
      * Writes elements to XML.
      *
      * @param writer the writer
-     * @throws XMLStreamException the XML stream exception
      */
     @Override
     public void writeElementsToXml(EwsServiceXmlWriter writer)
-            throws ServiceXmlSerializationException, XMLStreamException {
+            throws ExchangeXmlException {
         writer.writeElementValue(XmlNamespace.Types,
                 XmlElementNames.RuleId, this.getRuleId());
     }
@@ -90,7 +88,7 @@ public final class DeleteRuleOperation extends RuleOperation {
      * Validates this instance.
      */
     @Override
-    protected void internalValidate() throws Exception {
+    protected void internalValidate() throws ExchangeValidationException {
         EwsUtilities.validateParam(this.ruleId, "RuleId");
     }
 

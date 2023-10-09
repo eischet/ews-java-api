@@ -29,8 +29,8 @@ import com.eischet.ews.api.core.XmlAttributeNames;
 import com.eischet.ews.api.core.XmlElementNames;
 import com.eischet.ews.api.core.enumeration.misc.XmlNamespace;
 import com.eischet.ews.api.core.enumeration.search.SearchFolderTraversal;
-import com.eischet.ews.api.core.exception.service.local.ServiceValidationException;
-import com.eischet.ews.api.core.exception.service.local.ServiceXmlSerializationException;
+import com.eischet.ews.api.core.exception.service.local.ExchangeValidationException;
+import com.eischet.ews.api.core.exception.xml.ExchangeXmlException;
 import com.eischet.ews.api.search.filter.SearchFilter;
 
 /**
@@ -85,11 +85,9 @@ public final class SearchFolderParameters extends ComplexProperty implements ICo
      *
      * @param reader the reader
      * @return True if element was read.
-     * @throws Exception the exception
      */
     @Override
-    public boolean tryReadElementFromXml(EwsServiceXmlReader reader)
-            throws Exception {
+    public boolean tryReadElementFromXml(EwsServiceXmlReader reader) throws ExchangeXmlException {
         if (reader.getLocalName().equalsIgnoreCase(
                 XmlElementNames.BaseFolderIds)) {
             this.rootFolderIds.internalClear();
@@ -109,24 +107,19 @@ public final class SearchFolderParameters extends ComplexProperty implements ICo
      * Reads the attribute from XML.
      *
      * @param reader the reader
-     * @throws Exception the exception
      */
     @Override
-    public void readAttributesFromXml(EwsServiceXmlReader reader)
-            throws Exception {
-        this.traversal = reader.readAttributeValue(SearchFolderTraversal.class,
-                XmlAttributeNames.Traversal);
+    public void readAttributesFromXml(EwsServiceXmlReader reader) throws ExchangeXmlException {
+        this.traversal = reader.readAttributeValue(SearchFolderTraversal.class, XmlAttributeNames.Traversal);
     }
 
     /**
      * Writes the attribute to XML.
      *
      * @param writer the writer
-     * @throws ServiceXmlSerializationException the service xml serialization exception
      */
     @Override
-    public void writeAttributesToXml(EwsServiceXmlWriter writer)
-            throws ServiceXmlSerializationException {
+    public void writeAttributesToXml(EwsServiceXmlWriter writer) throws ExchangeXmlException {
         writer.writeAttributeValue(XmlAttributeNames.Traversal, this.traversal);
     }
 
@@ -134,11 +127,9 @@ public final class SearchFolderParameters extends ComplexProperty implements ICo
      * Writes elements to XML.
      *
      * @param writer the writer
-     * @throws Exception the exception
      */
     @Override
-    public void writeElementsToXml(EwsServiceXmlWriter writer)
-            throws Exception {
+    public void writeElementsToXml(EwsServiceXmlWriter writer) throws ExchangeXmlException {
         if (this.searchFilter != null) {
             writer.writeStartElement(XmlNamespace.Types,
                     XmlElementNames.Restriction);
@@ -152,12 +143,11 @@ public final class SearchFolderParameters extends ComplexProperty implements ICo
     /**
      * Validates this instance.
      *
-     * @throws Exception
      */
-    public void validate() throws Exception {
+    public void validate() throws ExchangeValidationException {
         // Search folder must have at least one root folder id.
         if (this.rootFolderIds.getCount() == 0) {
-            throw new ServiceValidationException("SearchParameters must contain at least one folder id.");
+            throw new ExchangeValidationException("SearchParameters must contain at least one folder id.");
         }
 
         // Validate the search filter

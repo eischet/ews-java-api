@@ -28,6 +28,7 @@ import com.eischet.ews.api.core.EwsServiceXmlWriter;
 import com.eischet.ews.api.core.XmlAttributeNames;
 import com.eischet.ews.api.core.exception.service.local.ServiceXmlDeserializationException;
 import com.eischet.ews.api.core.exception.service.local.ServiceXmlSerializationException;
+import com.eischet.ews.api.core.exception.xml.ExchangeXmlException;
 
 import javax.xml.stream.XMLStreamException;
 import java.util.Base64;
@@ -69,25 +70,19 @@ public final class MimeContent extends ComplexProperty {
      * Reads attribute from XML.
      *
      * @param reader the reader
-     * @throws Exception the exception
      */
     @Override
-    public void readAttributesFromXml(EwsServiceXmlReader reader)
-            throws Exception {
-        this.characterSet = reader.readAttributeValue(String.class,
-                XmlAttributeNames.CharacterSet);
+    public void readAttributesFromXml(EwsServiceXmlReader reader) throws ExchangeXmlException {
+        this.characterSet = reader.readAttributeValue(String.class, XmlAttributeNames.CharacterSet);
     }
 
     /**
      * Reads text value from XML.
      *
      * @param reader the reader
-     * @throws XMLStreamException                 the XML stream exception
-     * @throws ServiceXmlDeserializationException the service xml deserialization exception
      */
     @Override
-    public void readTextValueFromXml(EwsServiceXmlReader reader)
-            throws XMLStreamException, ServiceXmlDeserializationException {
+    public void readTextValueFromXml(EwsServiceXmlReader reader) throws ExchangeXmlException {
         this.content = Base64.getMimeDecoder().decode(reader.readValue());
     }
 
@@ -95,11 +90,9 @@ public final class MimeContent extends ComplexProperty {
      * Writes attribute to XML.
      *
      * @param writer the writer
-     * @throws ServiceXmlSerializationException the service xml serialization exception
      */
     @Override
-    public void writeAttributesToXml(EwsServiceXmlWriter writer)
-            throws ServiceXmlSerializationException {
+    public void writeAttributesToXml(EwsServiceXmlWriter writer) throws ExchangeXmlException {
         writer.writeAttributeValue(XmlAttributeNames.CharacterSet,
                 this.characterSet);
     }
@@ -108,10 +101,8 @@ public final class MimeContent extends ComplexProperty {
      * Writes elements to XML.
      *
      * @param writer the writer
-     * @throws XMLStreamException the XML stream exception
      */
-    public void writeElementsToXml(EwsServiceXmlWriter writer)
-            throws XMLStreamException {
+    public void writeElementsToXml(EwsServiceXmlWriter writer) throws ExchangeXmlException {
         if (this.content != null && this.content.length > 0) {
             writer.writeBase64ElementValue(this.content);
         }

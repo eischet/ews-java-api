@@ -31,9 +31,8 @@ import com.eischet.ews.api.core.enumeration.misc.TraceFlags;
 import com.eischet.ews.api.core.exception.http.EWSHttpException;
 import com.eischet.ews.api.core.exception.misc.ArgumentException;
 import com.eischet.ews.api.core.exception.service.local.ServiceVersionException;
-import com.eischet.ews.api.core.exception.service.local.ServiceXmlDeserializationException;
 import com.eischet.ews.api.core.exception.service.remote.ServiceRequestException;
-import com.eischet.ews.api.core.exception.xml.XmlException;
+import com.eischet.ews.api.core.exception.xml.ExchangeXmlException;
 import com.eischet.ews.api.http.ExchangeHttpClient;
 import com.eischet.ews.api.misc.HangingTraceStream;
 import com.eischet.ews.api.security.XmlNodeType;
@@ -349,7 +348,7 @@ public abstract class HangingServiceRequestBase<T> extends ServiceRequestBase<T>
         // Do nothing.
         try {
             ewsXmlReader.read(new XmlNodeType(XmlNodeType.START_DOCUMENT));
-        } catch (XmlException | ServiceXmlDeserializationException ex) {
+        } catch (ExchangeXmlException ex) {
             throw new ServiceRequestException("The response received from the service didn't contain valid XML.", ex);
         }
     }

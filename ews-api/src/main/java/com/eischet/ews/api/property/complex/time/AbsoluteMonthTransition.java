@@ -28,10 +28,8 @@ import com.eischet.ews.api.core.EwsServiceXmlWriter;
 import com.eischet.ews.api.core.EwsUtilities;
 import com.eischet.ews.api.core.XmlElementNames;
 import com.eischet.ews.api.core.enumeration.misc.XmlNamespace;
-import com.eischet.ews.api.core.exception.service.local.ServiceXmlSerializationException;
+import com.eischet.ews.api.core.exception.xml.ExchangeXmlException;
 import com.eischet.ews.api.misc.TimeSpan;
-
-import javax.xml.stream.XMLStreamException;
 
 /**
  * Represents the base class for all recurring time zone period transitions.
@@ -49,56 +47,6 @@ abstract class AbsoluteMonthTransition extends TimeZoneTransition {
     private int month;
 
     /**
-     * Tries to read element from XML.
-     *
-     * @param reader accepts EwsServiceXmlReader
-     * @return True if element was read
-     * @throws Exception throws Exception
-     */
-    @Override
-    public boolean tryReadElementFromXml(EwsServiceXmlReader reader)
-            throws Exception {
-        if (super.tryReadElementFromXml(reader)) {
-            return true;
-        } else {
-            if (reader.getLocalName().equals(XmlElementNames.TimeOffset)) {
-                this.timeOffset = EwsUtilities.getXSDurationToTimeSpan(reader.readElementValue());
-                return true;
-            } else if (reader.getLocalName().equals(XmlElementNames.Month)) {
-                this.month = reader.readElementValue(Integer.class);
-
-                EwsUtilities.ewsAssert(this.month > 0 && this.month <= 12,
-                        "AbsoluteMonthTransition.TryReadElementFromXml",
-                        "month is not in the valid 1 - 12 range.");
-
-                return true;
-            } else {
-                return false;
-            }
-        }
-    }
-
-    /**
-     * Writes elements to XML.
-     *
-     * @param writer the writer
-     * @throws ServiceXmlSerializationException the service xml serialization exception
-     * @throws XMLStreamException               the XML stream exception
-     */
-    @Override
-    public void writeElementsToXml(EwsServiceXmlWriter writer)
-            throws ServiceXmlSerializationException, XMLStreamException {
-        super.writeElementsToXml(writer);
-
-        writer.writeElementValue(XmlNamespace.Types,
-                XmlElementNames.TimeOffset, EwsUtilities
-                        .getTimeSpanToXSDuration(this.timeOffset));
-
-        writer.writeElementValue(XmlNamespace.Types, XmlElementNames.Month,
-                this.month);
-    }
-
-    /**
      * Initializes a new instance of the AbsoluteMonthTransition class.
      *
      * @param timeZoneDefinition the time zone definition
@@ -113,9 +61,46 @@ abstract class AbsoluteMonthTransition extends TimeZoneTransition {
      * @param timeZoneDefinition the time zone definition
      * @param targetPeriod       the target period
      */
-    protected AbsoluteMonthTransition(TimeZoneDefinition timeZoneDefinition,
-                                      TimeZonePeriod targetPeriod) {
+    protected AbsoluteMonthTransition(TimeZoneDefinition timeZoneDefinition, TimeZonePeriod targetPeriod) {
         super(timeZoneDefinition, targetPeriod);
+    }
+
+    /**
+     * Tries to read element from XML.
+     *
+     * @param reader accepts EwsServiceXmlReader
+     * @return True if element was read
+     */
+    @Override
+    public boolean tryReadElementFromXml(EwsServiceXmlReader reader) throws ExchangeXmlException {
+        if (super.tryReadElementFromXml(reader)) {
+            return true;
+        } else {
+            if (reader.getLocalName().equals(XmlElementNames.TimeOffset)) {
+                this.timeOffset = EwsUtilities.getXSDurationToTimeSpan(reader.readElementValue());
+                return true;
+            } else if (reader.getLocalName().equals(XmlElementNames.Month)) {
+                this.month = reader.readElementValue(Integer.class);
+
+                EwsUtilities.ewsAssert(this.month > 0 && this.month <= 12, "AbsoluteMonthTransition.TryReadElementFromXml", "month is not in the valid 1 - 12 range.");
+
+                return true;
+            } else {
+                return false;
+            }
+        }
+    }
+
+    /**
+     * Writes elements to XML.
+     *
+     * @param writer the writer
+     */
+    @Override
+    public void writeElementsToXml(EwsServiceXmlWriter writer) throws ExchangeXmlException {
+        super.writeElementsToXml(writer);
+        writer.writeElementValue(XmlNamespace.Types, XmlElementNames.TimeOffset, EwsUtilities.getTimeSpanToXSDuration(this.timeOffset));
+        writer.writeElementValue(XmlNamespace.Types, XmlElementNames.Month, this.month);
     }
 
     /**

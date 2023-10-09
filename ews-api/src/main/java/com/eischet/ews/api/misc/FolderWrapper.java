@@ -26,6 +26,7 @@ package com.eischet.ews.api.misc;
 import com.eischet.ews.api.core.EwsServiceXmlWriter;
 import com.eischet.ews.api.core.EwsUtilities;
 import com.eischet.ews.api.core.exception.service.local.ServiceLocalException;
+import com.eischet.ews.api.core.exception.xml.ExchangeXmlException;
 import com.eischet.ews.api.core.service.folder.Folder;
 
 /**
@@ -42,9 +43,8 @@ class FolderWrapper extends AbstractFolderIdWrapper {
      * Initializes a new instance of FolderWrapper.
      *
      * @param folder the folder
-     * @throws ServiceLocalException the service local exception
      */
-    protected FolderWrapper(Folder folder) throws ServiceLocalException {
+    protected FolderWrapper(Folder folder) throws ExchangeXmlException {
         EwsUtilities.ewsAssert(folder != null, "FolderWrapper.ctor", "folder is null");
         EwsUtilities.ewsAssert(!folder.isNew(), "FolderWrapper.ctor", "folder does not have an Id");
         this.folder = folder;

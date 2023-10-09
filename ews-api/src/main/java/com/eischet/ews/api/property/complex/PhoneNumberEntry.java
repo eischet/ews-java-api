@@ -29,7 +29,7 @@ import com.eischet.ews.api.core.EwsServiceXmlWriter;
 import com.eischet.ews.api.core.XmlElementNames;
 import com.eischet.ews.api.core.enumeration.attribute.EditorBrowsableState;
 import com.eischet.ews.api.core.enumeration.property.PhoneNumberKey;
-import com.eischet.ews.api.core.exception.service.local.ServiceXmlSerializationException;
+import com.eischet.ews.api.core.exception.xml.ExchangeXmlException;
 
 /**
  * Represents an entry of a PhoneNumberDictionary.
@@ -64,11 +64,9 @@ public final class PhoneNumberEntry extends DictionaryEntryProperty<PhoneNumberK
      * Reads the text value from XML.
      *
      * @param reader accepts EwsServiceXmlReader
-     * @throws Exception throws Exception
      */
     @Override
-    public void readTextValueFromXml(EwsServiceXmlReader reader)
-            throws Exception {
+    public void readTextValueFromXml(EwsServiceXmlReader reader) throws ExchangeXmlException {
         this.phoneNumber = reader.readValue();
     }
 
@@ -76,10 +74,8 @@ public final class PhoneNumberEntry extends DictionaryEntryProperty<PhoneNumberK
      * Writes elements to XML.
      *
      * @param writer The writer.
-     * @throws ServiceXmlSerializationException the service xml serialization exception
      */
-    public void writeElementsToXml(EwsServiceXmlWriter writer)
-            throws ServiceXmlSerializationException {
+    public void writeElementsToXml(EwsServiceXmlWriter writer) throws ExchangeXmlException {
         writer.writeValue(this.phoneNumber, XmlElementNames.PhoneNumber);
     }
 

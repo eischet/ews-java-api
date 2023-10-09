@@ -30,6 +30,7 @@ import com.eischet.ews.api.core.PropertySet;
 import com.eischet.ews.api.core.XmlElementNames;
 import com.eischet.ews.api.core.enumeration.misc.ExchangeVersion;
 import com.eischet.ews.api.core.exception.service.local.ServiceObjectPropertyException;
+import com.eischet.ews.api.core.exception.xml.ExchangeXmlException;
 import com.eischet.ews.api.core.service.schema.ContactGroupSchema;
 import com.eischet.ews.api.core.service.schema.ContactSchema;
 import com.eischet.ews.api.core.service.schema.ServiceObjectSchema;
@@ -50,7 +51,7 @@ public class ContactGroup extends Item {
      * @param service the service
      * @throws Exception the exception
      */
-    public ContactGroup(ExchangeService service) throws Exception {
+    public ContactGroup(ExchangeService service) throws ExchangeXmlException {
         super(service);
     }
 
@@ -60,7 +61,7 @@ public class ContactGroup extends Item {
      * @param parentAttachment the parent attachment
      * @throws Exception the exception
      */
-    public ContactGroup(ItemAttachment parentAttachment) throws Exception {
+    public ContactGroup(ItemAttachment parentAttachment) throws ExchangeXmlException {
         super(parentAttachment);
     }
 
@@ -72,8 +73,7 @@ public class ContactGroup extends Item {
      */
     @RequiredServerVersion(version = ExchangeVersion.Exchange2010)
     public String getFileAs() throws Exception {
-        return (String) this
-                .getObjectFromPropertyDefinition(ContactSchema.FileAs);
+        return (String) this.getObjectFromPropertyDefinition(ContactSchema.FileAs);
     }
 
     /**

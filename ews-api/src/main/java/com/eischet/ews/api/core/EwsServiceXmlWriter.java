@@ -25,6 +25,7 @@ package com.eischet.ews.api.core;
 
 import com.eischet.ews.api.core.enumeration.misc.XmlNamespace;
 import com.eischet.ews.api.core.exception.service.local.ServiceXmlSerializationException;
+import com.eischet.ews.api.core.exception.xml.ExchangeXmlException;
 import com.eischet.ews.api.misc.OutParam;
 import com.eischet.ews.api.property.complex.ISearchStringProvider;
 import org.w3c.dom.*;
@@ -168,22 +169,26 @@ public class EwsServiceXmlWriter implements IDisposable {
      *
      * @param xmlNamespace the XML namespace
      * @param localName    the local name of the element
-     * @throws XMLStreamException the XML stream exception
      */
-    public void writeStartElement(XmlNamespace xmlNamespace, String localName)
-            throws XMLStreamException {
+    public void writeStartElement(XmlNamespace xmlNamespace, String localName) throws ExchangeXmlException {
         String strPrefix = EwsUtilities.getNamespacePrefix(xmlNamespace);
         String strNameSpace = EwsUtilities.getNamespaceUri(xmlNamespace);
-        this.xmlWriter.writeStartElement(strPrefix, localName, strNameSpace);
+        try {
+            this.xmlWriter.writeStartElement(strPrefix, localName, strNameSpace);
+        } catch (XMLStreamException e) {
+            throw new ExchangeXmlException("error writing start element", e);
+        }
     }
 
     /**
      * Writes the end element.
-     *
-     * @throws XMLStreamException the XML stream exception
      */
-    public void writeEndElement() throws XMLStreamException {
-        this.xmlWriter.writeEndElement();
+    public void writeEndElement() throws ExchangeXmlException {
+        try {
+            this.xmlWriter.writeEndElement();
+        } catch (XMLStreamException e) {
+            throw new ExchangeXmlException("error writing end element", e);
+        }
     }
 
     /**
@@ -193,10 +198,8 @@ public class EwsServiceXmlWriter implements IDisposable {
      * @param value     the value
      * @throws ServiceXmlSerializationException the service xml serialization exception
      */
-    public void writeAttributeValue(String localName, Object value)
-            throws ServiceXmlSerializationException {
-        this.writeAttributeValue(localName,
-                false /* alwaysWriteEmptyString */, value);
+    public void writeAttributeValue(String localName, Object value) throws ExchangeXmlException {
+        this.writeAttributeValue(localName, false /* alwaysWriteEmptyString */, value);
     }
 
     /**
@@ -205,22 +208,19 @@ public class EwsServiceXmlWriter implements IDisposable {
      * @param localName              the local name of the attribute.
      * @param alwaysWriteEmptyString always emit the empty string as the value.
      * @param value                  the value
-     * @throws ServiceXmlSerializationException the service xml serialization exception
      */
     public void writeAttributeValue(String localName,
                                     boolean alwaysWriteEmptyString,
-                                    Object value) throws ServiceXmlSerializationException {
-        OutParam<String> stringOut = new OutParam<String>();
-        String stringValue = null;
+                                    Object value) throws ExchangeXmlException {
+        OutParam<String> stringOut = new OutParam<>();
+        String stringValue;
         if (this.tryConvertObjectToString(value, stringOut)) {
             stringValue = stringOut.getParam();
-            if ((null != stringValue) && (alwaysWriteEmptyString || (stringValue.length() != 0))) {
+            if ((null != stringValue) && (alwaysWriteEmptyString || (!stringValue.isEmpty()))) {
                 this.writeAttributeString(localName, stringValue);
             }
         } else {
-            throw new ServiceXmlSerializationException(String.format(
-                    "Values of type '%s' can't be used for the '%s' attribute.", value.getClass()
-                            .getName(), localName));
+            throw new ExchangeXmlException(String.format("Values of type '%s' can't be used for the '%s' attribute.", value.getClass().getName(), localName));
         }
     }
 
@@ -230,12 +230,10 @@ public class EwsServiceXmlWriter implements IDisposable {
      * @param namespacePrefix the namespace prefix
      * @param localName       the local name of the attribute
      * @param value           the value
-     * @throws ServiceXmlSerializationException the service xml serialization exception
      */
-    public void writeAttributeValue(String namespacePrefix, String localName,
-                                    Object value) throws ServiceXmlSerializationException {
+    public void writeAttributeValue(String namespacePrefix, String localName, Object value) throws ExchangeXmlException {
         OutParam<String> stringOut = new OutParam<String>();
-        String stringValue = null;
+        String stringValue;
         if (this.tryConvertObjectToString(value, stringOut)) {
             stringValue = stringOut.getParam();
             if (null != stringValue && !stringValue.isEmpty()) {
@@ -243,9 +241,7 @@ public class EwsServiceXmlWriter implements IDisposable {
                         stringValue);
             }
         } else {
-            throw new ServiceXmlSerializationException(String.format(
-                    "Values of type '%s' can't be used for the '%s' attribute.", value.getClass()
-                            .getName(), localName));
+            throw new ExchangeXmlException(String.format("Values of type '%s' can't be used for the '%s' attribute.", value.getClass().getName(), localName));
         }
     }
 
@@ -254,17 +250,14 @@ public class EwsServiceXmlWriter implements IDisposable {
      *
      * @param localName   The local name of the attribute.
      * @param stringValue The string value.
-     * @throws ServiceXmlSerializationException Thrown if string value isn't valid for XML
      */
-    protected void writeAttributeString(String localName, String stringValue)
-            throws ServiceXmlSerializationException {
+    protected void writeAttributeString(String localName, String stringValue) throws ExchangeXmlException {
         try {
             this.xmlWriter.writeAttribute(localName, stringValue);
         } catch (XMLStreamException e) {
             // Bug E14:65046: XmlTextWriter will throw ArgumentException
             //if string includes invalid characters.
-            throw new ServiceXmlSerializationException(String.format(
-                    "The invalid value '%s' was specified for the '%s' attribute.", stringValue, localName), e);
+            throw new ExchangeXmlException(String.format("The invalid value '%s' was specified for the '%s' attribute.", stringValue, localName), e);
         }
     }
 
@@ -274,19 +267,17 @@ public class EwsServiceXmlWriter implements IDisposable {
      * @param namespacePrefix The namespace prefix.
      * @param localName       The local name of the attribute.
      * @param stringValue     The string value.
-     * @throws ServiceXmlSerializationException Thrown if string value isn't valid for XML.
      */
     protected void writeAttributeString(String namespacePrefix,
                                         String localName, String stringValue)
-            throws ServiceXmlSerializationException {
+            throws ExchangeXmlException {
         try {
             this.xmlWriter.writeAttribute(namespacePrefix, "", localName,
                     stringValue);
         } catch (XMLStreamException e) {
             // Bug E14:65046: XmlTextWriter will throw ArgumentException
             //if string includes invalid characters.
-            throw new ServiceXmlSerializationException(String.format(
-                    "The invalid value '%s' was specified for the '%s' attribute.", stringValue, localName), e);
+            throw new ExchangeXmlException(String.format("The invalid value '%s' was specified for the '%s' attribute.", stringValue, localName), e);
         }
     }
 
@@ -295,17 +286,14 @@ public class EwsServiceXmlWriter implements IDisposable {
      *
      * @param value The value.
      * @param name  Element name (used for error handling)
-     * @throws ServiceXmlSerializationException Thrown if string value isn't valid for XML.
      */
-    public void writeValue(String value, String name)
-            throws ServiceXmlSerializationException {
+    public void writeValue(String value, String name) throws ExchangeXmlException {
         try {
             this.xmlWriter.writeCharacters(value);
         } catch (XMLStreamException e) {
             // Bug E14:65046: XmlTextWriter will throw ArgumentException
             //if string includes invalid characters.
-            throw new ServiceXmlSerializationException(String.format(
-                    "The invalid value '%s' was specified for the '%s' element.", value, name), e);
+            throw new ExchangeXmlException(String.format("The invalid value '%s' was specified for the '%s' element.", value, name), e);
         }
     }
 
@@ -316,31 +304,25 @@ public class EwsServiceXmlWriter implements IDisposable {
      * @param localName    the local name of the element
      * @param displayName  the name that should appear in the exception message when the value can not be serialized
      * @param value        the value
-     * @throws XMLStreamException               the XML stream exception
-     * @throws ServiceXmlSerializationException the service xml serialization exception
      */
-    public void writeElementValue(XmlNamespace xmlNamespace, String localName, String displayName, Object value)
-            throws XMLStreamException, ServiceXmlSerializationException {
-        String stringValue = null;
+    public void writeElementValue(XmlNamespace xmlNamespace, String localName, String displayName, Object value) throws ExchangeXmlException {
+        String stringValue;
         OutParam<String> strOut = new OutParam<String>();
 
         if (this.tryConvertObjectToString(value, strOut)) {
             stringValue = strOut.getParam();
             if (null != stringValue) {
-                // allow an empty string to create an empty element (like <Value
-                // />).
+                // allow an empty string to create an empty element (like <Value/>).
                 this.writeStartElement(xmlNamespace, localName);
                 this.writeValue(stringValue, displayName);
                 this.writeEndElement();
             }
         } else {
-            throw new ServiceXmlSerializationException(String.format(
-                    "Values of type '%s' can't be used for the '%s' element.", value.getClass()
-                            .getName(), localName));
+            throw new ExchangeXmlException(String.format("Values of type '%s' can't be used for the '%s' element.", value.getClass().getName(), localName));
         }
     }
 
-    public void writeNode(Node xmlNode) throws XMLStreamException {
+    public void writeNode(Node xmlNode) throws ExchangeXmlException {
         if (xmlNode != null) {
             writeNode(xmlNode, this.xmlWriter);
         }
@@ -351,24 +333,28 @@ public class EwsServiceXmlWriter implements IDisposable {
      * @param xmlStreamWriter XML stream writer
      * @throws XMLStreamException the XML stream exception
      */
-    public static void writeNode(Node xmlNode, XMLStreamWriter xmlStreamWriter)
-            throws XMLStreamException {
-        if (xmlNode instanceof Element) {
-            addElement((Element) xmlNode, xmlStreamWriter);
-        } else if (xmlNode instanceof Text) {
-            xmlStreamWriter.writeCharacters(xmlNode.getNodeValue());
-        } else if (xmlNode instanceof CDATASection) {
-            xmlStreamWriter.writeCData(((CDATASection) xmlNode).getData());
-        } else if (xmlNode instanceof Comment) {
-            xmlStreamWriter.writeComment(((Comment) xmlNode).getData());
-        } else if (xmlNode instanceof EntityReference) {
-            xmlStreamWriter.writeEntityRef(xmlNode.getNodeValue());
-        } else if (xmlNode instanceof ProcessingInstruction) {
-            ProcessingInstruction procInst = (ProcessingInstruction) xmlNode;
-            xmlStreamWriter.writeProcessingInstruction(procInst.getTarget(),
-                    procInst.getData());
-        } else if (xmlNode instanceof Document) {
-            writeToDocument((Document) xmlNode, xmlStreamWriter);
+    public static void writeNode(Node xmlNode, XMLStreamWriter xmlStreamWriter) throws ExchangeXmlException {
+        try {
+            if (xmlNode instanceof Element) {
+                addElement((Element) xmlNode, xmlStreamWriter);
+            } else if (xmlNode instanceof Text) {
+                xmlStreamWriter.writeCharacters(xmlNode.getNodeValue());
+            } else if (xmlNode instanceof CDATASection) {
+                // TODO: check if writeCData every actually worked, because it could never have been called (CDATASection extends Text!)
+                xmlStreamWriter.writeCData(((CDATASection) xmlNode).getData());
+            } else if (xmlNode instanceof Comment) {
+                xmlStreamWriter.writeComment(((Comment) xmlNode).getData());
+            } else if (xmlNode instanceof EntityReference) {
+                xmlStreamWriter.writeEntityRef(xmlNode.getNodeValue());
+            } else if (xmlNode instanceof ProcessingInstruction) {
+                ProcessingInstruction procInst = (ProcessingInstruction) xmlNode;
+                xmlStreamWriter.writeProcessingInstruction(procInst.getTarget(),
+                        procInst.getData());
+            } else if (xmlNode instanceof Document) {
+                writeToDocument((Document) xmlNode, xmlStreamWriter);
+            }
+        } catch (XMLStreamException e) {
+            throw new ExchangeXmlException("error writing note " + xmlNode, e);
         }
     }
 
@@ -378,12 +364,16 @@ public class EwsServiceXmlWriter implements IDisposable {
      * @throws XMLStreamException the XML stream exception
      */
     public static void writeToDocument(Document document,
-                                       XMLStreamWriter xmlStreamWriter) throws XMLStreamException {
+                                       XMLStreamWriter xmlStreamWriter) throws ExchangeXmlException {
 
-        xmlStreamWriter.writeStartDocument();
-        Element rootElement = document.getDocumentElement();
-        addElement(rootElement, xmlStreamWriter);
-        xmlStreamWriter.writeEndDocument();
+        try {
+            xmlStreamWriter.writeStartDocument();
+            Element rootElement = document.getDocumentElement();
+            addElement(rootElement, xmlStreamWriter);
+            xmlStreamWriter.writeEndDocument();
+        } catch (XMLStreamException e) {
+            throw new ExchangeXmlException("error writing document " + document, e);
+        }
     }
 
     /**
@@ -391,80 +381,84 @@ public class EwsServiceXmlWriter implements IDisposable {
      * @param writer  XML stream writer
      * @throws XMLStreamException the XML stream exception
      */
-    public static void addElement(Element element, XMLStreamWriter writer)
-            throws XMLStreamException {
-        String nameSpace = element.getNamespaceURI();
-        String prefix = element.getPrefix();
-        String localName = element.getLocalName();
-        if (prefix == null) {
-            prefix = "";
-        }
-        if (localName == null) {
-            localName = element.getNodeName();
+    public static void addElement(Element element, XMLStreamWriter writer) throws ExchangeXmlException {
 
+        try {
+
+            String nameSpace = element.getNamespaceURI();
+            String prefix = element.getPrefix();
+            String localName = element.getLocalName();
+            if (prefix == null) {
+                prefix = "";
+            }
             if (localName == null) {
-                throw new IllegalStateException(
-                        "Element's local name cannot be null!");
-            }
-        }
+                localName = element.getNodeName();
 
-        String decUri = writer.getNamespaceContext().getNamespaceURI(prefix);
-        boolean declareNamespace = decUri == null || !decUri.equals(nameSpace);
-
-        if (nameSpace == null || nameSpace.length() == 0) {
-            writer.writeStartElement(localName);
-        } else {
-            writer.writeStartElement(prefix, localName, nameSpace);
-        }
-
-        NamedNodeMap attrs = element.getAttributes();
-        for (int i = 0; i < attrs.getLength(); i++) {
-            Node attr = attrs.item(i);
-
-            String name = attr.getNodeName();
-            String attrPrefix = "";
-            int prefixIndex = name.indexOf(':');
-            if (prefixIndex != -1) {
-                attrPrefix = name.substring(0, prefixIndex);
-                name = name.substring(prefixIndex + 1);
-            }
-
-            if ("xmlns".equals(attrPrefix)) {
-                writer.writeNamespace(name, attr.getNodeValue());
-                if (name.equals(prefix)
-                        && attr.getNodeValue().equals(nameSpace)) {
-                    declareNamespace = false;
+                if (localName == null) {
+                    throw new IllegalStateException(
+                            "Element's local name cannot be null!");
                 }
+            }
+
+            String decUri = writer.getNamespaceContext().getNamespaceURI(prefix);
+            boolean declareNamespace = decUri == null || !decUri.equals(nameSpace);
+
+            if (nameSpace == null || nameSpace.length() == 0) {
+                writer.writeStartElement(localName);
             } else {
-                if ("xmlns".equals(name) && "".equals(attrPrefix)) {
-                    writer.writeNamespace("", attr.getNodeValue());
-                    if (attr.getNodeValue().equals(nameSpace)) {
+                writer.writeStartElement(prefix, localName, nameSpace);
+            }
+
+            NamedNodeMap attrs = element.getAttributes();
+            for (int i = 0; i < attrs.getLength(); i++) {
+                Node attr = attrs.item(i);
+
+                String name = attr.getNodeName();
+                String attrPrefix = "";
+                int prefixIndex = name.indexOf(':');
+                if (prefixIndex != -1) {
+                    attrPrefix = name.substring(0, prefixIndex);
+                    name = name.substring(prefixIndex + 1);
+                }
+
+                if ("xmlns".equals(attrPrefix)) {
+                    writer.writeNamespace(name, attr.getNodeValue());
+                    if (name.equals(prefix)
+                            && attr.getNodeValue().equals(nameSpace)) {
                         declareNamespace = false;
                     }
                 } else {
-                    writer.writeAttribute(attrPrefix, attr.getNamespaceURI(),
-                            name, attr.getNodeValue());
+                    if ("xmlns".equals(name) && "".equals(attrPrefix)) {
+                        writer.writeNamespace("", attr.getNodeValue());
+                        if (attr.getNodeValue().equals(nameSpace)) {
+                            declareNamespace = false;
+                        }
+                    } else {
+                        writer.writeAttribute(attrPrefix, attr.getNamespaceURI(),
+                                name, attr.getNodeValue());
+                    }
                 }
             }
-        }
 
-        if (declareNamespace) {
-            if (nameSpace == null) {
-                writer.writeNamespace(prefix, "");
-            } else {
-                writer.writeNamespace(prefix, nameSpace);
+            if (declareNamespace) {
+                if (nameSpace == null) {
+                    writer.writeNamespace(prefix, "");
+                } else {
+                    writer.writeNamespace(prefix, nameSpace);
+                }
             }
+
+            NodeList nodes = element.getChildNodes();
+            for (int i = 0; i < nodes.getLength(); i++) {
+                Node n = nodes.item(i);
+                writeNode(n, writer);
+            }
+
+
+            writer.writeEndElement();
+        } catch (XMLStreamException e) {
+            throw new ExchangeXmlException("error writing element " + element, e);
         }
-
-        NodeList nodes = element.getChildNodes();
-        for (int i = 0; i < nodes.getLength(); i++) {
-            Node n = nodes.item(i);
-            writeNode(n, writer);
-        }
-
-
-        writer.writeEndElement();
-
     }
 
 
@@ -474,11 +468,8 @@ public class EwsServiceXmlWriter implements IDisposable {
      * @param xmlNamespace the XML namespace
      * @param localName    the local name of the element
      * @param value        the value
-     * @throws XMLStreamException               the XML stream exception
-     * @throws ServiceXmlSerializationException the service xml serialization exception
      */
-    public void writeElementValue(XmlNamespace xmlNamespace, String localName, Object value) throws XMLStreamException,
-            ServiceXmlSerializationException {
+    public void writeElementValue(XmlNamespace xmlNamespace, String localName, Object value) throws ExchangeXmlException {
         this.writeElementValue(xmlNamespace, localName, localName, value);
     }
 
@@ -488,37 +479,39 @@ public class EwsServiceXmlWriter implements IDisposable {
      * @param buffer the buffer
      * @throws XMLStreamException the XML stream exception
      */
-    public void writeBase64ElementValue(byte[] buffer)
-            throws XMLStreamException {
-
+    public void writeBase64ElementValue(byte[] buffer) throws ExchangeXmlException {
         String strValue = Base64.getMimeEncoder().encodeToString(buffer);
-        this.xmlWriter.writeCharacters(strValue);//Base64.encode(buffer));
+        try {
+            this.xmlWriter.writeCharacters(strValue);//Base64.encode(buffer));
+        } catch (XMLStreamException e) {
+            throw new ExchangeXmlException("error writing base64 encoded element value", e);
+        }
     }
 
     /**
      * Writes the base64-encoded element value.
      *
      * @param stream the stream
-     * @throws IOException        signals that an I/O exception has occurred
      * @throws XMLStreamException the XML stream exception
      */
-    public void writeBase64ElementValue(InputStream stream) throws IOException,
-            XMLStreamException {
+    public void writeBase64ElementValue(InputStream stream) throws ExchangeXmlException {
 
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
-        byte[] buf = new byte[BufferSize];
-        try {
+        try (bos) {
+            byte[] buf = new byte[BufferSize];
             for (int readNum; (readNum = stream.read(buf)) != -1; ) {
                 bos.write(buf, 0, readNum);
             }
         } catch (IOException ex) {
-            LOG.log(Level.SEVERE, "error writing binary data", ex);
-        } finally {
-            bos.close();
+            throw new ExchangeXmlException("error writing binary data", ex);
         }
         byte[] bytes = bos.toByteArray();
         String strValue = Base64.getMimeEncoder().encodeToString(bytes);
-        this.xmlWriter.writeCharacters(strValue);
+        try {
+            this.xmlWriter.writeCharacters(strValue);
+        } catch (XMLStreamException e) {
+            throw new ExchangeXmlException("error writing binary data as mime encoded characters", e);
+        }
 
     }
 

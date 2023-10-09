@@ -36,7 +36,7 @@ import com.eischet.ews.api.core.exception.service.local.ServiceXmlDeserializatio
 import com.eischet.ews.api.core.exception.service.local.ServiceXmlSerializationException;
 import com.eischet.ews.api.core.exception.service.remote.ServiceRequestException;
 import com.eischet.ews.api.core.exception.service.remote.ServiceResponseException;
-import com.eischet.ews.api.core.exception.xml.XmlException;
+import com.eischet.ews.api.core.exception.xml.ExchangeXmlException;
 import com.eischet.ews.api.core.response.ServiceResponse;
 import com.eischet.ews.api.http.ExchangeHttpClient;
 import com.eischet.ews.api.misc.SoapFaultDetails;
@@ -135,7 +135,7 @@ public abstract class ServiceRequestBase<T> {
      * @param writer The writer.
      * @throws ServiceXmlSerializationException the service xml serialization exception
      */
-    protected void writeAttributesToXml(EwsServiceXmlWriter writer) throws ServiceXmlSerializationException {
+    protected void writeAttributesToXml(EwsServiceXmlWriter writer) throws ExchangeXmlException {
     }
 
     /**
@@ -164,8 +164,7 @@ public abstract class ServiceRequestBase<T> {
      * @throws ServiceVersionException the service version exception
      */
     protected void throwIfNotSupportedByRequestedServerVersion() throws ServiceVersionException {
-        if (this.service.getRequestedServerVersion().ordinal() < this.getMinimumRequiredServerVersion()
-                .ordinal()) {
+        if (this.service.getRequestedServerVersion().ordinal() < this.getMinimumRequiredServerVersion().ordinal()) {
             throw new ServiceVersionException(String.format(
                     "The service request %s is only valid for Exchange version %s or later.", this.getXmlElementName(),
                     this.getMinimumRequiredServerVersion()));
@@ -751,7 +750,7 @@ public abstract class ServiceRequestBase<T> {
     private void readXmlDeclaration(EwsServiceXmlReader reader) throws Exception {
         try {
             reader.read(new XmlNodeType(XmlNodeType.START_DOCUMENT));
-        } catch (XmlException | ServiceXmlDeserializationException ex) {
+        } catch (ExchangeXmlException ex) {
             throw new ServiceRequestException("The response received from the service didn't contain valid XML.",
                     ex);
         }

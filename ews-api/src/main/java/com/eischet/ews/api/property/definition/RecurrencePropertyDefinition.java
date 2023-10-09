@@ -30,7 +30,9 @@ import com.eischet.ews.api.core.XmlElementNames;
 import com.eischet.ews.api.core.enumeration.misc.ExchangeVersion;
 import com.eischet.ews.api.core.enumeration.misc.XmlNamespace;
 import com.eischet.ews.api.core.enumeration.property.PropertyDefinitionFlags;
+import com.eischet.ews.api.core.exception.service.local.ExchangeValidationException;
 import com.eischet.ews.api.core.exception.service.local.ServiceXmlDeserializationException;
+import com.eischet.ews.api.core.exception.xml.ExchangeXmlException;
 import com.eischet.ews.api.property.complex.recurrence.pattern.Recurrence;
 import com.eischet.ews.api.property.complex.recurrence.range.EndDateRecurrenceRange;
 import com.eischet.ews.api.property.complex.recurrence.range.NoEndRecurrenceRange;
@@ -65,9 +67,8 @@ public class RecurrencePropertyDefinition extends PropertyDefinition {
      *
      * @param reader      the reader
      * @param propertyBag the property bag
-     * @throws Exception the exception
      */
-    public void loadPropertyValueFromXml(EwsServiceXmlReader reader, PropertyBag propertyBag) throws Exception {
+    public void loadPropertyValueFromXml(EwsServiceXmlReader reader, PropertyBag propertyBag) throws ExchangeXmlException {
         reader.ensureCurrentNodeIsStartElement(XmlNamespace.Types,
                 XmlElementNames.Recurrence);
 
@@ -119,7 +120,7 @@ public class RecurrencePropertyDefinition extends PropertyDefinition {
             recurrence = new Recurrence.YearlyRegenerationPattern();
         } else {
 
-            throw new ServiceXmlDeserializationException(String.format("Invalid recurrence pattern: (%s).", reader.getLocalName()));
+            throw new ExchangeValidationException(String.format("Invalid recurrence pattern: (%s).", reader.getLocalName()));
         }
 
         recurrence.loadFromXml(reader, reader.getLocalName());
@@ -142,7 +143,7 @@ public class RecurrencePropertyDefinition extends PropertyDefinition {
 
             range = new NumberedRecurrenceRange();
         } else {
-            throw new ServiceXmlDeserializationException(String.format("Invalid recurrence range: (%s).", reader.getLocalName()));
+            throw new ExchangeValidationException(String.format("Invalid recurrence range: (%s).", reader.getLocalName()));
         }
 
         range.loadFromXml(reader, reader.getLocalName());
@@ -160,11 +161,9 @@ public class RecurrencePropertyDefinition extends PropertyDefinition {
      * @param writer            the writer
      * @param propertyBag       the property bag
      * @param isUpdateOperation the is update operation
-     * @throws Exception the exception
      */
     public void writePropertyValueToXml(EwsServiceXmlWriter writer, PropertyBag propertyBag,
-                                        boolean isUpdateOperation)
-            throws Exception {
+                                        boolean isUpdateOperation) throws ExchangeXmlException {
         Recurrence value = propertyBag.getObjectFromPropertyDefinition(this);
 
         if (value != null) {

@@ -29,6 +29,7 @@ import com.eischet.ews.api.core.XmlAttributeNames;
 import com.eischet.ews.api.core.enumeration.service.DeleteMode;
 import com.eischet.ews.api.core.enumeration.service.error.ServiceErrorHandling;
 import com.eischet.ews.api.core.exception.service.local.ServiceXmlSerializationException;
+import com.eischet.ews.api.core.exception.xml.ExchangeXmlException;
 import com.eischet.ews.api.core.response.ServiceResponse;
 
 import java.util.logging.Level;
@@ -70,15 +71,9 @@ abstract class DeleteRequest<TResponse extends ServiceResponse> extends
      */
     @Override
     protected void writeAttributesToXml(EwsServiceXmlWriter writer)
-            throws ServiceXmlSerializationException {
+            throws ExchangeXmlException {
         super.writeAttributesToXml(writer);
-
-        try {
-            writer.writeAttributeValue(XmlAttributeNames.DeleteType, this
-                    .getDeleteMode());
-        } catch (ServiceXmlSerializationException e) {
-            LOG.log(Level.SEVERE, "error writing attributes to XML", e);
-        }
+        writer.writeAttributeValue(XmlAttributeNames.DeleteType, this.getDeleteMode());
     }
 
     /**

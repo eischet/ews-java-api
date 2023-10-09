@@ -27,10 +27,8 @@ import com.eischet.ews.api.core.EwsServiceXmlReader;
 import com.eischet.ews.api.core.EwsServiceXmlWriter;
 import com.eischet.ews.api.core.XmlElementNames;
 import com.eischet.ews.api.core.enumeration.misc.XmlNamespace;
-import com.eischet.ews.api.core.exception.service.local.ServiceValidationException;
-import com.eischet.ews.api.core.exception.service.local.ServiceXmlSerializationException;
-
-import javax.xml.stream.XMLStreamException;
+import com.eischet.ews.api.core.exception.service.local.ExchangeValidationException;
+import com.eischet.ews.api.core.exception.xml.ExchangeXmlException;
 
 /**
  * Represents the minimum and maximum size of a message.
@@ -93,8 +91,7 @@ public final class RulePredicateSizeRange extends ComplexProperty {
      * @return True if element was read.
      */
     @Override
-    public boolean tryReadElementFromXml(EwsServiceXmlReader reader)
-            throws Exception {
+    public boolean tryReadElementFromXml(EwsServiceXmlReader reader) throws ExchangeXmlException {
 
         if (reader.getLocalName().equalsIgnoreCase(XmlElementNames.MinimumSize)) {
             this.minimumSize = reader.readElementValue(Integer.class);
@@ -112,11 +109,9 @@ public final class RulePredicateSizeRange extends ComplexProperty {
      * Writes elements to XML.
      *
      * @param writer the writer
-     * @throws XMLStreamException the XML stream exception
      */
     @Override
-    public void writeElementsToXml(EwsServiceXmlWriter writer)
-            throws ServiceXmlSerializationException, XMLStreamException {
+    public void writeElementsToXml(EwsServiceXmlWriter writer) throws ExchangeXmlException {
         if (this.getMinimumSize() != null) {
             writer.writeElementValue(XmlNamespace.Types,
                     XmlElementNames.MinimumSize, this.getMinimumSize());
@@ -131,13 +126,12 @@ public final class RulePredicateSizeRange extends ComplexProperty {
      * Validates this instance.
      */
     @Override
-    protected void internalValidate()
-            throws Exception {
+    protected void internalValidate() throws ExchangeValidationException {
         super.internalValidate();
         if (this.minimumSize != null &&
                 this.maximumSize != null &&
                 this.minimumSize > this.maximumSize) {
-            throw new ServiceValidationException(
+            throw new ExchangeValidationException(
                     "MinimumSize cannot be larger than MaximumSize.");
         }
     }

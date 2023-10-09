@@ -26,6 +26,7 @@ package com.eischet.ews.api.property.complex;
 import com.eischet.ews.api.core.*;
 import com.eischet.ews.api.core.enumeration.misc.XmlNamespace;
 import com.eischet.ews.api.core.exception.service.local.ServiceXmlSerializationException;
+import com.eischet.ews.api.core.exception.xml.ExchangeXmlException;
 import com.eischet.ews.api.misc.TimeSpan;
 import com.eischet.ews.api.property.complex.time.TimeZoneDefinition;
 
@@ -98,11 +99,9 @@ public final class MeetingTimeZone extends ComplexProperty {
      * @param reader the reader
      * @return Earliest Exchange version in which this service object type is
      * supported.
-     * @throws Exception the exception
      */
     @Override
-    public boolean tryReadElementFromXml(EwsServiceXmlReader reader)
-            throws Exception {
+    public boolean tryReadElementFromXml(EwsServiceXmlReader reader) throws ExchangeXmlException {
         if (reader.getLocalName().equals(XmlElementNames.BaseOffset)) {
             this.baseOffset = EwsUtilities.getXSDurationToTimeSpan(reader.readElementValue());
             return true;
@@ -123,11 +122,9 @@ public final class MeetingTimeZone extends ComplexProperty {
      * Reads the attribute from XML.
      *
      * @param reader the reader
-     * @throws Exception the exception
      */
     @Override
-    public void readAttributesFromXml(EwsServiceXmlReader reader)
-            throws Exception {
+    public void readAttributesFromXml(EwsServiceXmlReader reader) throws ExchangeXmlException {
         this.name = reader.readAttributeValue(XmlAttributeNames.TimeZoneName);
     }
 
@@ -135,10 +132,9 @@ public final class MeetingTimeZone extends ComplexProperty {
      * Writes the attribute to XML.
      *
      * @param writer the writer
-     * @throws ServiceXmlSerializationException the service xml serialization exception
      */
     @Override
-    public void writeAttributesToXml(EwsServiceXmlWriter writer) throws ServiceXmlSerializationException {
+    public void writeAttributesToXml(EwsServiceXmlWriter writer) throws ExchangeXmlException {
         writer.writeAttributeValue(XmlAttributeNames.TimeZoneName, this.getName());
     }
 
@@ -146,11 +142,9 @@ public final class MeetingTimeZone extends ComplexProperty {
      * Writes the attribute to XML.
      *
      * @param writer the writer
-     * @throws Exception the exception
      */
     @Override
-    public void writeElementsToXml(EwsServiceXmlWriter writer)
-            throws Exception {
+    public void writeElementsToXml(EwsServiceXmlWriter writer) throws ExchangeXmlException {
         if (this.baseOffset != null) {
             writer.writeElementValue(XmlNamespace.Types,
                     XmlElementNames.BaseOffset, EwsUtilities

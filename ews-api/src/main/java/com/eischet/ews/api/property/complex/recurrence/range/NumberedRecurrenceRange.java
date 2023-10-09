@@ -28,6 +28,7 @@ import com.eischet.ews.api.core.EwsServiceXmlWriter;
 import com.eischet.ews.api.core.XmlElementNames;
 import com.eischet.ews.api.core.enumeration.misc.XmlNamespace;
 import com.eischet.ews.api.core.exception.service.local.ServiceXmlSerializationException;
+import com.eischet.ews.api.core.exception.xml.ExchangeXmlException;
 import com.eischet.ews.api.property.complex.recurrence.pattern.Recurrence;
 
 import javax.xml.stream.XMLStreamException;
@@ -75,9 +76,8 @@ public final class NumberedRecurrenceRange extends RecurrenceRange {
      * Setups the recurrence.
      *
      * @param recurrence the new up recurrence
-     * @throws Exception the exception
      */
-    public void setupRecurrence(Recurrence recurrence) throws Exception {
+    public void setupRecurrence(Recurrence recurrence) throws ExchangeXmlException {
         super.setupRecurrence(recurrence);
         recurrence.setNumberOfOccurrences(this.numberOfOccurrences);
     }
@@ -86,11 +86,8 @@ public final class NumberedRecurrenceRange extends RecurrenceRange {
      * Writes the elements to XML..
      *
      * @param writer the writer
-     * @throws XMLStreamException               the XML stream exception
-     * @throws ServiceXmlSerializationException the service xml serialization exception
      */
-    public void writeElementsToXml(EwsServiceXmlWriter writer)
-            throws XMLStreamException, ServiceXmlSerializationException {
+    public void writeElementsToXml(EwsServiceXmlWriter writer) throws ExchangeXmlException {
         super.writeElementsToXml(writer);
 
         if (this.numberOfOccurrences != null) {
@@ -105,10 +102,8 @@ public final class NumberedRecurrenceRange extends RecurrenceRange {
      *
      * @param reader the reader
      * @return True if element was read
-     * @throws Exception the exception
      */
-    public boolean tryReadElementFromXml(EwsServiceXmlReader reader)
-            throws Exception {
+    public boolean tryReadElementFromXml(EwsServiceXmlReader reader) throws ExchangeXmlException {
         if (super.tryReadElementFromXml(reader)) {
             return true;
         } else {

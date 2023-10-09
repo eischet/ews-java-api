@@ -27,6 +27,7 @@ import com.eischet.ews.api.core.EwsServiceXmlReader;
 import com.eischet.ews.api.core.XmlElementNames;
 import com.eischet.ews.api.core.enumeration.property.RuleProperty;
 import com.eischet.ews.api.core.enumeration.property.error.RuleErrorCode;
+import com.eischet.ews.api.core.exception.xml.ExchangeXmlException;
 
 /**
  * Defines the RuleError class.
@@ -99,11 +100,9 @@ public final class RuleError extends ComplexProperty {
      *
      * @param reader The reader
      * @return True if element was read
-     * @throws Exception
      */
     @Override
-    public boolean tryReadElementFromXml(EwsServiceXmlReader reader)
-            throws Exception {
+    public boolean tryReadElementFromXml(EwsServiceXmlReader reader) throws ExchangeXmlException {
         if (reader.getLocalName().equals(XmlElementNames.FieldURI)) {
             this.ruleProperty = reader.readElementValue(RuleProperty.class);
             return true;

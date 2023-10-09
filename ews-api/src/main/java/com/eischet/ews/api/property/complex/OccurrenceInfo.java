@@ -25,6 +25,7 @@ package com.eischet.ews.api.property.complex;
 
 import com.eischet.ews.api.core.EwsServiceXmlReader;
 import com.eischet.ews.api.core.XmlElementNames;
+import com.eischet.ews.api.core.exception.xml.ExchangeXmlException;
 
 import java.time.LocalDateTime;
 
@@ -64,10 +65,8 @@ public final class OccurrenceInfo extends ComplexProperty {
      *
      * @param reader the reader
      * @return true, if successful
-     * @throws Exception the exception
      */
-    public boolean tryReadElementFromXml(EwsServiceXmlReader reader)
-            throws Exception {
+    public boolean tryReadElementFromXml(EwsServiceXmlReader reader) throws ExchangeXmlException {
         if (reader.getLocalName().equals(XmlElementNames.ItemId)) {
 
             this.itemId = new ItemId();

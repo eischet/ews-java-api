@@ -27,7 +27,8 @@ import com.eischet.ews.api.core.*;
 import com.eischet.ews.api.core.enumeration.misc.ExchangeVersion;
 import com.eischet.ews.api.core.enumeration.property.DefaultExtendedPropertySet;
 import com.eischet.ews.api.core.enumeration.property.MapiPropertyType;
-import com.eischet.ews.api.core.exception.service.local.ServiceXmlSerializationException;
+import com.eischet.ews.api.core.exception.service.local.ServiceLocalException;
+import com.eischet.ews.api.core.exception.xml.ExchangeXmlException;
 import com.eischet.ews.api.misc.MapiTypeConverter;
 
 import java.util.UUID;
@@ -38,69 +39,57 @@ import java.util.UUID;
 public final class ExtendedPropertyDefinition extends PropertyDefinitionBase {
 
     /**
-     * The property set.
-     */
-    private DefaultExtendedPropertySet propertySet;
-
-    /**
-     * The property set id.
-     */
-    private UUID propertySetId;
-
-    /**
-     * The tag.
-     */
-    private Integer tag;
-
-    /**
-     * The name.
-     */
-    private String name;
-
-    /**
-     * The id.
-     */
-    private Integer id;
-
-    /**
-     * The mapi type.
-     */
-    private MapiPropertyType mapiType;
-
-    /**
      * The Constant FieldFormat.
      */
     private final static String FieldFormat = "%s: %s ";
-
     /**
      * The Property set field name.
      */
     private static final String PropertySetFieldName = "PropertySet";
-
     /**
      * The Property set id field name.
      */
     private static final String PropertySetIdFieldName = "PropertySetId";
-
     /**
      * The Tag field name.
      */
     private static final String TagFieldName = "Tag";
-
     /**
      * The Name field name.
      */
     private static final String NameFieldName = "Name";
-
     /**
      * The Id field name.
      */
     private static final String IdFieldName = "Id";
-
     /**
      * The Mapi type field name.
      */
     private static final String MapiTypeFieldName = "MapiType";
+    /**
+     * The property set.
+     */
+    private DefaultExtendedPropertySet propertySet;
+    /**
+     * The property set id.
+     */
+    private UUID propertySetId;
+    /**
+     * The tag.
+     */
+    private Integer tag;
+    /**
+     * The name.
+     */
+    private String name;
+    /**
+     * The id.
+     */
+    private Integer id;
+    /**
+     * The mapi type.
+     */
+    private MapiPropertyType mapiType;
 
     /**
      * Initializes a new instance.
@@ -142,11 +131,9 @@ public final class ExtendedPropertyDefinition extends PropertyDefinitionBase {
      * @param mapiType    The MAPI type of the extended property.
      * @throws Exception the exception
      */
-    public ExtendedPropertyDefinition(DefaultExtendedPropertySet propertySet,
-                                      String name, MapiPropertyType mapiType) throws Exception {
+    public ExtendedPropertyDefinition(DefaultExtendedPropertySet propertySet, String name, MapiPropertyType mapiType) throws ExchangeXmlException {
         this(mapiType);
         EwsUtilities.validateParam(name, "name");
-
         this.propertySet = propertySet;
         this.name = name;
     }
@@ -274,11 +261,10 @@ public final class ExtendedPropertyDefinition extends PropertyDefinitionBase {
      * Writes the attribute to XML.
      *
      * @param writer The writer.
-     * @throws ServiceXmlSerializationException the service xml serialization exception
      */
     @Override
     protected void writeAttributesToXml(EwsServiceXmlWriter writer)
-            throws ServiceXmlSerializationException {
+            throws ExchangeXmlException {
         if (this.propertySet != null) {
             writer.writeAttributeValue(
                     XmlAttributeNames.DistinguishedPropertySetId,
@@ -308,33 +294,25 @@ public final class ExtendedPropertyDefinition extends PropertyDefinitionBase {
      * @param reader The reader.
      * @throws Exception the exception
      */
-    public void loadFromXml(EwsServiceXmlReader reader) throws Exception {
-        String attributeValue;
-
-        attributeValue = reader
-                .readAttributeValue(XmlAttributeNames.
-                        DistinguishedPropertySetId);
+    public void loadFromXml(EwsServiceXmlReader reader) throws ExchangeXmlException {
+        String attributeValue = reader.readAttributeValue(XmlAttributeNames.DistinguishedPropertySetId);
         if (null != attributeValue && !attributeValue.isEmpty()) {
             this.propertySet = DefaultExtendedPropertySet
                     .valueOf(attributeValue);
         }
 
-        attributeValue = reader
-                .readAttributeValue(XmlAttributeNames.PropertySetId);
+        attributeValue = reader.readAttributeValue(XmlAttributeNames.PropertySetId);
         if (null != attributeValue && !attributeValue.isEmpty()) {
             this.propertySetId = UUID.fromString(attributeValue);
         }
 
-        attributeValue = reader
-                .readAttributeValue(XmlAttributeNames.PropertyTag);
+        attributeValue = reader.readAttributeValue(XmlAttributeNames.PropertyTag);
         if (null != attributeValue && !attributeValue.isEmpty()) {
-
             this.tag = Integer.decode(attributeValue);
         }
 
         this.name = reader.readAttributeValue(XmlAttributeNames.PropertyName);
-        attributeValue = reader
-                .readAttributeValue(XmlAttributeNames.PropertyId);
+        attributeValue = reader.readAttributeValue(XmlAttributeNames.PropertyId);
         if (null != attributeValue && !attributeValue.isEmpty()) {
             this.id = Integer.parseInt(attributeValue);
         }
@@ -381,16 +359,14 @@ public final class ExtendedPropertyDefinition extends PropertyDefinitionBase {
      */
     @Override
     public String getPrintableName() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("{");
-        sb.append(formatField(NameFieldName, this.getName()));
-        sb.append(formatField(MapiTypeFieldName, this.getMapiType()));
-        sb.append(formatField(IdFieldName, this.getId()));
-        sb.append(formatField(PropertySetFieldName, this.getPropertySet()));
-        sb.append(formatField(PropertySetIdFieldName, this.getPropertySetId()));
-        sb.append(formatField(TagFieldName, this.getTag()));
-        sb.append("}");
-        return sb.toString();
+        return "{" +
+                formatField(NameFieldName, this.getName()) +
+                formatField(MapiTypeFieldName, this.getMapiType()) +
+                formatField(IdFieldName, this.getId()) +
+                formatField(PropertySetFieldName, this.getPropertySet()) +
+                formatField(PropertySetIdFieldName, this.getPropertySetId()) +
+                formatField(TagFieldName, this.getTag()) +
+                "}";
     }
 
     /**

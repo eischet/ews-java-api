@@ -24,7 +24,7 @@
 package com.eischet.ews.api.misc;
 
 import com.eischet.ews.api.ISelfValidate;
-import com.eischet.ews.api.core.exception.service.local.ServiceValidationException;
+import com.eischet.ews.api.core.exception.service.local.ExchangeValidationException;
 
 /**
  * Represents a mobile phone.
@@ -82,11 +82,11 @@ public final class MobilePhone implements ISelfValidate {
     /**
      * Validates this instance.
      *
-     * @throws ServiceValidationException on validation error
+     * @throws ExchangeValidationException on validation error
      */
-    public void validate() throws ServiceValidationException {
+    public void validate() throws ExchangeValidationException {
         if (this.getPhoneNumber() == null || this.getPhoneNumber().isEmpty()) {
-            throw new ServiceValidationException(
+            throw new ExchangeValidationException(
                     "PhoneNumber cannot be empty.");
         }
     }

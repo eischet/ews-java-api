@@ -23,7 +23,7 @@
 
 package com.eischet.ews.api.sync;
 
-import com.eischet.ews.api.core.exception.service.local.ServiceLocalException;
+import com.eischet.ews.api.core.exception.xml.ExchangeXmlException;
 import com.eischet.ews.api.core.service.folder.Folder;
 import com.eischet.ews.api.property.complex.FolderId;
 import com.eischet.ews.api.property.complex.ServiceId;
@@ -66,9 +66,8 @@ public final class FolderChange extends Change {
      * retrieve the Id of the folder that was deleted.
      *
      * @return the folder id
-     * @throws ServiceLocalException the service local exception
      */
-    public FolderId getFolderId() throws ServiceLocalException {
+    public FolderId getFolderId() throws ExchangeXmlException {
         return (FolderId) this.getId();
     }
 

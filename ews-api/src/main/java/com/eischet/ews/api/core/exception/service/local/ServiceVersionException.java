@@ -23,11 +23,13 @@
 
 package com.eischet.ews.api.core.exception.service.local;
 
+import com.eischet.ews.api.core.exception.xml.ExchangeXmlException;
+
 /**
  * Represents an error that occurs when a request cannot be handled due to a
  * service version mismatch.
  */
-public final class ServiceVersionException extends ServiceLocalException {
+public final class ServiceVersionException extends ExchangeXmlException {
 
     /**
      * Constant serialized ID used for compatibility.

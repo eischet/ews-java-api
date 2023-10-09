@@ -28,14 +28,13 @@ package com.eischet.ews.api.core.enumeration.misc;
  */
 public enum DateTimePrecision {
 
-    // Default value. No SOAP header emitted.
+    /** Default value. No SOAP header emitted. */
     Default,
 
-    // Seconds
-
+    /** Seconds precision. */
     Seconds,
 
-    // Milliseconds
+    /** Milliseconds precision. */
 
     Milliseconds
 }

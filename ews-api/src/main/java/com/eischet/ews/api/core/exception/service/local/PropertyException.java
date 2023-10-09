@@ -23,10 +23,12 @@
 
 package com.eischet.ews.api.core.exception.service.local;
 
+import com.eischet.ews.api.core.exception.xml.ExchangeXmlException;
+
 /**
  * Represents an error that occurs when an operation on a property fails.
  */
-public class PropertyException extends ServiceLocalException {
+public class PropertyException extends ExchangeXmlException {
 
     /**
      * Constant serialized ID used for compatibility.
@@ -37,13 +39,6 @@ public class PropertyException extends ServiceLocalException {
      * The name.
      */
     private String name;
-
-    /**
-     * Instantiates a new property exception.
-     */
-    public PropertyException() {
-        super();
-    }
 
     /**
      * Instantiates a new property exception.

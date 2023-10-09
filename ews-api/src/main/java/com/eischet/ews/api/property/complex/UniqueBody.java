@@ -25,10 +25,7 @@ package com.eischet.ews.api.property.complex;
 
 import com.eischet.ews.api.core.*;
 import com.eischet.ews.api.core.enumeration.property.BodyType;
-import com.eischet.ews.api.core.exception.service.local.ServiceXmlDeserializationException;
-import com.eischet.ews.api.core.exception.service.local.ServiceXmlSerializationException;
-
-import javax.xml.stream.XMLStreamException;
+import com.eischet.ews.api.core.exception.xml.ExchangeXmlException;
 
 /**
  * Represents the body part of an item that is unique to the conversation the
@@ -68,23 +65,17 @@ public final class UniqueBody extends ComplexProperty {
      * Reads attribute from XML.
      *
      * @param reader the reader
-     * @throws Exception the exception
      */
-    public void readAttributesFromXml(EwsServiceXmlReader reader)
-            throws Exception {
-        this.bodyType = reader.readAttributeValue(BodyType.class,
-                XmlAttributeNames.BodyType);
+    public void readAttributesFromXml(EwsServiceXmlReader reader) throws ExchangeXmlException {
+        this.bodyType = reader.readAttributeValue(BodyType.class, XmlAttributeNames.BodyType);
     }
 
     /**
      * Reads attribute from XML.
      *
      * @param reader the reader
-     * @throws XMLStreamException                 the xml stream exception
-     * @throws ServiceXmlDeserializationException the service xml deserialization exception
      */
-    public void readTextValueFromXml(EwsServiceXmlReader reader)
-            throws XMLStreamException, ServiceXmlDeserializationException {
+    public void readTextValueFromXml(EwsServiceXmlReader reader) throws ExchangeXmlException {
         this.text = reader.readValue();
     }
 
@@ -92,10 +83,8 @@ public final class UniqueBody extends ComplexProperty {
      * Writes attributes from XML.
      *
      * @param writer the writer
-     * @throws ServiceXmlSerializationException the service xml serialization exception
      */
-    public void writeAttributesToXml(EwsServiceXmlWriter writer)
-            throws ServiceXmlSerializationException {
+    public void writeAttributesToXml(EwsServiceXmlWriter writer) throws ExchangeXmlException {
         writer.writeAttributeValue(XmlAttributeNames.BodyType, this.bodyType);
     }
 
@@ -103,9 +92,8 @@ public final class UniqueBody extends ComplexProperty {
      * Writes elements to XML.
      *
      * @param writer the writer
-     * @throws ServiceXmlSerializationException the service xml serialization exception
      */
-    public void writeElementsToXml(EwsServiceXmlWriter writer) throws ServiceXmlSerializationException {
+    public void writeElementsToXml(EwsServiceXmlWriter writer) throws ExchangeXmlException {
         if (!(this.text == null || this.text.isEmpty())) {
             writer.writeValue(this.text, XmlElementNames.UniqueBody);
         }
