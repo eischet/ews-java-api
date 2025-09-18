@@ -5,7 +5,7 @@
     <parent>
         <artifactId>ews-java-api</artifactId>
         <groupId>com.eischet</groupId>
-        <version>2.2-SNAPSHOT</version>
+        <version>${revision}</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -15,7 +15,7 @@
         <dependency>
             <groupId>com.eischet</groupId>
             <artifactId>ews-api</artifactId>
-            <version>${project.parent.version}</version>
+            <version>${revision}</version>
         </dependency>
     </dependencies>
 
