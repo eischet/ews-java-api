@@ -29,18 +29,19 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>com.eischet</groupId>
-        <artifactId>eischet-root-public</artifactId>
-        <version>1.0.2</version>
+        <groupId>com.eischet.root</groupId>
+        <artifactId>lib-public</artifactId>
+        <version>1.0.8</version>
     </parent>
 
+    <groupId>com.eischet</groupId>
     <artifactId>ews-java-api</artifactId>
     <packaging>pom</packaging>
 
     <version>${revision}</version>
 
     <properties>
-        <revision>2.3.1</revision>
+        <revision>2.3.2</revision>
 
 
         <!-- TODO: clean up the JavaDocs -->
@@ -130,13 +131,7 @@
 
 
     <build>
-        <extensions>
-            <extension>
-                <groupId>com.eischet.mvn</groupId>
-                <artifactId>wagon-providers</artifactId>
-                <version>1.0.3</version>
-            </extension>
-        </extensions>
+
 
         <plugins>
             <plugin>
@@ -192,5 +187,37 @@
         <module>ews-client-apache5</module>
 
     </modules>
+
+    <repositories>
+        <repository>
+            <id>repo-eischet-releases</id>
+            <name>Eischet Software Repository</name>
+            <url>https://repo.srv.eischet.net/releases</url>
+        </repository>
+        <repository>
+            <id>repo-eischet-snapshots</id>
+            <name>Eischet Software Repository</name>
+            <url>https://repo.srv.eischet.net/snapshots</url>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </repository>
+    </repositories>
+
+    <pluginRepositories>
+        <pluginRepository>
+            <id>repo-eischet-releases</id>
+            <name>Eischet Software Repository</name>
+            <url>https://repo.srv.eischet.net/releases</url>
+        </pluginRepository>
+        <pluginRepository>
+            <id>repo-eischet-snapshots</id>
+            <name>Eischet Software Repository</name>
+            <url>https://repo.srv.eischet.net/snapshots</url>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </pluginRepository>
+    </pluginRepositories>
 
 </project>

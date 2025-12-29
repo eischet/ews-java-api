@@ -42,7 +42,12 @@ The package names have been changed from `microsoft.*` to `com.eischet.ews.*`. T
 because it allows me to include the old and the new package in my software at the same time, allowing my users to test
 the new code more easily.
 
-The build now uses Java 11.
+The build now uses Java 17.
+
+## Version 2.3.2, 2025-12-29:
+
+* Removed the "Olsen Time Zone Mappings", which regularly ran into errors with newer JDKs because they expected a mapping
+  for all Java time zones to Microsoft names, after noticing that the original code file is only used IN that same test case.
 
 
 ## Version 2.2-SNAPSHOT, 2023-10-09:

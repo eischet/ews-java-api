@@ -31,7 +31,6 @@ import com.eischet.ews.api.core.enumeration.misc.ExchangeVersion;
 import com.eischet.ews.api.core.enumeration.misc.XmlNamespace;
 import com.eischet.ews.api.core.exception.service.local.ExchangeValidationException;
 import com.eischet.ews.api.core.exception.service.local.InvalidOrUnsupportedTimeZoneDefinitionException;
-import com.eischet.ews.api.core.exception.service.local.ServiceLocalException;
 import com.eischet.ews.api.core.exception.service.local.ServiceXmlSerializationException;
 import com.eischet.ews.api.core.exception.xml.ExchangeXmlException;
 import com.eischet.ews.api.property.complex.ComplexProperty;
